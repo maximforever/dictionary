@@ -1,0 +1,83 @@
+/* GLOBAL STYLING */
+
+a {
+	text-decoration: none;
+}
+
+.term a {
+	text-decoration: none;
+	display: block;
+	background: rgb(220, 239, 236);
+	padding: 5px 10px;
+}
+
+.term a:hover {
+	background: rgb(149, 202, 217);
+}
+
+.bold {
+	font-weight: 700;
+}
+
+#new-definition {
+	width: calc(60% + 10px);
+	display: block;
+    margin: 20px auto;
+    display: none;
+}
+
+#new-definition textarea {
+    resize: none;
+    padding: 10px;
+    font-size: 1.2em;
+    line-height: 1.4;
+    width: calc(100% - 22px);
+}
+
+#add-definition {
+	float: right;
+}
+
+.definition-term {
+	font-weight: 700;
+	color: #2E58D1;
+}
+
+#search-bar {
+	font-size: 2.5em;
+	margin: 0px auto;
+	width: 60vw;
+	display: block;
+	border: 1px solid #c5c5c5;
+	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50)
+}
+
+#terms-section {
+	width: calc(60vw + 5px);
+	margin: 0px auto;
+	display: block;
+}
+
+#definitions-section {
+	width: calc(60vw);
+	margin: 0px auto;
+	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
+}
+
+.term{
+	border: 1px solid black;
+
+}
+
+.definition {
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid black;
+	display: block;
+}
+
+.term .title {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+

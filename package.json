@@ -1,0 +1,30 @@
+{
+  "name": "coding-dictionary",
+  "version": "1.0.0",
+  "description": "A simple explanation of coding terms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximforever/dictionary.git"
+  },
+  "author": "Max Pekarsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maximforever/dictionary/issues"
+  },
+  "homepage": "https://github.com/maximforever/dictionary#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "express-session": "^1.15.5",
+    "fs": "0.0.1-security",
+    "mongodb": "^2.2.31",
+    "nodemon": "^1.12.1"
+  }
+}
+
