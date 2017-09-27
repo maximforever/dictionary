@@ -4,7 +4,7 @@ function search(db, req, callback){
 
 
 	searchQuery = {
-		term: {
+		name: {
 			$regex: RegExp(req.body.term),
 			$options: 'i'
 		}
@@ -82,7 +82,35 @@ function addDefinition(db, req, callback){
 	});
 }
 
+function vote(db, req, callback){
+
+	/* 
+		1. check if there's already a vote for this user for this term
+		2. if there is, remove it, and create a new one (easier than changing type)
+		3. if there isn't, create the vote
+		4. update term
+	*/
+
+	var definitionQuery{
+		id: parseInt(req.body.id)
+	}
+
+	database.read(db, "definitions", definitionQuery)
+
+	database.create(db, "definitions", newDefinitionQuery, function(createdDefinition){
+
+		console.log(createdDefinition.ops[0]);
+
+		callback({
+			status: "success",
+			term: createdDefinition.ops[0].term
+		});
+
+	});
+}
+
 
 module.exports.search = search;
 module.exports.getDefinitions = getDefinitions;
 module.exports.addDefinition = addDefinition;
+module.exports.vote = vote;

@@ -15,6 +15,7 @@ function main(){
 		var term = this.getAttribute("id");
 		currentTerm = term;
 		getDefinition(term);
+        $("#new-definition").show();
 	});
 
 
@@ -47,6 +48,15 @@ function main(){
 	$("body").on("click", "#add-definition", function(){
 		addDefinition();
 	});
+
+    $("body").on("click", ".voting-button", function(){
+        var type = this.dataset.vote;               // quick way to get data attribute value
+        var id = this.parentElement.parentElement.id;
+
+        voteOnDefinition(type, id);
+    })
+
+
 }
 
 
@@ -102,17 +112,12 @@ function getDefinition(thisTerm){
         url: "/get-definitions",
         success: function(result){
         	if(result.status == "success"){
+                console.log(result);
         		$("#terms-section").empty();
             	if(result.count > 0){
             		$("#definitions-section").empty();
             		console.log("Found " + result.count + " responses");
-
-        			console.log(result.body);	
-
-            		result.body.forEach(function(post){
-            			displayDefinitions(post);
-            		});  
-            		$("#new-definition").show();
+                    displayDefinitionsOnPage(result.body);
 	            } else {
 	            	$("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold'>" + thisTerm + "</span>. You should add one.</div>");
 	            	displayAddDefinition(thisTerm);
@@ -140,6 +145,8 @@ function addDefinition(){
 			definition: definitionBody,
 			related: relatedTerms
 		}
+
+        console.log(definitionData);
 	    
 		$.ajax({
 	        type: "post",
@@ -150,8 +157,8 @@ function addDefinition(){
             		$("#terms-section").empty();
             		$("#definitions-section").empty();
             		$("#definitions-section").append("<div class = 'definition'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted.</div>");
-            		$("#new-definition").hide();
             		getDefinition(result.term);	            
+                    $("#new-definition").hide();
 	        	} else {
 	            	$("#definitions-section").empty();
 	            	$("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
@@ -161,25 +168,44 @@ function addDefinition(){
 	}
 }
 
+function voteOnDefinition(voteType, voteId){
+
+    var votingData = {
+        id: voteId,
+        type: voteType,
+    }
+    
+    $.ajax({
+        type: "post",
+        data: votingData,
+        url: "/vote",
+        success: function(result){
+            if(result.status == "success"){
+                console.log(result.message);
+                getDefinition(thisTerm);
+            } else {
+                console.log("something went wrong");
+                $("#error").text(result.error);
+            }
+        }
+    })
+}
 
 
-
-
-
-
-
-
+function displayDefinitionsOnPage(definitions){
+    definitions.forEach(function(definition){
+        var score = definition.upvotes - definition.downvotes;
+        $("#definitions-section").append("<div class = 'definition' id = '" + definition.id + "'><span class = 'definition-term'>" + definition.term + "</span>: " + definition.body + "<br><div class = 'voting-section'><button class = 'voting-button' data-vote = 'down'>Down</button><span class = 'definition-score'>" + score + "</span><button class = 'voting-button' data-vote = 'up'>Up</button></div></div>")
+    });
+}
 
 
 
 
 function displaySearchTerm(term){
-	$("#terms-section").append("<div class = 'term'><span class = 'title'><a href = '#' id = '" + term.term + "' class ='term-link'>" + term.term + "</a></span></div>")
+	$("#terms-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-link'>" + term.name + "</span></span></div>")
 } 
 
-function displayDefinitions(definition){
-	$("#definitions-section").append("<div class = 'definition'><span class = 'definition-term'>" + definition.term + "</span>: " + definition.body + " </div>")
-} 
 
 function displayAddDefinition(term){
 	$("#new-definition").show();

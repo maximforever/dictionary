@@ -4,19 +4,56 @@ a {
 	text-decoration: none;
 }
 
-.term a {
+.term-link {
 	text-decoration: none;
 	display: block;
 	background: rgb(220, 239, 236);
 	padding: 5px 10px;
+	color: #2E58D1;
 }
 
-.term a:hover {
+.term-link:hover {
 	background: rgb(149, 202, 217);
 }
 
 .bold {
 	font-weight: 700;
+}
+
+/* SEARCH BAR */
+
+#search-bar {
+	font-size: 2.5em;
+	margin: 0px auto;
+	width: 60vw;
+	display: block;
+	border: 1px solid #c5c5c5;
+	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50)
+}
+
+#terms-section {
+	width: calc(60vw + 5px);
+	margin: 0px auto;
+	display: block;
+}
+
+.term{
+	border: 1px solid black;
+	box-shadow: -2px 2px 2px rgba(20, 20, 20, 0.4);
+}
+
+
+/* DEFINITION */
+
+#definitions-section {
+	width: calc(60vw);
+	margin: 0px auto;
+	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
+}
+
+.term .title {
+	font-size: 1.5em;
+	font-weight: bold;
 }
 
 #new-definition {
@@ -43,31 +80,16 @@ a {
 	color: #2E58D1;
 }
 
-#search-bar {
-	font-size: 2.5em;
-	margin: 0px auto;
-	width: 60vw;
-	display: block;
-	border: 1px solid #c5c5c5;
-	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50)
+.voting-section{
+	margin-top: 5px;
 }
 
-#terms-section {
-	width: calc(60vw + 5px);
-	margin: 0px auto;
-	display: block;
+.definition-score {
+	padding: 0px 10px;
+	font-weight: 700;
+	color: green;
 }
 
-#definitions-section {
-	width: calc(60vw);
-	margin: 0px auto;
-	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
-}
-
-.term{
-	border: 1px solid black;
-
-}
 
 .definition {
 	margin: 20px auto;
@@ -76,8 +98,4 @@ a {
 	display: block;
 }
 
-.term .title {
-	font-size: 1.5em;
-	font-weight: bold;
-}
 
