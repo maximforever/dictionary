@@ -22,7 +22,6 @@ function main(){
 		var term = this.getAttribute("id");
 		currentTerm = term;
 		getDefinition(term);
-    //    $("#new-definition").show();
 	});
 
 
@@ -62,8 +61,11 @@ function main(){
 
     $("body").on("click", ".voting-button", function(){
         var type = this.dataset.vote;               // quick way to get data attribute value
-        var id = this.parentElement.parentElement.id;
-        var term = this.parentElement.parentElement.childNodes[0].innerHTML;
+        var id = this.parentElement.parentElement.previousSibling.previousSibling.parentElement.id;
+        var term = this.parentElement.parentElement.previousSibling.previousSibling.childNodes[1].innerHTML;
+
+
+        console.log(term);
 
         voteOnDefinition(type, id, term);
     })
@@ -79,6 +81,11 @@ function main(){
     /* ACCOUNT LINKS*/
 
     $("body").on("click", "#login", function(){
+        showLogin();
+    });
+
+    $("body").on("click", ".log-in-link", function(){
+        $(".pop-out").hide();
         showLogin();
     });
 
@@ -152,8 +159,6 @@ function search(){
             		console.log("Found " + result.count + " responses");
 
             		if(result.count > 0){
-            			console.log(result.body);	
-
                         if(result.count == 1){                          // if there's only one term, display the definition
                             getDefinition(result.body[0].name);
                             currentTerm = result.body[0].name;
@@ -177,6 +182,7 @@ function search(){
 }
 
 function getDefinition(thisTerm){
+
 	var searchQuery = {
 		term: thisTerm.toLowerCase()
 	}
@@ -191,11 +197,9 @@ function getDefinition(thisTerm){
         		$("#terms-section").empty();
             	if(result.count > 0){
             		$("#definitions-section").empty();
-            		console.log("Found " + result.count + " responses");
                     displayDefinitionsOnPage(result.body);
 	            } else {
 	            	$("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold'>" + thisTerm + "</span>. <span class = 'link bold' id = 'add-def-link'>Want to add one?<span></div></div>");
-	            //	displayAddDefinition(thisTerm);
 	            }
         	} else {
         		console.log(result.error)
@@ -242,10 +246,10 @@ function addDefinition(){
 	}
 }
 
-function voteOnDefinition(voteType, voteId, voteTerm){
+function voteOnDefinition(voteType, elementId, voteTerm){
 
     var votingData = {
-        id: voteId,
+        id: elementId,
         type: voteType,
     }
     
@@ -254,8 +258,11 @@ function voteOnDefinition(voteType, voteId, voteTerm){
         data: votingData,
         url: "/vote",
         success: function(result){
-            if(result.status == "success"){
-                getDefinition(voteTerm);
+
+            console.log(result);
+
+            if(result.status == "success"){  
+                getDefinition(voteTerm);  
                 console.log(result.message);
             } else {
                 console.log("something went wrong");
@@ -344,14 +351,65 @@ function logout(){
 
 function displayDefinitionsOnPage(definitions){
 
+   
 
-     $("#definitions-section").prepend("<h3>Popular definitions</h3>");
+    definitions = sortDefinitions(definitions);
 
-    definitions.forEach(function(definition){
-        var score = definition.upvotes - definition.downvotes;
-        $("#definitions-section").append("<div class = 'definition' id = '" + definition.id + "'><span class = 'definition-term'>" + definition.term + "</span>: " + definition.body + "<br><div class = 'voting-section'><i class='fa fa-chevron-down voting-button link' data-vote = 'down' aria-hidden='true'></i><span class = 'definition-score'>" + score + "</span><i class='fa fa-chevron-up voting-button link' data-vote = 'up' aria-hidden='true'></i></div>");
-    });
-    $("#definitions-section").append("<div class = 'definition'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>")
+    // a bit of handlebars magic
+
+    $.get('views/components/definition.html', function(data) {
+
+        $("#definitions-section").prepend("<h3>Popular definitions</h3>");
+
+        definitions.forEach(function(definition, addLast){
+            var score = definition.upvotes - definition.downvotes;
+
+            var myTemplate =  Handlebars.compile(data);
+
+            var context={
+                term: definition.term,
+                body: definition.body,
+                score: score,
+                id: definition.id
+              };
+
+              var compiled = myTemplate(context)
+
+              $("#definitions-section").append(compiled);
+        });
+
+        $("#definitions-section").append("<div class = 'definition'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+
+    }, 'html')
+}
+
+
+function sortDefinitions(definitions){
+
+    var sortedDefinitions = [];
+
+    while(sortedDefinitions.length < definitions.length){                    // DANGER ALERT!
+        var maxScore = -999;
+
+        for(var i = 0; i < definitions.length; i++){
+
+            var score = definitions[i].upvotes - definitions[i].downvotes;
+
+            if(score > maxScore && sortedDefinitions.indexOf(definitions[i]) == -1) { maxScore = score}
+
+        }
+
+        for(var j = 0; j < definitions.length; j++){
+
+            var score = definitions[j].upvotes - definitions[j].downvotes;
+
+            if(score == maxScore){
+                sortedDefinitions.push(definitions[j]);
+            }
+        }
+    }
+
+    return sortedDefinitions;
 }
 
 

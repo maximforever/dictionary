@@ -60,7 +60,7 @@ function addDefinition(db, req, callback){
 		newDefinitionQuery = {
 			id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
 			term: req.body.term,
-			author: req.session.username,
+			author: req.session.user.username,
 			upvotes: 0,
 			downvotes: 0, 
 			reportCount: 0,
@@ -215,9 +215,7 @@ function createNewVote(db, req, newVote, callback){
 			$inc: {}
 		};
 
-			definitionUpdatQuery.$inc[voteChange] = 1;
-
-
+		definitionUpdatQuery.$inc[voteChange] = 1;
 
 		console.log("definitionUpdatQuery");
 		console.log(definitionUpdatQuery);

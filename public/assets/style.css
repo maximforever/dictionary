@@ -1,5 +1,11 @@
 /* GLOBAL STYLING */
 
+body{
+	margin: 0;
+	padding: 0;
+	background: #f3eae0;
+}
+
 a, .link {
 	text-decoration: none;
 	color: #2E58D1;
@@ -20,26 +26,39 @@ a:hover, .link:hover {
 
 .term-link:hover {
 	background: rgb(125, 161, 196);
+	cursor: pointer;
 }
 
 .bold {
 	font-weight: 700;
 }
 
+.container {
+	width: 80%;
+	margin: 0px auto;
+	min-width: 200px;
+	max-width: 1600px;
+}
+
+#main-section {
+	padding: 0px 10vw;
+}
+
 /* SEARCH BAR */
 
 #search-bar {
 	font-size: 2.5em;
-	margin: 0px auto;
-	width: 60vw;
+	margin: 5vh 0 0 -10%;
+	width: 120%;
 	display: block;
 	border: 1px solid #c5c5c5;
-	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50)
+	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
+	min-width: 200px;
 }
 
 #terms-section {
-	width: calc(60vw + 5px);
-	margin: 0px auto;
+	width: calc(120% + 4px);
+	margin: 0px 0px 0px -10%;
 	display: block;
 }
 
@@ -52,27 +71,32 @@ a:hover, .link:hover {
 /* POP OUT */
 
 .pop-out {
-	width: calc(60% + 10px);
-    border: 1px solid black;
+	width: calc(64vw - 44px);
+    border: 2px solid black;
     z-index: 2;
-    box-shadow: 0px 0px 30px rgba( 20, 20, 20, 0.5);
+    box-shadow: -5px 10px 30px rgba( 20, 20, 20, 0.5);
     position: absolute;
-    top: 0;
-    left: 20vw;
-    background: white;
+    top: 15vh;
+    left: 18vw;
+    background: #EAEAEA;
     padding: 20px;
+    min-height: 10vh;
+    min-width: 200px;
 }
 
 .pop-out .header i {
 	float: right;
 }
 
+.log-in-please{
+	margin: 30px 0 0 0;
+}
+
 
 /* DEFINITION */
 
 #definitions-section {
-	width: calc(60vw);
-	margin: 0px auto;
+	margin: 6vh auto;
 }
 
 #definitions-section-title{
@@ -85,6 +109,8 @@ a:hover, .link:hover {
 	border: 1px solid black;
 	display: block;
 	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
+	min-width: 200px;
+	background: #f5fdcd;
 }
 
 .term .title {
@@ -114,11 +140,26 @@ a:hover, .link:hover {
 
 .definition-term {
 	font-weight: 700;
-	color: #2E58D1;
+	color: #5e6465;
+}
+
+.definition-column {
+	width: 90%;
+	display: inline-block;
+	vertical-align: top;
+
+}
+
+.voting-column {
+	display: inline-block;
+	width: 10%
 }
 
 .voting-section{
-	margin-top: 5px;
+	margin: 0;
+	text-align: center;
+	vertical-align: top;
+	float: right;
 }
 
 .definition-score {
@@ -126,6 +167,7 @@ a:hover, .link:hover {
 	font-weight: 700;
 	color: green;
 }
+
 
 /* HEADER */
 
