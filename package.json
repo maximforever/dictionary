@@ -26,5 +26,8 @@
     "fs": "0.0.1-security",
     "mongodb": "^2.2.31",
     "nodemon": "^1.12.1"
+  },
+  "engines": {
+    "node": "6.3.0"
   }
 }
