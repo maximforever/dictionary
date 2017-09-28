@@ -7,6 +7,7 @@ const express = require("express");                     // express
 const MongoClient = require('mongodb').MongoClient;     // talk to mongo
 const bodyParser = require('body-parser');              // parse request body
 var session = require('express-session')                // create sessions
+const bcrypt = require('bcrypt');                         // encrypt passwords
 
 const app = express();
 app.set("port", process.env.PORT || 3000)                        // we're gonna start a server on whatever the environment port is or on 3000
@@ -40,13 +41,14 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(bodyParser.json());                         // for parsing application/json
 
+    var secretHash = dbops.generateHash(16);
 
     app.use(session({                                   // I THINK we only need to do this once, because it's causing us to send 2 GET requests to '/'
-        secret: 'awfulPassword',
-        saveUninitialized: false,
-        resave: false,
-        secure: false,
-        cookie: {}
+            secret: secretHash,
+            saveUninitialized: false,
+            resave: false,
+            secure: false,
+            cookie: {}
     }));
 
     app.use(function(req, res, next){                                           // logs request URL
@@ -61,6 +63,7 @@ MongoClient.connect(dbAddress, function(err, db){
         app.locals.message = req.session.message;
         req.session.error = null;
         req.session.message = null;
+
         next();
     })
 
@@ -168,6 +171,60 @@ MongoClient.connect(dbAddress, function(err, db){
             }   
         });
     });
+
+    /* ACCOUNT */
+
+
+    app.post("/signup", function(req, res){
+        dbops.signup(db, req, function vote(response){
+            if(response.status == "success"){
+                res.send({
+                    status: "success",
+                    message: response.message
+                });
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    message: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
+    app.post("/login", function(req, res){
+        dbops.login(db, req, function vote(response){
+            if(response.status == "success"){
+                res.send({
+                    status: "success",
+                    message: response.message
+                });
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    message: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
+    app.get("/logout", function(req, res){
+        req.session.user = null;
+        req.session.expires = new Date(Date.now);       /* not sure if this is needed */
+        res.send({
+            status: "success",
+            message: "Logged out"
+        });
+    })
 
 
 

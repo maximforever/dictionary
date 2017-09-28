@@ -4,7 +4,8 @@
     <title>Coding Dictionary</title>
     <!-- Might not need bootstrap later -->
 <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-    <link rel = "stylesheet" type = "text/css" href = "/assets/style.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel = "stylesheet" type = "text/css" href ="/assets/style.css"/>
     <link rel="shortcut icon" type="image/png" href="/assets/icon.png">
 </head>
 <body>
@@ -12,36 +13,40 @@
 <div class = "container">
     <div class = "alert">
 
-        <span id = "error">
-            <% if(typeof(error) != "undefined"){ %>
-                <%= error %>
-            <% }%>
-        </span>
-
-        <span id = "message">
-            <% if(typeof(message) != "undefined"){ %>
-                <%= message %>
-            <% }%>
-        </span>
+        <span id = "error"><% if(typeof(error) != "undefined"){ error } %></span>
+        <span id = "message"><% if(typeof(message) != "undefined"){ message } %></span>
 
     </div>
     <div class = "links">
-
-        <div class = "navigation">
-            <a href= "/">Home</a>
-            <a href= "/signup">Sign Up</a>
-        </div>
-
         <div class = "account">
             <% if (typeof(session.user) == "undefined" || session.user == null){ %>
-                    <a href= "/login">Log In</a>
+                <span class = "link bold" id = "signup">Sign Up</span>
+                <span class = "link" id = "login">Log In</span>
             <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
-                <p class = "welcome">Hello, <%= session.user.name %></p>
-                <div class = "notifications-button">XXX</div>
-                <a href = "/profile">Profile</a>
-                <a href = "/logout">Log Out</a>
+                <span class = "welcome">Hello, <%= session.user.username %></span>
+                
+                <% if(session.user.newNotifications){ %>
+                    <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" id = "new-alert"></i></span>
+                <% } else {%>
+                    <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" ></i></span>
+                <% } %>
+
+                <span class = "link" id = "profile">Profile</span>
+                <span class = "link" id = "logout">Log out</span>
             <% } %>
         </div>
+
+        <div id = "signup-section">
+            <input type = "text" id = "signup-username" placeholder = "username"> <input type = "password" id = "signup-password" placeholder = "password"><button id = "signup-action">Sign up</button><i class="fa fa-times fa-1x link" aria-hidden="true" id = "account-close"></i>
+        </div>    
+
+        <div id = "login-section">
+            <input type = "text" id = "login-username" placeholder = "username"> <input type = "password" id = "login-password" placeholder = "password"><button id = "login-action">Log in</button><i class="fa fa-times fa-1x link" aria-hidden="true" id = "account-close"></i>
+        </div>
+
+
+
+
     </div>
 
     <hr>

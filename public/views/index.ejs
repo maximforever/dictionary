@@ -11,27 +11,37 @@
 <div id = "terms-section">
 </div>
 
-<h3>Popular explanations</h3>
 <div id = "definitions-section">
 </div>
 
-<div id = "new-definition">
-	<h3>Add your own explanation</h3>
-    <ul>
-        <li>Aim your explanation at a total beginner</li>
-        <li>Avoid jargon</li>
-        <li>Answer these questions:</li>
-        <ol>
-            <li>What does this thing do?</li>
-            <li>What other things is this commonly used with?</li>
-            <li>What are the alternative tools used in place of this?</li>
-            <li>What are the high level pros and cons of using this thing?</li>
-        </ol>
-    </ul>
-	<textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
-	<textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
-	<span id = "new-definition-char-count">0</span>/500
-	<button id = "add-definition">Add</button>
+
+
+
+<div class = "pop-out" id = "new-definition">
+    <div class = "header">
+        <i class="fa fa-times fa-2x link" aria-hidden="true" id = "new-definition-close"></i>
+    </div>
+    <% if(!session.user){ %>
+        <p>You must log in to add a new definition.</p>
+    <% } else { %>
+        
+    	<h3>Add your own explanation</h3>
+        <ul>
+            <li>Aim your explanation at a total beginner</li>
+            <li>Avoid jargon</li>
+            <li>Answer these questions:</li>
+            <ol>
+                <li>What does this thing do?</li>
+                <li>What other things is this commonly used with?</li>
+                <li>What are the alternative tools used in place of this?</li>
+                <li>What are the high level pros and cons of using this thing?</li>
+            </ol>
+        </ul>
+    	<textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
+    	<textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+    	<span id = "new-definition-char-count">0</span>/500
+    	<button id = "add-definition">Add</button>
+        <% } %>
 </div>
 
 

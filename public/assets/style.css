@@ -1,19 +1,25 @@
 /* GLOBAL STYLING */
 
-a {
+a, .link {
 	text-decoration: none;
+	color: #2E58D1;
+}
+
+a:hover, .link:hover {
+	color: #d57915;
+	cursor: pointer;
 }
 
 .term-link {
 	text-decoration: none;
 	display: block;
-	background: rgb(220, 239, 236);
 	padding: 5px 10px;
+	background: rgb(220, 239, 236);
 	color: #2E58D1;
 }
 
 .term-link:hover {
-	background: rgb(149, 202, 217);
+	background: rgb(125, 161, 196);
 }
 
 .bold {
@@ -43,11 +49,41 @@ a {
 }
 
 
+/* POP OUT */
+
+.pop-out {
+	width: calc(60% + 10px);
+    border: 1px solid black;
+    z-index: 2;
+    box-shadow: 0px 0px 30px rgba( 20, 20, 20, 0.5);
+    position: absolute;
+    top: 0;
+    left: 20vw;
+    background: white;
+    padding: 20px;
+}
+
+.pop-out .header i {
+	float: right;
+}
+
+
 /* DEFINITION */
 
 #definitions-section {
 	width: calc(60vw);
 	margin: 0px auto;
+}
+
+#definitions-section-title{
+	margin-left: 20vw;
+}
+
+.definition {
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid black;
+	display: block;
 	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
 }
 
@@ -57,18 +93,19 @@ a {
 }
 
 #new-definition {
-	width: calc(60% + 10px);
-	display: block;
-    margin: 20px auto;
     display: none;
+}
+
+#new-definition h3 {
+	margin: 5px 0px 10px 0px;
 }
 
 #new-definition textarea {
     resize: none;
-    padding: 10px;
-    font-size: 1.2em;
+    padding: 6px;
+    font-size: 1em;
     line-height: 1.4;
-    width: calc(100% - 22px);
+    width: calc(100% - 14px);
 }
 
 #add-definition {
@@ -90,12 +127,45 @@ a {
 	color: green;
 }
 
+/* HEADER */
 
-.definition {
-	margin: 20px auto;
-	padding: 20px;
-	border: 1px solid black;
-	display: block;
+.alert {
+	text-align: center;
 }
 
+#error {
+	color: red;
+}
 
+#message {
+	color: blue;
+}
+
+.links {
+	text-align: right;
+}
+
+.links .link {
+	margin: 3px 5px;
+}
+
+.account {
+	display: inline;
+}
+
+.links button {
+	margin-left: 10px;
+	border-radius: 0;
+	border: 1px solid gray;
+	background: #2E58D1;
+	color: white;
+}
+
+.links button:hover {
+	background: #d57915;
+	border: 1px solid black;
+}
+
+#new-alert {
+	color: red;
+}
