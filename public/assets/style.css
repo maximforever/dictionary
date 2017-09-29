@@ -24,7 +24,16 @@ a:hover, .link:hover {
 	color: #2E58D1;
 }
 
-.term-link:hover {
+.term-suggestion-link {
+	text-decoration: none;
+	font-size: 0.7em;
+	display: block;
+	padding: 3px 6px;
+	background: rgb(220, 239, 236);
+	color: #2E58D1;
+}
+
+.term-link:hover, .term-suggestion-link:hover {
 	background: rgb(125, 161, 196);
 	cursor: pointer;
 }
@@ -49,7 +58,8 @@ a:hover, .link:hover {
 #search-bar {
 	font-size: 2.5em;
 	margin: 5vh 0 0 -10%;
-	width: 120%;
+	width: calc(120% - 20px);
+	padding: 10px;
 	display: block;
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
@@ -60,6 +70,20 @@ a:hover, .link:hover {
 	width: calc(120% + 4px);
 	margin: 0px 0px 0px -10%;
 	display: block;
+}
+
+#terms-section {
+	width: calc(120% + 4px);
+	margin: 0px 0px 0px -10%;
+	display: block;
+}
+
+#term-suggestions-section {
+	position: absolute;
+	background: white;
+	border: 1px solid black;
+	margin-top: -4px;
+	width: calc(100% - 40px);
 }
 
 .term{
@@ -86,6 +110,10 @@ a:hover, .link:hover {
 
 .pop-out .header i {
 	float: right;
+}
+
+.pop-out ul {
+	margin-top: 3px;
 }
 
 .log-in-please{
@@ -138,6 +166,10 @@ a:hover, .link:hover {
 	float: right;
 }
 
+.term-suggestions-section {
+	display: none;
+}
+
 .definition-term {
 	font-weight: 700;
 	color: #5e6465;
@@ -166,6 +198,12 @@ a:hover, .link:hover {
 	padding: 0px 10px;
 	font-weight: 700;
 	color: green;
+}
+
+.textarea-label {
+	font-size: 0.8em;
+	font-weight: 700;
+	margin: 5px 0 0 0;
 }
 
 

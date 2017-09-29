@@ -22,7 +22,10 @@
         <i class="fa fa-times fa-2x link" aria-hidden="true" id = "new-definition-close"></i>
     </div>
     <% if(!session.user){ %>
-        <p class = "log-in-please">You must <span class = "link bold log-in-link">log in</span> to add a new definition.</p>
+        <p class = "log-in-please">
+            You must <span class = "link bold log-in-link">log in</span> to add a new definition.
+            <ul><li>5-sec <span class = "link bold sign-up-link">sign up</span> - no email confirmation</li></ul>
+        </p>
     <% } else { %>
         
     	<h3>Add your own explanation</h3>
@@ -37,7 +40,13 @@
                 <li>What are the high level pros and cons of using this thing?</li>
             </ol>
         </ul>
+
+        <p class = "textarea-label">Term</p>
+        <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
+        <div id = "term-suggestions-section"></div>
+        <p class = "textarea-label">Definition</p>
     	<textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
+        <p class = "textarea-label">Related terms</p>
     	<textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
     	<span id = "new-definition-char-count">0</span>/500
     	<button id = "add-definition">Add</button>

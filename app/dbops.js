@@ -57,30 +57,62 @@ function getDefinitions(db, req, callback){
 
 function addDefinition(db, req, callback){
 	if(req.session.user){
-		newDefinitionQuery = {
-			id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
-			term: req.body.term,
-			author: req.session.user.username,
-			upvotes: 0,
-			downvotes: 0, 
-			reportCount: 0,
-			removed: false,
-			lastEdit: Date(),
-			created: Date(),
-			body: req.body.definition,
-			related: []
-		}
+		if(req.body.definition && req.body.term){
 
-		database.create(db, "definitions", newDefinitionQuery, function(createdDefinition){
+			newDefinitionQuery = {
+				id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+				term: req.body.term.trim().toLowerCase(),
+				author: req.session.user.username,
+				upvotes: 0,
+				downvotes: 0, 
+				reportCount: 0,
+				removed: false,
+				lastEdit: Date(),
+				created: Date(),
+				body: req.body.definition,
+				related: []
+			}
 
-			console.log(createdDefinition.ops[0]);
+			termQuery = { 
+				name: req.body.term
+			}
 
+			database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
+
+				if(existingTerms.length == 0){
+					console.log("creating new definition for the term '" + termQuery.name + "'");
+					database.create(db, "terms", termQuery, function createdTerm(newTerm){
+						database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
+							console.log(newDefinition.ops[0]);
+							callback({
+								status: "success",
+								term: newDefinition.ops[0].term
+							});
+						});
+					});
+				} else if (existingTerms.length == 1) {
+					console.log("a definition for the term '" + termQuery.name + "' already exists");
+					database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
+						console.log(newDefinition.ops[0]);
+						callback({
+							status: "success",
+							term: newDefinition.ops[0].term
+						});
+					});
+				} else {
+					console.log("Multiple definitions for one term");
+					callback({
+						status: "fail",
+						message: "Multiple definitions for one term"
+					});
+				}
+			})
+		} else {
 			callback({
-				status: "success",
-				term: createdDefinition.ops[0].term
+				status: "fail",
+				message: "A new post must have a term and a definition."
 			});
-
-		});
+		}
 	} else {
 		callback({
 			status: "fail",
@@ -88,6 +120,7 @@ function addDefinition(db, req, callback){
 		});
 	}
 }
+
 
 function vote(db, req, callback){
 

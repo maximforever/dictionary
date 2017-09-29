@@ -20,9 +20,17 @@ function main(){
 
 	$("body").on("click", ".term-link", function(){
 		var term = this.getAttribute("id");
+        $("#search-bar").val(term);
 		currentTerm = term;
 		getDefinition(term);
 	});
+
+    $("body").on("click", ".term-suggestion-link", function(){
+        $("#term-suggestions-section").empty();
+        $("#term-suggestions-section").hide();
+        var term = this.getAttribute("id");
+        $("#definition-term-textarea").val(term)
+    });
 
 
 /* LISTENERS */
@@ -39,7 +47,6 @@ function main(){
 
 	$("#search-bar").on("keyup", function(e){
 		if($("#search-bar").val().length > 2){
-			$("#definitions-section").empty();
 	    	search();
 		} else {
 			$("#terms-section").empty();
@@ -47,9 +54,29 @@ function main(){
 
 		if(e.which == 8){
 			$("#new-definition").hide();
+            $("#definitions-section").empty();
 			console.log("8! Say 8! I'm an 8 again!");
 		}
 	});
+
+
+    $("#definition-term-textarea").on("keyup", function(e){
+        if($("#definition-term-textarea").val().length > 2){
+            $("#term-suggestions-section").empty();
+            $("#term-suggestions-section").show();
+            searchForDefinitions();
+        } else {
+            $("#term-suggestions-section").hide();
+        }
+
+        if(e.which == 8){
+            $("#term-suggestions-section").empty();
+            console.log("8! Say 8! I'm an 8 again!");
+        }
+    });
+
+
+
 
 	$("#new-definition-textarea").on("keyup", function(){
 		$("#new-definition-char-count").text($("#new-definition-textarea").val().length);
@@ -72,6 +99,18 @@ function main(){
 
     $("body").on("click", "#add-def-link", function(){
         $("#new-definition").show();
+        $("#new-definition-textarea").focus();
+        $("#definition-term-textarea").val(currentTerm);
+        $("#definition-term-textarea").prop('disabled', true);
+        $("#definition-term-textarea").css("background", "gray").css("color", "#3c3c3c");
+        $("#terms-section").empty();
+    });
+
+    $("body").on("click", "#new-def-link", function(){
+        $("#new-definition").show();
+        $("#definition-term-textarea").val($("#search-bar").val());
+        $("#definition-term-textarea").focus();
+        $("#terms-section").empty();
     });
     
     $("body").on("click", "#new-definition-close", function(){
@@ -86,7 +125,14 @@ function main(){
 
     $("body").on("click", ".log-in-link", function(){
         $(".pop-out").hide();
+        $("#terms-section").empty();
         showLogin();
+    });
+
+    $("body").on("click", ".sign-up-link", function(){
+        $(".pop-out").hide();
+        $("#terms-section").empty();
+        showSignup();
     });
 
     $("body").on("click", "#signup", function(){
@@ -126,12 +172,14 @@ function resetNavBar(){
 
 function showLogin(){
     $("#login, #signup").hide();
+    $("#signup-section").hide();
     $("#login-section").show();
     $("#login-username").focus();
 }
 
 function showSignup(){
     $("#login, #signup").hide();
+    $("#login-section").hide();
     $("#signup-section").show();
     $("#signup-username").focus();
 }
@@ -159,6 +207,8 @@ function search(){
             		console.log("Found " + result.count + " responses");
 
             		if(result.count > 0){
+                        $("#definitions-section").empty();
+
                         if(result.count == 1){                          // if there's only one term, display the definition
                             getDefinition(result.body[0].name);
                             currentTerm = result.body[0].name;
@@ -169,8 +219,14 @@ function search(){
                         }
 
             		} else {
-            			$("#terms-section").append("<div class = 'term'>There's no definition for '" + searchQuery.term + "' yet. You should add one!");
-            		}      		
+                        if($("#definitions-section").height() > 0){
+                            console.log("updating non-existent term");
+                            $(".no-def-term").text(serchTerm);
+                        } else {
+                            console.log("adding div");
+                            $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + serchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                        }
+                    }      		
             	} else {
             		console.log(result.error)
             	}
@@ -178,6 +234,36 @@ function search(){
         })
     } else {
     	console.log("you're not searching for anything!");
+    }
+}
+
+function searchForDefinitions(){
+    var serchTerm = $("#definition-term-textarea").val().trim();
+
+    if(serchTerm){
+        var searchQuery = {
+            term: serchTerm.toLowerCase()
+        }
+
+        $.ajax({
+            type: "post",
+            data: searchQuery,
+            url: "/search",
+            success: function(result){
+                if(result.status == "success"){
+                    $("#term-suggestions-section").empty();
+
+                    result.body.forEach(function(term){
+                        displayDefinitionSuggestion(term);
+                    });
+                                                       
+                } else {
+                    console.log(result.error)
+                }
+            }
+        })
+    } else {
+        console.log("you're not searching for anything!");
     }
 }
 
@@ -199,7 +285,7 @@ function getDefinition(thisTerm){
             		$("#definitions-section").empty();
                     displayDefinitionsOnPage(result.body);
 	            } else {
-	            	$("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold'>" + thisTerm + "</span>. <span class = 'link bold' id = 'add-def-link'>Want to add one?<span></div></div>");
+	            	$("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold'>" + thisTerm + "</span>. <span class = 'link bold' id = 'add-def-link'>Want to add one<span>?</div></div>");
 	            }
         	} else {
         		console.log(result.error)
@@ -210,6 +296,7 @@ function getDefinition(thisTerm){
 
 function addDefinition(){
 
+    var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
 	var relatedTerms = $("#new-definition-related-terms").val();
 
@@ -218,7 +305,7 @@ function addDefinition(){
     	var related = trimRelatedTerms();
 
     	var definitionData = {
-			term: currentTerm.toLowerCase(),
+			term: definitionTerm.toLowerCase().trim(),
 			definition: definitionBody,
 			related: relatedTerms
 		}
@@ -416,7 +503,11 @@ function sortDefinitions(definitions){
 
 
 function displaySearchTerm(term){
-	$("#terms-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-link'>" + term.name + "</span></span></div>")
+	$("#terms-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-link'>" + term.name + "</span></span></div>");
+} 
+
+function displayDefinitionSuggestion(term){
+    $("#term-suggestions-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-suggestion-link'>" + term.name + "</span></span></div>");
 } 
 
 
