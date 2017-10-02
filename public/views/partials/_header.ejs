@@ -24,6 +24,11 @@
                     <span class = "link bold" id = "signup">Sign Up</span>
                     <span class = "link" id = "login">Log In</span>
                 <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
+
+                    <% if(session.user.admin){ %>
+                        <a href = "/admin" id = "admin-panel-link">Admin Panel</a>
+                    <% } %>
+
                     <span class = "welcome">Hello, <%= session.user.username %></span>
                     
                     <% if(session.user.newNotifications){ %>
@@ -47,7 +52,6 @@
         </div>
         <hr>
     </div>
-    <div id = "main-section">
 
 
    

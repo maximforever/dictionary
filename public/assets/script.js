@@ -190,17 +190,13 @@ function showSignup(){
     $("#signup-username").focus();
 }
 
-
-
-
-
 function search(){
-	var serchTerm = $("#search-bar").val().trim();
+	var searchTerm = $("#search-bar").val().trim();
 
-    if(serchTerm){
+    if(searchTerm){
 
     	var searchQuery = {
-    		term: serchTerm.toLowerCase()
+    		term: searchTerm.toLowerCase()
     	}
 
     	$.ajax({
@@ -210,7 +206,7 @@ function search(){
             success: function(result){
             	if(result.status == "success"){
             		$("#terms-section").empty();
-            		console.log("Found " + result.count + " responses");
+            		console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
 
             		if(result.count > 0){
                         $("#definitions-section").empty();
@@ -222,15 +218,16 @@ function search(){
                             result.body.forEach(function(term){
                                 displaySearchTerm(term);
                             });
+                            $("#definitions-section").append("<div class = 'definition add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
             		} else {
                         console.log('"#definitions-section").height() ' + $("#definitions-section").height());
                         if($("#definitions-section").height() > 25){
                             console.log("updating non-existent term");
-                            $(".no-def-term").text(serchTerm);
+                            $(".no-def-term").text(searchTerm);
                         } else {
                             console.log("adding div");
-                            $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + serchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
                     }      		
             	} else {
@@ -244,11 +241,11 @@ function search(){
 }
 
 function searchForDefinitions(){
-    var serchTerm = $("#definition-term-textarea").val().trim();
+    var searchTerm = $("#definition-term-textarea").val().trim();
 
-    if(serchTerm){
+    if(searchTerm){
         var searchQuery = {
-            term: serchTerm.toLowerCase()
+            term: searchTerm.toLowerCase()
         }
 
         $.ajax({
@@ -285,13 +282,19 @@ function getDefinition(thisTerm){
         url: "/get-definitions",
         success: function(result){
         	if(result.status == "success"){
+
+                var searchTerm = $("#search-bar").val().trim();
+
                 console.log(result.count);
-        		$("#terms-section").empty();
+
+
+
+
             	if(result.count > 0){
-            		$("#definitions-section").empty();
+            	//	$("#definitions-section").empty();
                     displayDefinitionsOnPage(result.body);
 	            } else {
-                    $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + thisTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                    $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                 }
         	} else {
         		console.log(result.error)
@@ -343,7 +346,7 @@ function voteOnDefinition(voteType, elementId, voteTerm){
 
     var votingData = {
         id: elementId,
-        type: voteType,
+        type: voteType
     }
     
     $.ajax({
@@ -353,6 +356,7 @@ function voteOnDefinition(voteType, elementId, voteTerm){
         success: function(result){
 
             console.log(result);
+            $("#definitions-section").empty();
 
             if(result.status == "success"){  
                 getDefinition(voteTerm);  
@@ -454,16 +458,16 @@ function displayDefinitionsOnPage(definitions){
 
         $("#definitions-section").prepend("<h3>Popular definitions</h3>");
 
-        definitions.forEach(function(definition, addLast){
-            var score = definition.upvotes - definition.downvotes;
+        definitions.forEach(function(thisDefinition){
+            var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
+
 
             var myTemplate =  Handlebars.compile(data);
 
-            var context={
-                term: definition.term,
-                body: definition.body,
-                score: score,
-                id: definition.id
+            var context = {
+                definition: thisDefinition,
+                editDate: thisDefinition.lastEdit.substr(4, 11),
+                score: thisScore
               };
 
               var compiled = myTemplate(context)
@@ -471,7 +475,7 @@ function displayDefinitionsOnPage(definitions){
               $("#definitions-section").append(compiled);
         });
 
-        $("#definitions-section").append("<div class = 'definition'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+        $("#definitions-section").append("<div class = 'definition add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
 
     }, 'html')
 }
@@ -510,6 +514,7 @@ function sortDefinitions(definitions){
 
 function displaySearchTerm(term){
 	$("#terms-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-link'>" + term.name + "</span></span></div>");
+
 } 
 
 function displayDefinitionSuggestion(term){

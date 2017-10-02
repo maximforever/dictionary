@@ -41,7 +41,7 @@ function getDefinitions(db, req, callback){
 		var responsesToReturn = [];
 
 		searchResult.forEach(function(oneResult){
-			if(!oneResult.removed){
+			if(!oneResult.removed && oneResult.approved){
 				responsesToReturn.push(oneResult);
 			}
 		})
@@ -67,6 +67,8 @@ function addDefinition(db, req, callback){
 				downvotes: 0, 
 				reportCount: 0,
 				removed: false,
+				approved: false,
+				rejected: false,
 				lastEdit: Date(),
 				created: Date(),
 				body: req.body.definition,
@@ -185,13 +187,13 @@ function vote(db, req, callback){
 						id: voteQuery.post
 					}
 
-					var definitionUpdatQuery = {
+					var definitionUpdateQuery = {
 						$inc: {}
 					};
 
-					definitionUpdatQuery.$inc[voteChange] = -1;
+					definitionUpdateQuery.$inc[voteChange] = -1;
 
-					database.update(db, "definitions", definitionQuery, definitionUpdatQuery, function updateDefinition(newDefinition){
+					database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
 						createNewVote(db, req, newVote, callback);
 					})
 				})
@@ -207,14 +209,14 @@ function vote(db, req, callback){
 						id: voteQuery.post
 					}
 
-					var definitionUpdatQuery = {
+					var definitionUpdateQuery = {
 						$inc: {}
 					};
 
-					definitionUpdatQuery.$inc[voteChange] = -1;
+					definitionUpdateQuery.$inc[voteChange] = -1;
 
 				
-					database.update(db, "definitions", definitionQuery, definitionUpdatQuery, function updateDefinition(newDefinition){
+					database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
 						callback({status: "success", message: "vote created"});
 					})
 				})
@@ -244,19 +246,56 @@ function createNewVote(db, req, newVote, callback){
 			id: newVote.ops[0].post
 		}
 
-		var definitionUpdatQuery = {
+		var definitionUpdateQuery = {
 			$inc: {}
 		};
 
-		definitionUpdatQuery.$inc[voteChange] = 1;
+		definitionUpdateQuery.$inc[voteChange] = 1;
 
-		console.log("definitionUpdatQuery");
-		console.log(definitionUpdatQuery);
+		console.log("definitionUpdateQuery");
+		console.log(definitionUpdateQuery);
 
-		database.update(db, "definitions", definitionQuery, definitionUpdatQuery, function updateDefinition(newDefinition){
+		database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
 			callback({status: "success", message: "vote created"});
 		})	
 	})
+}
+
+
+function adminVote(db, req, callback){
+
+	if(req.body.post == "definition"){
+
+		var definitionQuery = {
+			id: parseInt(req.body.id)
+		}
+
+		var definitionUpdateQuery = {
+			$set: {}
+		}
+
+		if(req.body.type == "approved" || req.body.type == "rejected"){
+			definitionUpdateQuery.$set[req.body.type ] = true;
+		}
+
+		database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(response){
+			callback({status: "success", message: "definition updated"});
+		})
+
+	} else if (req.body.post == "report"){
+		callback({status: "success", message: "Something went wrong"});
+	} else {
+		callback({status: "fail", message: "Something went wrong"});
+	}
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -337,6 +376,7 @@ function login(db, req, callback){
 								console.log("Logged in successfully.")
 								console.log(existingUsers[0].data);
 				                req.session.user = existingUsers[0].data;
+				                req.session.user.admin = existingUsers[0].admin;
 				                var day = 60000*60*24;
 				                req.session.expires = new Date(Date.now() + (30*day));          // this helps the session keep track of the expire date
 				                req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
@@ -363,7 +403,28 @@ function login(db, req, callback){
 }
 
 
+function getAdminData(db, req, callback){
+	if(req.session.user.admin){    	// let's make sure the username and password aren't empty 
 
+		unapprovedDefinitionsQuery = {
+			approved: false,
+			rejected: false
+		}
+
+		unresolvedReportsQuery = {
+			approved: false
+		}
+
+		database.read(db, "definitions", unapprovedDefinitionsQuery, function getUnapprovedDefinitions(unapprovedDefinitions){
+			database.read(db, "reports", {}, function getUnresolvedReports(unresolvedReports){
+				callback({definitions: unapprovedDefinitions, reports: unresolvedReports})
+			})
+		})
+		
+	} else {
+		callback({status: "fail", message: "Not an admin"})
+	}
+}
 
 
 
@@ -391,3 +452,6 @@ module.exports.generateHash = generateHash;
 
 module.exports.signup = signup;
 module.exports.login = login;
+
+module.exports.getAdminData = getAdminData;
+module.exports.adminVote = adminVote;

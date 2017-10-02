@@ -142,6 +142,10 @@ a:hover, .link:hover {
 	background: #f5fdcd;
 }
 
+.add-one {
+	background: #d3e486;
+}
+
 .term .title {
 	font-size: 1.5em;
 	font-weight: bold;
@@ -180,12 +184,18 @@ a:hover, .link:hover {
 	width: 90%;
 	display: inline-block;
 	vertical-align: top;
+}
 
+.edit-history-column{
+	width: 90%;
+	display: inline-block;
+	vertical-align: top;
 }
 
 .voting-column {
 	display: inline-block;
-	width: 10%
+	width: 10%;
+    margin-top: -22px;			/* this is not ideal */
 }
 
 .voting-section{
@@ -249,4 +259,54 @@ a:hover, .link:hover {
 
 #new-alert {
 	color: red;
+}
+
+/* ADMIN PANEL */
+
+#admin-panel-link {
+	margin-top: 2px;  
+	padding: 2px;
+	font-size: 0.85em;
+	color: white;
+	background: #578637;
+	border: 1px solid black;
+	float: left;
+}
+
+#admin-panel-link:hover {
+	background: #88D458;
+	color: black;
+	cursor: pointer;
+}
+
+.admin-approval-panel {
+	text-align: right;
+	margin-top: 10px;
+}
+
+.admin-decision {
+	border-radius: 5px;
+	border: 1px solid black;
+	padding: 0 5px;
+	width: 40px;
+	font-size: 1.1em;
+	background: #C9C9C9FF;
+	margin-left: 5px;
+	box-shadow: 0 0 10px rgba(10,10,10, 0.6);
+}
+
+.approve{
+	background: #1acdfb;
+}
+
+.approve:hover {
+	background: #1088A9;
+}
+
+.reject{
+	background: #ea5859;
+}
+
+.reject:hover{
+	background: #95383A;
 }

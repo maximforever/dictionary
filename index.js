@@ -227,6 +227,54 @@ MongoClient.connect(dbAddress, function(err, db){
     })
 
 
+/* ADMIN PAGES */
+
+    app.get("/admin", function(req, res){
+        if(req.session.user && req.session.user.admin){
+            console.log("admin request approved");
+            res.render("admin");
+        } else {
+            console.log("not admin");
+            console.log("Logged in: " + req.session.user);
+            res.redirect("/");
+        }
+    })
+
+    app.get("/admin-data", function(req, res){
+        dbops.getAdminData(db, req, function prepAdminData(rawAdminData){
+
+            adminData = {
+                reports: rawAdminData.reports,
+                definitions: rawAdminData.definitions
+            }   
+
+            res.send({status: "success", data: adminData});
+        })
+
+    });
+
+    app.post("/admin-vote", function(req, res){
+        dbops.adminVote(db, req, function vote(response){
+            if(response.status == "success"){
+                res.send({
+                    status: "success",
+                    message: response.message
+                });
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    error: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
+
 
 /* END ROUTES */
 

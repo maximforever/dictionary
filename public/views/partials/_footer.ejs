@@ -1,5 +1,5 @@
-    	</div>
-    	<div id = "footer-section">
+
+	<div id = "footer-section">
 
 
 	        <hr>
@@ -11,6 +11,15 @@
 
     <script src= "https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script type= "text/javascript" src = "/assets/script.js"></script>
+    
+
+
+    <% if (typeof(session.user) != "undefined" && session.user != null){ %>
+    	<% if(session.user && session.user.admin){ %>
+    		<script type= "text/javascript" src = "/assets/admin.js"></script>
+    	<% } %>
+    <% } %>
+
     
 </body>
 </HTML>
