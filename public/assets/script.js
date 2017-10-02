@@ -35,12 +35,18 @@ function main(){
 
 /* LISTENERS */
 
-	$("body").on("keydown", function(e){
-	    if(e.which == 13){
-	        search();
+	$("body").on("keydown", function(e){                        
+	    if(e.which == 13){                                         // 13 = ENTER
+	        if($("#search-bar").is(":focus")){ 
+                search();
+            } else if($("#signup-password").is(":focus") || $("#signup-login").is(":focus") ){
+                signup();
+            } else if ($("#login-password").is(":focus") || $("#login-login").is(":focus") ){
+                login();
+            }
 	    }
 
-        if(e.which == 27){
+        if(e.which == 27){                                         // 27 = ESC
             $("#new-definition").hide();
         }
 	});
@@ -217,10 +223,9 @@ function search(){
                                 displaySearchTerm(term);
                             });
                         }
-
             		} else {
                         console.log('"#definitions-section").height() ' + $("#definitions-section").height());
-                        if($("#definitions-section").height() > 100){
+                        if($("#definitions-section").height() > 25){
                             console.log("updating non-existent term");
                             $(".no-def-term").text(serchTerm);
                         } else {
@@ -280,14 +285,14 @@ function getDefinition(thisTerm){
         url: "/get-definitions",
         success: function(result){
         	if(result.status == "success"){
-                console.log(result);
+                console.log(result.count);
         		$("#terms-section").empty();
             	if(result.count > 0){
             		$("#definitions-section").empty();
                     displayDefinitionsOnPage(result.body);
 	            } else {
-	            	$("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold'>" + thisTerm + "</span>. <span class = 'link bold' id = 'add-def-link'>Want to add one<span>?</div></div>");
-	            }
+                    $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + thisTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                }
         	} else {
         		console.log(result.error)
         	}
