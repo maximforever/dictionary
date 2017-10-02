@@ -84,6 +84,7 @@ a:hover, .link:hover {
 	border: 1px solid black;
 	margin-top: -4px;
 	width: calc(100% - 40px);
+	display: none;
 }
 
 .term{

@@ -219,7 +219,8 @@ function search(){
                         }
 
             		} else {
-                        if($("#definitions-section").height() > 0){
+                        console.log('"#definitions-section").height() ' + $("#definitions-section").height());
+                        if($("#definitions-section").height() > 100){
                             console.log("updating non-existent term");
                             $(".no-def-term").text(serchTerm);
                         } else {
