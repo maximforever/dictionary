@@ -36,10 +36,6 @@ function main(){
 		        }
 		    })
     });
-
-
-
-
 }
 
 
@@ -80,7 +76,7 @@ function displayUnapprovedDefinitions(definitions){
 
             var context = {
                 definition: thisDefinition,
-                created: thisDefinition.created.substr(4, 11),
+                created: thisDefinition.created.substr(4, 20),
                 score: thisScore,
                 id: thisDefinition.id
               };

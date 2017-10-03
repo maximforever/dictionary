@@ -93,7 +93,7 @@ function main(){
 	});
 
     $("body").on("click", ".voting-button", function(){
-        var type = this.dataset.vote;               // quick way to get data attribute value
+        var type = this.dataset.vote;               // .dataset is a quick way to get data attribute value
         var id = this.dataset.id;
         var term = this.dataset.term;
 
@@ -324,8 +324,8 @@ function addDefinition(){
 	        	if(result.status == "success"){
             		$("#terms-section").empty();
             		$("#definitions-section").empty();
-            		$("#definitions-section").append("<div class = 'definition'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> New submissions are auto-approved after you submit 5 accepted definitions.</div>");
             		getDefinition(result.term);
+                    $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
                     $("#new-definition-textarea").val("");            
                     $("#new-definition").hide();
 	        	} else {

@@ -135,11 +135,17 @@ a:hover, .link:hover {
 .definition {
 	margin: 20px auto;
 	padding: 20px;
-	border: 1px solid black;
+	border: 1px solid rgba(50, 50, 50, 0.4);
 	display: block;
 	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
 	min-width: 200px;
 	background: #f5fdcd;
+	border-radius: 3px; 
+}
+
+.add-confirmation {
+	background: #eca921;
+    border: 2px solid black;
 }
 
 .add-one {
@@ -181,13 +187,13 @@ a:hover, .link:hover {
 }
 
 .definition-column {
-	width: 90%;
+	width: 80%;
 	display: inline-block;
 	vertical-align: top;
 }
 
 .edit-history-column{
-	width: 90%;
+	width: 80%;
 	display: inline-block;
 	vertical-align: top;
 	font-size: 0.85em;
@@ -195,8 +201,7 @@ a:hover, .link:hover {
 
 .voting-column {
 	display: inline-block;
-	width: 10%;
-    margin-top: -22px;			/* this is not ideal */
+	width: 20%;
 }
 
 .voting-section{
@@ -217,6 +222,38 @@ a:hover, .link:hover {
 	font-weight: 700;
 	margin: 5px 0 0 0;
 }
+
+.info-row {
+	margin-top: 15px;
+}
+
+.post-actions-column{
+	text-align: right;
+	width: 20%;
+	display: inline-block;
+}
+
+.report-post {
+	text-decoration: underline;
+}
+
+.comment-on-post {
+	z-index: 0;
+	color: #000000;
+	text-align: center;
+	float: right;
+}
+
+.comment-count{
+	z-index: 1;
+	color: #FFFFFF;
+	width: 32px;
+    text-align: center;
+    position: absolute;
+    float: right;
+    margin-top: 6px;
+}
+
 
 
 /* HEADER */
@@ -278,11 +315,6 @@ a:hover, .link:hover {
 	background: #88D458;
 	color: black;
 	cursor: pointer;
-}
-
-.admin-approval-panel {
-	text-align: right;
-	margin-top: 10px;
 }
 
 .admin-decision {
