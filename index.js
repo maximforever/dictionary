@@ -153,10 +153,13 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.post("/vote", function(req, res){
         dbops.vote(db, req, function vote(response){
+            console.log("RESPONSE");
+            console.log(response);
             if(response.status == "success"){
                 res.send({
                     status: "success",
-                    message: response.message
+                    message: response.message,
+                    definition: response.updatedDefinition
                 });
             } else if(response.status == "fail"){
                 res.send({

@@ -351,10 +351,12 @@ function voteOnDefinition(voteType, elementId, voteTerm){
         success: function(result){
 
             console.log(result);
-            $("#definitions-section").empty();
+            if(result.status == "success"){
 
-            if(result.status == "success"){  
-                getDefinition(voteTerm);  
+                console.log(result.definition);
+                var updatedScore = result.definition.upvotes - result.definition.downvotes;
+                $("#" + elementId).find(".definition-score").text(updatedScore)
+//                getDefinition(voteTerm);  
                 console.log(result.message);
             } else {
                 console.log("something went wrong");

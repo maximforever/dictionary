@@ -299,6 +299,12 @@ a:hover, .link:hover {
 	color: red;
 }
 
+/* REPORT */
+
+#report {
+	display: none;
+}
+
 /* ADMIN PANEL */
 
 #admin-panel-link {
@@ -343,3 +349,4 @@ a:hover, .link:hover {
 .reject:hover{
 	background: #95383A;
 }
+

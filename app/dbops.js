@@ -239,7 +239,8 @@ function vote(db, req, callback){
 
 				
 					database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-						callback({status: "success", message: "vote created"});
+						console.log("newDefinition")
+						callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
 					})
 				})
 			}
@@ -278,7 +279,9 @@ function createNewVote(db, req, newVote, callback){
 		console.log(definitionUpdateQuery);
 
 		database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-			callback({status: "success", message: "vote created"});
+			console.log("newDefinition")
+			console.log(newDefinition)
+			callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
 		})	
 	})
 }
