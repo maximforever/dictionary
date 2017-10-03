@@ -126,6 +126,31 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
+    app.post("/get-specific-definition", function(req, res){
+        dbops.getSpecificDefinition(db, req, function getDefinitions(response){
+            if(response.status == "success"){
+                req.session.message = "Got a result!"
+
+                res.send({
+                    status: "success",
+                    count: response.count,
+                    body: response.body
+                });
+
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    error: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
     app.post("/new-definition", function(req, res){
 
         dbops.addDefinition(db, req, function confirmDefinition(response){
@@ -242,6 +267,27 @@ MongoClient.connect(dbAddress, function(err, db){
             res.redirect("/");
         }
     })
+
+    app.post("/new-report", function(req, res){
+        dbops.addReport(db, req, function report(response){
+            if(response.status == "success"){
+                res.send({
+                    status: "success",
+                    message: response.message
+                });
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    error: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
 
     app.get("/admin-data", function(req, res){
         dbops.getAdminData(db, req, function prepAdminData(rawAdminData){

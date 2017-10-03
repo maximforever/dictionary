@@ -55,6 +55,25 @@ function getDefinitions(db, req, callback){
 	});
 }
 
+function getSpecificDefinition(db, req, callback){
+
+
+	searchQuery = {
+		id: parseInt(req.body.id)
+	}
+
+	database.read(db, "definitions", searchQuery, function(searchResult){
+
+		console.log(searchResult);
+
+		callback({
+			status: "success",
+			body: searchResult[0]
+		});
+
+	});
+}
+
 function addDefinition(db, req, callback){
 	if(req.session.user){
 		if(req.body.definition && req.body.term){
@@ -312,15 +331,74 @@ function adminVote(db, req, callback){
 	} else {
 		callback({status: "fail", message: "Something went wrong"});
 	}
+}
+
+function addReport(db, req, callback){
+
+	var postQuery = {
+		id: parseInt(req.body.id)
+	}
+
+	var thisAuthor;
+
+	if(req.session.user){
+		thisAuthor = req.session.user.username;
+	} else {
+		thisAuthor = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+	}
 
 
+	if(req.body.type == "comments" || req.body.type == "definitions"){
 
+		var reportQuery = {
+			post_id: parseInt(req.body.id),
+			author: thisAuthor
+		}
 
+		database.read(db, "reports", reportQuery, function checkForExistingReports(existingReports){
 
+			console.log("existing reports: " + existingReports.length);
 
+			if(existingReports.length == 0){
+				database.read(db, req.body.type, postQuery, function fetchProblematicPost(post){
+					if(post.length == 1){
 
+						var thisReport = {
+							created: Date(),
+							resolved: false,
+							reason: req.body.reason,
+							author: thisAuthor,
+							post_id: post[0].id,
+							type: req.body.type,
+							term: post[0].term,
+							body: post[0].body
+						}
 
+						database.create(db, "reports", thisReport, function createReport(newReport){
 
+							var postUpdateQuery = {
+								$inc: {
+									reportCount: 1
+								}
+							}
+
+							database.update(db, req.body.type, postQuery, postUpdateQuery, function updatePost(post){
+								callback({status: "success", message: "Report created"});
+							})	
+						})
+					} else {
+						callback({status: "fail", message: "Invalid post"});
+					}
+				})
+
+			} else {
+				callback({status: "fail", message: "You've already submitted a report for this post."});
+			}
+
+		})
+	} else {
+		callback({status: "fail", message: "Invalid report type"});
+	}
 }
 
 
@@ -471,6 +549,7 @@ function generateHash(hashLength){
 /* MODULE EXPORES */
 module.exports.search = search;
 module.exports.getDefinitions = getDefinitions;
+module.exports.getSpecificDefinition = getSpecificDefinition;
 module.exports.addDefinition = addDefinition;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
@@ -480,3 +559,4 @@ module.exports.login = login;
 
 module.exports.getAdminData = getAdminData;
 module.exports.adminVote = adminVote;
+module.exports.addReport = addReport;

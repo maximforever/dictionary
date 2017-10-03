@@ -4,7 +4,7 @@ function main(){
 	
 	if(window.location.pathname == "/admin"){
 		console.log("admin.js ready");
-		getAdminData();
+		getAdminData("definitions");
 	}
 
 
@@ -25,7 +25,7 @@ function main(){
 		        success: function(result){
 
 		            console.log(result);
-		            $("#unapproved-definitions-section").empty();
+		            $("#admin-posts-section").empty();
 
 		            if(result.status == "success"){  
 		                getAdminData();
@@ -36,10 +36,20 @@ function main(){
 		        }
 		    })
     });
+
+    $("body").on("click", "#unapproved-definitions-link", function(){
+
+		getAdminData("definitions");
+    });
+
+    $("body").on("click", "#unresolved-reports-link", function(){
+    	getAdminData("reports");
+	
+    });
 }
 
 
-function getAdminData(){
+function getAdminData(type){
 
 	$.ajax({
         type: "get",
@@ -51,7 +61,13 @@ function getAdminData(){
         		$("#definition-count").text(result.data.definitions.length || 0 );
         		$("#report-count").text(result.data.reports.length || 0);
 
-        		displayUnapprovedDefinitions(result.data.definitions);
+        		if(type == "definitions"){
+        			displayUnapprovedDefinitions(result.data.definitions);
+        		} else if (type == "reports"){
+        			displayUnresolvedReports(result.data.reports);
+        		} else {
+        			console.log("Display error - incorrect type");
+        		}        		
 
         	} else {
         		console.log(result.error)
@@ -63,11 +79,11 @@ function getAdminData(){
 
 function displayUnapprovedDefinitions(definitions){
 
+
+	$("#admin-posts-section").empty();
     // a bit of handlebars magic
 
     $.get('views/components/unapprovedDefinition.html', function(data) {
-
-        $("#definitions-section").prepend("<h3>Popular definitions</h3>");
 
         definitions.forEach(function(thisDefinition){
             var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
@@ -81,7 +97,38 @@ function displayUnapprovedDefinitions(definitions){
                 id: thisDefinition.id
               };
               var compiled = myTemplate(context)
-              $("#unapproved-definitions-section").append(compiled);
+              $("#admin-posts-section").append(compiled);
+        });
+
+    }, 'html')
+}
+
+function displayUnresolvedReports(reports){
+
+	$("#admin-posts-section").empty();
+    // a bit of handlebars magic
+
+    $.get('views/components/unresolvedReports.html', function(data) {
+
+        $("#definitions-section").prepend("<h3>Unresolved reports</h3>");
+
+        reports.forEach(function(thisReport){
+
+        	var myTemplate =  Handlebars.compile(data);
+
+        	var searchQuery = {
+				id: thisReport.post_id
+			}
+
+    		var context = {
+                report: thisReport,
+                created: thisReport.created.substr(4, 20),
+            };
+            var compiled = myTemplate(context)
+            $("#admin-posts-section").append(compiled);
+
+
+
         });
 
     }, 'html')

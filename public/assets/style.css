@@ -190,6 +190,7 @@ a:hover, .link:hover {
 	width: 80%;
 	display: inline-block;
 	vertical-align: top;
+	line-height: 1.3;
 }
 
 .edit-history-column{
@@ -254,6 +255,12 @@ a:hover, .link:hover {
     margin-top: 6px;
 }
 
+.report-error{
+	color: #b50000;
+	font-weight: 700;
+	margin:5px 0px;
+}
+
 
 
 /* HEADER */
@@ -305,6 +312,18 @@ a:hover, .link:hover {
 	display: none;
 }
 
+.report-option{
+	margin-right: 10px;
+}
+
+#report-content {
+	padding: 10px;
+	border: 1px solid gray;
+	color: #b50000;
+	background: #cccccc;
+	line-height: 1.3;
+}
+
 /* ADMIN PANEL */
 
 #admin-panel-link {
@@ -350,3 +369,9 @@ a:hover, .link:hover {
 	background: #95383A;
 }
 
+.report-reason {
+	font-size: 2em;
+	font-weight: 700;
+	margin-bottom: 10px;
+	color: #b50000;
+}

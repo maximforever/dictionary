@@ -1,0 +1,23 @@
+<div class = "definition" id = "{{report.id}}">
+
+	<div class = "main-row">
+		<div class = "definition-column">
+			<div class = "report-reason">{{report.reason}}</div>
+			<span class = "definition-term">{{report.term}}</span>: {{report.body}}
+		</div>
+	</div>
+
+	<div class = "info-row">
+		<div class = "edit-history-column">
+	 		Submitted by @{{report.author}} on {{created}}
+		</div><!-- 
+	 --><div class = "post-actions-column">
+			<button class = "admin-decision reject" data-vote = "rejected" data-id = "{{report.id}}"><i class="fa fa-times" aria-hidden="true"></i></button>
+			<button class = "admin-decision approve" data-vote = "approved" data-id = "{{report.id}}"><i class="fa fa-check" aria-hidden="true"></i></button>
+		</div>
+	</div>
+
+</div>
+
+
+

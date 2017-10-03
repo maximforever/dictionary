@@ -14,7 +14,7 @@
 
     <div class = "pop-out" id = "new-definition">
         <div class = "header">
-            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "new-definition-close"></i>
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
         </div>
         <% if(!session.user){ %>
             <p class = "log-in-please">
@@ -50,7 +50,20 @@
 
     <div class = "pop-out" id = "report">
         <div class = "header">
-            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "new-definition-close"></i>
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+            <div class = "report-body">
+                <h3>Report a definition</h3>
+                <div id = "report-content"></div>
+                <p>This definition should be removed because:</p>
+                <input type="radio" name = "report" class = "report-option" data-reason = "offensive">it contains offensive or abusive content<br>
+                <input type="radio" name = "report" class = "report-option" data-reason = "spam">it is spam or advertisement<br>
+                <input type="radio" name = "report" class = "report-option" data-reason = "wrong">it is completely incorrect<br>
+                <input type="radio" name = "report" class = "report-option" data-reason = "irrelevant">it is not related to programming<br>
+                <input type="radio" name = "report" class = "report-option" data-reason = "other">other<br>
+                <div class ="report-error"></div>
+                <button id = "submit-report">Submit</button>
+
+            </div>
         </div>
         
     </div>

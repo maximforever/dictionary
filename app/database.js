@@ -5,7 +5,7 @@ function create(db, col, obj, callback){
             console.log("MAYDAY! MAYDAY! Crashing.");
             return console.log(err);
         }
-        console.log("Successfully saved this object to '" + col + "'' :");
+        console.log("Successfully saved this object to '" + col + "' :");
         console.log(obj);
         callback(result);
     })

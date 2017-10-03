@@ -32,7 +32,20 @@ function main(){
         $("#definition-term-textarea").val(term)
     });
 
+    $("body").on("click", ".report-post", function(){
+        console.log(this.dataset.id);
+        displayReport(this.dataset.id, this.dataset.type);
+    });
 
+    $("body").on("click", "#submit-report", function(){
+        submitReport();
+    });
+
+    $("body").on("click", "input[name='report']", function(){
+        $(".report-error").empty();
+    });
+
+    
 /* LISTENERS */
 
 	$("body").on("keydown", function(e){                        
@@ -47,7 +60,7 @@ function main(){
 	    }
 
         if(e.which == 27){                                         // 27 = ESC
-            $("#new-definition").hide();
+            $(".pop-out").hide();
         }
 	});
 
@@ -101,6 +114,7 @@ function main(){
     })
 
     $("body").on("click", "#add-def-link", function(){
+        $("#report").hide();
         $("#new-definition").show();
         $("#new-definition-textarea").focus();
         $("#definition-term-textarea").val(currentTerm);
@@ -116,8 +130,8 @@ function main(){
         $("#terms-section").empty();
     });
     
-    $("body").on("click", "#new-definition-close", function(){
-        $("#new-definition").hide();
+    $("body").on("click", "#close", function(){
+        $(".pop-out").hide();
     });
 
     /* ACCOUNT LINKS*/
@@ -515,11 +529,61 @@ function displayDefinitionSuggestion(term){
 
 
 function displayAddDefinition(term){
+    $("#report").hide();
 	$("#new-definition").show();
     $("#new-definition-textarea").focus();
 	currentTerm = term;
 }
 
+function displayReport(id, type){
+    $("#new-definition").hide();
+    $("#report").show();
+    $("#report-content").empty();
+    $("#report-content").append($("#" + id).find(".definition-column").text().trim());
+    $("#submit-report")[0].dataset.id = id;
+    $("#submit-report")[0].dataset.type = type;
+}
+
+
+function submitReport(){
+
+    var reportElement = $(".report-body input:checked")[0];
+
+
+    if(typeof(reportElement) != "undefined"){
+            var reportId = $("#submit-report")[0].dataset.id;
+            var reportReason = $(".report-body input:checked")[0].dataset.reason;
+            var reportType = $("#submit-report")[0].dataset.type;
+
+            var reportData = {
+                id: reportId,
+                reason: reportReason,
+                type: reportType
+            }
+
+            $.ajax({
+                type: "post",
+                data: reportData,
+                url: "/new-report",
+                success: function(result){
+                    $("#report").hide();
+                    if(result.status == "success"){
+                        $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted and will be reviewed shortly.</div>");
+                    } else {
+                        $("#definitions-section").prepend("<div class = 'definition add-confirmation'>" + result.error + "</div>");
+                    }
+                }
+            })
+
+
+
+        } else {
+            $(".report-error").text("Please select a reason for this report");
+        }
+
+
+
+}
 
 
 function trimRelatedTerms(){
