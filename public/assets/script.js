@@ -95,10 +95,7 @@ function main(){
     $("body").on("click", ".voting-button", function(){
         var type = this.dataset.vote;               // quick way to get data attribute value
         var id = this.parentElement.parentElement.previousSibling.previousSibling.parentElement.id;
-        var term = this.parentElement.parentElement.previousSibling.previousSibling.childNodes[1].innerHTML;
-
-
-        console.log(term);
+        var term = this.parentElement.parentElement.previousSibling.previousSibling.previousSibling.previousSibling.childNodes[1].innerHTML;
 
         voteOnDefinition(type, id, term);
     })
@@ -286,11 +283,7 @@ function getDefinition(thisTerm){
         	if(result.status == "success"){
 
                 var searchTerm = $("#search-bar").val().trim();
-
                 console.log(result.count);
-
-
-
 
             	if(result.count > 0){
             	//	$("#definitions-section").empty();
@@ -446,8 +439,6 @@ function logout(){
  
 }
 
-
-
 function displayDefinitionsOnPage(definitions){
 
    
@@ -469,7 +460,8 @@ function displayDefinitionsOnPage(definitions){
             var context = {
                 definition: thisDefinition,
                 editDate: thisDefinition.lastEdit.substr(4, 11),
-                score: thisScore
+                score: thisScore,
+                id: thisDefinition.id
               };
 
               var compiled = myTemplate(context)
@@ -481,7 +473,6 @@ function displayDefinitionsOnPage(definitions){
 
     }, 'html')
 }
-
 
 function sortDefinitions(definitions){
 
@@ -510,9 +501,6 @@ function sortDefinitions(definitions){
 
     return sortedDefinitions;
 }
-
-
-
 
 function displaySearchTerm(term){
 	$("#terms-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-link'>" + term.name + "</span></span></div>");

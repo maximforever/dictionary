@@ -190,6 +190,7 @@ a:hover, .link:hover {
 	width: 90%;
 	display: inline-block;
 	vertical-align: top;
+	font-size: 0.85em;
 }
 
 .voting-column {
