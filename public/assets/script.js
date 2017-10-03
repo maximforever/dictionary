@@ -94,8 +94,8 @@ function main(){
 
     $("body").on("click", ".voting-button", function(){
         var type = this.dataset.vote;               // quick way to get data attribute value
-        var id = this.parentElement.parentElement.previousSibling.previousSibling.parentElement.id;
-        var term = this.parentElement.parentElement.previousSibling.previousSibling.previousSibling.previousSibling.childNodes[1].innerHTML;
+        var id = this.dataset.id;
+        var term = this.dataset.term;
 
         voteOnDefinition(type, id, term);
     })
