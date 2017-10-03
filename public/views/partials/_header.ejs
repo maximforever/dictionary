@@ -29,7 +29,7 @@
                         <a href = "/admin" id = "admin-panel-link">Admin Panel</a>
                     <% } %>
 
-                    <span class = "welcome">Hello, <%= session.user.username %></span>
+                    <span class = "welcome">Hello, <span class = "link" id = "profile"><%= session.user.username %></span></span>
                     
                     <% if(session.user.newNotifications){ %>
                         <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" id = "new-alert"></i></span>
@@ -37,7 +37,6 @@
                         <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" ></i></span>
                     <% } %>
 
-                    <span class = "link" id = "profile">Profile</span>
                     <span class = "link" id = "logout">Log out</span>
                 <% } %>
             </div>

@@ -80,7 +80,7 @@ function displayUnapprovedDefinitions(definitions){
 
             var context = {
                 definition: thisDefinition,
-                editDate: thisDefinition.lastEdit.substr(4, 11),
+                created: thisDefinition.created.substr(4, 11),
                 score: thisScore,
                 id: thisDefinition.id
               };

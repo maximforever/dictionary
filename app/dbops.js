@@ -59,31 +59,57 @@ function addDefinition(db, req, callback){
 	if(req.session.user){
 		if(req.body.definition && req.body.term){
 
-			newDefinitionQuery = {
-				id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
-				term: req.body.term.trim().toLowerCase(),
+			var userSubmissionsQuery = {
 				author: req.session.user.username,
-				upvotes: 0,
-				downvotes: 0, 
-				reportCount: 0,
-				removed: false,
-				approved: false,
-				rejected: false,
-				lastEdit: Date(),
-				created: Date(),
-				body: req.body.definition,
-				related: []
+				approved: true
 			}
 
-			termQuery = { 
-				name: req.body.term
-			}
+			database.read(db, "definitions", userSubmissionsQuery, function fetchUser(approvedDefinitions){
 
-			database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
+				console.log("This user has submitted " + approvedDefinitions.length + " definitions");
 
-				if(existingTerms.length == 0){
-					console.log("creating new definition for the term '" + termQuery.name + "'");
-					database.create(db, "terms", termQuery, function createdTerm(newTerm){
+				newDefinitionQuery = {
+					id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+					term: req.body.term.trim().toLowerCase(),
+					author: req.session.user.username,
+					upvotes: 0,
+					downvotes: 0, 
+					reportCount: 0,
+					removed: false,
+					approved: false,
+					rejected: false,
+					lastEdit: Date(),
+					created: Date(),
+					body: req.body.definition,
+					related: []
+				}
+
+				if(approvedDefinitions.length > 5){
+					console.log("Auto approve based on positive submission history");
+					newDefinitionQuery.approved = true
+				}
+
+
+
+				termQuery = { 
+					name: req.body.term
+				}
+
+				database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
+
+					if(existingTerms.length == 0){
+						console.log("creating new definition for the term '" + termQuery.name + "'");
+						database.create(db, "terms", termQuery, function createdTerm(newTerm){
+							database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
+								console.log(newDefinition.ops[0]);
+								callback({
+									status: "success",
+									term: newDefinition.ops[0].term
+								});
+							});
+						});
+					} else if (existingTerms.length == 1) {
+						console.log("Someone has already created the term '" + termQuery.name + "'");
 						database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 							console.log(newDefinition.ops[0]);
 							callback({
@@ -91,24 +117,20 @@ function addDefinition(db, req, callback){
 								term: newDefinition.ops[0].term
 							});
 						});
-					});
-				} else if (existingTerms.length == 1) {
-					console.log("a definition for the term '" + termQuery.name + "' already exists");
-					database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
-						console.log(newDefinition.ops[0]);
+					} else {
+						console.log("Multiple definitions for one term");
 						callback({
-							status: "success",
-							term: newDefinition.ops[0].term
+							status: "fail",
+							message: "Multiple definitions for one term"
 						});
-					});
-				} else {
-					console.log("Multiple definitions for one term");
-					callback({
-						status: "fail",
-						message: "Multiple definitions for one term"
-					});
-				}
+					}
+				})
+
+
+
 			})
+
+			
 		} else {
 			callback({
 				status: "fail",

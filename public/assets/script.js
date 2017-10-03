@@ -272,6 +272,8 @@ function searchForDefinitions(){
 
 function getDefinition(thisTerm){
 
+    $("#definitions-section").empty();
+
 	var searchQuery = {
 		term: thisTerm.toLowerCase()
 	}
@@ -329,7 +331,7 @@ function addDefinition(){
 	        	if(result.status == "success"){
             		$("#terms-section").empty();
             		$("#definitions-section").empty();
-            		$("#definitions-section").append("<div class = 'definition'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted.</div>");
+            		$("#definitions-section").append("<div class = 'definition'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> New submissions are auto-approved after you submit 5 accepted definitions.</div>");
             		getDefinition(result.term);
                     $("#new-definition-textarea").val("");            
                     $("#new-definition").hide();
