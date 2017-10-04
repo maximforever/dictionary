@@ -7,6 +7,7 @@ function main(){
 		getAdminData("definitions");
 	}
 
+	$("#user-role-section").hide();
 
 	/* LISTENERS */
 
@@ -53,19 +54,23 @@ function main(){
 	
     });
 
-    $("body").on("click", "#user-role-manager", function(){
-    	// NEED TO MAKE ACCESSIBLE ONLT TO ADMINS
-    	console.log("click");
-    });
-
     $("body").on("click", "#find-user", function(){
-    	getUserRoles();
+    	getUserRoles($("#user-role-search"));
     });
 
     $("body").on("click", "#update-user-roles", function(){
     	updateUserRoles();
     });
+
+     $("body").on("click", "#user-role-manager", function(){
+    	getRoleEditor();
+    });
+
+
 }
+
+
+
 
 
 function getAdminData(thisType){
@@ -102,6 +107,7 @@ function displayUnapprovedDefinitions(definitions){
 
 
 	$("#admin-posts-section").empty();
+	$("#admin-roles-container").empty();
     // a bit of handlebars magic
 
     $.get('views/components/unapprovedDefinition.html', function(data) {
@@ -127,6 +133,7 @@ function displayUnapprovedDefinitions(definitions){
 function displayUnresolvedReports(reports){
 
 	$("#admin-posts-section").empty();
+	$("#admin-roles-container").empty();
     // a bit of handlebars magic
 
     $.get('views/components/unresolvedReports.html', function(data) {
@@ -154,14 +161,31 @@ function displayUnresolvedReports(reports){
 
     }, 'html')
 }
+function getRoleEditor(){
+	$.ajax({
+        type: "get",
+        url: "/role-editor",
+        success: function(response){
+        	if(response.status != "fail"){
 
+        		$("#admin-posts-section").empty();
 
-function getUserRoles(){
+        		$("#admin-roles-container").empty();
+        		$("#admin-roles-container").append(response);
+        		$("#user-role-section").hide();
+        	} else {
+        		$("#error").text(response.error);
+        	}
+        }
+    })
+}
+
+function getUserRoles(user){
 
 	// NEED TO MAKE ACCESSIBLE ONLT TO ADMINS
 
 	var userData = {
-		username: $("#user-role-search").val().trim().toLowerCase()
+		username: user.val().trim().toLowerCase()
 	}
 
 	$.ajax({
@@ -198,6 +222,7 @@ function updateUserRoles(){
         url: "/update-user-roles",
         success: function(response){
             $("#user-role-section").empty();
+
             if(response.status == "success"){  
             	showUserRoles(response.roles, userData.username)
             } else {

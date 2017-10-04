@@ -274,12 +274,24 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.get("/admin", function(req, res){
         if(req.session.user && (req.session.user.admin == "true" || req.session.user.admin == true || req.session.user.moderator == "true"|| req.session.user.moderator ==  true )){
-            console.log("admin request approved");
+            console.log("user is a moderator or admin");
             res.render("admin");
         } else {
             console.log("not admin");
             console.log("Logged in: " + req.session.user);
             res.redirect("/");
+        }
+    })
+
+    app.get("/role-editor", function(req, res){
+        if(req.session.user && (req.session.user.admin == "true" || req.session.user.admin == true)){
+            console.log("admin request approved");
+            res.render("modals/roleEditor");
+        } else {
+            res.send({
+                status: "fail",
+                error: "This page is not available"
+            })
         }
     })
 
