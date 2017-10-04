@@ -348,24 +348,24 @@ a:hover, .link:hover {
 	padding: 0 5px;
 	width: 40px;
 	font-size: 1.1em;
-	background: #C9C9C9FF;
+	background: #C9C9C9;
 	margin-left: 5px;
 	box-shadow: 0 0 10px rgba(10,10,10, 0.6);
 }
 
-.approve, .trash-post{
+.approve, .remove-report {
 	background: #1acdfb;
 }
 
-.approve:hover, .trash-post:hover {
+.approve:hover, .remove-report:hover {
 	background: #1088A9;
 }
 
-.reject, .remove-report{
+.reject, .trash-post{
 	background: #ea5859;
 }
 
-.reject:hover, .remove-report:hover{
+.reject:hover, .trash-post:hover{
 	background: #95383A;
 }
 
@@ -385,6 +385,7 @@ a:hover, .link:hover {
 	padding: 10px;
     border: 1px solid gray;
     display: inline-block;
+    min-width: 200px;
 }
 
 #user-role-section h3 {
