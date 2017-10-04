@@ -15,26 +15,32 @@ function main(){
 		var votingData = {
 		        id: this.dataset.id,
 		        type: this.dataset.vote,
-        		post: "definition"
+        		post: this.dataset.type,
+                author: this.dataset.author
 		    }
-		    
-		    $.ajax({
-		        type: "post",
-		        data: votingData,
-		        url: "/admin-vote",
-		        success: function(result){
 
-		            console.log(result);
-		            $("#admin-posts-section").empty();
+        if(this.dataset.type == "definition" || this.dataset.type == "report"){
+            console.log("sending a request");
+    	    $.ajax({
+    	        type: "post",
+    	        data: votingData,
+    	        url: "/admin-vote",
+    	        success: function(result){
+    	            console.log(result);
+    	            $("#admin-posts-section").empty();
 
-		            if(result.status == "success"){  
-		                getAdminData();
-		            } else {
-		                console.log("something went wrong");
-		                $("#error").text(result.error);
-		            }
-		        }
-		    })
+    	            if(result.status == "success"){  
+    	                getAdminData(votingData.post + "s");
+    	            } else {
+    	                console.log("something went wrong");
+    	                $("#error").text(result.error);
+    	            }
+    	        }
+    	    })
+        } else {
+            console.log("That's not a valid admin action");
+        }
+
     });
 
     $("body").on("click", "#unapproved-definitions-link", function(){
@@ -43,13 +49,16 @@ function main(){
     });
 
     $("body").on("click", "#unresolved-reports-link", function(){
-    	getAdminData("reports");
+        getAdminData("reports");
 	
     });
 }
 
 
-function getAdminData(type){
+function getAdminData(thisType){
+
+    console.log(thisType);
+
 
 	$.ajax({
         type: "get",
@@ -57,13 +66,12 @@ function getAdminData(type){
         success: function(result){
         	if(result.status == "success"){
 
-        		
         		$("#definition-count").text(result.data.definitions.length || 0 );
         		$("#report-count").text(result.data.reports.length || 0);
 
-        		if(type == "definitions"){
+        		if(thisType == "definitions"){
         			displayUnapprovedDefinitions(result.data.definitions);
-        		} else if (type == "reports"){
+        		} else if (thisType == "reports"){
         			displayUnresolvedReports(result.data.reports);
         		} else {
         			console.log("Display error - incorrect type");

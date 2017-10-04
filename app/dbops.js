@@ -308,6 +308,8 @@ function createNewVote(db, req, newVote, callback){
 
 function adminVote(db, req, callback){
 
+	console.log("req.body.post");
+	console.log(req.body.post);
 	if(req.body.post == "definition"){
 
 		var definitionQuery = {
@@ -327,7 +329,56 @@ function adminVote(db, req, callback){
 		})
 
 	} else if (req.body.post == "report"){
-		callback({status: "success", message: "Something went wrong"});
+
+		var reportQuery = {
+			id: parseInt(req.body.id),
+			author: req.body.author
+		}
+
+		var thisDecision = "post cleared"
+		if(req.body.type == "approved")	{ thisDecision == "post removed"}
+
+		var reportUpdateQuery = {
+			$set: {
+				resolved: true,
+				decision: thisDecision
+			}
+		}
+
+		database.update(db, "reports", reportQuery, reportUpdateQuery, function resolveReport(updatedReport){
+
+			
+
+			var definitionQuery = {
+				id: updatedReport.post_id
+			}
+
+			var definitionUpdateQuery = {
+				$set: {
+					removed: true
+				}
+			}
+
+			console.log("req.body.type:");
+			console.log(req.body.type);
+
+
+			if(req.body.type == "approved"){
+				console.log("approving report - removing post");
+				database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function removeDefinition(updatedDefinition){
+					callback({status: "success", message: "Successfully removed definition"});
+				});
+
+			} else {
+				console.log("definition looks good, no removal.");
+				callback({status: "success", message: "definition looks good, no removal."});
+			}
+		})
+
+
+
+		
+
 	} else {
 		callback({status: "fail", message: "Something went wrong"});
 	}
@@ -364,8 +415,10 @@ function addReport(db, req, callback){
 					if(post.length == 1){
 
 						var thisReport = {
+							id: Date.now()*(Math.floor(Math.random()*100)),
 							created: Date(),
 							resolved: false,
+							decision: null,
 							reason: req.body.reason,
 							author: thisAuthor,
 							post_id: post[0].id,
@@ -515,11 +568,11 @@ function getAdminData(db, req, callback){
 		}
 
 		unresolvedReportsQuery = {
-			approved: false
+			resolved: false
 		}
 
 		database.read(db, "definitions", unapprovedDefinitionsQuery, function getUnapprovedDefinitions(unapprovedDefinitions){
-			database.read(db, "reports", {}, function getUnresolvedReports(unresolvedReports){
+			database.read(db, "reports", unresolvedReportsQuery, function getUnresolvedReports(unresolvedReports){
 				callback({definitions: unapprovedDefinitions, reports: unresolvedReports})
 			})
 		})

@@ -106,6 +106,8 @@ MongoClient.connect(dbAddress, function(err, db){
             if(response.status == "success"){
                 req.session.message = "Got a result!"
 
+                console.log("response count: " + response.count);
+
                 res.send({
                     status: "success",
                     count: response.count,
