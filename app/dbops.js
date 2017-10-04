@@ -476,7 +476,6 @@ function signup(db, req, callback){
 					   				username: req.body.username.toLowerCase(),
 					   				newNotifications: false 
 					   			}
-					            
 					        }
 
 							var userQuery = {
@@ -677,6 +676,22 @@ function updateUserRoles(db, req, callback){
 	}
 }
 
+function getUserData(db, req, callback){
+	if(req.session.user){    	
+
+		definitionQuery = {
+			author: req.session.user.username
+		}
+
+		database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
+			callback({status: "success", definitions: allDefinitions})
+		})
+		
+	} else {
+		callback({status: "fail", message: "User is not logged in"})
+	}
+}
+
 
 
 
@@ -711,3 +726,5 @@ module.exports.addReport = addReport;
 
 module.exports.getUserRoles = getUserRoles;
 module.exports.updateUserRoles = updateUserRoles;
+
+module.exports.getUserData = getUserData;

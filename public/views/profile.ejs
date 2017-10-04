@@ -1,0 +1,37 @@
+<% include partials/_header.ejs %>
+
+<h2>User Profile</h2>
+
+<% definitions.forEach(function(definition){ %>
+
+<% 
+
+var status;
+
+if (definition.rejected){ 
+	status = "removed";
+} else if (definition.rejected) { 
+	status = "rejected";
+} else if (definition.approved) {
+	status = "approved";
+} else {
+	status = "pending";
+}
+
+
+%>
+
+
+<div class = "status-row">
+	<div class = "status-definition">
+		<span class = "definition-term"><%= definition.term %></span> (<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>)<br>
+		<%= definition.body %><br>
+	</div><!-- 
+ --><div class = "status">
+ 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+	</div>
+</div>
+
+<% }) %>
+
+<% include partials/_footer.ejs %>
