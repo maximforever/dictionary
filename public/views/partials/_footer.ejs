@@ -13,7 +13,7 @@
     <script type= "text/javascript" src = "/assets/script.js"></script>
 
     <% if (typeof(session.user) != "undefined" && session.user != null){ %>
-    	<% if(session.user && session.user.admin){ %>
+    	<% if(session.user && (session.user.admin || session.user.moderator)){ %>
     		<script type= "text/javascript" src = "/assets/admin.js"></script>
     	<% } %>
     <% } %>

@@ -102,10 +102,9 @@ function addDefinition(db, req, callback){
 					body: req.body.definition,
 					related: []
 				}
-
 				if(approvedDefinitions.length > 5){
 					console.log("Auto approve based on positive submission history");
-					newDefinitionQuery.approved = true
+					newDefinitionQuery.approved = true;
 				}
 
 
@@ -123,6 +122,7 @@ function addDefinition(db, req, callback){
 								console.log(newDefinition.ops[0]);
 								callback({
 									status: "success",
+									termAdded: newDefinitionQuery.approved,
 									term: newDefinition.ops[0].term
 								});
 							});
@@ -133,6 +133,7 @@ function addDefinition(db, req, callback){
 							console.log(newDefinition.ops[0]);
 							callback({
 								status: "success",
+								termAdded: newDefinitionQuery.approved,
 								term: newDefinition.ops[0].term
 							});
 						});
@@ -533,6 +534,7 @@ function login(db, req, callback){
 								console.log(existingUsers[0].data);
 				                req.session.user = existingUsers[0].data;
 				                req.session.user.admin = existingUsers[0].admin;
+				                req.session.user.moderator = existingUsers[0].moderator;
 				                var day = 60000*60*24;
 				                req.session.expires = new Date(Date.now() + (30*day));          // this helps the session keep track of the expire date
 				                req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
@@ -560,7 +562,7 @@ function login(db, req, callback){
 
 
 function getAdminData(db, req, callback){
-	if(req.session.user.admin){    	// let's make sure the username and password aren't empty 
+	if(req.session.user.admin || req.session.user.moderator){    	
 
 		unapprovedDefinitionsQuery = {
 			approved: false,

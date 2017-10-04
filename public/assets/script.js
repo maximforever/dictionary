@@ -339,7 +339,11 @@ function addDefinition(){
             		$("#terms-section").empty();
             		$("#definitions-section").empty();
             		getDefinition(result.term);
-                    $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                    
+                    if(!result.termAdded){
+                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                    }
+                    
                     $("#new-definition-textarea").val("");            
                     $("#new-definition").hide();
 	        	} else {

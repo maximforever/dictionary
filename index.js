@@ -159,6 +159,7 @@ MongoClient.connect(dbAddress, function(err, db){
             if(response.status == "success"){
                 res.send({ 
                     status: "success",
+                    termAdded: response.termAdded,
                     term: response.term
                 });
 
@@ -260,7 +261,7 @@ MongoClient.connect(dbAddress, function(err, db){
 /* ADMIN PAGES */
 
     app.get("/admin", function(req, res){
-        if(req.session.user && req.session.user.admin){
+        if(req.session.user && (req.session.user.admin || req.session.user.moderator)){
             console.log("admin request approved");
             res.render("admin");
         } else {
@@ -292,37 +293,51 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.get("/admin-data", function(req, res){
-        dbops.getAdminData(db, req, function prepAdminData(rawAdminData){
+        if(req.session.user && (req.session.user.admin || req.session.user.moderator)){
+            dbops.getAdminData(db, req, function prepAdminData(rawAdminData){
 
-            adminData = {
-                reports: rawAdminData.reports,
-                definitions: rawAdminData.definitions
-            }   
+                adminData = {
+                    reports: rawAdminData.reports,
+                    definitions: rawAdminData.definitions
+                }   
 
-            res.send({status: "success", data: adminData});
-        })
-
+                res.send({status: "success", data: adminData});
+            })
+        } else {
+            res.send({
+                status: "fail",
+                error: "Not an admin or moderator"
+            })
+        }
     });
 
     app.post("/admin-vote", function(req, res){
-        dbops.adminVote(db, req, function vote(response){
-            if(response.status == "success"){
-                res.send({
-                    status: "success",
-                    message: response.message
-                });
-            } else if(response.status == "fail"){
-                res.send({
-                    status: "fail",
-                    error: response.message
-                });
-            } else {
-                res.send({
-                    status: "fail",
-                    error: "Something strange happened"
-                })
-            }   
-        });
+        
+        if(req.session.user && (req.session.user.admin || req.session.user.moderator)){
+            dbops.adminVote(db, req, function vote(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        message: response.message
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                } else {
+                    res.send({
+                        status: "fail",
+                        error: "Something strange happened"
+                    })
+                }   
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "Not an admin or moderator"
+            })
+        }
     });
 
 
