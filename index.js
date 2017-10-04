@@ -67,6 +67,18 @@ MongoClient.connect(dbAddress, function(err, db){
         next();
     })
 
+    app.use(function(req, res, next){
+
+        if(req.session.user){
+            dbops.getUpdatedUser(db, req, function moveOn(){
+                next();
+            })
+        } else {
+            console.log("User is not logged in.");
+            next();
+        }
+    })
+
     
 /* ROUTES */
 
@@ -261,7 +273,7 @@ MongoClient.connect(dbAddress, function(err, db){
 /* ADMIN PAGES */
 
     app.get("/admin", function(req, res){
-        if(req.session.user && (req.session.user.admin || req.session.user.moderator)){
+        if(req.session.user && (req.session.user.admin == "true" || req.session.user.admin == true || req.session.user.moderator == "true"|| req.session.user.moderator ==  true )){
             console.log("admin request approved");
             res.render("admin");
         } else {
@@ -336,6 +348,56 @@ MongoClient.connect(dbAddress, function(err, db){
             res.send({
                 status: "fail",
                 error: "Not an admin or moderator"
+            })
+        }
+    });
+
+    app.post("/user-roles", function(req, res){
+        
+        if(req.session.user && req.session.user.admin){
+            dbops.getUserRoles(db, req, function vote(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        message: response.message,
+                        roles: response.roles
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                }
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "Not an admin"
+            })
+        }
+    });
+
+    app.post("/update-user-roles", function(req, res){
+        
+        if(req.session.user && req.session.user.admin){
+            dbops.updateUserRoles(db, req, function vote(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        message: response.message,
+                        roles: response.roles
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                }
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "Not an admin"
             })
         }
     });

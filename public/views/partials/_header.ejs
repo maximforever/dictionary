@@ -25,7 +25,7 @@
                     <span class = "link" id = "login">Log In</span>
                 <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
-                    <% if(session.user.admin || session.user.moderator){ %>
+                    <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>
                         <a href = "/admin" id = "admin-panel-link">Admin Panel</a>
                     <% } %>
 

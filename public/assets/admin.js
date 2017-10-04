@@ -52,6 +52,19 @@ function main(){
         getAdminData("reports");
 	
     });
+
+    $("body").on("click", "#user-role-manager", function(){
+    	// NEED TO MAKE ACCESSIBLE ONLT TO ADMINS
+    	console.log("click");
+    });
+
+    $("body").on("click", "#find-user", function(){
+    	getUserRoles();
+    });
+
+    $("body").on("click", "#update-user-roles", function(){
+    	updateUserRoles();
+    });
 }
 
 
@@ -141,3 +154,83 @@ function displayUnresolvedReports(reports){
 
     }, 'html')
 }
+
+
+function getUserRoles(){
+
+	// NEED TO MAKE ACCESSIBLE ONLT TO ADMINS
+
+	var userData = {
+		username: $("#user-role-search").val().trim().toLowerCase()
+	}
+
+	$.ajax({
+        type: "post",
+        data: userData,
+        url: "/user-roles",
+        success: function(response){
+            $("#user-role-section").empty();
+
+            if(response.status == "success"){  
+            	showUserRoles(response.roles, userData.username)
+
+            } else {
+            	$("#user-role-section").hide();
+                console.log("Not a valid user");
+                $("#error").text(response.error);
+            }
+        }
+    })
+}
+
+
+function updateUserRoles(){
+
+	var userData = {
+		username: $("#user-role-search").val().trim().toLowerCase(),
+		moderator: $("#moderator")[0].checked,
+		admin: $("#admin")[0].checked
+	}
+
+	$.ajax({
+        type: "post",
+        data: userData,
+        url: "/update-user-roles",
+        success: function(response){
+            $("#user-role-section").empty();
+            if(response.status == "success"){  
+            	showUserRoles(response.roles, userData.username)
+            } else {
+            	$("#user-role-section").hide();
+                console.log("Not a valid user");
+                $("#error").text(response.error);
+            }
+        }
+    })
+}
+
+function showUserRoles(roles, username){
+	console.log(roles);
+	$("#user-role-section").show();
+	$("#user-role-section").append("<h3>"  + username + "</h3>");
+	$("#user-role-section").append("<input id='moderator' type='checkbox'>Moderator</input><br>");
+	$("#user-role-section").append("<input id='admin' type='checkbox'>Admin</input><br>");
+	$("#user-role-section").append("<button id='update-user-roles'>Update</button><br>");
+
+	$("#moderator").prop('checked', false);
+	$("#admin").prop('checked', false);
+
+
+	console.log("roles.moderator " + roles.moderator);
+	console.log("roles.admin " + roles.admin);
+
+	if(roles.moderator == true || roles.moderator == "true"){
+		$("#moderator").prop('checked', true);
+	}
+
+	if(roles.admin == true || roles.admin == "true"){
+		$("#admin").prop('checked', true);
+	}
+}
+
+

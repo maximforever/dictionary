@@ -561,6 +561,28 @@ function login(db, req, callback){
 }
 
 
+function getUpdatedUser(db, req, callback){
+	var userQuery = {
+        username: req.session.user.username.toLowerCase()
+    }	
+
+	database.read(db, "users", userQuery, function fetchUser(existingUser){
+		if(existingUser.length == 1){
+			console.log("Fetching updated user data");
+			req.session.user = existingUser[0].data;
+            req.session.user.admin = existingUser[0].admin;
+            req.session.user.moderator = existingUser[0].moderator;
+			callback();
+		} else {
+			req.session.user = null;
+			console.log("Something went wrong with fetchign the session");
+			callback();
+		}
+	});
+}
+
+
+
 function getAdminData(db, req, callback){
 	if(req.session.user.admin || req.session.user.moderator){    	
 
@@ -584,6 +606,64 @@ function getAdminData(db, req, callback){
 	}
 }
 
+
+function getUserRoles(db, req, callback){
+	if(req.session.user.admin){    	
+
+		userQuery = {
+			username: req.body.username
+		}
+
+		database.read(db, "users", userQuery, function getUserRoles(user){
+			if(user.length == 1){
+
+				var userRoles = {
+					admin: user[0].admin,
+					moderator: user[0].moderator
+				}
+
+				callback({status: "success", message: "Got the user roles", roles: userRoles})
+
+
+			} else {
+				callback({status: "fail", message: "That's not a valid user"})
+			}
+		})
+		
+	} else {
+		callback({status: "fail", message: "Not an admin"})
+	}
+}
+
+function updateUserRoles(db, req, callback){
+	if(req.session.user.admin){    	
+
+		userQuery = {
+			username: req.body.username
+		}
+
+		userUpdateQuery = {
+			$set: {
+				moderator: req.body.moderator,
+				admin: req.body.admin
+			}
+		}
+
+		database.update(db, "users", userQuery, userUpdateQuery, function updateUser(user){
+
+			var updatedUserRoles = {
+				admin: user.admin,
+				moderator: user.moderator
+			}
+
+
+			callback({status: "success", message: "Updated the user role", roles: updatedUserRoles})
+		})
+		
+	} else {
+		callback({status: "fail", message: "Not an admin"})
+	}
+}
 
 
 
@@ -611,7 +691,11 @@ module.exports.generateHash = generateHash;
 
 module.exports.signup = signup;
 module.exports.login = login;
+module.exports.getUpdatedUser = getUpdatedUser;
 
 module.exports.getAdminData = getAdminData;
 module.exports.adminVote = adminVote;
 module.exports.addReport = addReport;
+
+module.exports.getUserRoles = getUserRoles;
+module.exports.updateUserRoles = updateUserRoles;

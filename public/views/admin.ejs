@@ -1,9 +1,20 @@
 <% include partials/_header.ejs %>
 
 <span class = "link" id = "unapproved-definitions-link">Unapproved definitions (<span id = "definition-count">0</span></span>) | 
-<span class = "link" id = "unresolved-reports-link">Reports(<span id = "report-count">0</span>)</span>
+<span class = "link" id = "unresolved-reports-link">Reports(<span id = "report-count">0</span>)</span> | 
+<span class = "link" id = "user-role-manager">User roles</span>
 
 <div id = "admin-posts-section"></div>
 
+
+
+<div id = "user-role-editor">
+    User:<br>
+    <input type = "text" id = "user-role-search" autofocus><br>
+    <button id = "find-user">Find</button><br>
+    <div id = "user-role-section">
+        
+    </div>
+</div>
 
 <% include partials/_footer.ejs %>
