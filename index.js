@@ -7,7 +7,8 @@ const express = require("express");                     // express
 const MongoClient = require('mongodb').MongoClient;     // talk to mongo
 const bodyParser = require('body-parser');              // parse request body
 var session = require('express-session')                // create sessions
-const bcrypt = require('bcrypt');                         // encrypt passwords
+const MongoStore = require('connect-mongo')(session);   // store sessions in Mongo so we don't get dropped on every server restart
+const bcrypt = require('bcrypt');                       // encrypt passwords
 
 const app = express();
 app.set("port", process.env.PORT || 3000)                        // we're gonna start a server on whatever the environment port is or on 3000
@@ -16,16 +17,16 @@ app.set("view engine", "ejs");                                  // tells us what
 
 app.use(express.static('public'));                              // sets the correct directory for static files we're going to serve - I believe this whole folder is sent to the user
 
-
 const dbops = require("./app/dbops");
 const database = require("./app/database");
+
+var dbAddress;
 
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
     dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds147864.mlab.com:47864/dev-dictionary";
 } else {
     dbAddress = "mongodb://localhost:27017/dictionary";
 }
-
 
 MongoClient.connect(dbAddress, function(err, db){
     if (err){
@@ -41,14 +42,15 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(bodyParser.json());                         // for parsing application/json
 
-    var secretHash = dbops.generateHash(16);
+    var secretHash = dbops.generateHash(16);            // generate secret for unique session
 
     app.use(session({                                   // I THINK we only need to do this once, because it's causing us to send 2 GET requests to '/'
             secret: secretHash,
-            saveUninitialized: false,
-            resave: false,
+            saveUninitialized: true,
+            resave: true,
             secure: false,
-            cookie: {}
+            cookie: {},
+            store: new MongoStore({db: db}) 
     }));
 
     app.use(function(req, res, next){                                           // logs request URL
@@ -70,7 +72,13 @@ MongoClient.connect(dbAddress, function(err, db){
     app.use(function(req, res, next){
 
         if(req.session.user){
-            dbops.getUpdatedUser(db, req, function moveOn(){
+            dbops.getUpdatedUser(db, req, function moveOn(suspended){
+
+                if(suspended){
+                    req.session.user = null;
+                    req.session.expires = new Date(Date.now);       /* not sure if this is needed */
+                }
+
                 next();
             })
         } else {

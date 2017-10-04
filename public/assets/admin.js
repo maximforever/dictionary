@@ -213,7 +213,8 @@ function updateUserRoles(){
 	var userData = {
 		username: $("#user-role-search").val().trim().toLowerCase(),
 		moderator: $("#moderator")[0].checked,
-		admin: $("#admin")[0].checked
+		admin: $("#admin")[0].checked,
+		suspended: $("#suspended")[0].checked
 	}
 
 	$.ajax({
@@ -240,10 +241,13 @@ function showUserRoles(roles, username){
 	$("#user-role-section").append("<h3>"  + username + "</h3>");
 	$("#user-role-section").append("<input id='moderator' type='checkbox'>Moderator</input><br>");
 	$("#user-role-section").append("<input id='admin' type='checkbox'>Admin</input><br>");
+	$("#user-role-section").append("<span id = 'suspension-section'><input id='suspended' type='checkbox'>Suspended</input><span><br>");
 	$("#user-role-section").append("<button id='update-user-roles'>Update</button><br>");
+
 
 	$("#moderator").prop('checked', false);
 	$("#admin").prop('checked', false);
+	$("#suspended").prop('checked', false);
 
 
 	console.log("roles.moderator " + roles.moderator);
@@ -255,6 +259,10 @@ function showUserRoles(roles, username){
 
 	if(roles.admin == true || roles.admin == "true"){
 		$("#admin").prop('checked', true);
+	}
+
+	if(roles.suspended == true || roles.suspended == "true"){
+		$("#suspended").prop('checked', true);
 	}
 }
 

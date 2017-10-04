@@ -521,7 +521,7 @@ function login(db, req, callback){
 			if(existingUsers.length == 1){	
 				bcrypt.compare(req.body.password, existingUsers[0].password, function(err, res) {
 					if(res){													// if the two password hashes match...
-						if(!existingUsers[0].suspended){
+						if(existingUsers[0].suspended == "false" || existingUsers[0].suspended == false){
 
 							var loginDateUpdate = {
 								$set: {
@@ -542,7 +542,7 @@ function login(db, req, callback){
 							})
 						} else {
 							req.session.user = null;
-							callback({status: "fail", message: "Your account has been suspended."})
+							callback({status: "fail", message: "Your account has been suspended"})
 						}
 					} else {
 						req.session.user = null;
@@ -572,11 +572,20 @@ function getUpdatedUser(db, req, callback){
 			req.session.user = existingUser[0].data;
             req.session.user.admin = existingUser[0].admin;
             req.session.user.moderator = existingUser[0].moderator;
-			callback();
+			
+            if(existingUser[0].suspended == true || existingUser[0].suspended == "true"){
+            	callback(true);
+            } else {
+            	callback(false);
+            }
+
+			
+
+
 		} else {
 			req.session.user = null;
 			console.log("Something went wrong with fetchign the session");
-			callback();
+			callback(false);
 		}
 	});
 }
@@ -619,7 +628,8 @@ function getUserRoles(db, req, callback){
 
 				var userRoles = {
 					admin: user[0].admin,
-					moderator: user[0].moderator
+					moderator: user[0].moderator,
+					suspended: user[0].suspended
 				}
 
 				callback({status: "success", message: "Got the user roles", roles: userRoles})
@@ -645,7 +655,8 @@ function updateUserRoles(db, req, callback){
 		userUpdateQuery = {
 			$set: {
 				moderator: req.body.moderator,
-				admin: req.body.admin
+				admin: req.body.admin,
+				suspended: req.body.suspended
 			}
 		}
 
@@ -653,7 +664,8 @@ function updateUserRoles(db, req, callback){
 
 			var updatedUserRoles = {
 				admin: user.admin,
-				moderator: user.moderator
+				moderator: user.moderator,
+				suspended: user.suspended
 			}
 
 
