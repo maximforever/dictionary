@@ -2,36 +2,56 @@
 
 <h2>User Profile</h2>
 
-<% definitions.forEach(function(definition){ %>
+<div class = "submission-status-table">
 
-<% 
-
-var status;
-
-if (definition.rejected){ 
-	status = "removed";
-} else if (definition.rejected) { 
-	status = "rejected";
-} else if (definition.approved) {
-	status = "approved";
-} else {
-	status = "pending";
-}
-
-
-%>
-
-
-<div class = "status-row">
-	<div class = "status-definition">
-		<span class = "definition-term"><%= definition.term %></span> (<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>)<br>
-		<%= definition.body %><br>
-	</div><!-- 
- --><div class = "status">
- 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+	<div class = "status-row status-row-headers">
+		<div class = "status-definition">
+			<span class = "bold">DEFINITION</span>
+		</div><!-- 
+	--><div class = "status-submission-date">
+			<span class = "bold">SUBMITTED</span>
+		</div><!-- 
+	 --><div class = "status">
+	 		<span class = "bold">STATUS</span>
+		</div>
 	</div>
+
+
+	<% definitions.forEach(function(definition){ %>
+
+		<% 
+			var status;
+
+			if (definition.removed){ 
+				status = "removed";
+			} else if (definition.rejected) { 
+				status = "rejected";
+			} else if (definition.approved) {
+				status = "approved";
+			} else {
+				status = "pending";
+			}
+		%>
+
+		<div class = "status-row">
+			<div class = "status-definition">
+				<span class = "definition-term"><%= definition.term %></span><br>
+				<span class = "definition-body"><%= definition.body %></span><br>
+			</div><!-- 
+		--><div class = "status-submission-date">
+				<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+			</div><!-- 
+		 --><div class = "status">
+		 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+			</div>
+		</div>
+
+	<% }) %>
+
 </div>
 
-<% }) %>
+
+
+
 
 <% include partials/_footer.ejs %>

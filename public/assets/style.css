@@ -327,46 +327,76 @@ a:hover, .link:hover {
 
 /* USER PROFILE */
 
+.submission-status-table {
+	border-top: 1px solid gray;
+	border-left: 1px solid gray;
+	border-right: 1px solid gray;
+	width: calc(60% + 20px);
+	margin: 0 auto;
+	min-width: 410px;
+}
+
 .submission-status {
 	text-transform: uppercase;
 	font-weight: bold;
+	font-size: 0.85em;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
 }
 
 .post-removed {
-	color: #6A1DA6;
+	color: #4c107b;
+	background: #ebdcfd;
 }
 
 .post-approved {
-	color: green;
+	color: #14710d;
+	background: #BAE1A6;
 }
 
 .post-rejected {
-	color: red;
+	color: #a20c09;
+	background: #F1A19B;
 }
 
 .post-pending {
-	color: #777777;
+	color: #0a0a0a;
+	background: #DBDBDB;
 }
 
-.status-definition, .status {
+.status-definition, .status-submission-date, .status {
 	display: inline-block;
+	vertical-align: middle;
 }
 
-.status-definition{
-	width: 80%;
+.status-definition {
+	width: calc(65% - 10px);
+	padding-right: 10px;
+}
+
+.status-definition .definition-body {
+	font-size: 0.9em;
+}
+
+.status-submission-date{
+	width: 15%;
+	text-align: center;
 }
 
 .status{
 	width: 20%;
 	text-align: right;
-	vertical-align: top;
 }
 
 .status-row {
-	width: calc(60% + 20px);
 	padding: 10px;
-	border: 1px solid gray;
-	margin: 0 auto;
+	border-bottom: 1px solid gray;
+}
+
+.status-row-headers {
+	background: #e4ceb3;
+	font-size: 0.85em;
 }
 
 .edit-history {
