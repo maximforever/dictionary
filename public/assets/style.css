@@ -253,6 +253,7 @@ a:hover, .link:hover {
     position: absolute;
     float: right;
     margin-top: 6px;
+    pointer-events: none;
 }
 
 .report-error{

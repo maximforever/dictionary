@@ -94,7 +94,7 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/", function(req, res){
         res.render("index");
     });
-
+    
     app.post("/search", function(req, res){
         // res.send("Thanks for searching for " + req.body.term + ", come again!");
         dbops.search(db, req, function tryToSearch(response){
