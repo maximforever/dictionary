@@ -4,6 +4,9 @@ body{
 	margin: 0;
 	padding: 0;
 	background: #f3eae0;
+
+	font-family: 'Muli', sans-serif;
+	font-weight: 300;
 }
 
 a, .link {
@@ -39,7 +42,7 @@ a:hover, .link:hover {
 }
 
 .bold {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 .container {
@@ -56,6 +59,11 @@ a:hover, .link:hover {
 /* SEARCH BAR */
 
 #search-bar {
+
+	font-family: 'Lusitana', serif;
+	font-weight: 400;
+
+
 	font-size: 2.5em;
 	margin: 5vh 0 0 -10%;
 	width: calc(120% - 20px);
@@ -135,7 +143,7 @@ a:hover, .link:hover {
 .definition {
 	margin: 20px auto;
 	padding: 20px;
-	border: 1px solid rgba(50, 50, 50, 0.4);
+	border: 1px solid rgba(50, 50, 50, 0.2);
 	display: block;
 	box-shadow: 0px 0px 5px rgba(100, 181, 17, 0.5);
 	min-width: 200px;
@@ -182,7 +190,7 @@ a:hover, .link:hover {
 }
 
 .definition-term {
-	font-weight: 700;
+	font-weight: 600;
 	color: #5e6465;
 }
 
@@ -190,7 +198,7 @@ a:hover, .link:hover {
 	width: 80%;
 	display: inline-block;
 	vertical-align: top;
-	line-height: 1.3;
+	line-height: 1.4;
 }
 
 .edit-history-column{
@@ -214,13 +222,13 @@ a:hover, .link:hover {
 
 .definition-score {
 	padding: 0px 10px;
-	font-weight: 700;
+	font-weight: 600;
 	color: green;
 }
 
 .textarea-label {
 	font-size: 0.8em;
-	font-weight: 700;
+	font-weight: 600;
 	margin: 5px 0 0 0;
 }
 
@@ -258,7 +266,7 @@ a:hover, .link:hover {
 
 .report-error{
 	color: #b50000;
-	font-weight: 700;
+	font-weight: 600;
 	margin:5px 0px;
 }
 
@@ -344,6 +352,8 @@ a:hover, .link:hover {
 	padding: 5px;
 	border-radius: 5px;
 	border: 1px solid black;
+	font-family: 'Lusitana', serif;
+
 }
 
 .post-removed {
@@ -453,7 +463,7 @@ a:hover, .link:hover {
 
 .report-reason {
 	font-size: 2em;
-	font-weight: 700;
+	font-weight: 600;
 	margin-bottom: 10px;
 	color: #b50000;
 }
@@ -477,4 +487,5 @@ a:hover, .link:hover {
 
 #suspension-section {
 	color: #ea5859;
+	font-weight: 600
 }
