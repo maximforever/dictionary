@@ -117,6 +117,7 @@ function main(){
     })
 
     $("body").on("click", "#add-def-link", function(){
+        window.scrollTo(0, 0);
         $("#report").hide();
         $("#new-definition").show();
         $("#new-definition-textarea").focus();
