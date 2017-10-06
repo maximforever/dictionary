@@ -1,55 +1,58 @@
 <% include partials/_header.ejs %>
 
-<h2>User Profile</h2>
+<div id = "main-section">
 
-<div class = "submission-status-table">
+	<h2>User Profile</h2>
 
-	<div class = "status-row status-row-headers">
-		<div class = "status-definition">
-			<span class = "bold">DEFINITION</span>
-		</div><!-- 
-	--><div class = "status-submission-date">
-			<span class = "bold">SUBMITTED</span>
-		</div><!-- 
-	 --><div class = "status">
-	 		<span class = "bold">STATUS</span>
-		</div>
-	</div>
+	<div id = "submission-status-table">
 
-
-	<% definitions.forEach(function(definition){ %>
-
-		<% 
-			var status;
-
-			if (definition.removed){ 
-				status = "removed";
-			} else if (definition.rejected) { 
-				status = "rejected";
-			} else if (definition.approved) {
-				status = "approved";
-			} else {
-				status = "pending";
-			}
-		%>
-
-		<div class = "status-row">
+		<div class = "status-row status-row-headers">
 			<div class = "status-definition">
-				<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
-				<span class = "definition-body"><%= definition.body %></span><br>
+				<span class = "bold">DEFINITION</span>
 			</div><!-- 
 		--><div class = "status-submission-date">
-				<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+				<span class = "bold">SUBMITTED</span>
 			</div><!-- 
 		 --><div class = "status">
-		 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+		 		<span class = "bold">STATUS</span>
 			</div>
 		</div>
 
-	<% }) %>
+
+		<% definitions.forEach(function(definition){ %>
+
+			<% 
+				var status;
+
+				if (definition.removed){ 
+					status = "removed";
+				} else if (definition.rejected) { 
+					status = "rejected";
+				} else if (definition.approved) {
+					status = "approved";
+				} else {
+					status = "pending";
+				}
+			%>
+
+			<div class = "status-row">
+				<div class = "status-definition">
+					<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
+					<span class = "definition-body"><%= definition.body %></span><br>
+				</div><!-- 
+			--><div class = "status-submission-date">
+					<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+				</div><!-- 
+			 --><div class = "status">
+			 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+				</div>
+			</div>
+
+		<% }) %>
+
+	</div>
 
 </div>
-
 
 
 

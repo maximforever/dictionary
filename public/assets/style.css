@@ -2,9 +2,7 @@
 
 body{
 	margin: 0;
-	padding: 0;
 	background: #f3eae0;
-
 	font-family: 'Muli', sans-serif;
 	font-weight: 300;
 }
@@ -17,6 +15,12 @@ a, .link {
 a:hover, .link:hover {
 	color: #d57915;
 	cursor: pointer;
+}
+
+input {
+	font-family: 'Lusitana', serif;
+	font-weight: 400;
+	font-size: 1em;
 }
 
 .term-link {
@@ -52,20 +56,43 @@ a:hover, .link:hover {
 	max-width: 1600px;
 }
 
+/* HEADER AND FOOTER */
+
+#header-section {
+	padding: 10px 0px;
+	min-height: calc(5vh - 20px);
+}
+
 #main-section {
-	padding: 0px 10vw;
+	padding: 5vh 10vw 0 10vw;
+	min-height: 84vh;			/* not sure why not 85*/
+}
+
+#footer-section	 {
+  color: black;
+  font-weight: 500;
+  text-align: right;
+  min-height: calc(5vh - 20px);
+}
+
+#footer-section p {
+	margin: 0;
+	padding: 10px 0;
+}
+
+#footer-section .fa-heart{
+	color: red;
+}
+
+#creator-link {
+	font-weight: 600;
 }
 
 /* SEARCH BAR */
 
 #search-bar {
-
-	font-family: 'Lusitana', serif;
-	font-weight: 400;
-
-
 	font-size: 2.5em;
-	margin: 5vh 0 0 -10%;
+	margin: 0 0 0 -10%;
 	width: calc(120% - 20px);
 	padding: 10px;
 	display: block;
@@ -133,7 +160,11 @@ a:hover, .link:hover {
 /* DEFINITION */
 
 #definitions-section {
-	margin: 6vh auto;
+	margin: 0 auto;
+}
+
+#definitions-section p{
+	margin-top: 5vh;
 }
 
 #definitions-section-title{
@@ -275,15 +306,26 @@ a:hover, .link:hover {
 /* HEADER */
 
 .alert {
+	font-size: 0.9em;
 	text-align: center;
+	position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #error {
-	color: red;
+	color: #a20c09;
+	background: #F1A19B;
+	border: 1px solid gray;
+	padding: 10px;
 }
 
 #message {
-	color: blue;
+	color: #1F3F6F;
+	background: #A1D2FC;
+	border: 1px solid gray;
+	padding: 10px;
 }
 
 .links {
@@ -336,11 +378,10 @@ a:hover, .link:hover {
 
 /* USER PROFILE */
 
-.submission-status-table {
+#submission-status-table {
 	border-top: 1px solid gray;
 	border-left: 1px solid gray;
 	border-right: 1px solid gray;
-	width: calc(60% + 20px);
 	margin: 0 auto;
 	min-width: 410px;
 }
@@ -387,7 +428,7 @@ a:hover, .link:hover {
 }
 
 .status-definition .definition-body {
-	font-size: 0.9em;
+	font-size: 0.85em;
 }
 
 .status-submission-date{
@@ -413,7 +454,6 @@ a:hover, .link:hover {
 .edit-history {
 	font-size: 0.85em;
 }
-
 
 
 /* ADMIN PANEL */

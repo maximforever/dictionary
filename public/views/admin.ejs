@@ -1,12 +1,13 @@
 <% include partials/_header.ejs %>
 
-<span class = "link" id = "unapproved-definitions-link">Unapproved definitions (<span id = "definition-count">0</span></span>) | 
-<span class = "link" id = "unresolved-reports-link">Reports (<span id = "report-count">0</span>)</span> 
-<% if(session.user.admin == "true" || session.user.admin == true){ %>
-    | <span class = "link" id = "user-role-manager">User roles</span>
-<% } %>
-<div id = "admin-posts-section"></div>
+<div id = "main-section">
+    <span class = "link" id = "unapproved-definitions-link">Unapproved definitions (<span id = "definition-count">0</span></span>) | 
+    <span class = "link" id = "unresolved-reports-link">Reports (<span id = "report-count">0</span>)</span> 
+    <% if(session.user.admin == "true" || session.user.admin == true){ %>
+        | <span class = "link" id = "user-role-manager">User roles</span>
+    <% } %>
+    <div id = "admin-posts-section"></div>
 
-<div id = "admin-roles-container"></div>
-
+    <div id = "admin-roles-container"></div>
+</div>
 <% include partials/_footer.ejs %>

@@ -6,10 +6,12 @@ var currentTerm = null;
 
 function main(){
 
+    $("#error, #message").text("").hide();
+
     resetNavBar();
 
     $("body").on("click", function(){
-        $("#error, #message").text("");
+        $("#error, #message").text("").hide();
     });
 
 
@@ -379,7 +381,7 @@ function voteOnDefinition(voteType, elementId, voteTerm){
                 console.log(result.message);
             } else {
                 console.log("something went wrong");
-                $("#error").text(result.error);
+                $("#error").text(result.error).css("display", "block");
             }
         }
     })
@@ -403,13 +405,13 @@ function login(){
                     location.reload();
                 } else {
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
-                    $("#error").text(result.message);
+                    $("#error").text(result.message).css("display", "block");
                 }
             }
         })
     } else {
         console.log("invalid login");
-        $("#message").text("Username or password can't be blank");
+        $("#message").text("Username or password can't be blank").css("display", "block");
     }
 
 }
@@ -431,16 +433,16 @@ function signup(){
             success: function(result){
                 if(result.status == "success"){
                     resetNavBar();
-                    $("#message").text(result.message);
+                    $("#message").text(result.message).css("display", "block");
                 } else {
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
-                    $("#error").text(result.message);
+                    $("#error").text(result.message).css("display", "block");
                 }
             }
         })
     } else {
         console.log("invalid signup");
-        $("#message").text("Username or password can't be blank");
+        $("#error").text("Username or password can't be blank").css("display", "block");
     }
 }
 
@@ -452,6 +454,7 @@ function logout(){
         success: function(result){
             if(result.status == "success"){
                 location.reload();
+                $("#error").text("Logged out").css("display", "block");
             } else {
                 $("#login-username, #login-password, #signup-username, #signup-password").val("");
             }
