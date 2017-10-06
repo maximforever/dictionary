@@ -69,7 +69,7 @@ input {
 
 #main-section {
 	padding: 0 5vw;
-	min-height: 84vh;			/* not sure why not 85*/
+	min-height: 83vh;			/* not sure why not 85*/
 }
 
 #footer-section	 {
@@ -77,10 +77,11 @@ input {
   font-weight: 500;
   text-align: right;
   min-height: calc(5vh - 20px);
+
 }
 
 #footer-section p {
-	margin: 0;
+	margin: 0 -10% 0 0;
 	padding: 10px 0;
 }
 
@@ -103,6 +104,7 @@ input {
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
 	min-width: 200px;
+	max-width: 1600px;
 }
 
 #terms-section {
@@ -179,7 +181,7 @@ input {
 }
 
 .definition {
-	margin: 25px auto 0 auto;
+	margin: 35px auto;
     padding: 15px 20px 20px 20px;
     display: block;
     box-shadow: 0px 0px 10px rgba(131, 142, 66, 0.5);
@@ -191,7 +193,7 @@ input {
 }
 
 .definition-accent {
-	margin: 25px auto;
+	margin: 35px auto;
 	padding: 20px;
 	border: 1px solid rgba(50, 50, 50, 0.2);
 	display: block;
@@ -199,6 +201,10 @@ input {
 	min-width: 200px;
 	background: #f5fdcd;
 	border-radius: 3px; 
+}
+
+.new-definition-term {
+	font-weight: 600;
 }
 
 .add-confirmation {
@@ -233,6 +239,10 @@ input {
 
 #add-definition {
 	float: right;
+}
+
+.definition-category-section {
+	margin: 8px 0 12px 0;
 }
 
 .term-suggestions-section {
@@ -282,6 +292,9 @@ input {
 	font-size: 0.8em;
 	font-weight: 600;
 	margin: 5px 0;
+	padding: 2px 8px;
+    background: #eccba6;
+    display: inline-block;
 }
 
 .info-row {
@@ -316,7 +329,7 @@ input {
     pointer-events: none;
 }
 
-.report-error{
+.report-error, .new-definition-error {
 	color: #b50000;
 	font-weight: 600;
 	margin:5px 0px;
@@ -357,10 +370,13 @@ input {
 
 .links button {
 	margin-left: 10px;
-	border-radius: 0;
-	border: 1px solid gray;
-	background: #2E58D1;
-	color: white;
+    border-radius: 0;
+    border: 1px solid #000000;
+    background: #2E58D1;
+    color: white;
+    font-family: 'Muli', sans-serif;
+    font-size: 0.9em;
+    vertical-align: top;
 }
 
 .links button:hover {
@@ -370,6 +386,10 @@ input {
 
 #new-alert {
 	color: red;
+}
+
+#login-username, #signup-username {
+	margin-right: 8px;
 }
 
 /* REPORT */

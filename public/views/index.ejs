@@ -25,25 +25,33 @@
             
         	<h3>Add your own explanation</h3>
             <ul>
-                <li>Aim your explanation at a total beginner</li>
-                <li>Avoid jargon</li>
+                <li>Write for a total beginner - avoid industry jargon</li>
                 <li>Answer these questions:</li>
                 <ol>
-                    <li>What does this thing do?</li>
-                    <li>What other things is this commonly used with?</li>
-                    <li>What are the alternative tools used in place of this?</li>
-                    <li>What are the high level pros and cons of using this thing?</li>
+                    <li>What does <span class = "new-definition-term"></span> do?</li>
+                    <li>What is <span class = "new-definition-term"></span> commonly used with?</li>
+                    <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>?</li>
+                    <li>Are there alternatives to <span class = "new-definition-term"></span>?</li>
                 </ol>
             </ul>
 
             <p class = "textarea-label">Term</p>
             <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
             <div id = "term-suggestions-section"></div>
-            <p class = "textarea-label">Definition</p>
+
+            <div class = "definition-category-section">
+                <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool ("NPM, grunt")<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept ("recursion, hash, JSON")<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "other">other
+            </div>
+
+            <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When is it used?</p>
         	<textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
             <p class = "textarea-label">Related terms (comma separated, please)</p>
         	<textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
         	<span id = "new-definition-char-count">0</span>/500
+            <div class = "new-definition-error"></div>
         	<button id = "add-definition">Add</button>
             <% } %>
     </div>

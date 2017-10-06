@@ -122,15 +122,17 @@ function main(){
         $("#report").hide();
         $("#new-definition").show();
         $("#new-definition-textarea").focus();
+        $(".new-definition-term").text(currentTerm)
         $("#definition-term-textarea").val(currentTerm);
         $("#definition-term-textarea").prop('disabled', true);
-        $("#definition-term-textarea").css("background", "gray").css("color", "#3c3c3c");
+        $("#definition-term-textarea").css("background", "#bbbbbb").css("color", "#3c3c3c");
         $("#terms-section").empty();
     });
 
     $("body").on("click", "#new-def-link", function(){
         $("#new-definition").show();
         $("#definition-term-textarea").val($("#search-bar").val());
+        $(".new-definition-term").text($("#search-bar").val())
         $("#definition-term-textarea").focus();
         $("#terms-section").empty();
     });
@@ -308,7 +310,7 @@ function getDefinition(thisTerm){
                     $("#definitions-section").empty();
                     displayDefinitionsOnPage(result.body);
 	            } else {
-                    $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                    $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                 }
         	} else {
         		console.log(result.error)
@@ -357,7 +359,9 @@ function addDefinition(){
 	     		}
 	        }
 	    })
-	}
+	} else {
+        $(".new-definition-error").text("Please enter a definition");
+    }
 }
 
 function voteOnDefinition(voteType, elementId, voteTerm){
@@ -468,14 +472,13 @@ function logout(){
 function displayDefinitionsOnPage(definitions){
 
    
+    $("#definitions-section").empty();
 
     definitions = sortDefinitions(definitions);
 
     // a bit of handlebars magic
 
     $.get('views/components/definition.html', function(data) {
-
-        $("#definitions-section").prepend("<h3>Popular definitions</h3>");
 
         definitions.forEach(function(thisDefinition){
             var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
