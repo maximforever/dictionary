@@ -14,15 +14,13 @@
     <link rel="shortcut icon" type="image/png" href="/assets/icon.png">
 </head>
 <body>
+<div class = "alert">
+    <span id = "error"><% if(typeof(error) != "undefined"){ error } %></span>
+    <span id = "message"><% if(typeof(message) != "undefined"){ message } %></span>
 
+</div>
 <div class = "container">
     <div id = "header-section">
-        <div class = "alert">
-
-            <span id = "error"><% if(typeof(error) != "undefined"){ error } %></span>
-            <span id = "message"><% if(typeof(message) != "undefined"){ message } %></span>
-
-        </div>
         <div class = "links">
             <div class = "account">
                 <% if (typeof(session.user) == "undefined" || session.user == null){ %>
@@ -30,16 +28,16 @@
                     <span class = "link" id = "login">Log In</span>
                 <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
-                    <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>
-                        <a href = "/admin" id = "admin-panel-link">Admin Panel</a>
-                    <% } %>
-
                     <span class = "welcome">Hello, <a href = "/profile"><%= session.user.username %></a></span>
                     
                     <% if(session.user.newNotifications){ %>
                         <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" id = "new-alert"></i></span>
                     <% } else {%>
                         <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" ></i></span>
+                    <% } %>
+
+                    <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>
+                        <a href = "/admin"><i class="fa fa-id-card-o" aria-hidden="true" href = "/admin"></i></a>
                     <% } %>
 
                     <span class = "link" id = "logout">Log out</span>

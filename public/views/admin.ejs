@@ -1,6 +1,7 @@
 <% include partials/_header.ejs %>
 
 <div id = "main-section">
+    <h2>Admin panel</h2>
     <span class = "link" id = "unapproved-definitions-link">Unapproved definitions (<span id = "definition-count">0</span></span>) | 
     <span class = "link" id = "unresolved-reports-link">Reports (<span id = "report-count">0</span>)</span> 
     <% if(session.user.admin == "true" || session.user.admin == true){ %>

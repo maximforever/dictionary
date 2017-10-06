@@ -21,7 +21,7 @@ const dbops = require("./app/dbops");
 const database = require("./app/database");
 
 var dbAddress;
-
+ 
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
     dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds147864.mlab.com:47864/dev-dictionary";
 } else {

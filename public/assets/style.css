@@ -64,7 +64,7 @@ input {
 }
 
 #main-section {
-	padding: 5vh 10vw 0 10vw;
+	padding: 0 10vw;
 	min-height: 84vh;			/* not sure why not 85*/
 }
 
@@ -92,7 +92,7 @@ input {
 
 #search-bar {
 	font-size: 2.5em;
-	margin: 0 0 0 -10%;
+	margin: 5vh 0 0 -10%;
 	width: calc(120% - 20px);
 	padding: 10px;
 	display: block;
@@ -132,9 +132,9 @@ input {
 
 .pop-out {
 	width: calc(64vw - 44px);
-    border: 2px solid black;
+    border: 1px solid rgba(10,10,10, 0.4);
     z-index: 2;
-    box-shadow: -5px 10px 30px rgba( 20, 20, 20, 0.5);
+    box-shadow: -0 0 35px rgba( 20, 20, 20, 0.5);
     position: absolute;
     top: 15vh;
     left: 18vw;
@@ -144,8 +144,13 @@ input {
     min-width: 200px;
 }
 
+.pop-out h3 {
+	margin-top: 0;
+}
+
 .pop-out .header i {
 	float: right;
+	margin: -15px -10px 0 0;
 }
 
 .pop-out ul {
@@ -201,7 +206,7 @@ input {
 }
 
 #new-definition h3 {
-	margin: 5px 0px 10px 0px;
+	margin-bottom: 10px;
 }
 
 #new-definition textarea {
@@ -260,7 +265,7 @@ input {
 .textarea-label {
 	font-size: 0.8em;
 	font-weight: 600;
-	margin: 5px 0 0 0;
+	margin: 5px 0;
 }
 
 .info-row {
@@ -308,24 +313,18 @@ input {
 .alert {
 	font-size: 0.9em;
 	text-align: center;
-	position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 #error {
 	color: #a20c09;
 	background: #F1A19B;
-	border: 1px solid gray;
-	padding: 10px;
+	padding: 5px;
 }
 
 #message {
 	color: #1F3F6F;
 	background: #A1D2FC;
-	border: 1px solid gray;
-	padding: 10px;
+	padding: 5px;
 }
 
 .links {
@@ -377,6 +376,10 @@ input {
 
 
 /* USER PROFILE */
+
+#main-section h2{
+	margin: 0 0 2vh 0;
+}
 
 #submission-status-table {
 	border-top: 1px solid gray;
@@ -465,7 +468,7 @@ input {
 	color: white;
 	background: #578637;
 	border: 1px solid black;
-	float: left;
+	float: right;
 }
 
 #admin-panel-link:hover {
