@@ -12,6 +12,7 @@ function main(){
 
     $("body").on("click", function(){
         $("#error, #message").text("").hide();
+        $("#terms-section").text("");
     });
 
 
@@ -233,7 +234,7 @@ function search(){
                             result.body.forEach(function(term){
                                 displaySearchTerm(term);
                             });
-                            $("#definitions-section").append("<div class = 'definition add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
             		} else {
                         console.log('"#definitions-section").height() ' + $("#definitions-section").height());
@@ -242,7 +243,7 @@ function search(){
                             $(".no-def-term").text(searchTerm);
                         } else {
                             console.log("adding div");
-                            $("#definitions-section").append("<div class = 'definition add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
                     }      		
             	} else {
@@ -304,7 +305,7 @@ function getDefinition(thisTerm){
                 console.log(result.count);
 
             	if(result.count > 0){
-            	//	$("#definitions-section").empty();
+                    $("#definitions-section").empty();
                     displayDefinitionsOnPage(result.body);
 	            } else {
                     $("#definitions-section").append("<div class = 'definition'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
@@ -494,7 +495,7 @@ function displayDefinitionsOnPage(definitions){
               $("#definitions-section").append(compiled);
         });
 
-        $("#definitions-section").append("<div class = 'definition add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+        $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
 
     }, 'html')
 }
