@@ -60,11 +60,16 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.use(function(req, res, next) {                                          
-        app.locals.session = req.session;                                       // makes session available to all views
+        app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
+
+        console.log("current session: ");
+        console.log(req.session);
+
+/*
         app.locals.error = req.session.error;                                   // making copies like this is clunky, but it works
         app.locals.message = req.session.message;
         req.session.error = null;
-        req.session.message = null;
+        req.session.message = null;*/
 
         next();
     })

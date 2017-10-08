@@ -95,16 +95,26 @@ input {
 
 /* SEARCH BAR */
 
+#search-bar-div {
+	margin: 3vh 0 4vh;
+}
+
+#search-bar-label {
+	margin: 0 0 0.5vh -5vw;
+	font-weight: 300;
+	float: left;
+}
+
 #search-bar {
 	font-size: 2.5em;
-	margin: 5vh 0 0 -5vw;
+	margin-left: -5vw;
 	width: calc(80vw - 22px);
 	padding: 10px;
 	display: block;
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
 	min-width: 200px;
-	max-width: 1600px;
+	max-width: calc(1600px - 22px);
 }
 
 #terms-section {
@@ -186,7 +196,7 @@ input {
     display: block;
     box-shadow: 0px 0px 10px rgba(131, 142, 66, 0.5);
     min-width: 200px;
-    background: #f5fdcd;
+    background: #f6fdd3;
     border-radius: 3px;
     border: 1px solid rgba(190, 173, 127, 0.6);
     border-top: 2px solid #88612c;
@@ -419,10 +429,11 @@ input {
 
 #submission-status-table {
 	border-top: 1px solid gray;
-	border-left: 1px solid gray;
-	border-right: 1px solid gray;
-	margin: 0 auto;
-	min-width: 410px;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    margin: 0 auto;
+    min-width: 410px;
+    box-shadow: 0px 0px 10px rgb(138, 130, 121);
 }
 
 .submission-status {
@@ -481,6 +492,7 @@ input {
 }
 
 .status-row {
+    background: #fff8e3;
 	padding: 10px;
 	border-bottom: 1px solid gray;
 }

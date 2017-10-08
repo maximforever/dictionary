@@ -14,9 +14,21 @@
     <link rel="shortcut icon" type="image/png" href="/assets/icon.png">
 </head>
 <body>
+
 <div class = "alert">
-    <span id = "error"><% if(typeof(error) != "undefined"){ error } %></span>
-    <span id = "message"><% if(typeof(message) != "undefined"){ message } %></span>
+
+    <span id = "error">
+        <% if(typeof(session.error) != "undefined"){ %> 
+            <%= JSON.stringify(session.error) %>
+        <% } %>
+
+    </span>
+    <span id = "message">
+        <% if(typeof(session.message) != "undefined"){ %>
+            <%= JSON.stringify(session.message) %>
+        <% } %>
+    </span>
+
 
 </div>
 <div class = "container">

@@ -6,7 +6,7 @@ var currentTerm = null;
 
 function main(){
 
-    $("#error, #message").text("").hide();
+    $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
 
     resetNavBar();
 
@@ -36,6 +36,7 @@ function main(){
     });
 
     $("body").on("click", ".report-post", function(){
+        window.scrollTo(0, 0);
         console.log(this.dataset.id);
         displayReport(this.dataset.id, this.dataset.type);
     });
