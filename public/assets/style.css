@@ -142,7 +142,7 @@ input {
 
 /* POP OUT */
 
-#new-definition, #report { 	/* add #notifications to this*/
+#new-definition, #report, #notifications { 	
     display: none;
 }
 
@@ -520,13 +520,23 @@ input {
 	top:5vh	;
 }
 
-.notification-panel{
-	width: 100%;
-	height: 20px;
+.notifications-header {
+	display: block;
+	text-align: right;
+}
+
+.notifications-header i {
+	padding: 3px;
+}
+
+.one-notification {
+	border-bottom: 1px solid rgba(10,10,10,0.4);
 }
 
 .notification-panel{
-	background: #C9FCFB;
+	font-size: 0.85em;
+	background: #f0f8ff;
+	padding: 5px;
 }
 
 .notification-panel:hover {
@@ -535,6 +545,15 @@ input {
 
 .notification-control {
 	text-align: center;
+	background: #c7e2f9;
+}
+
+.submission-update {
+	font-family: 'Lusitana', serif;
+	font-weight: 400;
+	padding: 0px 5px;
+    border-radius: 4px;
+    font-size: 1.05em;
 }
 
 

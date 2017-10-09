@@ -1,6 +1,7 @@
 $(document).ready(main);
 
 var currentTerm = null;
+var currentNotifications = [];
 
 
 
@@ -574,10 +575,35 @@ function displayAddDefinition(term){
 
 function displayNotification(){
     // resume work here - need to create a pop out that displays notifications. Notifications are stored in the session from "getUserData"
-    $("#report").hide();
-    $("#new-definition").hide();
-
     
+
+    $.ajax({
+        type: "get",
+        url: "/updated-user-data",
+        success: function(updatedUserData){
+
+            if(updatedUserData.status == "success"){
+                $("#report").hide();
+                $("#new-definition").hide();
+                $("#notifications").show();
+                $("#notifications").css("left", ($(".notification-bell")[0].offsetLeft-140) + "px");
+                $("#notifications").css("top", ($(".notification-bell")[0].offsetTop+30) + "px");
+
+                $("#notifications-section").empty();
+
+                currentNotifications = updatedUserData.notifications;
+
+                for(var i = (updatedUserData.notifications.length-1); i >= 0 ; i--){
+                    var notification = updatedUserData.notifications[i];
+                    $("#notifications-section").append("<div class = 'notification-panel one-notification'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</span></div>");
+                }
+
+            } else {
+                console.log("something went wrong");
+                $("#error").text(updatedUserData.error).css("display", "block");
+            }
+        }
+    })
 
 }
 

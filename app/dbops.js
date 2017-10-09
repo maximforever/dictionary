@@ -388,7 +388,7 @@ function adminVote(db, req, callback){
 				database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function removeDefinition(updatedDefinition){
 					
 					var newNotification = {
-						to: rupdatedDefinition.author,
+						to: updatedDefinition.author,
 						from: "admin",
 						date: Date(),
 						body: "Your submission for '" + updatedDefinition.term + "' has been removed",
@@ -574,7 +574,7 @@ function login(db, req, callback){
 							}
 
 							database.update(db, "users", userQuery, loginDateUpdate, function updateLastLogin(lastLogin){
-								
+
 								console.log("Logged in successfully.")
 								console.log(existingUsers[0].data);
 				                req.session.user = existingUsers[0].data;
@@ -737,7 +737,7 @@ function getUserData(db, req, callback){
 		}
 
 		database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
-			database.read(db, "notifcations", notificationQuery, function fetchNotifications(allNotifications){
+			database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
 				callback({status: "success", definitions: allDefinitions, notifications: allNotifications})
 			})
 		})

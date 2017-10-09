@@ -299,6 +299,25 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     })
 
+    app.get("/updated-user-data", function(req, res){
+        if(req.session.user){
+
+            dbops.getUserData(db, req, function getData(response){
+                console.log(response);
+                if(response.status == "success"){
+                    res.send({status: "success", definitions: response.definitions, notifications: response.notifications});
+                } else {
+                    res.send({
+                        status: "fail",
+                        error: "Something strange happened"
+                    })
+                }   
+            });
+        } else {
+            res.redirect("/");
+        }
+    })
+
 
 
 /* ADMIN PAGES */
