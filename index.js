@@ -286,7 +286,7 @@ MongoClient.connect(dbAddress, function(err, db){
             dbops.getUserData(db, req, function getData(response){
                 console.log(response);
                 if(response.status == "success"){
-                    res.render("profile", {definitions: response.definitions});
+                    res.render("profile", {definitions: response.definitions, notifications: response.notifications});
                 } else {
                     res.send({
                         status: "fail",

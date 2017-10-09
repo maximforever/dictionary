@@ -574,11 +574,13 @@ function login(db, req, callback){
 							}
 
 							database.update(db, "users", userQuery, loginDateUpdate, function updateLastLogin(lastLogin){
+								
 								console.log("Logged in successfully.")
 								console.log(existingUsers[0].data);
 				                req.session.user = existingUsers[0].data;
 				                req.session.user.admin = existingUsers[0].admin;
 				                req.session.user.moderator = existingUsers[0].moderator;
+
 				                var day = 60000*60*24;
 				                req.session.expires = new Date(Date.now() + (30*day));          // this helps the session keep track of the expire date
 				                req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
@@ -627,10 +629,6 @@ function getUpdatedUser(db, req, callback){
             } else {
             	callback(false);
             }
-
-			
-
-
 		} else {
 			req.session.user = null;
 			console.log("Something went wrong with fetchign the session");

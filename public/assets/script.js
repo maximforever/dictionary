@@ -574,6 +574,11 @@ function displayAddDefinition(term){
 
 function displayNotification(){
     // resume work here - need to create a pop out that displays notifications. Notifications are stored in the session from "getUserData"
+    $("#report").hide();
+    $("#new-definition").hide();
+
+    
+
 }
 
 function displayReport(id, type){
