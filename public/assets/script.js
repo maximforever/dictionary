@@ -421,7 +421,7 @@ function voteOnDefinition(voteType, elementId, voteTerm){
 function login(){
 
     var loginData = {
-        username: $("#login-username").val(),
+        username: $("#login-username").val().toLowerCase(),
         password: $("#login-password").val()
     }
 
@@ -593,9 +593,19 @@ function displayNotification(){
 
                 currentNotifications = updatedUserData.notifications;
 
+
+                /*
+                    using a for loop instead of a usual .forEach here to display notifications in most recent order without
+                    using a Mongo sort function    
+                */
+        
                 for(var i = (updatedUserData.notifications.length-1); i >= 0 ; i--){
                     var notification = updatedUserData.notifications[i];
                     $("#notifications-section").append("<div class = 'notification-panel one-notification'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</span></div>");
+                }
+
+                if(updatedUserData.notifications.length == 0){
+                    $("#notifications-section").append("<div class = 'notification-panel one-notification'>You don't have any notifications</div>");
                 }
 
             } else {
