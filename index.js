@@ -62,9 +62,6 @@ MongoClient.connect(dbAddress, function(err, db){
     app.use(function(req, res, next) {                                          
         app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
 
-        console.log("current session: ");
-        console.log(req.session);
-
 /*
         app.locals.error = req.session.error;                                   // making copies like this is clunky, but it works
         app.locals.message = req.session.message;
@@ -447,6 +444,31 @@ MongoClient.connect(dbAddress, function(err, db){
             })
         }
     });
+
+    app.post("/clear-notifications", function(req, res){
+        
+        if(req.session.user){
+            dbops.clearNotifications(db, req, function vote(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        message: response.message,
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                }
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "Something went wrong"
+            })
+        }
+    });
+
 
 
 

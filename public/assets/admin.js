@@ -17,8 +17,12 @@ function main(){
 		        id: this.dataset.id,
 		        type: this.dataset.vote,
         		post: this.dataset.type,
-                author: this.dataset.author
+                author: this.dataset.author,
+                term: this.dataset.term
 		    }
+
+            console.log("votingData");
+            console.log(votingData);
 
         if(this.dataset.type == "definition" || this.dataset.type == "report"){
             console.log("sending a request");
@@ -110,6 +114,8 @@ function displayUnapprovedDefinitions(definitions){
 	$("#admin-roles-container").empty();
     // a bit of handlebars magic
 
+    $("#admin-posts-section").append("<h3>Unapproved submissions</h3>");
+
     $.get('views/components/unapprovedDefinition.html', function(data) {
 
         definitions.forEach(function(thisDefinition){
@@ -136,6 +142,8 @@ function displayUnresolvedReports(reports){
 	$("#admin-roles-container").empty();
     // a bit of handlebars magic
 
+    $("#admin-posts-section").append("<h3>Unresolved reports</h3>");
+
     $.get('views/components/unresolvedReports.html', function(data) {
 
         $("#definitions-section").prepend("<h3>Unresolved reports</h3>");
@@ -151,6 +159,7 @@ function displayUnresolvedReports(reports){
     		var context = {
                 report: thisReport,
                 created: thisReport.created.substr(4, 20),
+
             };
             var compiled = myTemplate(context)
             $("#admin-posts-section").append(compiled);

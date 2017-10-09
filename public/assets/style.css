@@ -29,6 +29,8 @@ input {
 	padding: 5px 10px;
 	background: rgb(220, 239, 236);
 	color: #2E58D1;
+	font-family: "Lusitana", sans-serif;
+    font-weight: 700;
 }
 
 .term-suggestion-link {
@@ -128,7 +130,7 @@ input {
 	background: white;
 	border: 1px solid black;
 	margin-top: -4px;
-	width: calc(100% - 40px);
+	width: calc(100% - 42px);
 	display: none;
 }
 
@@ -398,6 +400,11 @@ input {
 	color: red;
 }
 
+.notification-bell:hover{
+	font-weight: bold;
+	cursor: pointer;
+}
+
 #login-username, #signup-username {
 	margin-right: 8px;
 }
@@ -492,7 +499,7 @@ input {
 }
 
 .status-row {
-    background: #fff8e3;
+    background: #feffe3;
 	padding: 10px;
 	border-bottom: 1px solid gray;
 }

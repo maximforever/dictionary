@@ -2,14 +2,8 @@
 
 	<div class = "main-row">
 		<div class = "definition-column">
-			<span class = "definition-term">{{definition.term}}</span>: {{definition.body}}
-		</div><!-- 
-	 --><div class = "voting-column">
-			<div class = "voting-section">	
-				<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "up" aria-hidden="true"></i><br>
-				<span class = "definition-score">{{score}}</span><br>
-				<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "down" aria-hidden="true"></i>
-			</div>
+			<div class = "definition-term">{{definition.term}}</div>
+			<div class = "definition-body">{{definition.body}}</div>
 		</div>
 	</div>
 
@@ -18,8 +12,8 @@
 	 		Submitted by @{{definition.author}} on {{created}}
 		</div><!-- 
 	 --><div class = "post-actions-column">
-			<button class = "admin-decision reject" data-vote = "rejected" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}"><i class="fa fa-times" aria-hidden="true"></i></button>
-			<button class = "admin-decision approve" data-vote = "approved" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}"><i class="fa fa-check" aria-hidden="true"></i></button>
+			<button class = "admin-decision reject" data-vote = "rejected" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition-term}}"><i class="fa fa-times" aria-hidden="true"></i></button>
+			<button class = "admin-decision approve" data-vote = "approved" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition.term}}"><i class="fa fa-check" aria-hidden="true"></i></button>
 		</div>
 	</div>
 

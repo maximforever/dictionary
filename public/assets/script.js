@@ -37,6 +37,7 @@ function main(){
 
     $("body").on("click", ".report-post", function(){
         window.scrollTo(0, 0);
+        $(".add-confirmation").remove();
         console.log(this.dataset.id);
         displayReport(this.dataset.id, this.dataset.type);
     });
@@ -47,6 +48,14 @@ function main(){
 
     $("body").on("click", "input[name='report']", function(){
         $(".report-error").empty();
+    });
+
+    $("body").on("click", "#new-alert", function(){
+        acknowledgeNotifications();
+    });
+
+    $("body").on("click", ".notification-bell", function(){
+        displayNotification();
     });
 
 
@@ -325,41 +334,54 @@ function addDefinition(){
     var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
 	var relatedTerms = $("#new-definition-related-terms").val();
+    
 
     if(definitionBody.trim()){
+        if($("input[name='definition-category']:checked").length == 1){
 
-    	var related = trimRelatedTerms();
+        	var related = trimRelatedTerms();
+            var definitionCategory = $("input[name='definition-category']:checked")[0].dataset.category
 
-    	var definitionData = {
-			term: definitionTerm.toLowerCase().trim(),
-			definition: definitionBody,
-			related: relatedTerms
-		}
+        	var definitionData = {
+    			term: definitionTerm.toLowerCase().trim(),
+    			definition: definitionBody,
+    			related: relatedTerms,
+                category: definitionCategory
+    		}
 
-        console.log(definitionData);
-	    
-		$.ajax({
-	        type: "post",
-	        data: definitionData,
-	        url: "/new-definition",
-	        success: function(result){
-	        	if(result.status == "success"){
-            		$("#terms-section").empty();
-            		$("#definitions-section").empty();
-            		getDefinition(result.term);
-                    
-                    if(!result.termAdded){
-                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
-                    }
-                    
-                    $("#new-definition-textarea").val("");            
-                    $("#new-definition").hide();
-	        	} else {
-	            	$("#definitions-section").empty();
-	            	$("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
-	     		}
-	        }
-	    })
+            console.log(definitionData);
+    	    
+    		$.ajax({
+    	        type: "post",
+    	        data: definitionData,
+    	        url: "/new-definition",
+    	        success: function(result){
+
+                    $("#terms-section").empty();
+                    $("#definitions-section").empty();
+                    $("#new-definition-related-terms").empty();
+                    $("input[name='definition-category']").prop('checked', false);
+
+
+    	        	if(result.status == "success"){
+                		
+                		getDefinition(result.term);
+                        
+                        if(!result.termAdded){
+                            $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                        }
+                        
+                        $("#new-definition-textarea").val("");            
+                        $("#new-definition").hide();
+    	        	} else {
+    	            	$("#definitions-section").empty();
+    	            	$("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
+    	     		}
+    	        }
+    	    })
+        } else {
+            $(".new-definition-error").text("Please pick a category for this definition");
+        }
 	} else {
         $(".new-definition-error").text("Please enter a definition");
     }
@@ -440,6 +462,7 @@ function signup(){
             success: function(result){
                 if(result.status == "success"){
                     resetNavBar();
+                //  showLogin();                            // looks kind of jarring
                     $("#message").text(result.message).css("display", "block");
                 } else {
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
@@ -549,6 +572,10 @@ function displayAddDefinition(term){
 	currentTerm = term;
 }
 
+function displayNotification(){
+    // resume work here - need to create a pop out that displays notifications. Notifications are stored in the session from "getUserData"
+}
+
 function displayReport(id, type){
     $("#new-definition").hide();
     $("#report").show();
@@ -580,6 +607,8 @@ function submitReport(){
                 data: reportData,
                 url: "/new-report",
                 success: function(result){
+
+                    $("input[name='report']").prop('checked', false);
                     $("#report").hide();
                     if(result.status == "success"){
                         $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted and will be reviewed shortly.</div>");
@@ -589,17 +618,27 @@ function submitReport(){
                 }
             })
 
-
-
         } else {
             $(".report-error").text("Please select a reason for this report");
         }
-
-
-
 }
 
 
-function trimRelatedTerms(){
+function acknowledgeNotifications(){
+    $.ajax({
+        type: "post",
+        url: "/clear-notifications",
+        success: function(result){
+            if(result.status == "success"){
+                $(".notification-bell").removeAttr('id');
+            } else {
+                console.log("something went wrong");
+                $("#error").text(result.error).css("display", "block");
+            }
+        }
+    })
+}
 
+function trimRelatedTerms(){
+    // add function to trim related terms into an array
 }

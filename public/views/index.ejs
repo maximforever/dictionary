@@ -1,16 +1,14 @@
 <% include partials/_header.ejs %>
 
 <div id = "main-section">
-
-
-
-    <div class = "search-bar-div">
+    <div id = "search-bar-div">
         <p id = "search-bar-label">enter a coding term you want to learn about</p>
         <input type = "text" maxlength = "40" id = "search-bar" autofocus>
+        <div id = "terms-section">
+        </div>
     </div>
 
-    <div id = "terms-section">
-    </div>
+    
 
     <div id = "definitions-section">
     </div>
@@ -44,8 +42,8 @@
 
             <div class = "definition-category-section">
                 <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool (ex: "NPM, grunt")<br>
-                <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: "recursion, hash, JSON")<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool (ex: NPM, grunt, canvas, React.js)<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: recursion, hash, JSON)<br>
                 <input type="radio" name = "definition-category" class = "definition-category" data-category = "other">other
             </div>
 

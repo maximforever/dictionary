@@ -44,9 +44,9 @@
                     <span class = "welcome">Hello, <a href = "/profile"><%= session.user.username %></a></span>
                     
                     <% if(session.user.newNotifications){ %>
-                        <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" id = "new-alert"></i></span>
+                        <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" id = "new-alert"></i></span>
                     <% } else {%>
-                        <span class = "notifications-button"><i class="fa fa-bell-o" aria-hidden="true" class = "notification-bell" ></i></span>
+                        <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" ></i></span>
                     <% } %>
 
                     <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>

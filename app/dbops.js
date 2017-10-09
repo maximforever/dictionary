@@ -100,6 +100,7 @@ function addDefinition(db, req, callback){
 					lastEdit: Date(),
 					created: Date(),
 					body: req.body.definition,
+					category: req.body.category,
 					related: []
 				}
 				if(approvedDefinitions.length > 5){
@@ -309,8 +310,8 @@ function createNewVote(db, req, newVote, callback){
 
 function adminVote(db, req, callback){
 
-	console.log("req.body.post");
-	console.log(req.body.post);
+	console.log("req.body");
+	console.log(req.body);
 	if(req.body.post == "definition"){
 
 		var definitionQuery = {
@@ -322,11 +323,35 @@ function adminVote(db, req, callback){
 		}
 
 		if(req.body.type == "approved" || req.body.type == "rejected"){
-			definitionUpdateQuery.$set[req.body.type ] = true;
+			definitionUpdateQuery.$set[req.body.type] = true;
+		}
+
+		var newNotification = {
+			to: req.body.author,
+			from: "admin",
+			date: Date(),
+			body: "Your submission for '" + req.body.term + "' has been " + req.body.type,
+			type: "definition",
+			term: req.body.term,
+			status: req.body.type
+		}
+
+		var newNotificationsUpdate = {
+			$set: {
+				"data.newNotifications": true
+			}
+		}
+
+		var userQuery = {
+			username: req.body.author
 		}
 
 		database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(response){
-			callback({status: "success", message: "definition updated"});
+			database.create(db, "notifications", newNotification, function createNotification(newNotification){
+				database.update(db, "users", userQuery, newNotificationsUpdate, function addNewNotification(newNotification){
+					callback({status: "success", message: "definition updated"});
+				});
+			})
 		})
 
 	} else if (req.body.post == "report"){
@@ -336,7 +361,7 @@ function adminVote(db, req, callback){
 			author: req.body.author
 		}
 
-		var thisDecision = "post cleared"
+		var thisDecision = "report dismissed"
 		if(req.body.type == "approved")	{ thisDecision == "post removed"}
 
 		var reportUpdateQuery = {
@@ -348,8 +373,6 @@ function adminVote(db, req, callback){
 
 		database.update(db, "reports", reportQuery, reportUpdateQuery, function resolveReport(updatedReport){
 
-			
-
 			var definitionQuery = {
 				id: updatedReport.post_id
 			}
@@ -360,14 +383,35 @@ function adminVote(db, req, callback){
 				}
 			}
 
-			console.log("req.body.type:");
-			console.log(req.body.type);
-
-
 			if(req.body.type == "approved"){
 				console.log("approving report - removing post");
 				database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function removeDefinition(updatedDefinition){
-					callback({status: "success", message: "Successfully removed definition"});
+					
+					var newNotification = {
+						to: rupdatedDefinition.author,
+						from: "admin",
+						date: Date(),
+						body: "Your submission for '" + updatedDefinition.term + "' has been removed",
+						type: "definition",
+						term: updatedDefinition.term,
+						status: "removed"
+					}
+
+					var newNotificationsUpdate = {
+						$set: {
+							"data.newNotifications": true
+						}
+					}
+
+					var userQuery = {
+						username: updatedDefinition.author
+					}
+
+					database.create(db, "notifications", newNotification, function createNotification(newNotification){		
+						database.update(db, "users", userQuery, newNotificationsUpdate, function notifyUser(updatedUser){		
+							callback({status: "success", message: "Successfully removed definition"});
+						});
+					});
 				});
 
 			} else {
@@ -404,7 +448,8 @@ function addReport(db, req, callback){
 
 		var reportQuery = {
 			post_id: parseInt(req.body.id),
-			author: thisAuthor
+			author: thisAuthor,
+			resolved: false
 		}
 
 		database.read(db, "reports", reportQuery, function checkForExistingReports(existingReports){
@@ -561,6 +606,11 @@ function login(db, req, callback){
 
 
 function getUpdatedUser(db, req, callback){
+
+	console.log("req.session");
+	console.log(req.session);
+
+
 	var userQuery = {
         username: req.session.user.username.toLowerCase()
     }	
@@ -668,7 +718,8 @@ function updateUserRoles(db, req, callback){
 			}
 
 
-			callback({status: "success", message: "Updated the user role", roles: updatedUserRoles})
+			callback({status: "success", 
+				message: "Updated the user role", roles: updatedUserRoles})
 		})
 		
 	} else {
@@ -679,12 +730,40 @@ function updateUserRoles(db, req, callback){
 function getUserData(db, req, callback){
 	if(req.session.user){    	
 
-		definitionQuery = {
+		var definitionQuery = {
 			author: req.session.user.username
 		}
 
+		var notificationQuery = {
+			to: req.session.user.username
+		}
+
 		database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
-			callback({status: "success", definitions: allDefinitions})
+			database.read(db, "notifcations", notificationQuery, function fetchNotifications(allNotifications){
+				callback({status: "success", definitions: allDefinitions, notifications: allNotifications})
+			})
+		})
+		
+	} else {
+		callback({status: "fail", message: "User is not logged in"})
+	}
+}
+
+function clearNotifications(db, req, callback){
+	if(req.session.user){    	
+
+		var userQuery = {
+			username: req.session.user.username
+		}
+
+		var newNotificationsUpdate = {
+			$set: {
+				"data.newNotifications": false
+			}
+		}
+
+		database.update(db, "users", userQuery, newNotificationsUpdate, function updateNotification(updatedNotification){
+			callback({status: "success"})
 		})
 		
 	} else {
@@ -728,3 +807,4 @@ module.exports.getUserRoles = getUserRoles;
 module.exports.updateUserRoles = updateUserRoles;
 
 module.exports.getUserData = getUserData;
+module.exports.clearNotifications = clearNotifications;
