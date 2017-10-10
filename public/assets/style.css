@@ -178,6 +178,17 @@ input {
 	margin: 30px 0 0 0;
 }
 
+#new-definition-wrapper {
+	padding: 5px;
+	margin-top: 3px;
+	display: inline-block;
+}
+
+.over-char-limit {
+	font-weight: 600;
+	color: #b50000;
+	background: #F1A19B;
+}
 
 /* DEFINITION */
 

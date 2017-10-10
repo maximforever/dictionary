@@ -42,8 +42,9 @@
 
             <div class = "definition-category-section">
                 <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool (ex: NPM, grunt, canvas, React.js)<br>
-                <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: recursion, hash, JSON)<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool, library, or framework (ex: NPM, React.js, grunt, Sublime Text)<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: recursion, hash, MVC)<br>
+                <input type="radio" name = "definition-category" class = "definition-category" data-category = "language">language or environment (ex: Perl, Node.js)<br>
                 <input type="radio" name = "definition-category" class = "definition-category" data-category = "other">other
             </div>
 
@@ -51,7 +52,7 @@
         	<textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
             <p class = "textarea-label">Related terms (comma separated, please)</p>
         	<textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
-        	<span id = "new-definition-char-count">0</span>/500
+        	<span id = "new-definition-wrapper"><span id = "new-definition-char-count">0</span>/500</span>
             <div class = "new-definition-error"></div>
         	<button id = "add-definition">Add</button>
             <% } %>

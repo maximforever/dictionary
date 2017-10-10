@@ -113,7 +113,13 @@ function main(){
 
 
 	$("#new-definition-textarea").on("keyup", function(){
-		$("#new-definition-char-count").text($("#new-definition-textarea").val().length);
+		var charCount = $("#new-definition-textarea").val().length;
+        $("#new-definition-char-count").text(charCount);
+        if(charCount >= 500){
+            $("#new-definition-wrapper").addClass("over-char-limit");
+        } else {
+            $("#new-definition-wrapper").removeClass("over-char-limit");
+        }
 	})
 
 	$("body").on("click", "#add-definition", function(){
@@ -601,7 +607,7 @@ function displayNotification(){
         
                 for(var i = (updatedUserData.notifications.length-1); i >= 0 ; i--){
                     var notification = updatedUserData.notifications[i];
-                    $("#notifications-section").append("<div class = 'notification-panel one-notification'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</span></div>");
+                    $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
                 }
 
                 if(updatedUserData.notifications.length == 0){
