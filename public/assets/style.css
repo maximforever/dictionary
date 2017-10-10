@@ -545,13 +545,14 @@ input {
 	border-bottom: 1px solid rgba(10,10,10,0.4);
 }
 
-.notification-panel{
+.notification-control, .notification-panel a{
 	font-size: 0.85em;
 	background: #f0f8ff;
 	padding: 5px;
+	display: block;
 }
 
-.notification-panel:hover {
+.notification-control:hover, .notification-panel a:hover {
 	background: #A7D2D2;
 }
 

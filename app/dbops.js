@@ -106,6 +106,36 @@ function addDefinition(db, req, callback){
 				if(approvedDefinitions.length > 5){
 					console.log("Auto approve based on positive submission history");
 					newDefinitionQuery.approved = true;
+
+
+					var newNotification = {
+						to: newDefinitionQuery.author,
+						from: "admin",
+						date: Date(),
+						body: "Your submission for '" + newDefinitionQuery.term + "' has been approved",
+						type: "definition",
+						term: newDefinitionQuery.term,
+						status: "approved"
+					}
+
+
+					var newNotificationsUpdate = {
+						$set: {
+							"data.newNotifications": true
+						}
+					}
+
+					var userQuery = {
+						username: newDefinitionQuery.author
+					}
+
+
+					database.create(db, "notifications", newNotification, function createNotification(newNotification){
+						database.update(db, "users", userQuery, newNotificationsUpdate, function addNewNotification(newNotification){
+							console.log("Notification for auto approval of '" + newDefinitionQuery.term + "' created");
+						});
+					})
+
 				}
 
 

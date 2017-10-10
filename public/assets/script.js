@@ -2,6 +2,7 @@ $(document).ready(main);
 
 var currentTerm = null;
 var currentNotifications = [];
+var currentNotificationCounter = 0;
 
 
 
@@ -11,10 +12,15 @@ function main(){
 
     resetNavBar();
 
-    $("body").on("click", function(){
+    $("body").on("click", function(e){
         $("#error, #message").text("").hide();
         $("#terms-section").text("");
+
+        if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
+           $("#notifications").hide();              
+        }
     });
+
 
 
 	$("#search-button").on("click", function(){
@@ -57,6 +63,21 @@ function main(){
 
     $("body").on("click", ".notification-bell", function(){
         displayNotification();
+    });
+
+    $("body").on("click", ".scroll-up", function(){
+        if(currentNotificationCounter < (currentNotifications.length-1)){
+            currentNotificationCounter++;
+            addNotificationsToScreen();
+        }
+    });
+
+    $("body").on("click", ".scroll-down", function(){
+        if(currentNotificationCounter >= 5){
+            currentNotificationCounter--;
+            addNotificationsToScreen();
+        }
+        
     });
 
 
@@ -108,7 +129,6 @@ function main(){
             console.log("8! Say 8! I'm an 8 again!");
         }
     });
-
 
 
 
@@ -598,21 +618,15 @@ function displayNotification(){
                 $("#notifications-section").empty();
 
                 currentNotifications = updatedUserData.notifications;
-
+                currentNotificationCounter = currentNotifications.length-1;
 
                 /*
                     using a for loop instead of a usual .forEach here to display notifications in most recent order without
                     using a Mongo sort function    
                 */
-        
-                for(var i = (updatedUserData.notifications.length-1); i >= 0 ; i--){
-                    var notification = updatedUserData.notifications[i];
-                    $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
-                }
 
-                if(updatedUserData.notifications.length == 0){
-                    $("#notifications-section").append("<div class = 'notification-panel one-notification'>You don't have any notifications</div>");
-                }
+                addNotificationsToScreen();
+                
 
             } else {
                 console.log("something went wrong");
@@ -621,6 +635,19 @@ function displayNotification(){
         }
     })
 
+}
+
+function addNotificationsToScreen(){
+    $("#notifications-section").empty();
+
+    for(var i = (currentNotificationCounter); i >= (currentNotificationCounter-4) ; i--){
+        var notification = currentNotifications[i];
+        $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+    }
+
+    if(currentNotifications.length == 0){
+        $("#notifications-section").append("<div class = 'notification-panel one-notification'>You don't have any notifications</div>");
+    }
 }
 
 function displayReport(id, type){
