@@ -769,6 +769,19 @@ function getUserData(db, req, user, callback){
 			to: user
 		}
 
+		console.log("req.session");
+		console.log(req.session);
+
+		if(!req.session.user ||(req.session.user && !req.session.user.admin) || (req.session.user && !req.session.user.moderator)){
+			console.log("FETCHING ONLY APPROVED");
+			var definitionQuery = {
+				author: user,
+				approved: true,
+				removed: false,
+				rejected: false
+			}
+		}
+
 		database.read(db, "users", userQuery, function checkIfUserExists(user){
 			if(user.length == 1){
 
