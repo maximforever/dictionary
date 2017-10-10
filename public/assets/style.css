@@ -98,7 +98,7 @@ input {
 /* SEARCH BAR */
 
 #search-bar-div {
-	margin: 3vh 0 4vh;
+	margin: 3vh 0;
 }
 
 #search-bar-label {
@@ -230,6 +230,84 @@ input {
 	background: #f5fdcd;
 	border-radius: 3px; 
 }
+
+/* CATEGORY CHART*/
+
+
+#category-summary {
+	background-color: #f2f5e8;
+	box-shadow: 0px 0px 10px rgb(128, 121, 102);
+    padding: 15px;
+    display: block;
+    border: 1px solid rgba(10,10,10, 0.5);
+    border-left: 4px solid black;
+    display: inline-block;
+	width: 20vw;
+	min-width: 400px;
+	font-size: 0.85em;
+	font-weight: 600;
+	margin: 0;
+}
+
+#category-summary h3 {
+	margin: 0 0 5px 0;
+	font-family: 'Lusitana', sans-serif;
+    font-weight: 400;
+}
+
+.category-stat {
+	padding: 5px 0px;
+}
+
+.category-label {
+	width: 72px;
+	display: inline-block;
+    text-align: right;
+    margin-right: 5px;
+    font-weight: 300;
+}
+
+.category-percentage-wrapper {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.category-percentage {
+	min-height: 100%;
+    background: gray;
+    display: inline-block;
+    border: 1px solid black;
+    border-left: 3px solid black;
+    text-align: right;
+    font-size: 0.9em;
+    padding: 2px 0px;
+}
+
+.percentage-label{
+	margin: 0px 5px;
+    margin-left: 10px;
+    font-weight: 700;
+}
+
+#tool-percentage {
+	background: #d4bda1;
+}
+
+#concept-percentage {
+	background: #a9f768;
+}
+
+#language-percentage {
+	background: #dab6f3;
+}
+
+#other-percentage {
+	background: #cacaca;
+}
+
+
+
+/* NEW DEFINITION */
 
 .new-definition-term {
 	font-weight: 600;

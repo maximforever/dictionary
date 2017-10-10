@@ -529,28 +529,68 @@ function displayDefinitionsOnPage(definitions){
 
     // a bit of handlebars magic
 
-    $.get('views/components/definition.html', function(data) {
+    $.get('views/components/definition.html', function(definitionTemplate) {
+        $.get('views/components/definitionCategory.html', function(definitionCategoryTemplate) {
 
-        definitions.forEach(function(thisDefinition){
-            var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
+            $("#definitions-section").append(definitionCategoryTemplate);
 
+            var toolCount = languageCount = conceptCount = otherCount = 0;
 
-            var myTemplate =  Handlebars.compile(data);
+            for(var i = 0; i < definitions.length; i++){
+                switch(definitions[i].category){
+                    case "tool":
+                        toolCount++;
+                        break;
+                    case "concept":
+                        conceptCount++;
+                        break;
+                    case "language":
+                        languageCount++;
+                        break;
+                    case "other":
+                        otherCount++;
+                        break;
+                    default:
+                        otherCount++;
+                }
+            }
 
-            var context = {
-                definition: thisDefinition,
-                editDate: thisDefinition.lastEdit.substr(4, 11),
-                score: thisScore,
-                id: thisDefinition.id
-              };
+            var toolPercent = toolCount/definitions.length;
+            var conceptPercent = conceptCount/definitions.length;
+            var languagePercent = languageCount/definitions.length;
+            var otherPercent = otherCount/definitions.length;
 
-              var compiled = myTemplate(context)
+            console.log(toolPercent + ", " + conceptPercent + ", " + languagePercent + ", " + otherPercent);
 
-              $("#definitions-section").append(compiled);
-        });
+            $("#tool-percentage").css("width", toolPercent * 300 + 5 + "px")
+            $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
+            $("#concept-percentage").css("width", conceptPercent * 300 + 5 + "px")
+            $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
+            $("#language-percentage").css("width", languagePercent * 300 + 5 + "px")
+            $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
+            $("#other-percentage").css("width", otherPercent * 300 + 5 + "px")
+            $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
-        $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+            definitions.forEach(function(thisDefinition){
+                var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
 
+                var myTemplate =  Handlebars.compile(definitionTemplate);
+
+                var context = {
+                    definition: thisDefinition,
+                    editDate: thisDefinition.lastEdit.substr(4, 11),
+                    score: thisScore,
+                    id: thisDefinition.id
+                };
+
+                var compiled = myTemplate(context)
+
+                $("#definitions-section").append(compiled);
+            });
+
+            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+
+        }, 'html')
     }, 'html')
 }
 
