@@ -121,6 +121,7 @@ input {
 
 #terms-section {
 	width: 80vw;
+	max-width: 1600px;
 	margin: 0px 0px 0px -5vw;
 	display: block;
 }
