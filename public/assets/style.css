@@ -98,7 +98,7 @@ input {
 /* SEARCH BAR */
 
 #search-bar-div {
-	margin: 3vh 0;
+	margin: 3vh 0 45px 0;
 }
 
 #search-bar-label {
@@ -281,6 +281,7 @@ input {
     text-align: right;
     font-size: 0.9em;
     padding: 2px 0px;
+    border-radius: 3px;
 }
 
 .percentage-label{

@@ -755,26 +755,37 @@ function updateUserRoles(db, req, callback){
 	}
 }
 
-function getUserData(db, req, callback){
-	if(req.session.user){    	
+function getUserData(db, req, user, callback){
+
+		var userQuery = {
+			username: user
+		}
 
 		var definitionQuery = {
-			author: req.session.user.username
+			author: user
 		}
 
 		var notificationQuery = {
-			to: req.session.user.username
+			to: user
 		}
 
-		database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
-			database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
-				callback({status: "success", definitions: allDefinitions, notifications: allNotifications})
-			})
+		database.read(db, "users", userQuery, function checkIfUserExists(user){
+			if(user.length == 1){
+
+				console.log("Requesting user is logged in and " + userQuery.username + " is a real user");
+
+				database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
+					database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
+						callback({status: "success", definitions: allDefinitions, notifications: allNotifications})
+					})
+				})
+
+			} else {
+				callback({status: "fail", message: "That's not a real user"})
+			}
 		})
 		
-	} else {
-		callback({status: "fail", message: "User is not logged in"})
-	}
+
 }
 
 function clearNotifications(db, req, callback){

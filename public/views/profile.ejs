@@ -2,7 +2,7 @@
 
 <div id = "main-section">
 
-	<h2>User Profile</h2>
+	<h2>User Profile: <%= username %></h2>
 
 	<div id = "submission-status-table">
 
@@ -35,19 +35,22 @@
 				}
 			%>
 
-			<div class = "status-row">
-				<div class = "status-definition">
-					<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
-					<span class = "definition-body"><%= definition.body %></span><br>
-				</div><!-- 
-			--><div class = "status-submission-date">
-					<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
-				</div><!-- 
-			 --><div class = "status">
-			 		<span class = "submission-status post-<%= status %>"><%= status %></span>
-				</div>
-			</div>
+			<% if ((session.user && username == session.user.username) || status == "approved" ) { %>
 
+				<div class = "status-row">
+					<div class = "status-definition">
+						<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
+						<span class = "definition-body"><%= definition.body %></span><br>	
+					</div><!-- 
+				--><% if (session.user && username == session.user.username) { %><div class = "status-submission-date">
+						<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+					</div><!-- 
+				 --><div class = "status">
+				 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+					</div>
+					<% } %>
+				</div>
+			<% } %>
 		<% }) %>
 
 	</div>

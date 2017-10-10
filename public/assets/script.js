@@ -527,7 +527,7 @@ function displayDefinitionsOnPage(definitions){
 
     definitions = sortDefinitions(definitions);
 
-    // a bit of handlebars magic
+    
 
     $.get('views/components/definition.html', function(definitionTemplate) {
         $.get('views/components/definitionCategory.html', function(definitionCategoryTemplate) {
@@ -570,6 +570,8 @@ function displayDefinitionsOnPage(definitions){
             $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
             $("#other-percentage").css("width", otherPercent * 300 + 5 + "px")
             $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
+
+            // a bit of handlebars magic
 
             definitions.forEach(function(thisDefinition){
                 var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;

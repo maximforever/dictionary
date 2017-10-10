@@ -279,30 +279,32 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     })
 
-
     app.get("/profile", function(req, res){
         if(req.session.user){
-
-            dbops.getUserData(db, req, function getData(response){
-                console.log(response);
-                if(response.status == "success"){
-                    res.render("profile", {definitions: response.definitions, notifications: response.notifications});
-                } else {
-                    res.send({
-                        status: "fail",
-                        error: "Something strange happened"
-                    })
-                }   
-            });
-        } else {
-            res.redirect("/");
+            res.redirect("/profile/" + req.session.user.username);
         }
+    })
+
+    app.get("/profile/:username", function(req, res){
+        dbops.getUserData(db, req, req.params.username, function getData(response){
+            console.log(response);
+            if(response.status == "success"){
+                if(req.session.user && req.params.username.trim() == req.session.user){
+                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username});
+                } else {
+                    res.render("profile", {definitions: response.definitions, username: req.params.username});
+                }   
+            } else {
+                req.session.error = "Something strange happened"; 
+                res.render("index", {error: "Something strange happened" });
+            }   
+        });
     })
 
     app.get("/updated-user-data", function(req, res){
         if(req.session.user){
 
-            dbops.getUserData(db, req, function getData(response){
+            dbops.getUserData(db, req, req.session.user.username, function getData(response){
                 console.log(response);
                 if(response.status == "success"){
                     res.send({status: "success", definitions: response.definitions, notifications: response.notifications});
