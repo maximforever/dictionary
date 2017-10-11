@@ -157,11 +157,11 @@ function main(){
 	});
 
     $("body").on("click", ".voting-button", function(){
-        var type = this.dataset.vote;               // .dataset is a quick way to get data attribute value
+        var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
         var id = this.dataset.id;
         var term = this.dataset.term;
 
-        voteOnDefinition(type, id, term);
+        voteOnDefinition(direction, id, term);
     })
 
     $("body").on("click", "#add-def-link", function(){
@@ -424,11 +424,11 @@ function addDefinition(){
     }
 }
 
-function voteOnDefinition(voteType, elementId, voteTerm){
+function voteOnDefinition(voteDirection, elementId, voteTerm){
 
     var votingData = {
         id: elementId,
-        type: voteType
+        direction: voteDirection
     }
     
     $.ajax({
@@ -826,7 +826,7 @@ function getComments(definitionId){
                     displayCommentsOnPage(result.comments, commentsSection); 
 
                 } else {
-                    commentsSection.append("<div class = 'definition-accent'>There are no comments on this yet. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div>");
+                    commentsSection.append("<div class = 'comment'>There are no comments on this yet. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div>");
                 }
             } else {
                 console.log(result.error)

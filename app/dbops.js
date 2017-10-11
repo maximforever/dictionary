@@ -229,7 +229,7 @@ function vote(db, req, callback){
 
 	/* 
 		1. check if there's already a vote for this user for this term
-		2. if there is, remove it, and create a new one (easier than changing type)
+		2. if there is, remove it, and create a new one (easier than changing direction)
 		3. if there isn't, create the vote
 		4. update term
 	*/
@@ -252,7 +252,7 @@ function vote(db, req, callback){
 	var newVote = {
 			post: parseInt(req.body.id),
 			author: voter,
-			type: req.body.type,
+			direction: req.body.direction,
 			date: Date()
 		}
 
@@ -270,7 +270,7 @@ function vote(db, req, callback){
 
 			console.log("one vote");
 
-			if(existingVotes[0].type != newVote.type){
+			if(existingVotes[0].direction != newVote.direction){
 
 				// if vote already recorded in a different direction, remove it and create a new one in the right direction (ex: remove upvote, create downvote)
 
@@ -278,7 +278,7 @@ function vote(db, req, callback){
 
 					var voteChange;
 
-					if(newVote.type == "up"){
+					if(newVote.direction == "up"){
 						voteChange = "downvotes";
 					} else {
 						voteChange = "upvotes"
@@ -304,7 +304,7 @@ function vote(db, req, callback){
 				console.log("vote already recorded");
 				database.remove(db, "votes", voteQuery, function removeVote(removedVote){
 
-					var voteChange = newVote.type + "votes";
+					var voteChange = newVote.direction + "votes";
 
 					var definitionQuery = {
 						id: voteQuery.post
@@ -338,7 +338,7 @@ function createNewVote(db, req, newVote, callback){
 
 		var voteChange
 
-		if(newVote.ops[0].type == "up"){
+		if(newVote.ops[0].direction == "up"){
 			voteChange = "upvotes";
 		} else {
 			voteChange = "downvotes"
@@ -666,10 +666,6 @@ function login(db, req, callback){
 
 
 function getUpdatedUser(db, req, callback){
-
-	console.log("req.session");
-	console.log(req.session);
-
 
 	var userQuery = {
         username: req.session.user.username.toLowerCase()
