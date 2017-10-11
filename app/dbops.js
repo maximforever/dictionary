@@ -246,14 +246,16 @@ function vote(db, req, callback){
 
 	var voteQuery = {
 		post: parseInt(req.body.id),
-		author: voter
+		author: voter,
+		type: req.body.type
 	}
 
 	var newVote = {
 			post: parseInt(req.body.id),
 			author: voter,
 			direction: req.body.direction,
-			date: Date()
+			date: Date(),
+			type: req.body.type
 		}
 
 	database.read(db, "votes", voteQuery, function checkForExistingVote(existingVotes){
@@ -270,59 +272,67 @@ function vote(db, req, callback){
 
 			console.log("one vote");
 
-			if(existingVotes[0].direction != newVote.direction){
+			if(req.body.type == "definition" || req.body.type == "comment"){
+				thisVoteCollection = req.body.type + "s";
 
-				// if vote already recorded in a different direction, remove it and create a new one in the right direction (ex: remove upvote, create downvote)
+				if(existingVotes[0].direction != newVote.direction){
 
-				database.remove(db, "votes", voteQuery, function removeVote(removedVote){
+					// if vote already recorded in a different direction, remove it and create a new one in the right direction (ex: remove upvote, create downvote)
 
-					var voteChange;
+					database.remove(db, "votes", voteQuery, function removeVote(removedVote){
 
-					if(newVote.direction == "up"){
-						voteChange = "downvotes";
-					} else {
-						voteChange = "upvotes"
-					}
+						var voteChange;
 
-					var definitionQuery = {
-						id: voteQuery.post
-					}
+						if(newVote.direction == "up"){
+							voteChange = "downvotes";
+						} else {
+							voteChange = "upvotes"
+						}
 
-					var definitionUpdateQuery = {
-						$inc: {}
-					};
+						var definitionQuery = {
+							id: voteQuery.post
+						}
 
-					definitionUpdateQuery.$inc[voteChange] = -1;
+						var definitionUpdateQuery = {
+							$inc: {}
+						};
 
-					database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-						createNewVote(db, req, newVote, callback);
+						definitionUpdateQuery.$inc[voteChange] = -1;
+
+						database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+							createNewVote(db, req, newVote, callback);
+						})
 					})
-				})
 
+				} else {
+					// if vote already recorded, remove it (if upvoting after already upvoting, remove upvote)
+					console.log("vote already recorded");
+					database.remove(db, "votes", voteQuery, function removeVote(removedVote){
+
+						var voteChange = newVote.direction + "votes";
+
+						var definitionQuery = {
+							id: voteQuery.post
+						}
+
+						var definitionUpdateQuery = {
+							$inc: {}
+						};
+
+						definitionUpdateQuery.$inc[voteChange] = -1;
+
+					
+						database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+							console.log("newDefinition")
+							callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
+						})
+					})
+				}
 			} else {
-				// if vote already recorded, remove it (if upvoting after already upvoting, remove upvote)
-				console.log("vote already recorded");
-				database.remove(db, "votes", voteQuery, function removeVote(removedVote){
-
-					var voteChange = newVote.direction + "votes";
-
-					var definitionQuery = {
-						id: voteQuery.post
-					}
-
-					var definitionUpdateQuery = {
-						$inc: {}
-					};
-
-					definitionUpdateQuery.$inc[voteChange] = -1;
-
-				
-					database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-						console.log("newDefinition")
-						callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
-					})
-				})
+				console.log("ERROR! The type of vote is incorrect");
+				callback({status: "fail", message: "The type of vote is incorrect"});
 			}
+			
 			
 		} else {
 			callback({status: "fail", message: "Something went wrong"});
@@ -357,11 +367,19 @@ function createNewVote(db, req, newVote, callback){
 		console.log("definitionUpdateQuery");
 		console.log(definitionUpdateQuery);
 
-		database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-			console.log("newDefinition")
-			console.log(newDefinition)
-			callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
-		})	
+		if(req.body.type == "definition" || req.body.type == "comment"){
+			
+			thisVoteCollection = req.body.type + "s";
+
+			database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+				console.log("newDefinition")
+				console.log(newDefinition)
+				callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
+			})
+		} else {
+			callback({status: "fail", message: "invalid type of vote"});
+		}
+			
 	})
 }
 

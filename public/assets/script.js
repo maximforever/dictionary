@@ -160,8 +160,9 @@ function main(){
         var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
         var id = this.dataset.id;
         var term = this.dataset.term;
+        var type = this.dataset.type;
 
-        voteOnDefinition(direction, id, term);
+        voteOnPost(direction, id, term, type);
     })
 
     $("body").on("click", "#add-def-link", function(){
@@ -424,11 +425,12 @@ function addDefinition(){
     }
 }
 
-function voteOnDefinition(voteDirection, elementId, voteTerm){
+function voteOnPost(voteDirection, elementId, voteTerm, voteType){
 
     var votingData = {
         id: elementId,
-        direction: voteDirection
+        direction: voteDirection,
+        type: voteType
     }
     
     $.ajax({
@@ -437,13 +439,14 @@ function voteOnDefinition(voteDirection, elementId, voteTerm){
         url: "/vote",
         success: function(result){
 
-            console.log(result);
             if(result.status == "success"){
 
-                console.log(result.definition);
                 var updatedScore = result.definition.upvotes - result.definition.downvotes;
-                $("#" + elementId).find(".definition-score").text(updatedScore)
-//                getDefinition(voteTerm);  
+
+                $("#" + elementId).find(".definition-score").text(updatedScore) 
+
+
+
                 console.log(result.message);
             } else {
                 console.log("something went wrong");
