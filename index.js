@@ -128,7 +128,7 @@ MongoClient.connect(dbAddress, function(err, db){
             if(response.status == "success"){
                 req.session.message = "Got a result!"
 
-                console.log("response count: " + response.count);
+                console.log("definition count: " + response.count);
 
                 res.send({
                     status: "success",
@@ -197,8 +197,6 @@ MongoClient.connect(dbAddress, function(err, db){
                 })
             }   
         });
-
-
     });
 
     app.post("/vote", function(req, res){
@@ -224,6 +222,42 @@ MongoClient.connect(dbAddress, function(err, db){
             }   
         });
     });
+
+
+
+     app.post("/get-comments", function(req, res){
+
+        console.log("getting comments!");
+        dbops.getComments(db, req, function getComments(response){
+            if(response.status == "success"){
+                req.session.message = "Got a result!"
+
+                console.log("comment count: " + response.count);
+
+                res.send({
+                    status: "success",
+                    count: response.count,
+                    comments: response.body
+                });
+
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    error: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
+
+
+
+
 
     /* ACCOUNT */
 

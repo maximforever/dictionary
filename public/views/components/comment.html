@@ -1,0 +1,28 @@
+<div class = "comment" data-id = "{{id}}">
+	
+	
+		<div class = "comment-column">
+			<div class = "comment-body">
+				{{comment.body}}
+			</div>
+			<div class = "edit-history-column">
+		 		<a href = "/profile/{{definition.author}}">@{{comment.author}}</a> on {{date}}
+		 		<br>
+				<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions">Report</span>
+			</div>
+		</div><!-- 
+	 --><div class = "voting-column">
+			<div class = "voting-section">	
+				<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "up" aria-hidden="true"></i><br>
+				<span class = "definition-score">{{score}}</span><br>
+				<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "down" aria-hidden="true"></i>
+			</div>
+		</div>
+	
+
+	<div>
+		
+	</div>
+
+</div>
+

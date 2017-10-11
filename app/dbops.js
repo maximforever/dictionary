@@ -41,7 +41,7 @@ function getDefinitions(db, req, callback){
 		var responsesToReturn = [];
 
 		searchResult.forEach(function(oneResult){
-			if(!oneResult.removed && oneResult.approved){
+			if(!oneResult.removed && oneResult.approved && ((oneResult.upvotes - oneResult.downvotes) >= -5)   ){
 				responsesToReturn.push(oneResult);
 			}
 		})
@@ -194,6 +194,34 @@ function addDefinition(db, req, callback){
 			message: "You must log in to add a definition"
 		});
 	}
+}
+
+function getComments(db, req, callback){
+
+
+	searchQuery = {
+		post_id: parseInt(req.body.id)
+	}
+
+	database.read(db, "comments", searchQuery, function(searchResult){
+
+		console.log(searchResult);
+
+		var responsesToReturn = [];
+
+		searchResult.forEach(function(oneResult){
+			if(!oneResult.removed && ((oneResult.upvotes - oneResult.downvotes) >= -5)   ){
+				responsesToReturn.push(oneResult);
+			}
+		})
+
+		callback({
+			status: "success",
+			count: responsesToReturn.length,
+			body: responsesToReturn
+		});
+
+	});
 }
 
 
@@ -844,6 +872,7 @@ module.exports.search = search;
 module.exports.getDefinitions = getDefinitions;
 module.exports.getSpecificDefinition = getSpecificDefinition;
 module.exports.addDefinition = addDefinition;
+module.exports.getComments = getComments;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
 

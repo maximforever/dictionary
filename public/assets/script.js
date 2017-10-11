@@ -80,6 +80,16 @@ function main(){
         
     });
 
+    $("body").on("click", ".comment-on-post", function(){
+        var height = $(".comments-section[data-id=" + this.dataset.id + "]").height()
+
+        if(height > 0){
+            $(".comments-section[data-id=" + this.dataset.id + "]").empty();
+        } else {
+           getComments(this.dataset.id); 
+        }
+    });
+
 
     
 /* LISTENERS */
@@ -525,12 +535,14 @@ function displayDefinitionsOnPage(definitions){
    
     $("#definitions-section").empty();
 
-    definitions = sortDefinitions(definitions);
+    definitions = sortPosts(definitions);
 
     
 
     $.get('views/components/definition.html', function(definitionTemplate) {
         $.get('views/components/definitionCategory.html', function(definitionCategoryTemplate) {
+
+            $("#definitions-section").empty();
 
             $("#definitions-section").append(definitionCategoryTemplate);
 
@@ -596,32 +608,62 @@ function displayDefinitionsOnPage(definitions){
     }, 'html')
 }
 
-function sortDefinitions(definitions){
+function displayCommentsOnPage(comments, commentSection){
 
-    var sortedDefinitions = [];
+    commentSection.empty();
 
-    while(sortedDefinitions.length < definitions.length){                    // DANGER ALERT!
+    comments = sortPosts(comments);
+
+    $.get('views/components/comment.html', function(commentTemplate) {
+
+        // a bit of handlebars magic
+
+        comments.forEach(function(thisComment){
+
+            var thisScore = thisComment.upvotes - thisComment.downvotes;
+            var myTemplate =  Handlebars.compile(commentTemplate);
+
+            var context = {
+                comment: thisComment,
+                date: thisComment.date.substr(4, 11),
+                score: thisScore,
+                id: thisComment.id
+            };
+
+            var compiled = myTemplate(context)
+
+            commentSection.append(compiled);
+        });
+
+    }, 'html')
+}
+
+function sortPosts(posts){
+
+    var sortedPosts = [];
+
+    while(sortedPosts.length < posts.length){                    // DANGER ALERT!
         var maxScore = -999;
 
-        for(var i = 0; i < definitions.length; i++){
+        for(var i = 0; i < posts.length; i++){
 
-            var score = definitions[i].upvotes - definitions[i].downvotes;
+            var score = posts[i].upvotes - posts[i].downvotes;
 
-            if(score > maxScore && sortedDefinitions.indexOf(definitions[i]) == -1) { maxScore = score}
+            if(score > maxScore && sortedPosts.indexOf(posts[i]) == -1) { maxScore = score}
 
         }
 
-        for(var j = 0; j < definitions.length; j++){
+        for(var j = 0; j < posts.length; j++){
 
-            var score = definitions[j].upvotes - definitions[j].downvotes;
+            var score = posts[j].upvotes - posts[j].downvotes;
 
             if(score == maxScore){
-                sortedDefinitions.push(definitions[j]);
+                sortedPosts.push(posts[j]);
             }
         }
     }
 
-    return sortedDefinitions;
+    return sortedPosts;
 }
 
 function displaySearchTerm(term){
@@ -754,6 +796,51 @@ function acknowledgeNotifications(){
         }
     })
 }
+
+
+
+/* COMMENTS */
+
+function getComments(definitionId){
+
+    var commentsSection = $(".comments-section[data-id=" + definitionId + "]");
+
+    commentsSection.empty();
+
+    console.log("getting comments!");
+
+    var searchQuery = {
+        id: definitionId
+    }
+
+    $.ajax({
+        type: "post",
+        data: searchQuery,
+        url: "/get-comments",
+        success: function(result){
+            if(result.status == "success"){
+
+                console.log(result);
+                if(result.count > 0){
+                    
+                    displayCommentsOnPage(result.comments, commentsSection); 
+
+                } else {
+                    commentsSection.append("<div class = 'definition-accent'>There are no comments on this yet. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div>");
+                }
+            } else {
+                console.log(result.error)
+            }
+        }
+    })
+}
+
+
+
+
+
+
+
 
 function trimRelatedTerms(){
     // add function to trim related terms into an array

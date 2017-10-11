@@ -54,7 +54,7 @@ input {
 .container {
 	width: 80vw;
 	margin: 0px auto;
-	min-width: 200px;
+	min-width: 300px;
 	max-width: 1600px;
 }
 
@@ -115,7 +115,7 @@ input {
 	display: block;
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
-	min-width: 200px;
+	min-width: 300px;
 	max-width: calc(1600px - 22px);
 }
 
@@ -158,7 +158,7 @@ input {
     background: #EAEAEA;
     padding: 20px;
     min-height: 10vh;
-    min-width: 200px;
+    min-width: 300px;
 }
 
 .pop-out h3 {
@@ -209,11 +209,11 @@ input {
 }
 
 .definition {
-	margin: 35px auto;
+	margin: 35px auto 0 auto;
     padding: 15px 20px 20px 20px;
     display: block;
     box-shadow: 0px 0px 10px rgba(131, 142, 66, 0.5);
-    min-width: 200px;
+    min-width: 300px;
     background: #f6fdd3;
     border-radius: 3px;
     border: 1px solid rgba(190, 173, 127, 0.6);
@@ -226,10 +226,46 @@ input {
 	border: 1px solid rgba(50, 50, 50, 0.2);
 	display: block;
 	box-shadow: 0px 0px 10px rgba(100, 181, 17, 0.5);
-	min-width: 200px;
+	min-width: 300px;
 	background: #f5fdcd;
 	border-radius: 3px; 
 }
+
+
+
+/* COMMENTS */
+
+
+.comments-section {
+	margin: 0 auto 35px auto;
+    width: 90%;
+}
+
+.comment {
+	display: block;
+	background: #f2f5e9;
+	box-shadow: none;
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid rgba(10,10,10, 0.2);
+    border-bottom: 1px solid rgba(136, 98, 45, 0.7);
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(10,10,10, 0.2);
+    min-width: 300px;
+}
+
+.comment-body {
+	font-size: 0.85em;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+
+.comment-column {
+	width: 80%;
+    display: inline-block;
+    fvertical-align: top;
+}
+
 
 /* CATEGORY CHART*/
 
@@ -237,13 +273,13 @@ input {
 #category-summary {
 	background-color: #f2f5e8;
 	box-shadow: 0px 0px 10px rgb(128, 121, 102);
-    padding: 15px;
+    padding: 15px 20px;
     display: block;
     border: 1px solid rgba(10,10,10, 0.5);
     border-left: 4px solid black;
     display: inline-block;
 	width: 20vw;
-	min-width: 400px;
+	min-width: 300px;
 	font-size: 0.85em;
 	font-weight: 600;
 	margin: 0;
@@ -710,7 +746,7 @@ input {
 	padding: 10px;
     border: 1px solid gray;
     display: inline-block;
-    min-width: 200px;
+    min-width: 300px;
 }
 
 #user-role-section h3 {
