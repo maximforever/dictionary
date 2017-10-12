@@ -266,6 +266,10 @@ input {
     fvertical-align: top;
 }
 
+.comment h4{
+	margin: 0 0 10px 0;
+}
+
 .new-comment-textarea {
     resize: none;
     padding: 6px;
@@ -274,8 +278,8 @@ input {
     width: calc(100% - 14px);
 }
 
-#add-comment {
-    float: right;
+.button-wrapper {
+	text-align: right;
 }
 
 
@@ -480,7 +484,7 @@ input {
     pointer-events: none;
 }
 
-.report-error, .new-definition-error {
+.report-error, .new-definition-error, .new-comment-error {
 	color: #b50000;
 	font-weight: 600;
 	margin:5px 0px;

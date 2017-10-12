@@ -156,6 +156,11 @@ function main(){
 		addDefinition();
 	});
 
+
+    $("body").on("click", ".add-comment", function(event){
+        addComment(this);
+    });
+
     $("body").on("click", ".voting-button", function(){
         var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
         var id = this.dataset.id;
@@ -424,6 +429,53 @@ function addDefinition(){
         $(".new-definition-error").text("Please enter a definition");
     }
 }
+
+
+function addComment(button){
+
+    var commentBody = button.parentElement.previousSibling.previousSibling.value;
+
+    console.log(commentBody);
+
+
+    if(commentBody.trim()){
+        
+        var commentData = {
+            body: commentBody
+        }
+  
+        $.ajax({
+            type: "post",
+            data: definitionData,
+            url: "/new-comment",
+            success: function(result){
+
+                $("#terms-section").empty();
+                $("#definitions-section").empty();
+                $("#new-definition-related-terms").empty();
+                $("input[name='definition-category']").prop('checked', false);
+
+
+                if(result.status == "success"){
+                    
+                    getComments(/*NEED ID HERE*/);
+                    
+                    $("#new-definition-textarea").val("");            
+                    $("#new-definition").hide();
+                } else {
+                    $("#definitions-section").empty();
+                    $("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
+                }
+            }
+        })
+
+    } else {
+        $(".new-comment-error").text("Please enter a comment");
+    }
+
+
+}
+
 
 function voteOnPost(voteDirection, elementId, voteTerm, voteType){
 
@@ -829,7 +881,7 @@ function getComments(definitionId){
 
                 if(result.isLoggedIn){
                     console.log("user is logged in");
-                    commentsSection.append("<div class = 'comment'><h3>New comment:</h3><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><button id = 'add-comment'>Add</button></div>");
+                    commentsSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment'>Add</button></div></div>");
                 } else {
                     commentsSection.append("<div class = 'comment'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
