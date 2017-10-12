@@ -266,6 +266,18 @@ input {
     fvertical-align: top;
 }
 
+.new-comment-textarea {
+    resize: none;
+    padding: 6px;
+    font-size: 0.9em;
+    line-height: 1.4;
+    width: calc(100% - 14px);
+}
+
+#add-comment {
+    float: right;
+}
+
 
 /* CATEGORY CHART*/
 

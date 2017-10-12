@@ -21,7 +21,7 @@ const dbops = require("./app/dbops");
 const database = require("./app/database");
 
 var dbAddress;
- 
+
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
     dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds147864.mlab.com:47864/dev-dictionary";
 } else {
@@ -234,10 +234,23 @@ MongoClient.connect(dbAddress, function(err, db){
 
                 console.log("comment count: " + response.count);
 
+                var loggedIn = false;
+
+                console.log("session.user");
+                console.log(req.session.user);
+
+
+                if(req.session.user){
+                    console.log("Getting comments for a user who's logged in");
+                    loggedIn = true;
+                }
+
+
                 res.send({
                     status: "success",
                     count: response.count,
-                    comments: response.body
+                    comments: response.body,
+                    isLoggedIn: loggedIn
                 });
 
             } else if(response.status == "fail"){

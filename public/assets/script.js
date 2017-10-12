@@ -824,13 +824,16 @@ function getComments(definitionId){
             if(result.status == "success"){
 
                 console.log(result);
-                if(result.count > 0){
-                    
-                    displayCommentsOnPage(result.comments, commentsSection); 
+                displayCommentsOnPage(result.comments, commentsSection); 
+                console.log("result.isLoggedIn: " + result.isLoggedIn);
 
+                if(result.isLoggedIn){
+                    console.log("user is logged in");
+                    commentsSection.append("<div class = 'comment'><h3>New comment:</h3><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><button id = 'add-comment'>Add</button></div>");
                 } else {
-                    commentsSection.append("<div class = 'comment'>There are no comments on this yet. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div>");
+                    commentsSection.append("<div class = 'comment'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
+
             } else {
                 console.log(result.error)
             }

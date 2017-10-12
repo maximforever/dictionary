@@ -19,7 +19,7 @@ function read(db, col, obj, callback){
             return console.log(err);
         }
         console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query:");
-        console.log(obj);
+    //  console.log(obj);
         callback(result);
     })
 }
