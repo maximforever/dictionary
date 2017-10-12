@@ -808,7 +808,9 @@ function addNotificationsToScreen(){
 
     for(var i = (currentNotificationCounter); i >= (currentNotificationCounter-4) ; i--){
         var notification = currentNotifications[i];
-        $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+        if(!(typeof(notification) == "undefined")){
+            $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+        }  
     }
 
     if(currentNotifications.length == 0){
