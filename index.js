@@ -199,6 +199,29 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
+    app.post("/new-comment", function(req, res){
+
+        dbops.addComment(db, req, function confirmComment(response){
+            if(response.status == "success"){
+                res.send({ 
+                    status: "success",
+                    comment: response.comment
+                });
+
+            } else if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    error: response.message
+                });
+            } else {
+                res.send({
+                    status: "fail",
+                    error: "Something strange happened"
+                })
+            }   
+        });
+    });
+
     app.post("/vote", function(req, res){
         dbops.vote(db, req, function vote(response){
             console.log("RESPONSE");

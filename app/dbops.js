@@ -27,6 +27,54 @@ function search(db, req, callback){
 	});
 }
 
+/*function getDefinitions(db, req, callback){
+
+	definitionQuery = {
+		term: req.body.term,
+		removed: false, 
+		approved: true
+	}
+
+	var commentQuery = {
+		post_id: req.body.term,
+		removed: false, 
+	}
+
+	database.read(db, "definitions", definitionQuery, function fetchDefinitions(definitionSearchResult){
+		database.read(db, "comments", commentQuery, function fetchComments(commentSearchResult){
+
+			var responsesToReturn = [];
+
+			definitionSearchResult.forEach(function(oneResult){
+				if(((oneResult.upvotes - oneResult.downvotes) >= -5)){
+					
+					var commentCount = 0;			
+
+					commentSearchResult.forEach(function(oneComment){
+						if(oneComment.post_id == oneResult.id){
+							commentCount++;
+						}
+					})
+
+					oneResult.commentCount = commentCount;
+					responsesToReturn.push(oneResult);
+
+				}
+			})
+
+			callback({
+				status: "success",
+				count: responsesToReturn.length,
+				body: responsesToReturn
+			});
+
+
+
+
+		})
+	});
+}*/
+
 function getDefinitions(db, req, callback){
 
 
@@ -54,6 +102,7 @@ function getDefinitions(db, req, callback){
 
 	});
 }
+
 
 function getSpecificDefinition(db, req, callback){
 
@@ -195,6 +244,91 @@ function addDefinition(db, req, callback){
 		});
 	}
 }
+
+
+function addComment(db, req, callback){
+	if(req.session.user){
+		if(req.body.commentBody){
+
+			// search for identical comments or comments made within the last 5 mins
+
+			var duplicateCommentQuery = {
+				author: req.session.user.username,
+				post_id: parseInt(req.body.post_id)
+			}
+
+			database.read(db, "comments", duplicateCommentQuery, function checkExistingComments(existingComments){
+
+				var commentApproved = true;
+				var errorMessage = ""
+
+				existingComments.forEach(function(existingComment){
+
+					var timeLimit = 1000 * 60 * 5;			// how often can users make comments? Let's say every 5 mins (consider making random for bots?)
+
+
+					console.log("Date calculation: "); 
+					console.log(Date.now() - Date.parse(existingComment.date) - timeLimit);
+
+					if(Date.parse(existingComment.date) + timeLimit >= Date.now()){
+						commentApproved = false;
+						errorMessage = "Please wait a few minutes before posting another comment";
+						console.log(errorMessage);
+					}
+
+					if(existingComment.body.trim() == req.body.commentBody.trim()){
+						commentApproved = false;
+						errorMessage = "You've already posted this comment on this definition";
+						console.log(errorMessage);
+					}
+				});
+
+				if(commentApproved){
+
+					newCommentQuery = {
+						id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+						term: req.body.term,
+						post_id: parseInt(req.body.post_id),
+						author: req.session.user.username,
+						upvotes: 0,
+						downvotes: 0, 
+						reportCount: 0,
+						removed: false,
+						approved: false,
+						rejected: false,
+						date: Date(),
+						body: req.body.commentBody
+					}
+
+					database.create(db, "comments", newCommentQuery, function createComment(newComment){
+						callback({
+							status: "success",
+							comment: newComment.ops[0]
+						});
+					});
+
+				} else {
+					callback({
+						status: "fail",
+						message: errorMessage
+					});
+				}
+			});
+
+		} else {
+			callback({
+				status: "fail",
+				message: "This comment is empty"
+			});
+		}
+	} else {
+		callback({
+			status: "fail",
+			message: "You must log in to add a definition"
+		});
+	}
+}
+
 
 function getComments(db, req, callback){
 
@@ -887,6 +1021,7 @@ module.exports.getDefinitions = getDefinitions;
 module.exports.getSpecificDefinition = getSpecificDefinition;
 module.exports.addDefinition = addDefinition;
 module.exports.getComments = getComments;
+module.exports.addComment = addComment;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
 

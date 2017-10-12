@@ -157,7 +157,7 @@ function main(){
 	});
 
 
-    $("body").on("click", ".add-comment", function(event){
+    $("body").on("click", ".add-comment", function(){
         addComment(this);
     });
 
@@ -231,6 +231,15 @@ function main(){
     $("body").on("click", "#logout", function(){
         logout();
     });
+
+
+
+/* ONE-CLICK ADMIN LOGIN */
+
+    $("body").on("click", "#master-log-in", function(){
+        adminLogin();
+    });
+
 
 }
 
@@ -357,7 +366,6 @@ function getDefinition(thisTerm){
         	if(result.status == "success"){
 
                 var searchTerm = $("#search-bar").val().trim();
-                console.log(result.count);
 
             	if(result.count > 0){
                     $("#definitions-section").empty();
@@ -433,44 +441,38 @@ function addDefinition(){
 
 function addComment(button){
 
-    var commentBody = button.parentElement.previousSibling.previousSibling.value;
+    var commentBodyText = button.parentElement.previousSibling.previousSibling.value;
 
-    console.log(commentBody);
-
-
-    if(commentBody.trim()){
+    if(commentBodyText.trim()){
         
         var commentData = {
-            body: commentBody
+            commentBody: commentBodyText,
+            post_id: button.dataset.id
         }
   
         $.ajax({
             type: "post",
-            data: definitionData,
+            data: commentData,
             url: "/new-comment",
             success: function(result){
 
-                $("#terms-section").empty();
-                $("#definitions-section").empty();
-                $("#new-definition-related-terms").empty();
-                $("input[name='definition-category']").prop('checked', false);
+                if(result.status == "success"){ 
 
+                    commentBodyText = "";
+                
+                    var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
+                    var commentToAdd = [result.comment];
 
-                if(result.status == "success"){
-                    
-                    getComments(/*NEED ID HERE*/);
-                    
-                    $("#new-definition-textarea").val("");            
-                    $("#new-definition").hide();
+                    displayCommentsOnPage(commentToAdd, commentSection);
+
                 } else {
-                    $("#definitions-section").empty();
-                    $("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
+                    $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text(result.error);
                 }
             }
         })
 
     } else {
-        $(".new-comment-error").text("Please enter a comment");
+        $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text("Please enter a comment");
     }
 
 
@@ -514,6 +516,35 @@ function login(){
     var loginData = {
         username: $("#login-username").val().toLowerCase(),
         password: $("#login-password").val()
+    }
+
+    if(loginData.username.trim().length && loginData.password.trim().length){
+        $.ajax({
+            type: "post",
+            data: loginData,
+            url: "/login",
+            success: function(result){
+                if(result.status == "success"){
+                    location.reload();
+                } else {
+                    $("#login-username, #login-password, #signup-username, #signup-password").val("");
+                    $("#error").text(result.message).css("display", "block");
+                }
+            }
+        })
+    } else {
+        console.log("invalid login");
+        $("#message").text("Username or password can't be blank").css("display", "block");
+    }
+
+}
+
+/* REMOVE THIS! */
+function adminLogin(){
+
+    var loginData = {
+        username: "andrew",
+        password: "myrealpassword"
     }
 
     if(loginData.username.trim().length && loginData.password.trim().length){
@@ -627,8 +658,6 @@ function displayDefinitionsOnPage(definitions){
             var languagePercent = languageCount/definitions.length;
             var otherPercent = otherCount/definitions.length;
 
-            console.log(toolPercent + ", " + conceptPercent + ", " + languagePercent + ", " + otherPercent);
-
             $("#tool-percentage").css("width", toolPercent * 300 + 5 + "px")
             $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
             $("#concept-percentage").css("width", conceptPercent * 300 + 5 + "px")
@@ -649,7 +678,8 @@ function displayDefinitionsOnPage(definitions){
                     definition: thisDefinition,
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
-                    id: thisDefinition.id
+                    id: thisDefinition.id,
+                    commentCount: thisDefinition.commentCount
                 };
 
                 var compiled = myTemplate(context)
@@ -664,8 +694,6 @@ function displayDefinitionsOnPage(definitions){
 }
 
 function displayCommentsOnPage(comments, commentSection){
-
-    commentSection.empty();
 
     comments = sortPosts(comments);
 
@@ -686,7 +714,6 @@ function displayCommentsOnPage(comments, commentSection){
             };
 
             var compiled = myTemplate(context)
-
             commentSection.append(compiled);
         });
 
@@ -858,9 +885,9 @@ function acknowledgeNotifications(){
 
 function getComments(definitionId){
 
-    var commentsSection = $(".comments-section[data-id=" + definitionId + "]");
+    var commentSection = $(".comments-section[data-id=" + definitionId + "]");
 
-    commentsSection.empty();
+    commentSection.empty();
 
     console.log("getting comments!");
 
@@ -875,15 +902,13 @@ function getComments(definitionId){
         success: function(result){
             if(result.status == "success"){
 
-                console.log(result);
-                displayCommentsOnPage(result.comments, commentsSection); 
-                console.log("result.isLoggedIn: " + result.isLoggedIn);
+                commentSection.empty();
+                displayCommentsOnPage(result.comments, commentSection); 
 
                 if(result.isLoggedIn){
-                    console.log("user is logged in");
-                    commentsSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment'>Add</button></div></div>");
+                    commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + definitionId + " data-term = ''>Add</button></div></div>");
                 } else {
-                    commentsSection.append("<div class = 'comment'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
+                    commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
 
             } else {
