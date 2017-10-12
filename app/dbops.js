@@ -27,69 +27,21 @@ function search(db, req, callback){
 	});
 }
 
-/*function getDefinitions(db, req, callback){
+function getDefinitions(db, req, callback){
 
-	definitionQuery = {
+
+	searchQuery = {
 		term: req.body.term,
 		removed: false, 
 		approved: true
 	}
 
-	var commentQuery = {
-		post_id: req.body.term,
-		removed: false, 
-	}
-
-	database.read(db, "definitions", definitionQuery, function fetchDefinitions(definitionSearchResult){
-		database.read(db, "comments", commentQuery, function fetchComments(commentSearchResult){
-
-			var responsesToReturn = [];
-
-			definitionSearchResult.forEach(function(oneResult){
-				if(((oneResult.upvotes - oneResult.downvotes) >= -5)){
-					
-					var commentCount = 0;			
-
-					commentSearchResult.forEach(function(oneComment){
-						if(oneComment.post_id == oneResult.id){
-							commentCount++;
-						}
-					})
-
-					oneResult.commentCount = commentCount;
-					responsesToReturn.push(oneResult);
-
-				}
-			})
-
-			callback({
-				status: "success",
-				count: responsesToReturn.length,
-				body: responsesToReturn
-			});
-
-
-
-
-		})
-	});
-}*/
-
-function getDefinitions(db, req, callback){
-
-
-	searchQuery = {
-		term: req.body.term
-	}
-
 	database.read(db, "definitions", searchQuery, function(searchResult){
-
-		console.log(searchResult);
 
 		var responsesToReturn = [];
 
 		searchResult.forEach(function(oneResult){
-			if(!oneResult.removed && oneResult.approved && ((oneResult.upvotes - oneResult.downvotes) >= -5)   ){
+			if(((oneResult.upvotes - oneResult.downvotes) >= -5)){
 				responsesToReturn.push(oneResult);
 			}
 		})
@@ -102,7 +54,6 @@ function getDefinitions(db, req, callback){
 
 	});
 }
-
 
 function getSpecificDefinition(db, req, callback){
 

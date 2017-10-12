@@ -455,10 +455,11 @@ function addComment(button){
             data: commentData,
             url: "/new-comment",
             success: function(result){
-
                 if(result.status == "success"){ 
 
-                    commentBodyText = "";
+                    console.log(result);
+
+                    button.parentElement.previousSibling.previousSibling.value = "";
                 
                     var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
                     var commentToAdd = [result.comment];
@@ -678,8 +679,7 @@ function displayDefinitionsOnPage(definitions){
                     definition: thisDefinition,
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
-                    id: thisDefinition.id,
-                    commentCount: thisDefinition.commentCount
+                    id: thisDefinition.id
                 };
 
                 var compiled = myTemplate(context)
