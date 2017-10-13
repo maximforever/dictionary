@@ -464,6 +464,9 @@ function addComment(button){
                     var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
                     var commentToAdd = [result.comment];
 
+
+                    $(".comment-on-post[data-id='" + result.comment.post_id + "']").siblings(".comment-count").text(parseInt($(".comment-on-post[data-id='" + result.comment.post_id + "']").siblings(".comment-count").text()) + 1);
+
                     displayCommentsOnPage(commentToAdd, commentSection);
 
                 } else {
@@ -679,7 +682,8 @@ function displayDefinitionsOnPage(definitions){
                     definition: thisDefinition,
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
-                    id: thisDefinition.id
+                    id: thisDefinition.id,
+                    commentCount: thisDefinition.comments.length
                 };
 
                 var compiled = myTemplate(context)

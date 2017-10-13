@@ -475,8 +475,9 @@ input {
 
 .comment-count{
 	z-index: 1;
-	color: #FFFFFF;
-	width: 32px;
+    font-size: 0.8em;
+    color: #FFFFFF;
+    width: 32px;
     text-align: center;
     position: absolute;
     float: right;

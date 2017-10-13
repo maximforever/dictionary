@@ -27,6 +27,7 @@ function search(db, req, callback){
 	});
 }
 
+
 function getDefinitions(db, req, callback){
 
 
@@ -36,22 +37,56 @@ function getDefinitions(db, req, callback){
 		approved: true
 	}
 
-	database.read(db, "definitions", searchQuery, function(searchResult){
+	database.read(db, "definitions", searchQuery, function(definitions){
 
-		var responsesToReturn = [];
+		var ids = [];
 
-		searchResult.forEach(function(oneResult){
-			if(((oneResult.upvotes - oneResult.downvotes) >= -5)){
-				responsesToReturn.push(oneResult);
-			}
+		definitions.forEach(function(definition){
+			ids.push({post_id: definition.id});
 		})
 
-		callback({
-			status: "success",
-			count: responsesToReturn.length,
-			body: responsesToReturn
-		});
+		console.log("ids");
+		console.log(ids);
 
+		var commentQuery = {
+			removed: false,
+			$or: ids
+		}
+
+		database.read(db, "comments", commentQuery, function(comments){
+
+			console.log("Found " + comments.length + " comments for " + definitions.length + " definitions")
+
+			var responsesToReturn = [];
+
+			definitions.forEach(function(definition){
+				if(((definition.upvotes - definition.downvotes) >= -5)){
+
+					var associatedComments = [];
+
+					comments.forEach(function(comment){
+
+						if(comment.post_id == definition.id){
+							associatedComments.push(comment);
+						}
+
+					})
+
+					definition.comments = associatedComments;
+					console.log("definition");
+					console.log(definition);
+					responsesToReturn.push(definition);
+				}
+			})
+
+			callback({
+				status: "success",
+				count: responsesToReturn.length,
+				body: responsesToReturn
+			});
+
+
+		})
 	});
 }
 
