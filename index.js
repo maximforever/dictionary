@@ -130,10 +130,19 @@ MongoClient.connect(dbAddress, function(err, db){
 
                 console.log("definition count: " + response.count);
 
+                loginStatus = false;
+
+                if(req.session.user){
+                    loginStatus = true;
+                }
+
+
+
                 res.send({
                     status: "success",
                     count: response.count,
-                    body: response.body
+                    body: response.body,
+                    isLoggedIn: loginStatus
                 });
 
             } else if(response.status == "fail"){

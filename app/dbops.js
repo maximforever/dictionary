@@ -45,13 +45,21 @@ function getDefinitions(db, req, callback){
 			ids.push({post_id: definition.id});
 		})
 
-		console.log("ids");
-		console.log(ids);
 
-		var commentQuery = {
-			removed: false,
-			$or: ids
+		var commentQuery;
+
+		if (ids.length){
+			commentQuery = {
+				removed: false,
+				$or: ids
+			}
+		} else {
+			commentQuery = {
+				post_id: Date.now()*Math.random()
+			}
 		}
+
+		
 
 		database.read(db, "comments", commentQuery, function(comments){
 
@@ -61,6 +69,8 @@ function getDefinitions(db, req, callback){
 
 			definitions.forEach(function(definition){
 				if(((definition.upvotes - definition.downvotes) >= -5)){
+
+					definition.comments = [];
 
 					var associatedComments = [];
 
@@ -89,6 +99,7 @@ function getDefinitions(db, req, callback){
 		})
 	});
 }
+
 
 function getSpecificDefinition(db, req, callback){
 

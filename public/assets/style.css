@@ -282,6 +282,10 @@ input {
 	text-align: right;
 }
 
+.fa-chevron-circle-up{
+	display: none;
+}
+
 
 /* CATEGORY CHART*/
 
@@ -477,11 +481,13 @@ input {
 	z-index: 1;
     font-size: 0.8em;
     color: #FFFFFF;
+    opacity: 1;
     width: 32px;
     text-align: center;
-    position: absolute;
+    position: relative;
     float: right;
-    margin-top: 6px;
+    margin-top: -25px;
+    margin-left: -35px;
     pointer-events: none;
 }
 

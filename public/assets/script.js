@@ -62,7 +62,15 @@ function main(){
     });
 
     $("body").on("click", ".notification-bell", function(){
-        displayNotification();
+
+        if($(".notifications-body").height() > 0) {
+            $(".notifications-body").hide();
+        } else {
+            $(".notifications-body").show();
+            displayNotification();
+        }
+
+        
     });
 
     $("body").on("click", ".scroll-up", function(){
@@ -81,13 +89,18 @@ function main(){
     });
 
     $("body").on("click", ".comment-on-post", function(){
-        var height = $(".comments-section[data-id=" + this.dataset.id + "]").height()
 
-        if(height > 0){
-            $(".comments-section[data-id=" + this.dataset.id + "]").empty();
+        $(".fa-chevron-circle-up[data-id=" + this.dataset.id + "]").toggle();
+        $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
+        $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
+        
+
+        if($(".comment-count[data-id=" + this.dataset.id + "]").css("opacity") == 1){
+            $(".comment-count[data-id=" + this.dataset.id + "]").css("opacity", 0);
         } else {
-           getComments(this.dataset.id); 
+            $(".comment-count[data-id=" + this.dataset.id + "]").css("opacity", 1);
         }
+
     });
 
 
@@ -369,7 +382,7 @@ function getDefinition(thisTerm){
 
             	if(result.count > 0){
                     $("#definitions-section").empty();
-                    displayDefinitionsOnPage(result.body);
+                    displayDefinitionsOnPage(result.body, result.isLoggedIn);
 	            } else {
                     $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                 }
@@ -464,8 +477,8 @@ function addComment(button){
                     var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
                     var commentToAdd = [result.comment];
 
-
-                    $(".comment-on-post[data-id='" + result.comment.post_id + "']").siblings(".comment-count").text(parseInt($(".comment-on-post[data-id='" + result.comment.post_id + "']").siblings(".comment-count").text()) + 1);
+                    console.log($(".comment-count[data-id='" + result.comment.post_id + "']"));
+                    $(".comment-count[data-id='" + result.comment.post_id + "']").text(parseInt($(".comment-count[data-id='" + result.comment.post_id + "']").text()) + 1);
 
                     displayCommentsOnPage(commentToAdd, commentSection);
 
@@ -544,6 +557,8 @@ function login(){
 }
 
 /* REMOVE THIS! */
+
+// hackers and troublemakers: this is a one click login because my dev session keeps kicking me off. it obvs won't make it into the prod app lulz
 function adminLogin(){
 
     var loginData = {
@@ -620,7 +635,7 @@ function logout(){
  
 }
 
-function displayDefinitionsOnPage(definitions){
+function displayDefinitionsOnPage(definitions, isLoggedIn){
 
    
     $("#definitions-section").empty();
@@ -689,6 +704,22 @@ function displayDefinitionsOnPage(definitions){
                 var compiled = myTemplate(context)
 
                 $("#definitions-section").append(compiled);
+
+                var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
+                console.log("thisDefinition.comments");
+
+
+                if(isLoggedIn){
+                    commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
+                } else {
+                    commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
+                }
+
+                displayCommentsOnPage(thisDefinition.comments, commentSection);
+                commentSection.hide();
+
+
+
             });
 
             $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
@@ -770,8 +801,6 @@ function displayAddDefinition(term){
 }
 
 function displayNotification(){
-    // resume work here - need to create a pop out that displays notifications. Notifications are stored in the session from "getUserData"
-    
 
     $.ajax({
         type: "get",
@@ -789,11 +818,6 @@ function displayNotification(){
 
                 currentNotifications = updatedUserData.notifications;
                 currentNotificationCounter = currentNotifications.length-1;
-
-                /*
-                    using a for loop instead of a usual .forEach here to display notifications in most recent order without
-                    using a Mongo sort function    
-                */
 
                 addNotificationsToScreen();
                 
