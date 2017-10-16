@@ -850,7 +850,14 @@ function displayReport(id, type){
     $("#new-definition").hide();
     $("#report").show();
     $("#report-content").empty();
-    $("#report-content").append($("#" + id).find(".definition-column").text().trim());
+
+    if(type == "definitions"){
+        $("#report-content").append($("#" + id).find(".definition-column").text().trim());
+    } else if (type == "comments"){
+        $("#report-content").append($("#" + id).find(".comment-body").text().trim());
+    }
+    
+
     $("#submit-report")[0].dataset.id = id;
     $("#submit-report")[0].dataset.type = type;
 }
@@ -862,35 +869,37 @@ function submitReport(){
 
 
     if(typeof(reportElement) != "undefined"){
-            var reportId = $("#submit-report")[0].dataset.id;
-            var reportReason = $(".report-body input:checked")[0].dataset.reason;
-            var reportType = $("#submit-report")[0].dataset.type;
+        
+        var reportId = $("#submit-report")[0].dataset.id;
+        var reportReason = $(".report-body input:checked")[0].dataset.reason;
+        var reportType = $("#submit-report")[0].dataset.type;
 
-            var reportData = {
-                id: reportId,
-                reason: reportReason,
-                type: reportType
-            }
-
-            $.ajax({
-                type: "post",
-                data: reportData,
-                url: "/new-report",
-                success: function(result){
-
-                    $("input[name='report']").prop('checked', false);
-                    $("#report").hide();
-                    if(result.status == "success"){
-                        $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted and will be reviewed shortly.</div>");
-                    } else {
-                        $("#definitions-section").prepend("<div class = 'definition add-confirmation'>" + result.error + "</div>");
-                    }
-                }
-            })
-
-        } else {
-            $(".report-error").text("Please select a reason for this report");
+        var reportData = {
+            id: reportId,
+            reason: reportReason,
+            type: reportType
         }
+
+        $.ajax({
+            type: "post",
+            data: reportData,
+            url: "/new-report",
+            success: function(result){
+
+                $("input[name='report']").prop('checked', false);
+                $("#report").hide();
+                if(result.status == "success"){
+                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted and will be reviewed shortly.</div>");
+                } else {
+                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>" + result.error + "</div>");
+                }
+            }
+        })
+
+    } else {
+        $(".report-error").text("Please select a reason for this report");
+    }
+
 }
 
 

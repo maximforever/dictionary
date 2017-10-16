@@ -1,0 +1,18 @@
+<div class = "comment" id = "{{id}}">
+    
+    <div class = "comment-column">
+        <div class = "comment-body">
+            {{comment.body}}
+        </div>
+        <div class = "edit-history-column">
+            <a href = "/profile/{{comment.author}}">@{{comment.author}}</a> on {{date}}
+        </div>
+    </div><!-- 
+ --><div class = "voting-column">
+        <div class = "voting-section">  
+            <button class = "admin-decision remove-report" data-vote = "rejected" data-id = "{{report.id}}" data-type = "comment" data-author = "{{comment.author}}"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+            <button class = "admin-decision trash-post" data-vote = "approved" data-id = "{{report.id}}" data-type = "comment" data-author = "{{comment.author}}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+        </div>
+    </div>
+</div>
+

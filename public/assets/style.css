@@ -373,6 +373,7 @@ input {
 .add-confirmation {
 	background: #eca921;
     border: 2px solid black;
+    margin-bottom: 35px;
 }
 
 .add-one {
@@ -754,10 +755,30 @@ input {
 }
 
 .report-reason {
-	font-size: 2em;
+    font-size: 1.2em;
+    display: block;
+    text-align: center;
+    background: #f5d6d6;
+    width: 125%;
 	font-weight: 600;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 	color: #b50000;
+}
+
+.report-type {
+    font-size: 1em;
+    display: block;
+    text-align: center;
+    background: #cccbcb;
+    width: 125%;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #4e4e4e;
+}
+
+.definitions {
+    color: #1e440f;
+    background: #83d661;
 }
 
 #user-role-editor {

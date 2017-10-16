@@ -24,7 +24,7 @@ function main(){
             console.log("votingData");
             console.log(votingData);
 
-        if(this.dataset.type == "definition" || this.dataset.type == "report"){
+        if(this.dataset.type == "definition" || this.dataset.type == "report" || this.dataset.type == "comment"){
             console.log("sending a request");
     	    $.ajax({
     	        type: "post",
@@ -49,13 +49,15 @@ function main(){
     });
 
     $("body").on("click", "#unapproved-definitions-link", function(){
-
 		getAdminData("definitions");
     });
 
     $("body").on("click", "#unresolved-reports-link", function(){
         getAdminData("reports");
-	
+    });
+
+    $("body").on("click", "#unreviewed-comments", function(){
+        getAdminData("comments");
     });
 
     $("body").on("click", "#find-user", function(){

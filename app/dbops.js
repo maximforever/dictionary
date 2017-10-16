@@ -291,7 +291,7 @@ function addComment(db, req, callback){
 						downvotes: 0, 
 						reportCount: 0,
 						removed: false,
-						approved: false,
+						approved: true,
 						rejected: false,
 						date: Date(),
 						body: req.body.commentBody
@@ -627,10 +627,10 @@ function adminVote(db, req, callback){
 			}
 		})
 
+	} else if(req.body.post == "comment"){
 
-
-		
-
+				// add how things go here
+	
 	} else {
 		callback({status: "fail", message: "Something went wrong"});
 	}
