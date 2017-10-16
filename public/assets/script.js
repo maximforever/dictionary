@@ -837,7 +837,14 @@ function addNotificationsToScreen(){
     for(var i = (currentNotificationCounter); i >= (currentNotificationCounter-4) ; i--){
         var notification = currentNotifications[i];
         if(!(typeof(notification) == "undefined")){
-            $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+
+            console.log(notification);
+
+            if(notification.type == "definition"){
+                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+            } else if (notification.type = "comment"){
+                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your comment has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+            }            
         }  
     }
 

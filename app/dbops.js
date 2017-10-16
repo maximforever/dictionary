@@ -126,7 +126,8 @@ function addDefinition(db, req, callback){
 
 			var userSubmissionsQuery = {
 				author: req.session.user.username,
-				approved: true
+				approved: true,
+				removed: false
 			}
 
 			database.read(db, "definitions", userSubmissionsQuery, function fetchUser(approvedDefinitions){
@@ -580,11 +581,11 @@ function adminVote(db, req, callback){
 
 		database.update(db, "reports", reportQuery, reportUpdateQuery, function resolveReport(updatedReport){
 
-			var definitionQuery = {
+			var postQuery = {
 				id: updatedReport.post_id
 			}
 
-			var definitionUpdateQuery = {
+			var postUpdateQuery = {
 				$set: {
 					removed: true
 				}
@@ -592,38 +593,50 @@ function adminVote(db, req, callback){
 
 			if(req.body.type == "approved"){
 				console.log("approving report - removing post");
-				database.update(db, "definitions", definitionQuery, definitionUpdateQuery, function removeDefinition(updatedDefinition){
-					
-					var newNotification = {
-						to: updatedDefinition.author,
-						from: "admin",
-						date: Date(),
-						body: "Your submission for '" + updatedDefinition.term + "' has been removed",
-						type: "definition",
-						term: updatedDefinition.term,
-						status: "removed"
-					}
+				database.update(db, updatedReport.type, postQuery, postUpdateQuery, function removePost(updatedPost){
 
-					var newNotificationsUpdate = {
-						$set: {
-							"data.newNotifications": true
+						var thisType = updatedReport.type.substr(0, (updatedReport.type.length-1))
+
+						var newNotification = {
+							to: updatedReport.author,
+							from: "admin",
+							date: Date(),
+							body: "Your comment has been removed",
+							type: thisType,
+							status: "removed"
 						}
-					}
 
-					var userQuery = {
-						username: updatedDefinition.author
-					}
+						if(updatedReport.type == "definitions"){
+							console.log("THIS IS A DEFINITION");
+							newNotification.body = "Your submission for '" + updatedPost.term + "' has been removed";
+							newNotification.term = updatedPost.term;
+						}
 
-					database.create(db, "notifications", newNotification, function createNotification(newNotification){		
-						database.update(db, "users", userQuery, newNotificationsUpdate, function notifyUser(updatedUser){		
-							callback({status: "success", message: "Successfully removed definition"});
+
+						var newNotificationsUpdate = {
+							$set: {
+								"data.newNotifications": true
+							}
+						}
+
+						var userQuery = {
+							username: updatedPost.author
+						}
+
+
+						console.log("newNotification");
+						console.log(newNotification);
+
+						database.create(db, "notifications", newNotification, function createNotification(newNotification){		
+							database.update(db, "users", userQuery, newNotificationsUpdate, function notifyUser(updatedUser){		
+								callback({status: "success", message: "Successfully removed " + thisType});
+							});
 						});
-					});
 				});
 
 			} else {
-				console.log("definition looks good, no removal.");
-				callback({status: "success", message: "definition looks good, no removal."});
+				console.log("post looks good, no removal.");
+				callback({status: "success", message: "post looks good, no removal."});
 			}
 		})
 
