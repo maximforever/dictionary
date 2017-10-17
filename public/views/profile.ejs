@@ -2,11 +2,15 @@
 
 <div id = "main-section">
 
-	<h2>User Profile: <%= username %></h2>
+	<h2>User profile: <span class = "profile-username"><%= username %></h2>
 
 	<h4>Definitions:</h4>
 
 	<% if (displayFullProfile) { %>
+
+		<div class = "link" id = "submission-table-toggle">
+			<i class="fa fa-plus" aria-hidden="true"></i> Show all submissions
+		</div>
 
 		<div id = "submission-status-table">
 

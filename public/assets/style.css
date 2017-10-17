@@ -660,6 +660,13 @@ input {
 	font-size: 0.85em;
 }
 
+.profile-username {
+    margin-top: 30px;
+    background: #ceb486;
+    padding: 5px;
+    display: inline-block;
+}
+
 /* NOTIFICATIONS */
 
 #notifications {
@@ -801,4 +808,12 @@ input {
 #suspension-section {
 	color: #ea5859;
 	font-weight: 600
+}
+
+#submission-status-table {
+    display: none;
+}
+
+#submission-table-toggle {
+    margin-bottom: 10px;
 }

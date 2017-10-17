@@ -88,6 +88,11 @@ function main(){
         
     });
 
+    $("body").on("click", "#submission-table-toggle", function(){
+        $("#submission-status-table").toggle();
+        
+    });
+
     $("body").on("click", ".comment-on-post", function(){
 
         $(".fa-chevron-circle-up[data-id=" + this.dataset.id + "]").toggle();
