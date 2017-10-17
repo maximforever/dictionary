@@ -955,11 +955,8 @@ function getUserData(db, req, user, callback){
 			to: user
 		}
 
-		console.log("req.session");
-		console.log(req.session);
-
 		if(!req.session.user ||(req.session.user && !req.session.user.admin) || (req.session.user && !req.session.user.moderator)){
-			console.log("FETCHING ONLY APPROVED");
+			console.log("User is not logged in or admin - only fetching approved definitions");
 			var definitionQuery = {
 				author: user,
 				approved: true,
