@@ -663,7 +663,7 @@ input {
 .profile-username {
     margin-top: 30px;
     background: #ceb486;
-    padding: 5px;
+    padding: 3px 8px;
     display: inline-block;
 }
 
@@ -816,4 +816,5 @@ input {
 
 #submission-table-toggle {
     margin-bottom: 10px;
+    display: inline;    
 }

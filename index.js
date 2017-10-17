@@ -379,9 +379,9 @@ MongoClient.connect(dbAddress, function(err, db){
             console.log(response);
             if(response.status == "success"){
                 if(req.session.user && req.params.username.trim() == req.session.user){
-                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, displayFullProfile: fullProfile});
+                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, comments: response.comments, displayFullProfile: fullProfile});
                 } else {
-                    res.render("profile", {definitions: response.definitions, username: req.params.username, displayFullProfile: fullProfile});
+                    res.render("profile", {definitions: response.definitions, username: req.params.username, comments: response.comments, displayFullProfile: fullProfile});
                 }   
             } else {
                 req.session.error = "Something strange happened"; 
@@ -397,7 +397,7 @@ MongoClient.connect(dbAddress, function(err, db){
             dbops.getUserData(db, req, req.session.user.username, function getData(response){
                 console.log(response);
                 if(response.status == "success"){
-                    res.send({status: "success", definitions: response.definitions, notifications: response.notifications});
+                    res.send({status: "success", definitions: response.definitions, notifications: response.notifications, comments: response.comments});
                 } else {
                     res.send({
                         status: "fail",

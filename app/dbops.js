@@ -942,6 +942,10 @@ function getUserData(db, req, user, callback){
 			username: user
 		}
 
+		var commentQuery = {
+			author: user
+		}
+
 		definitionQuery = {
 			author: user,
 			approved: true,
@@ -969,8 +973,10 @@ function getUserData(db, req, user, callback){
 
 
 				database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
-					database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
-						callback({status: "success", definitions: allDefinitions, notifications: allNotifications})
+					database.read(db, "comments", commentQuery, function fetchComments(allComments){
+						database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
+							callback({status: "success", definitions: allDefinitions, notifications: allNotifications, comments: allComments})
+						})
 					})
 				})
 

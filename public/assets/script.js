@@ -89,8 +89,7 @@ function main(){
     });
 
     $("body").on("click", "#submission-table-toggle", function(){
-        $("#submission-status-table").toggle();
-        
+        $("#submission-status-table").toggle();        
     });
 
     $("body").on("click", ".comment-on-post", function(){
