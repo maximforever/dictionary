@@ -4,41 +4,42 @@
 
 	<h2>User Profile: <%= username %></h2>
 
-	<div id = "submission-status-table">
+	<h4>Definitions:</h4>
 
-		<div class = "status-row status-row-headers">
-			<div class = "status-definition">
-				<span class = "bold">DEFINITION</span>
-			</div><!-- 
-		--><div class = "status-submission-date">
-				<span class = "bold">SUBMITTED</span>
-			</div><!-- 
-		 --><div class = "status">
-		 		<span class = "bold">STATUS</span>
+	<% if (displayFullProfile) { %>
+
+		<div id = "submission-status-table">
+
+			<div class = "status-row status-row-headers">
+				<div class = "status-definition">
+					<span class = "bold">DEFINITION</span>
+				</div><!-- 
+			--><div class = "status-submission-date">
+					<span class = "bold">SUBMITTED</span>
+				</div><!-- 
+			 --><div class = "status">
+			 		<span class = "bold">STATUS</span>
+				</div>
 			</div>
-		</div>
 
-		<!-- IF A USER IS NOT LOGGED IN / THIS IS A PROFILE FOR ANOTHER USER, WE SHOULD PULL IN LIVE DEFINITIONS-->
+			<!-- IF A USER IS NOT LOGGED IN / THIS IS A PROFILE FOR ANOTHER USER, WE SHOULD PULL IN LIVE DEFINITIONS-->
 
 
-		<% definitions.forEach(function(definition){ %>
+			<% definitions.forEach(function(definition){ %>
 
-			<% 
-				var status;
 
-				if (definition.removed){ 
-					status = "removed";
-				} else if (definition.rejected) { 
-					status = "rejected";
-				} else if (definition.approved) {
-					status = "approved";
-				} else {
-					status = "pending";
-				}
-			%>
-
-			<% if ((session.user && username == session.user.username) || status == "approved" || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true"))  { %>
-
+				<% var status; %>
+				<% 
+					if (definition.removed){ 
+						status = "removed";
+					} else if (definition.rejected) { 
+						status = "rejected";
+					} else if (definition.approved) {
+						status = "approved";
+					} else {
+						status = "pending";
+					}
+				%>
 				<div class = "status-row">
 					<div class = "status-definition">
 						<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
@@ -52,9 +53,52 @@
 					</div>
 					<% } %>
 				</div>
+			<% }) %>
+		</div>
+	<% } %>
+
+	<div class = "live-definitions">
+
+		<% definitions.forEach(function(definition){ %>
+
+			
+
+			<% if (definition.approved && !definition.removed){ %>
+
+				<% var score = definition.upvotes - definition.downvotes %>
+
+				<div class = "definition" id = "<%= definition.id %>">
+
+					<div class = "main-row">
+						<div class = "definition-column">
+							<div class = "definition-term"><%= definition.term %></div>
+							<div class = "definition-body"><%= definition.body %></div>
+						</div><!-- 
+					 --><div class = "voting-column">
+							<div class = "voting-section">	
+								<i class="fa fa-chevron-up voting-button link" data-id = "<%= definition.id %>" data-term = "<%= definition.term %>" data-vote = "up" data-type = "definition" aria-hidden="true"></i><br>
+								<span class = "definition-score"><%= score %></span><br>
+								<i class="fa fa-chevron-down voting-button link" data-id = "<%= definition.id %>" data-term = "<%= definition.term %>" data-vote = "down" data-type = "definition" aria-hidden="true"></i>
+							</div>
+						</div>
+					</div>
+
+					<div class = "info-row">
+						<div class = "edit-history-column">
+					 		Created by <a href = "/profile/<%= definition.author %>">@<%= definition.author %></a> on <%= definition.lastEdit.substr(4, 11) %>
+					 		<br>
+							<span class = "report-post link bold" data-id = "<%= definition.id %>" data-type = "definitions">Report</span>
+						</div><!-- 
+					 -->
+					</div>
+
+				</div>
+				<div class = "comments-section" data-id = "<%= definition.id %>">
+				</div>
+
+
 			<% } %>
 		<% }) %>
-
 	</div>
 
 </div>

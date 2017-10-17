@@ -365,19 +365,30 @@ MongoClient.connect(dbAddress, function(err, db){
     })
 
     app.get("/profile/:username", function(req, res){
+        
+        var fullProfile = false;
+
+        if(req.session.user){
+            if((req.session.user.username == req.params.username) || (req.session.user.admin == "true") || (req.session.user.moderator  == "true") ){
+                console.log("Getting full profile");
+                fullProfile = true;
+            }
+        }
+
         dbops.getUserData(db, req, req.params.username, function getData(response){
             console.log(response);
             if(response.status == "success"){
                 if(req.session.user && req.params.username.trim() == req.session.user){
-                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username});
+                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, displayFullProfile: fullProfile});
                 } else {
-                    res.render("profile", {definitions: response.definitions, username: req.params.username});
+                    res.render("profile", {definitions: response.definitions, username: req.params.username, displayFullProfile: fullProfile});
                 }   
             } else {
                 req.session.error = "Something strange happened"; 
-                res.render("index", {error: "Something strange happened" });
+                res.redirect("/");
             }   
         });
+
     })
 
     app.get("/updated-user-data", function(req, res){

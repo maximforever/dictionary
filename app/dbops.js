@@ -30,7 +30,6 @@ function search(db, req, callback){
 
 function getDefinitions(db, req, callback){
 
-
 	searchQuery = {
 		term: req.body.term,
 		removed: false, 
@@ -45,7 +44,6 @@ function getDefinitions(db, req, callback){
 			ids.push({post_id: definition.id});
 		})
 
-
 		var commentQuery;
 
 		if (ids.length){
@@ -55,16 +53,13 @@ function getDefinitions(db, req, callback){
 			}
 		} else {
 			commentQuery = {
-				post_id: Date.now()*Math.random()
+				post_id: Date.now()*Math.random()*-1				// this effectively assures an empty search, because we're looking for a negative decimal ID
 			}
 		}
-
-		
 
 		database.read(db, "comments", commentQuery, function(comments){
 
 			console.log("Found " + comments.length + " comments for " + definitions.length + " definitions")
-
 			var responsesToReturn = [];
 
 			definitions.forEach(function(definition){
@@ -947,28 +942,31 @@ function getUserData(db, req, user, callback){
 			username: user
 		}
 
-		var definitionQuery = {
-			author: user
+		definitionQuery = {
+			author: user,
+			approved: true,
+			removed: false,
+			rejected: false
 		}
 
 		var notificationQuery = {
 			to: user
 		}
 
-		if(!req.session.user ||(req.session.user && !req.session.user.admin) || (req.session.user && !req.session.user.moderator)){
-			console.log("User is not logged in or admin - only fetching approved definitions");
-			var definitionQuery = {
-				author: user,
-				approved: true,
-				removed: false,
-				rejected: false
+		if(req.session.user && ((req.session.user.username == user) || req.session.user.moderator || req.session.user.admin)){
+			definitionQuery = {
+				author: user
 			}
+		} else {		
+			console.log("User is not logged in - only fetching approved definitions");	
 		}
 
 		database.read(db, "users", userQuery, function checkIfUserExists(user){
 			if(user.length == 1){
 
 				console.log("Requesting user is logged in and " + userQuery.username + " is a real user");
+
+
 
 				database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
 					database.read(db, "notifications", notificationQuery, function fetchNotifications(allNotifications){
