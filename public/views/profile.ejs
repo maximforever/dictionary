@@ -109,6 +109,10 @@
 
 			<% } %>
 		<% }) %>
+
+		<% if (definitions.length == 0){ %>
+			<%= username %> has not added any definitions
+		<% } %>
 	</div>
 
 
@@ -146,6 +150,11 @@
 			<% } %>
 
 		<% }) %>
+
+		<% if (comments.length == 0){ %>
+			<%=username %> has not left any comments
+		<% } %>
+
 
 	</div>
 

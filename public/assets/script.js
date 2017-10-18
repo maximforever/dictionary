@@ -128,9 +128,11 @@ function main(){
 	});
 
 	$("#search-bar").on("keyup", function(e){
+        console.log($("#search-bar").val().length);
 		if($("#search-bar").val().length > 2){
 	    	search();
 		} else {
+            console.log("Under two!");
 			$("#terms-section").empty();
 		}
 
@@ -681,13 +683,21 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             var languagePercent = languageCount/definitions.length;
             var otherPercent = otherCount/definitions.length;
 
-            $("#tool-percentage").css("width", toolPercent * 300 + 5 + "px")
+            var maxCategoryWidth = 300;
+
+            console.log("window.width: " + $(window).width());
+
+            if($(window).width() < 980){
+                maxCategoryWidth = 180;
+            }
+
+            $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 5 + "px")
             $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
-            $("#concept-percentage").css("width", conceptPercent * 300 + 5 + "px")
+            $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 5 + "px")
             $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
-            $("#language-percentage").css("width", languagePercent * 300 + 5 + "px")
+            $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 5 + "px")
             $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
-            $("#other-percentage").css("width", otherPercent * 300 + 5 + "px")
+            $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 5 + "px")
             $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
             // a bit of handlebars magic
