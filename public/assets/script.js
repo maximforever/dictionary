@@ -576,38 +576,6 @@ function login(){
 
 }
 
-/* REMOVE THIS! */
-
-// hackers and troublemakers: this is a one click login because my dev session keeps kicking me off. it obvs won't make it into the prod app lulz
-function adminLogin(){
-
-    var loginData = {
-        username: "andrew",
-        password: "myrealpassword"
-    }
-
-    if(loginData.username.trim().length && loginData.password.trim().length){
-        $.ajax({
-            type: "get",
-            data: loginData,
-            url: "/login",
-            success: function(result){
-                if(result.status == "success"){
-                    location.reload();
-                } else {
-                    $("#login-username, #login-password, #signup-username, #signup-password").val("");
-                    $("#error").text(result.message).css("display", "block");
-                }
-            }
-        })
-    } else {
-        console.log("invalid login");
-        $("#message").text("Username or password can't be blank").css("display", "block");
-    }
-
-}
-
-
 function signup(){
 
     var signupData = {
