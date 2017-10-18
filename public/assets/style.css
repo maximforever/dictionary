@@ -890,17 +890,12 @@ input {
     }
 
     .pop-out {
-        width: calc(64vw - 44px);
-        border: 1px solid rgba(10,10,10, 0.4);
-        z-index: 2;
-        box-shadow: -0 0 35px rgba( 20, 20, 20, 0.5);
-        position: absolute;
-        top: 15vh;
-        left: 18vw;
-        background: #EAEAEA;
-        padding: 20px;
+        width: calc(94vw - 34px);
+        top: 10vh;           /**/
+        left: 3vw;
+        padding: 15px;
         min-height: 10vh;
-        min-width: 300px;
+        min-width: 100px;
     }
 
     .pop-out h3 {
@@ -1254,18 +1249,17 @@ input {
     }
 
 
+
+
     /* REPORT */
 
-    .report-option{
-        margin-right: 10px;
+    #report-content {
+        font-size: 1em;
+        line-height: 1.4;
     }
 
-    #report-content {
-        padding: 10px;
-        border: 1px solid gray;
-        color: #b50000;
-        background: #cccccc;
-        line-height: 1.3;
+    .report-body {
+      font-size: 0.85em;
     }
 
 

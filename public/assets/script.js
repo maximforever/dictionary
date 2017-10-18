@@ -4,6 +4,7 @@ var currentTerm = null;
 var currentNotifications = [];
 var currentNotificationCounter = 0;
 
+var screenWidth = $(window).width();
 
 
 function main(){
@@ -685,9 +686,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             var maxCategoryWidth = 300;
 
-            console.log("window.width: " + $(window).width());
-
-            if($(window).width() < 980){
+            if(screenWidth < 980){
                 maxCategoryWidth = 180;
             }
 
@@ -827,6 +826,10 @@ function displayNotification(){
                 $("#notifications").show();
                 $("#notifications").css("left", ($(".notification-bell")[0].offsetLeft-140) + "px");
                 $("#notifications").css("top", ($(".notification-bell")[0].offsetTop+30) + "px");
+
+                if(screenWidth < 980){
+                    $("#notifications").css("left", ($(".notification-bell")[0].offsetLeft-45) + "px");
+                }
 
                 $("#notifications-section").empty();
 
