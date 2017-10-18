@@ -874,7 +874,7 @@ input {
     /* SEARCH BAR */
 
     #search-bar-div {
-        margin: 3vh 0 20px 0;
+        margin: 20px 0 20px 0;
     }
 
     #search-bar-label {
@@ -1232,6 +1232,7 @@ input {
         font-family: 'Muli', sans-serif;
         font-size: 0.9em;
         vertical-align: top;
+        padding: 3px 5px;
     }
 
     .links button:hover {
@@ -1248,7 +1249,11 @@ input {
         cursor: pointer;
     }
 
-    #login-username, #signup-username, #login-password, #signup-password {
+    #login-username, #login-password {
+        width: 30vw;
+    }
+
+    #signup-username, #signup-password {
         width: 28vw;
     }
 
