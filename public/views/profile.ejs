@@ -8,7 +8,7 @@
 	<div class = "profile-links">
 		<a href = "#live-definition-section">Definitions</a> | <a href = "#live-comments-section">Comments</a> 
 		<% if (displayFullProfile) { %> 
-			<div class = "link" id = "submission-table-toggle">
+			<div class = "bold link" id = "submission-table-toggle">
 				| <i class="fa fa-plus" aria-hidden="true"></i> See all submissions
 			</div>
 		<% } %>
@@ -33,9 +33,6 @@
 			 		<span class = "bold">STATUS</span>
 				</div>
 			</div>
-
-			<!-- IF A USER IS NOT LOGGED IN / THIS IS A PROFILE FOR ANOTHER USER, WE SHOULD PULL IN LIVE DEFINITIONS-->
-
 
 			<% definitions.forEach(function(definition){ %>
 
