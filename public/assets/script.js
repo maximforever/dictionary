@@ -435,34 +435,42 @@ function addDefinition(){
 
             console.log(definitionData);
     	    
-    		$.ajax({
-    	        type: "post",
-    	        data: definitionData,
-    	        url: "/new-definition",
-    	        success: function(result){
+            if(validateInput(definitionBody)){
 
-                    $("#terms-section").empty();
-                    $("#definitions-section").empty();
-                    $("#new-definition-related-terms").empty();
-                    $("input[name='definition-category']").prop('checked', false);
+                $.ajax({
+                    type: "post",
+                    data: definitionData,
+                    url: "/new-definition",
+                    success: function(result){
+
+                        $("#terms-section").empty();
+                        $("#definitions-section").empty();
+                        $("#new-definition-related-terms").empty();
+                        $("input[name='definition-category']").prop('checked', false);
 
 
-    	        	if(result.status == "success"){
-                		
-                		getDefinition(result.term);
-                        
-                        if(!result.termAdded){
-                            $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                        if(result.status == "success"){
+                            
+                            getDefinition(result.term);
+                            
+                            if(!result.termAdded){
+                                $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                            }
+                            
+                            $("#new-definition-textarea").val("");            
+                            $("#new-definition").hide();
+                        } else {
+                            // $("#definitions-section").empty();
+                            // $("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
+                            $(".new-definition-error").text(result.error);
                         }
-                        
-                        $("#new-definition-textarea").val("");            
-                        $("#new-definition").hide();
-    	        	} else {
-    	            	$("#definitions-section").empty();
-    	            	$("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
-    	     		}
-    	        }
-    	    })
+                    }
+                })
+
+            } else {
+                $(".new-definition-error").text("No profanity or links, please");
+            }
+    		
         } else {
             $(".new-definition-error").text("Please pick a category for this definition");
         }
@@ -961,8 +969,51 @@ function getComments(definitionId){
 }
 
 
+function validateInput(string){
+
+    var validString = true;
+    var extraBadWords = ["fuck", "cock", "cunt", "nigger", "pussy", "bitch"];
+    var forbiddenWords = ["anus", "ass", "ballsack", "bitch", "bloody", "blowjob", "blow job", "clit", "clitoris", "cock", "coon", "crap", "cunt", "cum", "dick", "dildo", "dyke", "fag", "felching", "fuck", "fucking", "fucker", "fucktard", "fuckface", "fudgepacker", "fudge packer", "flange", "jizz", "nigger", "nigga", "penis", "piss", "prick", "pussy", "queer", "tits", "smegma", "spunk", "boobies", "tosser", "turd", "twat", "vagina", "wank", "whore"];
+    var linkWords = ["http", "https", "www"];
 
 
+    // 1. split the string into an array of words
+
+    b = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
+    wordArray = b.split(" ");
+
+    for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the value of the string
+        if(wordArray[i].trim().length == 0) {
+            wordArray.splice(i, 1);
+        }
+    }
+    
+    for(var j = 0; j < wordArray.length; j++){
+        if(forbiddenWords.indexOf(wordArray[j]) != -1){
+            validString = false;
+            console.log(wordArray[j] + " is not allowed");
+        } else {
+
+            for(var h = 0; h < extraBadWords.length; h++){
+                if(wordArray[j].indexOf(extraBadWords[h]) != -1){
+                    validString = false;
+                    console.log(wordArray[j] + " is not allowed");
+                } 
+            }
+
+            for(var k = 0; k < linkWords.length; k++){
+                console.log(wordArray[j]);
+                if(wordArray[j].indexOf(linkWords[k]) != -1){
+                    validString = false;
+                    console.log(wordArray[j] + " looks like a link");
+                } 
+            }
+
+        } 
+    }
+
+    return validString;
+}
 
 
 

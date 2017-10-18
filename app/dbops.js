@@ -125,72 +125,85 @@ function addDefinition(db, req, callback){
 				removed: false
 			}
 
-			database.read(db, "definitions", userSubmissionsQuery, function fetchUser(approvedDefinitions){
+			if(validateInput(req.body.definition)){
 
-				console.log("This user has submitted " + approvedDefinitions.length + " definitions");
+				database.read(db, "definitions", userSubmissionsQuery, function fetchUser(approvedDefinitions){
 
-				newDefinitionQuery = {
-					id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
-					term: req.body.term.trim().toLowerCase(),
-					author: req.session.user.username,
-					upvotes: 0,
-					downvotes: 0, 
-					reportCount: 0,
-					removed: false,
-					approved: false,
-					rejected: false,
-					lastEdit: Date(),
-					created: Date(),
-					body: req.body.definition,
-					category: req.body.category,
-					related: []
-				}
-				if(approvedDefinitions.length > 5){
-					console.log("Auto approve based on positive submission history");
-					newDefinitionQuery.approved = true;
+					console.log("This user has submitted " + approvedDefinitions.length + " definitions");
 
-
-					var newNotification = {
-						to: newDefinitionQuery.author,
-						from: "admin",
-						date: Date(),
-						body: "Your submission for '" + newDefinitionQuery.term + "' has been approved",
-						type: "definition",
-						term: newDefinitionQuery.term,
-						status: "approved"
+					newDefinitionQuery = {
+						id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+						term: req.body.term.trim().toLowerCase(),
+						author: req.session.user.username,
+						upvotes: 0,
+						downvotes: 0, 
+						reportCount: 0,
+						removed: false,
+						approved: false,
+						rejected: false,
+						lastEdit: Date(),
+						created: Date(),
+						body: req.body.definition,
+						category: req.body.category,
+						related: []
 					}
+					if(approvedDefinitions.length > 5){
+						console.log("Auto approve based on positive submission history");
+						newDefinitionQuery.approved = true;
 
 
-					var newNotificationsUpdate = {
-						$set: {
-							"data.newNotifications": true
+						var newNotification = {
+							to: newDefinitionQuery.author,
+							from: "admin",
+							date: Date(),
+							body: "Your submission for '" + newDefinitionQuery.term + "' has been approved",
+							type: "definition",
+							term: newDefinitionQuery.term,
+							status: "approved"
 						}
+
+
+						var newNotificationsUpdate = {
+							$set: {
+								"data.newNotifications": true
+							}
+						}
+
+						var userQuery = {
+							username: newDefinitionQuery.author
+						}
+
+
+						database.create(db, "notifications", newNotification, function createNotification(newNotification){
+							database.update(db, "users", userQuery, newNotificationsUpdate, function addNewNotification(newNotification){
+								console.log("Notification for auto approval of '" + newDefinitionQuery.term + "' created");
+							});
+						})
+
 					}
 
-					var userQuery = {
-						username: newDefinitionQuery.author
+
+
+					termQuery = { 
+						name: req.body.term
 					}
 
+					database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
 
-					database.create(db, "notifications", newNotification, function createNotification(newNotification){
-						database.update(db, "users", userQuery, newNotificationsUpdate, function addNewNotification(newNotification){
-							console.log("Notification for auto approval of '" + newDefinitionQuery.term + "' created");
-						});
-					})
-
-				}
-
-
-
-				termQuery = { 
-					name: req.body.term
-				}
-
-				database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
-
-					if(existingTerms.length == 0){
-						console.log("creating new definition for the term '" + termQuery.name + "'");
-						database.create(db, "terms", termQuery, function createdTerm(newTerm){
+						if(existingTerms.length == 0){
+							console.log("creating new definition for the term '" + termQuery.name + "'");
+							database.create(db, "terms", termQuery, function createdTerm(newTerm){
+								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
+									console.log(newDefinition.ops[0]);
+									callback({
+										status: "success",
+										termAdded: newDefinitionQuery.approved,
+										term: newDefinition.ops[0].term
+									});
+								});
+							});
+						} else if (existingTerms.length == 1) {
+							console.log("Someone has already created the term '" + termQuery.name + "'");
 							database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 								console.log(newDefinition.ops[0]);
 								callback({
@@ -199,31 +212,26 @@ function addDefinition(db, req, callback){
 									term: newDefinition.ops[0].term
 								});
 							});
-						});
-					} else if (existingTerms.length == 1) {
-						console.log("Someone has already created the term '" + termQuery.name + "'");
-						database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
-							console.log(newDefinition.ops[0]);
+						} else {
+							console.log("Multiple definitions for one term");
 							callback({
-								status: "success",
-								termAdded: newDefinitionQuery.approved,
-								term: newDefinition.ops[0].term
+								status: "fail",
+								message: "Multiple definitions for one term"
 							});
-						});
-					} else {
-						console.log("Multiple definitions for one term");
-						callback({
-							status: "fail",
-							message: "Multiple definitions for one term"
-						});
-					}
+						}
+					})
+
+
+
 				})
 
 
-
-			})
-
-			
+			} else {
+				callback({
+					status: "fail",
+					message: "No profanity or links, please"
+				});
+			}
 		} else {
 			callback({
 				status: "fail",
@@ -1025,6 +1033,55 @@ function generateHash(hashLength){
 
     return hash;
 }
+
+function validateInput(string){
+
+    var validString = true;
+    var extraBadWords = ["fuck", "cock", "cunt", "nigger", "pussy", "bitch"];
+    var forbiddenWords = ["anus", "ass", "ballsack", "bitch", "bloody", "blowjob", "blow job", "clit", "clitoris", "cock", "coon", "crap", "cunt", "cum", "dick", "dildo", "dyke", "fag", "felching", "fuck", "fucking", "fucker", "fucktard", "fuckface", "fudgepacker", "fudge packer", "flange", "jizz", "nigger", "nigga", "penis", "piss", "prick", "pussy", "queer", "tits", "smegma", "spunk", "boobies", "tosser", "turd", "twat", "vagina", "wank", "whore"];
+    var linkWords = ["http", "https", "www"];
+
+
+    // 1. split the string into an array of words
+
+    b = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
+    wordArray = b.split(" ");
+
+    for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the value of the string
+        if(wordArray[i].trim().length == 0) {
+            wordArray.splice(i, 1);
+        }
+    }
+    
+    for(var j = 0; j < wordArray.length; j++){
+        if(forbiddenWords.indexOf(wordArray[j]) != -1){
+            validString = false;
+            console.log(wordArray[j] + " is not allowed");
+        } else {
+
+            for(var h = 0; h < extraBadWords.length; h++){
+                if(wordArray[j].indexOf(extraBadWords[h]) != -1){
+                    validString = false;
+                    console.log(wordArray[j] + " is not allowed");
+                } 
+            }
+
+            for(var k = 0; k < linkWords.length; k++){
+            	console.log(wordArray[j]);
+                if(wordArray[j].indexOf(linkWords[k]) != -1){
+                    validString = false;
+                    console.log(wordArray[j] + " looks like a link");
+                } 
+            }
+
+        } 
+    }
+
+    return validString;
+}
+
+
+
 
 /* MODULE EXPORES */
 module.exports.search = search;
