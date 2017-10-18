@@ -838,7 +838,8 @@ input {
     }
 
     #home-link {
-        float: left;
+        text-align: center;
+        display: block;
     }
 
     #main-section {
@@ -1244,9 +1245,14 @@ input {
         cursor: pointer;
     }
 
-    #login-username, #signup-username {
-        margin-right: 8px;
+    #login-username, #signup-username, #login-password, #signup-password {
+        width: 20vw;
     }
+
+    #login-section, #signup-section {
+        display: block;
+    }
+
 
     /* REPORT */
 
