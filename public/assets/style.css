@@ -955,7 +955,7 @@ input {
 
     .definition {
         margin: 20px auto 0 auto;
-        padding: 15px 10px 15px 15px;
+        padding: 15px;
         min-width: 100px;
         background: #f5ffc0;
         border-radius: 3px;
@@ -1119,7 +1119,8 @@ input {
     }
 
     .edit-history-column{
-        width: 80%;
+        width: 65%;
+        font-size: 0.8em;
     }
 
     .voting-column {
@@ -1155,7 +1156,7 @@ input {
 
     .post-actions-column{
         text-align: right;
-        width: 20%;
+        width: 35%;
         display: inline-block;
     }
 
@@ -1355,6 +1356,10 @@ input {
         font-size: 0.85em;
     }
 
+    .profile-username {
+        margin-top: 10px;
+    }
+
     /* NOTIFICATIONS */
 
     #notifications {
@@ -1450,25 +1455,11 @@ input {
     }
 
     .report-reason {
-        font-size: 1.2em;
-        display: block;
-        text-align: center;
-        background: #f5d6d6;
-        width: 125%;
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: #b50000;
+        width: 111%;
     }
 
     .report-type {
-        font-size: 1em;
-        display: block;
-        text-align: center;
-        background: #cccbcb;
-        width: 125%;
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: #4e4e4e;
+        width: 111%;
     }
 
     .definitions {
