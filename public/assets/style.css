@@ -66,7 +66,10 @@ input {
 }
 
 #home-link {
-	float: left;
+    float: left;
+    font-family: "Lusitana", serif;
+    font-size: 1.5em;
+    font-weight: 400;
 }
 
 #main-section {
@@ -579,6 +582,9 @@ input {
 
 #main-section h2{
 	margin: 0 0 2vh 0;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 #submission-status-table {
@@ -838,8 +844,10 @@ input {
     }
 
     #home-link {
-        text-align: center;
         display: block;
+        margin-bottom: 10px;
+        font-size: 1.3em;
+        margin-top: -3px;
     }
 
     #main-section {
@@ -1241,12 +1249,14 @@ input {
     }
 
     #login-username, #signup-username, #login-password, #signup-password {
-        width: 20vw;
+        width: 28vw;
     }
 
     #login-section, #signup-section {
         display: block;
+        width: 100%;
     }
+
 
 
 
@@ -1334,13 +1344,6 @@ input {
 
     .edit-history {
         font-size: 0.8em;
-    }
-
-    .profile-username {
-        margin-top: 30px;
-        background: #ceb486;
-        padding: 3px 8px;
-        display: inline-block;
     }
 
     .profile-links {

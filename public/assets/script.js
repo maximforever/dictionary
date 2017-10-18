@@ -274,6 +274,11 @@ function resetNavBar(){
     $("#login-section").hide();
     $("#signup-section").hide();
     $("#login, #signup").show();
+
+    if(screenWidth < 980){
+        $("#home-link").css("float", "left")
+    }
+
 }
 
 function showLogin(){
@@ -281,6 +286,10 @@ function showLogin(){
     $("#signup-section").hide();
     $("#login-section").show();
     $("#login-username").focus();
+
+    if(screenWidth < 980){
+        $("#home-link").css("float", "none").css("text-align", "left");
+    }
 }
 
 function showSignup(){
@@ -288,6 +297,10 @@ function showSignup(){
     $("#login-section").hide();
     $("#signup-section").show();
     $("#signup-username").focus();
+
+    if(screenWidth < 980){
+        $("#home-link").css("float", "none").css("text-align", "left");
+    }
 }
 
 function search(){
@@ -575,7 +588,7 @@ function adminLogin(){
 
     if(loginData.username.trim().length && loginData.password.trim().length){
         $.ajax({
-            type: "post",
+            type: "get",
             data: loginData,
             url: "/login",
             success: function(result){
