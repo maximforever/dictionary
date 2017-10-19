@@ -349,6 +349,17 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.post("/login", function(req, res){
         dbops.login(db, req, function vote(response){
+
+            if(response.status == "fail"){
+                res.send({
+                    status: "fail",
+                    message: response.message
+                });
+            } else {
+                res.render("loggedInHeader");
+            }
+
+            /*
             if(response.status == "success"){
                 res.send({
                     status: "success",
@@ -364,7 +375,9 @@ MongoClient.connect(dbAddress, function(err, db){
                     status: "fail",
                     error: "Something strange happened"
                 })
-            }   
+            }   */
+
+
         });
     });
 

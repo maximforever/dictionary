@@ -582,12 +582,20 @@ function login(){
             type: "post",
             data: loginData,
             url: "/login",
-            success: function(result){
-                if(result.status == "success"){
-                    location.reload();
-                } else {
+            success: function(result){   
+
+                if(result.status == "fail"){
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
                     $("#error").text(result.message).css("display", "block");
+                } else {
+                    if(window.location.href.indexOf("/profile") == -1 ){
+                        console.log(result)
+                        $("#header-section").empty().append(result);
+                        $("#signup-section, #login-section").hide();
+                        $("#message").css("display", "block").text("You are logged in");
+                    } else {
+                        location.reload();
+                    }
                 }
             }
         })
@@ -960,7 +968,7 @@ function deletePost(thisId, thisType){
             if(result.status == "success"){
                 $("#" + thisId).remove();
                 window.scrollTo(0, 0);
-                $("#error").css("display", "block").text("Your post has been removed");
+                $("#error").text("Your post has been removed").css("display", "block");
 
             } else {
                 console.log("Something went wrong");
