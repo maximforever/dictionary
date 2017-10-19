@@ -122,35 +122,32 @@
 
 		<% comments.forEach(function(comment){ %>
 
-			<% if (comment.removed == false){ %>
+			<% var score = comment.upvotes - comment.downvotes%>
 
-				<% var score = comment.upvotes - comment.downvotes%>
-
-				<div class = "comment" id = "<%= comment.id %>">
-		
-					<div class = "comment-column">
-						<div class = "comment-body">
-							<%= comment.body %>
-						</div>
-						<div class = "edit-history-column">
-					 		<a href = "/profile/{{comment.author}}">@<%= comment.author %></a> on <%= comment.date.substr(4, 11) %>
-					 		<br>
-					 		<% if (displayFullProfile){ %>
-					 			<div class = "bold link delete-post" data-id = "<%= comment.id %>" data-type = "comments">Delete</div>
-					 		<% } %>
-							<span class = "report-post link bold" data-id = "<%= comment.id %>" data-type = "comments">Report</span>
-						</div>
-					</div><!-- 
-				 --><div class = "voting-column">
-						<div class = "voting-section">	
-							<i class="fa fa-chevron-up voting-button link" data-id = "<%= comment.id %>" data-vote = "up" data-type = "comment" aria-hidden="true"></i><br>
-							<span class = "definition-score"><%= score %></span><br>
-							<i class="fa fa-chevron-down voting-button link" data-id = "<%= comment.id %>" data-vote = "down" data-type = "comment" aria-hidden="true"></i>
-						</div>
+			<div class = "comment" id = "<%= comment.id %>">
+	
+				<div class = "comment-column">
+					<div class = "comment-body">
+						<%= comment.body %>
+					</div>
+					<div class = "edit-history-column">
+				 		<a href = "/profile/{{comment.author}}">@<%= comment.author %></a> on <%= comment.date.substr(4, 11) %>
+				 		<br>
+				 		<% if (displayFullProfile){ %>
+				 			<div class = "bold link delete-post" data-id = "<%= comment.id %>" data-type = "comments">Delete</div>
+				 		<% } %>
+						<span class = "report-post link bold" data-id = "<%= comment.id %>" data-type = "comments">Report</span>
+					</div>
+				</div><!-- 
+			 --><div class = "voting-column">
+					<div class = "voting-section">	
+						<i class="fa fa-chevron-up voting-button link" data-id = "<%= comment.id %>" data-vote = "up" data-type = "comment" aria-hidden="true"></i><br>
+						<span class = "definition-score"><%= score %></span><br>
+						<i class="fa fa-chevron-down voting-button link" data-id = "<%= comment.id %>" data-vote = "down" data-type = "comment" aria-hidden="true"></i>
 					</div>
 				</div>
+			</div>
 
-			<% } %>
 
 		<% }) %>
 

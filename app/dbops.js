@@ -977,7 +977,8 @@ function getUserData(db, req, user, callback){
 		}
 
 		var commentQuery = {
-			author: user
+			author: user, 
+			removed: false
 		}
 
 		definitionQuery = {

@@ -23,12 +23,6 @@ function main(){
     });
 
 
-
-	$("#search-button").on("click", function(){
-        search();
-    });
-
-
 	$("body").on("click", ".term-link", function(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
@@ -151,7 +145,7 @@ function main(){
 	});
 
 
-    $("#definition-term-textarea").on("keyup", function(e){
+    $("body").on("keyup", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
             $("#term-suggestions-section").empty();
             $("#term-suggestions-section").show();
@@ -168,7 +162,7 @@ function main(){
 
 
 
-	$("#new-definition-textarea").on("keyup", function(){
+	$("body").on("keyup", "#new-definition-textarea", function(){
 		var charCount = $("#new-definition-textarea").val().length;
         $("#new-definition-char-count").text(charCount);
         if(charCount >= 500 || charCount < 30){
@@ -196,19 +190,8 @@ function main(){
         voteOnPost(direction, id, term, type);
     })
 
-    $("body").on("click", "#add-def-link", function(){
-        window.scrollTo(0, 0);
-        $("#report").hide();
-        $("#new-definition").show();
-        $("#new-definition-textarea").focus();
-        $(".new-definition-term").text(currentTerm)
-        $("#definition-term-textarea").val(currentTerm);
-        $("#definition-term-textarea").prop('disabled', true);
-        $("#definition-term-textarea").css("background", "#bbbbbb").css("color", "#3c3c3c");
-        $("#terms-section").empty();
-    });
-
     $("body").on("click", "#new-def-link", function(){
+        window.scrollTo(0, 0);
         $("#new-definition").show();
         $("#definition-term-textarea").val($("#search-bar").val());
         $(".new-definition-term").text($("#search-bar").val())
@@ -426,10 +409,10 @@ function addDefinition(){
     if(definitionBody.trim()){
         if(definitionBody.length <= 500){
             if(definitionBody.length >= 30){
-                if($("input[name='definition-category']:checked").length == 1){
+                if($("select[name='category'").val() != null){
 
                 	var related = trimRelatedTerms();
-                    var definitionCategory = $("input[name='definition-category']:checked")[0].dataset.category
+                    var definitionCategory = $("select[name='category'").val();
 
                 	var definitionData = {
             			term: definitionTerm.toLowerCase().trim(),
@@ -449,7 +432,7 @@ function addDefinition(){
                                 $("#terms-section").empty();
                                 $("#definitions-section").empty();
                                 $("#new-definition-related-terms").empty();
-                                $("input[name='definition-category']").prop('checked', false);
+                                $("select[name='category'").val(null)
 
                                 if(result.status == "success"){
                                     
@@ -754,7 +737,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             });
 
-            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
 
         }, 'html')
     }, 'html')
@@ -976,7 +959,7 @@ function deletePost(thisId, thisType){
             if(result.status == "success"){
                 $("#" + thisId).remove();
                 window.scrollTo(0, 0);
-                $("#error").text("Your post has been removed").css("display", "block");
+                $("#error").text("Your post has been deleted").css("display", "block");
 
             } else {
                 console.log("Something went wrong");

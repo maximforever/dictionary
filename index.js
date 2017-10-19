@@ -115,7 +115,7 @@ MongoClient.connect(dbAddress, function(err, db){
 
 
     app.get("/", function(req, res){
-        res.render("index");
+        res.render("index", {searchTerm: ""});
     });
     
     app.post("/search", function(req, res){
@@ -358,26 +358,6 @@ MongoClient.connect(dbAddress, function(err, db){
             } else {
                 res.render("loggedInHeader");
             }
-
-            /*
-            if(response.status == "success"){
-                res.send({
-                    status: "success",
-                    message: response.message
-                });
-            } else if(response.status == "fail"){
-                res.send({
-                    status: "fail",
-                    message: response.message
-                });
-            } else {
-                res.send({
-                    status: "fail",
-                    error: "Something strange happened"
-                })
-            }   */
-
-
         });
     });
 
@@ -393,6 +373,8 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/profile", function(req, res){
         if(req.session.user){
             res.redirect("/profile/" + req.session.user.username);
+        } else {
+            res.redirect("/")
         }
     })
 
@@ -441,7 +423,6 @@ MongoClient.connect(dbAddress, function(err, db){
             res.redirect("/");
         }
     })
-
 
 
 /* ADMIN PAGES */

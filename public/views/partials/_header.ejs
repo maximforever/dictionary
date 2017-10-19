@@ -95,11 +95,16 @@
 
                 <div class = "definition-category-section">
                     <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                    <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool, library, or framework (ex: NPM, React.js, grunt, Sublime Text)<br>
-                    <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: recursion, hash, MVC)<br>
-                    <input type="radio" name = "definition-category" class = "definition-category" data-category = "language">language or environment (ex: Perl, Node.js)<br>
-                    <input type="radio" name = "definition-category" class = "definition-category" data-category = "other">other
+                    <select class = "definition-category-section" name = "category">
+                        <option disabled selected value></option>
+                        <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
+                        <option data-category = "tool" value="tool">Tool (ex: NPM, grunt, Sublime Text)</option>
+                        <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
+                        <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
+                        <option data-category = "other" value="other">Other</option>
+                    </select>
                 </div>
+
 
                 <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When is it used?</p>
                 <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
