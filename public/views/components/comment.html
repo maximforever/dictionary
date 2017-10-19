@@ -7,6 +7,9 @@
 		<div class = "edit-history-column">
 	 		<a href = "/profile/{{comment.author}}">@{{comment.author}}</a> on {{date}}
 	 		<br>
+	 		{{#if comment.owner}}
+	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "comments">Delete</div>
+	 		{{/if}}
 			<span class = "report-post link bold" data-id = "{{id}}" data-type = "comments">Report</span>
 		</div>
 	</div><!-- 

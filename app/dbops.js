@@ -6,6 +6,11 @@ const commonPasswords = ["123456", "password", "password1", "password123", "pass
 
 function search(db, req, callback){
 
+	req.body.term = req.body.term.replace(String.fromCharCode(40),String.fromCharCode(92, 40));
+	req.body.term = req.body.term.replace(String.fromCharCode(41),String.fromCharCode(92, 41));
+	req.body.term = req.body.term.replace(String.fromCharCode(91),String.fromCharCode(92, 91));
+	req.body.term = req.body.term.replace(String.fromCharCode(93),String.fromCharCode(92, 93));
+
 
 	searchQuery = {
 		name: {
@@ -72,10 +77,25 @@ function getDefinitions(db, req, callback){
 					comments.forEach(function(comment){
 
 						if(comment.post_id == definition.id){
+
+							comment.owner = false;
+
+							if(req.session.user && comment.author == req.session.user.username){
+								comment.owner = true;
+							}
+
 							associatedComments.push(comment);
 						}
 
 					})
+
+
+					// while we're getting these... let's mark definitions authored by the requesting user
+					definition.owner = false;
+
+					if(req.session.user && definition.author == req.session.user.username){
+						definition.owner = true;
+					}
 
 					definition.comments = associatedComments;
 					console.log("definition");
@@ -117,7 +137,7 @@ function getSpecificDefinition(db, req, callback){
 
 function addDefinition(db, req, callback){
 	if(req.session.user){
-		if(req.body.definition && req.body.term){
+		if(req.body.definition && req.body.term && (req.body.definition.length <= 500) && (req.body.definition.length >= 30)){
 
 			var userSubmissionsQuery = {
 				author: req.session.user.username,
@@ -235,7 +255,7 @@ function addDefinition(db, req, callback){
 		} else {
 			callback({
 				status: "fail",
-				message: "A new post must have a term and a definition."
+				message: "A new post must have a term and a definition between 30 and 500 characters."
 			});
 		}
 	} else {
@@ -251,91 +271,89 @@ function addComment(db, req, callback){
 	if(req.session.user){
 		if(req.body.commentBody){
 
-			// search for identical comments or comments made within the last 5 mins
+			if(validateInput(req.body.commentBody)){
+				// search for identical comments or comments made within the last 5 mins
 
-			var duplicateCommentQuery = {
-				author: req.session.user.username,
-				post_id: parseInt(req.body.post_id)
-			}
+				var duplicateCommentQuery = {
+					author: req.session.user.username,
+					post_id: parseInt(req.body.post_id)
+				}
 
-			database.read(db, "comments", duplicateCommentQuery, function checkExistingComments(existingComments){
+				database.read(db, "comments", duplicateCommentQuery, function checkExistingComments(existingComments){
 
-				var commentApproved = true;
-				var errorMessage = ""
+					var commentApproved = true;
+					var errorMessage = ""
 
-				existingComments.forEach(function(existingComment){
+					existingComments.forEach(function(existingComment){
 
-					var timeLimit = 1000 * 60 * 5;			// how often can users make comments? Let's say every 5 mins (consider making random for bots?)
+						var timeLimit = 1000 * 60 * 5;			// how often can users make comments? Let's say every 5 mins (consider making random for bots?)
 
 
-					console.log("Date calculation: "); 
-					console.log(Date.now() - Date.parse(existingComment.date) - timeLimit);
+						console.log("Date calculation: "); 
+						console.log(Date.now() - Date.parse(existingComment.date) - timeLimit);
 
-					if(Date.parse(existingComment.date) + timeLimit >= Date.now()){
-						commentApproved = false;
-						errorMessage = "Please wait a few minutes before posting another comment";
-						console.log(errorMessage);
-					}
+						if(Date.parse(existingComment.date) + timeLimit >= Date.now()){
+							commentApproved = false;
+							errorMessage = "Please wait a few minutes before posting another comment";
+							console.log(errorMessage);
+						}
 
-					if(existingComment.body.trim() == req.body.commentBody.trim()){
-						commentApproved = false;
-						errorMessage = "You've already posted this comment on this definition";
-						console.log(errorMessage);
+						if(existingComment.body.trim() == req.body.commentBody.trim()){
+							commentApproved = false;
+							errorMessage = "You've already posted this comment";
+							console.log(errorMessage);
+						}
+					});
+
+					if(commentApproved){
+
+						newCommentQuery = {
+							id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+							term: req.body.term,
+							post_id: parseInt(req.body.post_id),
+							author: req.session.user.username,
+							upvotes: 0,
+							downvotes: 0, 
+							reportCount: 0,
+							removed: false,
+							approved: true,
+							rejected: false,
+							date: Date(),
+							body: req.body.commentBody
+						}
+
+						database.create(db, "comments", newCommentQuery, function createComment(newComment){
+							callback({
+								status: "success",
+								comment: newComment.ops[0]
+							});
+						});
+
+					} else {
+						callback({
+							status: "fail",
+							message: errorMessage
+						});
 					}
 				});
-
-				if(commentApproved){
-
-					newCommentQuery = {
-						id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
-						term: req.body.term,
-						post_id: parseInt(req.body.post_id),
-						author: req.session.user.username,
-						upvotes: 0,
-						downvotes: 0, 
-						reportCount: 0,
-						removed: false,
-						approved: true,
-						rejected: false,
-						date: Date(),
-						body: req.body.commentBody
-					}
-
-					database.create(db, "comments", newCommentQuery, function createComment(newComment){
-						callback({
-							status: "success",
-							comment: newComment.ops[0]
-						});
-					});
-
-				} else {
-					callback({
-						status: "fail",
-						message: errorMessage
-					});
-				}
-			});
+			} else {
+				callback({ status: "fail", message: "No profanity or links, please" });
+			}
 
 		} else {
-			callback({
-				status: "fail",
-				message: "This comment is empty"
-			});
+			callback({ status: "fail", message: "This comment is empty" });
 		}
 	} else {
-		callback({
-			status: "fail",
-			message: "You must log in to add a definition"
-		});
+		callback({ status: "fail", message: "You must log in to add a definition" });
 	}
 }
 
 
 function getComments(db, req, callback){
 
-
 	searchQuery = {
-		post_id: parseInt(req.body.id)
+		post_id: parseInt(req.body.id),
+		removed: false
 	}
 
 	database.read(db, "comments", searchQuery, function(searchResult){
@@ -345,7 +363,16 @@ function getComments(db, req, callback){
 		var responsesToReturn = [];
 
 		searchResult.forEach(function(oneResult){
-			if(!oneResult.removed && ((oneResult.upvotes - oneResult.downvotes) >= -5)   ){
+			if((oneResult.upvotes - oneResult.downvotes) >= -5){
+				
+				// Let's mark definitions authored by the requesting user
+				oneResult.owner = false;
+
+				if(req.session.user && oneResult.author == req.session.user.username){
+					console.log("THIS ONE BELONGS TO THE OWNER");
+					oneResult.owner = true;
+				}
+
 				responsesToReturn.push(oneResult);
 			}
 		})
@@ -799,7 +826,6 @@ function login(db, req, callback){
 							database.update(db, "users", userQuery, loginDateUpdate, function updateLastLogin(lastLogin){
 
 								console.log("Logged in successfully.")
-								console.log(existingUsers[0].data);
 				                req.session.user = existingUsers[0].data;
 				                req.session.user.admin = existingUsers[0].admin;
 				                req.session.user.moderator = existingUsers[0].moderator;
@@ -1018,6 +1044,30 @@ function clearNotifications(db, req, callback){
 	}
 }
 
+function deletePost(db, req, callback){
+
+	var postQuery = {
+		id: parseInt(req.body.id)
+	}
+
+	database.read(db, req.body.type, postQuery, function findPost(posts){
+		if (posts.length == 1){
+
+			if(posts[0].author == req.session.user.username){
+
+				database.remove(db, req.body.type, postQuery, function deletePost(post){
+					callback({status: "success", message: "Successfully removed post"})
+				})
+
+			} else {
+				callback({status: "fail", message: "You are not the author of this post"})
+			}
+		} else {
+			callback({status: "fail", message: "This post does not exist"})
+		}
+	})
+}
+
 
 
 
@@ -1036,10 +1086,10 @@ function generateHash(hashLength){
 
 function validateInput(string){
 
-    var validString = true;
+    var isStringValid = true;
     var extraBadWords = ["fuck", "cock", "cunt", "nigger", "pussy", "bitch"];
-    var forbiddenWords = ["anus", "ass", "ballsack", "bitch", "bloody", "blowjob", "blow job", "clit", "clitoris", "cock", "coon", "crap", "cunt", "cum", "dick", "dildo", "dyke", "fag", "felching", "fuck", "fucking", "fucker", "fucktard", "fuckface", "fudgepacker", "fudge packer", "flange", "jizz", "nigger", "nigga", "penis", "piss", "prick", "pussy", "queer", "tits", "smegma", "spunk", "boobies", "tosser", "turd", "twat", "vagina", "wank", "whore"];
-    var linkWords = ["http", "https", "www"];
+    var forbiddenWords = ["anus", "ass", "asswipe", "ballsack", "bitch", "blowjob", "blow job", "clit", "clitoris", "cock", "coon", "cunt", "cum", "dick", "dildo", "dyke", "fag", "felching", "fuck", "fucking", "fucker", "fucktard", "fuckface", "fudgepacker", "fudge packer", "flange", "jizz", "nigger", "nigga", "penis", "piss", "prick", "pussy", "queer", "tits", "smegma", "spunk", "boobies", "tosser", "turd", "twat", "vagina", "wank", "whore"];
+    var linkWords = ["http://", "https://", "www."];
 
 
     // 1. split the string into an array of words
@@ -1055,21 +1105,21 @@ function validateInput(string){
     
     for(var j = 0; j < wordArray.length; j++){
         if(forbiddenWords.indexOf(wordArray[j]) != -1){
-            validString = false;
+            isStringValid = false;
             console.log(wordArray[j] + " is not allowed");
         } else {
 
             for(var h = 0; h < extraBadWords.length; h++){
                 if(wordArray[j].indexOf(extraBadWords[h]) != -1){
-                    validString = false;
+                    isStringValid = false;
                     console.log(wordArray[j] + " is not allowed");
                 } 
             }
 
             for(var k = 0; k < linkWords.length; k++){
             	console.log(wordArray[j]);
-                if(wordArray[j].indexOf(linkWords[k]) != -1){
-                    validString = false;
+                if(string.indexOf(linkWords[k]) != -1){
+                    isStringValid = false;
                     console.log(wordArray[j] + " looks like a link");
                 } 
             }
@@ -1077,7 +1127,7 @@ function validateInput(string){
         } 
     }
 
-    return validString;
+    return isStringValid;
 }
 
 
@@ -1092,6 +1142,7 @@ module.exports.getComments = getComments;
 module.exports.addComment = addComment;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
+module.exports.deletePost = deletePost;
 
 module.exports.signup = signup;
 module.exports.login = login;

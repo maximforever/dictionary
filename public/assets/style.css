@@ -289,6 +289,20 @@ input {
 	display: none;
 }
 
+.delete-post {
+    margin: 5px 5px 0 0;
+    color: #7b1b1a;
+    background: #f17372;
+    padding: 3px 5px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.delete-post:hover {
+    color: #ffeaea;
+    background: #d42812;
+}
+
 
 /* CATEGORY CHART*/
 
@@ -861,6 +875,7 @@ input {
     #footer-section p {
         margin: 0;
         padding-bottom: 10px;
+        font-size: 0.8em;
     }
 
     #footer-section .fa-heart{

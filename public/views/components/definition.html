@@ -18,6 +18,9 @@
 		<div class = "edit-history-column">
 	 		<a href = "/profile/{{definition.author}}">@{{definition.author}}</a> on {{editDate}}
 	 		<br>
+	 		{{#if definition.owner}}
+	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions">Delete</div>
+	 		{{/if}}
 			<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions">Report</span>
 		</div><!-- 
 	 --><div class = "post-actions-column">

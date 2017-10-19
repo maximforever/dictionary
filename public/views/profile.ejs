@@ -94,6 +94,9 @@
 						<div class = "edit-history-column">
 					 		Created by <a href = "/profile/<%= definition.author %>">@<%= definition.author %></a> on <%= definition.lastEdit.substr(4, 11) %>
 					 		<br>
+					 		<% if (displayFullProfile){ %>
+					 			<div class = "bold link delete-post" data-id = "<%= definition.id %>" data-type = "definitions">Delete</div>
+					 		<% } %>
 							<span class = "report-post link bold" data-id = "<%= definition.id %>" data-type = "definitions">Report</span>
 						</div><!-- 
 					 -->
@@ -132,6 +135,9 @@
 						<div class = "edit-history-column">
 					 		<a href = "/profile/{{comment.author}}">@<%= comment.author %></a> on <%= comment.date.substr(4, 11) %>
 					 		<br>
+					 		<% if (displayFullProfile){ %>
+					 			<div class = "bold link delete-post" data-id = "<%= comment.id %>" data-type = "comments">Delete</div>
+					 		<% } %>
 							<span class = "report-post link bold" data-id = "<%= comment.id %>" data-type = "comments">Report</span>
 						</div>
 					</div><!-- 
