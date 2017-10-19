@@ -137,11 +137,9 @@ function main(){
 	});
 
 	$("#search-bar").on("keyup", function(e){
-        console.log($("#search-bar").val().length);
 		if($("#search-bar").val().length > 2){
 	    	search();
 		} else {
-            console.log("Under two!");
 			$("#terms-section").empty();
 		}
 
@@ -282,6 +280,7 @@ function resetNavBar(){
     $("#login-section").hide();
     $("#signup-section").hide();
     $("#login, #signup").show();
+    $(".account").show();
 
     if(screenWidth < 980){
         $("#home-link").css("float", "left")
@@ -290,6 +289,7 @@ function resetNavBar(){
 }
 
 function showLogin(){
+    $(".account").hide();
     $("#login, #signup").hide();
     $("#signup-section").hide();
     $("#login-section").show();
@@ -301,6 +301,7 @@ function showLogin(){
 }
 
 function showSignup(){
+    $(".account").hide();
     $("#login, #signup").hide();
     $("#login-section").hide();
     $("#signup-section").show();
@@ -423,7 +424,6 @@ function addDefinition(){
     
 
     if(definitionBody.trim()){
-        console.log("definitionBody.length: " + definitionBody.length);
         if(definitionBody.length <= 500){
             if(definitionBody.length >= 30){
                 if($("input[name='definition-category']:checked").length == 1){
@@ -589,9 +589,19 @@ function login(){
                     $("#error").text(result.message).css("display", "block");
                 } else {
                     if(window.location.href.indexOf("/profile") == -1 ){
-                        console.log(result)
                         $("#header-section").empty().append(result);
                         $("#signup-section, #login-section").hide();
+
+
+                        // replace the "log in to add a comment" fields with textareas
+                        for(var i = 0; i < $(".add-one").length - 1; i++){
+                            var element = $(".add-one")[i];
+                            var id = element.dataset.id;
+                            element.innerHTML = "<h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
+                        }
+
+                        $(".comment").removeClass("add-one");
+
                         $("#message").css("display", "block").text("You are logged in");
                     } else {
                         location.reload();
@@ -730,13 +740,11 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 $("#definitions-section").append(compiled);
 
                 var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
-                console.log("thisDefinition.comments");
-
 
                 if(isLoggedIn){
                     commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
-                    commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
+                    commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
 
                 displayCommentsOnPage(thisDefinition.comments, commentSection);
