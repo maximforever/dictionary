@@ -387,23 +387,20 @@ input {
 }
 
 #concept-percentage {
-	background: #ec5c11;
+	background: #d43eff;
     /*background: #a9f768;*/
 }
 
 #language-percentage {
-    background: #55d4ff;
+    background: #37e037;;
 	/*background: #dab6f3;*/
 }
 
 #process-percentage {
-    background: #f53c7c;
+    background: #ff7f3a;;
     /*background: #dab6f3;*/
 }
 
-#process-percentage {
-    background: #f6fd35;
-}
 
 #other-percentage {
 	background: #cacaca;
