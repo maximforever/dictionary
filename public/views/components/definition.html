@@ -4,6 +4,19 @@
 		<div class = "definition-column">
 			<div class = "definition-term">{{definition.term}}</div>
 			<div class = "definition-body">{{definition.body}}</div>
+
+			{{#if hasRelated}}
+
+			<div class = "definition-related-terms"><span class = "bold">Related terms: </span> 
+				{{#each related}}
+					<span class= "related-term"><a href = "/{{this}}">{{this}}</a>, </span>
+				{{/each}}
+			</div>
+
+			{{/if}}
+
+
+
 		</div><!-- 
 	 --><div class = "voting-column">
 			<div class = "voting-section">	
@@ -18,6 +31,9 @@
 		<div class = "edit-history-column">
 	 		<a href = "/profile/{{definition.author}}">@{{definition.author}}</a> on {{editDate}}
 	 		<br>
+	 		{{#if definition.owner}}
+	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions">Delete</div>
+	 		{{/if}}
 			<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions">Report</span>
 		</div><!-- 
 	 --><div class = "post-actions-column">

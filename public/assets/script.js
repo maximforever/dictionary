@@ -6,26 +6,28 @@ var currentNotificationCounter = 0;
 
 var screenWidth = $(window).width();
 
-
 function main(){
 
     $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
 
     resetNavBar();
 
+    if($("#definitions-section").height() < 5){
+        search();
+    }
+
+
     $("body").on("click", function(e){
         $("#error, #message").text("").hide();
         $("#terms-section").text("");
 
+        $("#term-suggestions-section").hide();
+        $("#related-suggestions-section").hide();
+
+
         if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
            $("#notifications").hide();              
         }
-    });
-
-
-
-	$("#search-button").on("click", function(){
-        search();
     });
 
 
@@ -36,11 +38,29 @@ function main(){
 		getDefinition(term);
 	});
 
-    $("body").on("click", ".term-suggestion-link", function(){
+    $("body").on("click", ".definition-suggestion-link", function(){
+        console.log("beep");
+        var term = this.dataset.id;
+        $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
         $("#term-suggestions-section").hide();
-        var term = this.getAttribute("id");
-        $("#definition-term-textarea").val(term)
+    });
+
+    $("body").on("click", ".related-suggestion-link", function(){
+        console.log("beep");
+        
+        var term = this.dataset.id;
+
+        if(term[term.length - 1] != ","){
+            term = term + ", ";
+        }   
+
+        var currentText = $("#related-term-textarea").val();
+
+        $("#related-term-textarea").val(currentText.substring(0, currentText.lastIndexOf(",") + 1) + " " + term);
+        $("#related-term-suggestions-section").empty();
+        $("#related-term-suggestions-section").hide();
+        $("#related-term-textarea").focus();
     });
 
     $("body").on("click", ".report-post", function(){
@@ -108,7 +128,25 @@ function main(){
 
     });
 
+    $("body").on("click", ".delete-post", function(){
+        var confirmation = confirm("Are you sure you want to delete this post?");
+        if(confirmation){
+            deletePost(this.dataset.id, this.dataset.type);
+        }
+    });
 
+/*    $("body").on("focusout", "#definition-term-textarea", function(){
+        setTimeout(function(){
+            $("#term-suggestions-section").hide();
+        }, 500)     
+    });
+
+    $("body").on("focusout", "#related-term-textarea", function(){
+        setTimeout(function(){
+            $("#related-term-suggestions-section").hide();
+        }, 500)
+    });
+*/
     
 /* LISTENERS */
 
@@ -129,11 +167,9 @@ function main(){
 	});
 
 	$("#search-bar").on("keyup", function(e){
-        console.log($("#search-bar").val().length);
 		if($("#search-bar").val().length > 2){
 	    	search();
 		} else {
-            console.log("Under two!");
 			$("#terms-section").empty();
 		}
 
@@ -145,27 +181,45 @@ function main(){
 	});
 
 
-    $("#definition-term-textarea").on("keyup", function(e){
+    $("body").on("keyup", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
             $("#term-suggestions-section").empty();
             $("#term-suggestions-section").show();
-            searchForDefinitions();
+            var searchTerm = $("#definition-term-textarea").val().trim();
+            
+            searchForDefinitions(searchTerm);
         } else {
             $("#term-suggestions-section").hide();
         }
 
         if(e.which == 8){
             $("#term-suggestions-section").empty();
-            console.log("8! Say 8! I'm an 8 again!");
+        }
+    });
+
+    $("body").on("keyup", "#related-term-textarea", function(e){
+        if($("#related-term-textarea").val().length > 2){
+            $("#related-term-suggestions-section").empty();
+            $("#related-term-suggestions-section").show();
+            var searchTerm = $("#related-term-textarea").val().split(",");       // a little more complicated here - only the last word after the comma
+            searchTerm = searchTerm[searchTerm.length - 1].trim();
+            console.log("Search Term: " + searchTerm);
+            searchForDefinitions(searchTerm);
+        } else {
+            $("#related-term-suggestions-section").hide();
+        }
+
+        if(e.which == 8){
+            $("#related-term-suggestions-section").empty();
         }
     });
 
 
 
-	$("#new-definition-textarea").on("keyup", function(){
+	$("body").on("keyup", "#new-definition-textarea", function(){
 		var charCount = $("#new-definition-textarea").val().length;
         $("#new-definition-char-count").text(charCount);
-        if(charCount >= 500){
+        if(charCount >= 500 || charCount < 30){
             $("#new-definition-wrapper").addClass("over-char-limit");
         } else {
             $("#new-definition-wrapper").removeClass("over-char-limit");
@@ -190,19 +244,8 @@ function main(){
         voteOnPost(direction, id, term, type);
     })
 
-    $("body").on("click", "#add-def-link", function(){
-        window.scrollTo(0, 0);
-        $("#report").hide();
-        $("#new-definition").show();
-        $("#new-definition-textarea").focus();
-        $(".new-definition-term").text(currentTerm)
-        $("#definition-term-textarea").val(currentTerm);
-        $("#definition-term-textarea").prop('disabled', true);
-        $("#definition-term-textarea").css("background", "#bbbbbb").css("color", "#3c3c3c");
-        $("#terms-section").empty();
-    });
-
     $("body").on("click", "#new-def-link", function(){
+        window.scrollTo(0, 0);
         $("#new-definition").show();
         $("#definition-term-textarea").val($("#search-bar").val());
         $(".new-definition-term").text($("#search-bar").val())
@@ -251,19 +294,7 @@ function main(){
     $("body").on("click", "#logout", function(){
         logout();
     });
-
-
-
-/* ONE-CLICK ADMIN LOGIN */
-
-    $("body").on("click", "#master-log-in", function(){
-        adminLogin();
-    });
-
-
 }
-
-
 
 
 
@@ -274,6 +305,7 @@ function resetNavBar(){
     $("#login-section").hide();
     $("#signup-section").hide();
     $("#login, #signup").show();
+    $(".account").show();
 
     if(screenWidth < 980){
         $("#home-link").css("float", "left")
@@ -282,6 +314,7 @@ function resetNavBar(){
 }
 
 function showLogin(){
+    $(".account").hide();
     $("#login, #signup").hide();
     $("#signup-section").hide();
     $("#login-section").show();
@@ -293,6 +326,7 @@ function showLogin(){
 }
 
 function showSignup(){
+    $(".account").hide();
     $("#login, #signup").hide();
     $("#login-section").hide();
     $("#signup-section").show();
@@ -304,9 +338,11 @@ function showSignup(){
 }
 
 function search(){
-	var searchTerm = $("#search-bar").val().trim();
+	
 
-    if(searchTerm){
+    if($("#search-bar").val()){
+
+        var searchTerm = $("#search-bar").val().trim();
 
     	var searchQuery = {
     		term: searchTerm.toLowerCase()
@@ -319,7 +355,7 @@ function search(){
             success: function(result){
             	if(result.status == "success"){
             		$("#terms-section").empty();
-            		console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
+            		// console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
 
             		if(result.count > 0){
                         $("#definitions-section").empty();
@@ -334,14 +370,8 @@ function search(){
                             $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
             		} else {
-                        console.log('"#definitions-section").height() ' + $("#definitions-section").height());
-                        if($("#definitions-section").height() > 25){
-                            console.log("updating non-existent term");
-                            $(".no-def-term").text(searchTerm);
-                        } else {
-                            console.log("adding div");
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
-                        }
+                        $("#definitions-section").empty();
+                        $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                     }      		
             	} else {
             		console.log(result.error)
@@ -353,8 +383,7 @@ function search(){
     }
 }
 
-function searchForDefinitions(){
-    var searchTerm = $("#definition-term-textarea").val().trim();
+function searchForDefinitions(searchTerm){
 
     if(searchTerm){
         var searchQuery = {
@@ -367,7 +396,8 @@ function searchForDefinitions(){
             url: "/search",
             success: function(result){
                 if(result.status == "success"){
-                    $("#term-suggestions-section").empty();
+
+                    $("#term-suggestions-section, #related-term-suggestions-section").empty();
 
                     result.body.forEach(function(term){
                         displayDefinitionSuggestion(term);
@@ -417,54 +447,95 @@ function addDefinition(){
 
     var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
-	var relatedTerms = $("#new-definition-related-terms").val();
+	var relatedTermsArray;
+    var relatedTerms = [];
+
+    if($("#related-term-textarea").val()){
+        relatedTermsArray = $("#related-term-textarea").val().trim().split(",");
+        
+        console.log("relatedTermsArray");
+        console.log(relatedTermsArray);
+
+        relatedTermsArray.forEach(function(term){
+
+            console.log("term");
+            console.log(term);
+            term = term.trim();
+
+            if(validateInput(term)){
+                console.log("adding " + term);
+                relatedTerms.push(term);
+            }
+
+        });
+    }
+
     
 
+    console.log("relatedTerms");
+    console.log(relatedTerms);
+
     if(definitionBody.trim()){
-        if($("input[name='definition-category']:checked").length == 1){
+        if(definitionBody.length <= 500){
+            if(definitionBody.length >= 30){
+                if($("select[name='category'").val() != null){
 
-        	var related = trimRelatedTerms();
-            var definitionCategory = $("input[name='definition-category']:checked")[0].dataset.category
+                	var related = trimRelatedTerms();
+                    var definitionCategory = $("select[name='category'").val();
 
-        	var definitionData = {
-    			term: definitionTerm.toLowerCase().trim(),
-    			definition: definitionBody,
-    			related: relatedTerms,
-                category: definitionCategory
-    		}
+                	var definitionData = {
+            			term: definitionTerm.toLowerCase().trim(),
+            			definition: definitionBody,
+            			related: relatedTerms,
+                        category: definitionCategory
+            		}
 
-            console.log(definitionData);
-    	    
-    		$.ajax({
-    	        type: "post",
-    	        data: definitionData,
-    	        url: "/new-definition",
-    	        success: function(result){
+                    if(validateInput(definitionBody)){
 
-                    $("#terms-section").empty();
-                    $("#definitions-section").empty();
-                    $("#new-definition-related-terms").empty();
-                    $("input[name='definition-category']").prop('checked', false);
+                        $.ajax({
+                            type: "post",
+                            data: definitionData,
+                            url: "/new-definition",
+                            success: function(result){
 
+                                $("#terms-section").empty();
+                                $("#definitions-section").empty();
+                                $("#related-term-suggestions-section").empty();
+                                $("select[name='category'").val(null)
 
-    	        	if(result.status == "success"){
-                		
-                		getDefinition(result.term);
-                        
-                        if(!result.termAdded){
-                            $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
-                        }
-                        
-                        $("#new-definition-textarea").val("");            
-                        $("#new-definition").hide();
-    	        	} else {
-    	            	$("#definitions-section").empty();
-    	            	$("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
-    	     		}
-    	        }
-    	    })
+                                if(result.status == "success"){
+                                    
+                                    getDefinition(result.term);
+                                    
+                                    if(!result.termAdded){
+                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                                    } else {
+                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> is live!</div>");
+                                    }
+                                    
+                                    $("#new-definition-textarea").val("");
+                                    $("#related-term-textarea").val("");            
+                                    $("#new-definition").hide();
+                                } else {
+                                    // $("#definitions-section").empty();
+                                    // $("#definitions-section").append("<div class = 'definition'>" + result.error + "</div>");
+                                    $(".new-definition-error").text(result.error);
+                                }
+                            }
+                        })
+
+                    } else {
+                        $(".new-definition-error").text("No profanity or links, please");
+                    }
+            		
+                } else {
+                    $(".new-definition-error").text("Please pick a category for this definition");
+                }
+            } else {
+                $(".new-definition-error").text("Please use at least 30 characters");
+            }
         } else {
-            $(".new-definition-error").text("Please pick a category for this definition");
+            $(".new-definition-error").text("Your definition needs to be under 500 characters.");
         }
 	} else {
         $(".new-definition-error").text("Please enter a definition");
@@ -478,35 +549,39 @@ function addComment(button){
 
     if(commentBodyText.trim()){
         
-        var commentData = {
-            commentBody: commentBodyText,
-            post_id: button.dataset.id
-        }
-  
-        $.ajax({
-            type: "post",
-            data: commentData,
-            url: "/new-comment",
-            success: function(result){
-                if(result.status == "success"){ 
-
-                    console.log(result);
-
-                    button.parentElement.previousSibling.previousSibling.value = "";
-                
-                    var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
-                    var commentToAdd = [result.comment];
-
-                    console.log($(".comment-count[data-id='" + result.comment.post_id + "']"));
-                    $(".comment-count[data-id='" + result.comment.post_id + "']").text(parseInt($(".comment-count[data-id='" + result.comment.post_id + "']").text()) + 1);
-
-                    displayCommentsOnPage(commentToAdd, commentSection);
-
-                } else {
-                    $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text(result.error);
-                }
+        if(validateInput(commentBodyText)){
+            var commentData = {
+                commentBody: commentBodyText,
+                post_id: button.dataset.id
             }
-        })
+      
+            $.ajax({
+                type: "post",
+                data: commentData,
+                url: "/new-comment",
+                success: function(result){
+                    if(result.status == "success"){ 
+
+                        console.log(result);
+
+                        button.parentElement.previousSibling.previousSibling.value = "";
+                    
+                        var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
+                        var commentToAdd = [result.comment];
+
+                        console.log($(".comment-count[data-id='" + result.comment.post_id + "']"));
+                        $(".comment-count[data-id='" + result.comment.post_id + "']").text(parseInt($(".comment-count[data-id='" + result.comment.post_id + "']").text()) + 1);
+
+                        displayCommentsOnPage(commentToAdd, commentSection);
+
+                    } else {
+                        $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text(result.error);
+                    }
+                }
+            })
+        } else {
+            $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text("No profanity or links, please");
+        }
 
     } else {
         $(".comments-section[data-id=" + button.dataset.id + "] .new-comment-error").text("Please enter a comment");
@@ -560,12 +635,30 @@ function login(){
             type: "post",
             data: loginData,
             url: "/login",
-            success: function(result){
-                if(result.status == "success"){
-                    location.reload();
-                } else {
+            success: function(result){   
+
+                if(result.status == "fail"){
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
                     $("#error").text(result.message).css("display", "block");
+                } else {
+                    if(window.location.href.indexOf("/profile") == -1 ){
+                        $("#header-section").empty().append(result);
+                        $("#signup-section, #login-section").hide();
+
+
+                        // replace the "log in to add a comment" fields with textareas
+                        for(var i = 0; i < $(".add-one").length - 1; i++){
+                            var element = $(".add-one")[i];
+                            var id = element.dataset.id;
+                            element.innerHTML = "<h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
+                        }
+
+                        $(".comment").removeClass("add-one");
+
+                        $("#message").css("display", "block").text("You are logged in");
+                    } else {
+                        location.reload();
+                    }
                 }
             }
         })
@@ -639,7 +732,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             $("#definitions-section").append(definitionCategoryTemplate);
 
-            var toolCount = languageCount = conceptCount = otherCount = 0;
+            var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
 
             for(var i = 0; i < definitions.length; i++){
                 switch(definitions[i].category){
@@ -652,6 +745,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                     case "language":
                         languageCount++;
                         break;
+                    case "process":
+                        processCount++;
+                        break;
                     case "other":
                         otherCount++;
                         break;
@@ -663,6 +759,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             var toolPercent = toolCount/definitions.length;
             var conceptPercent = conceptCount/definitions.length;
             var languagePercent = languageCount/definitions.length;
+            var processPercent = processCount/definitions.length;
             var otherPercent = otherCount/definitions.length;
 
             var maxCategoryWidth = 300;
@@ -677,6 +774,8 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
             $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 5 + "px")
             $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
+            $("#process-percentage").css("width", processPercent * maxCategoryWidth + 5 + "px")
+            $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
             $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 5 + "px")
             $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
@@ -686,13 +785,20 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
 
                 var myTemplate =  Handlebars.compile(definitionTemplate);
+                var hasRelatedTerms = false;
+
+                if(thisDefinition.related){
+                    hasRelatedTerms = true
+                }
 
                 var context = {
                     definition: thisDefinition,
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
                     id: thisDefinition.id,
-                    commentCount: thisDefinition.comments.length
+                    commentCount: thisDefinition.comments.length,
+                    related: thisDefinition.related,
+                    hasRelated: hasRelatedTerms
                 };
 
                 var compiled = myTemplate(context)
@@ -700,13 +806,11 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 $("#definitions-section").append(compiled);
 
                 var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
-                console.log("thisDefinition.comments");
-
 
                 if(isLoggedIn){
                     commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
-                    commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
+                    commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
 
                 displayCommentsOnPage(thisDefinition.comments, commentSection);
@@ -716,7 +820,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             });
 
-            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'add-def-link'>Add your own!<span></div>");
+            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
 
         }, 'html')
     }, 'html')
@@ -783,7 +887,8 @@ function displaySearchTerm(term){
 } 
 
 function displayDefinitionSuggestion(term){
-    $("#term-suggestions-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-suggestion-link'>" + term.name + "</span></span></div>");
+    $("#term-suggestions-section").append("<div class = 'term'><span class = 'title'><span data-id = '" + term.name + "' class ='term-suggestion-link definition-suggestion-link'>" + term.name + "</span></span></div>");
+    $("#related-term-suggestions-section").append("<div class = 'term'><span class = 'title'><span data-id = '" + term.name + "' class ='term-suggestion-link related-suggestion-link'>" + term.name + "</span></span></div>");
 } 
 
 
@@ -921,6 +1026,35 @@ function acknowledgeNotifications(){
     })
 }
 
+function deletePost(thisId, thisType){
+    console.log(thisId);
+    console.log(thisType);
+
+    var deleteInfo = {
+        id: thisId,
+        type: thisType
+    }
+
+    $.ajax({
+        type: "post",
+        url: "/delete-post",
+        data: deleteInfo,
+        success: function(result){
+            if(result.status == "success"){
+                $("#" + thisId).remove();
+                window.scrollTo(0, 0);
+                $("#error").text("Your post has been deleted").css("display", "block");
+
+            } else {
+                console.log("Something went wrong");
+                $("#error").text(result.error).css("display", "block");
+            }
+        }
+    })
+
+
+}
+
 
 
 /* COMMENTS */
@@ -954,16 +1088,56 @@ function getComments(definitionId){
                 }
 
             } else {
-                console.log(result.error)
+                console.log(result.error);
             }
         }
     })
 }
 
 
+function validateInput(string){
+
+    var isStringValid = true;
+    var extraBadWords = ["fuck", "cock", "cunt", "nigger", "pussy", "bitch"];
+    var forbiddenWords = ["anus", "ass", "asswipe", "ballsack", "bitch", "blowjob", "blow job", "clit", "clitoris", "cock", "coon", "cunt", "cum", "dick", "dildo", "dyke", "fag", "felching", "fuck", "fucking", "fucker", "fucktard", "fuckface", "fudgepacker", "fudge packer", "flange", "jizz", "nigger", "nigga", "penis", "piss", "prick", "pussy", "queer", "tits", "smegma", "spunk", "boobies", "tosser", "turd", "twat", "vagina", "wank", "whore"];
+    var linkWords = ["http://", "https://", "www."];
 
 
+    // 1. split the string into an array of words
 
+    b = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
+    wordArray = b.split(" ");
+
+    for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the value of the string
+        if(wordArray[i].trim().length == 0) {
+            wordArray.splice(i, 1);
+        }
+    }
+    
+    for(var j = 0; j < wordArray.length; j++){
+        if(forbiddenWords.indexOf(wordArray[j]) != -1){
+            isStringValid = false;
+            console.log(wordArray[j] + " is not allowed");
+        } else {
+
+            for(var h = 0; h < extraBadWords.length; h++){
+                if(wordArray[j].indexOf(extraBadWords[h]) != -1){
+                    isStringValid = false;
+                    console.log(wordArray[j] + " is not allowed");
+                } 
+            }
+
+            for(var k = 0; k < linkWords.length; k++){
+                if(string.indexOf(linkWords[k]) != -1){
+                    isStringValid = false;
+                    console.log(wordArray[j] + " looks like a link");
+                } 
+            }
+        } 
+    }
+
+    return isStringValid;
+}
 
 
 

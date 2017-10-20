@@ -6,7 +6,7 @@ const path = require("path");                           // access paths
 const express = require("express");                     // express
 const MongoClient = require('mongodb').MongoClient;     // talk to mongo
 const bodyParser = require('body-parser');              // parse request body
-var session = require('express-session')                // create sessions
+var session = require('express-session');               // create sessions
 const MongoStore = require('connect-mongo')(session);   // store sessions in Mongo so we don't get dropped on every server restart
 const bcrypt = require('bcrypt');                       // encrypt passwords
 
@@ -21,6 +21,7 @@ const dbops = require("./app/dbops");
 const database = require("./app/database");
 
 var dbAddress;
+
 
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
     dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds147864.mlab.com:47864/dev-dictionary";
@@ -42,15 +43,37 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(bodyParser.json());                         // for parsing application/json
 
-    var secretHash = dbops.generateHash(16);            // generate secret for unique session
+    
+/*    app.use(function(req, res, next){
 
-    app.use(session({                                   // I THINK we only need to do this once, because it's causing us to send 2 GET requests to '/'
+        console.log("---> req.session");
+        console.log(req.session);
+
+
+        if(typeof(req.session) == "undefined" || req.session.expires <= Date.now()){
+            console.log("Totally new user");
+            secretHash = dbops.generateHash(16);            // generate secret for unique session
+        }
+        next();
+    })
+
+*/
+     var secretHash = dbops.generateHash(16);            // generate secret for unique session
+    
+
+    var thisDb = db;
+
+
+    app.use(session({                                
             secret: secretHash,
             saveUninitialized: true,
             resave: true,
             secure: false,
-            cookie: {},
-            store: new MongoStore({db: db}) 
+            cookie: {
+                originalMaxAge: 60000*60*24*14,
+                expires: new Date(Date.now() + 60000*60*24*14)
+            },
+            store: new MongoStore({ db: thisDb })
     }));
 
     app.use(function(req, res, next){                                           // logs request URL
@@ -61,17 +84,15 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(function(req, res, next) {                                          
         app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
-
-/*
-        app.locals.error = req.session.error;                                   // making copies like this is clunky, but it works
-        app.locals.message = req.session.message;
-        req.session.error = null;
-        req.session.message = null;*/
-
         next();
     })
 
     app.use(function(req, res, next){
+
+/*        console.log("[[req.session]]");
+        console.log(req.session);
+        console.log("req.session.id");
+        console.log(req.session.id);*/
 
         if(req.session.user){
             dbops.getUpdatedUser(db, req, function moveOn(suspended){
@@ -94,7 +115,7 @@ MongoClient.connect(dbAddress, function(err, db){
 
 
     app.get("/", function(req, res){
-        res.render("index");
+        res.render("index", {searchTerm: ""});
     });
     
     app.post("/search", function(req, res){
@@ -135,8 +156,6 @@ MongoClient.connect(dbAddress, function(err, db){
                 if(req.session.user){
                     loginStatus = true;
                 }
-
-
 
                 res.send({
                     status: "success",
@@ -330,22 +349,15 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.post("/login", function(req, res){
         dbops.login(db, req, function vote(response){
-            if(response.status == "success"){
-                res.send({
-                    status: "success",
-                    message: response.message
-                });
-            } else if(response.status == "fail"){
+
+            if(response.status == "fail"){
                 res.send({
                     status: "fail",
                     message: response.message
                 });
             } else {
-                res.send({
-                    status: "fail",
-                    error: "Something strange happened"
-                })
-            }   
+                res.render("loggedInHeader");
+            }
         });
     });
 
@@ -361,6 +373,8 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/profile", function(req, res){
         if(req.session.user){
             res.redirect("/profile/" + req.session.user.username);
+        } else {
+            res.redirect("/")
         }
     })
 
@@ -409,7 +423,6 @@ MongoClient.connect(dbAddress, function(err, db){
             res.redirect("/");
         }
     })
-
 
 
 /* ADMIN PAGES */
@@ -578,6 +591,38 @@ MongoClient.connect(dbAddress, function(err, db){
                 error: "Something went wrong"
             })
         }
+    });
+
+    app.post("/delete-post", function(req, res){
+        
+        if(req.session.user){
+            dbops.deletePost(db, req, function deletePost(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        message: response.message,
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                }
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "You must be logged in to delete posts"
+            })
+        }
+    });
+
+    // putting this last to make sure we don't overwrite any other routes
+
+    // alternatively, can say "if term != profile, etc... "
+
+    app.get("/:term", function(req, res){
+        res.render("index", {searchTerm: req.params.term});
     });
 
 
