@@ -350,19 +350,28 @@ input {
 }
 
 #tool-percentage {
-	background: #d4bda1;
+    background: #55d4ff;
+	/*background: #d4bda1;*/
 }
 
 #concept-percentage {
-	background: #a9f768;
+	background: #ec5c11;
+    /*background: #a9f768;*/
 }
 
 #language-percentage {
-	background: #dab6f3;
+    background: #55d4ff;
+	/*background: #dab6f3;*/
+}
+
+#process-percentage {
+    background: #f53c7c;
+    /*background: #dab6f3;*/
 }
 
 #other-percentage {
 	background: #cacaca;
+    /*background: #cacaca;*/
 }
 
 
