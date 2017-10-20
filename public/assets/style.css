@@ -125,25 +125,39 @@ input {
 }
 
 #terms-section {
-	width: 80vw;
+	width: calc(80vw - 2px);
 	max-width: 1600px;
 	margin: 0px 0px 0px -5vw;
 	display: block;
+    border: 1px solid rgba(111, 111, 111, 0.5);
+    border-top: none;
+    border-bottom: none;
 }
 
 #term-suggestions-section {
 	position: absolute;
 	background: white;
-	border: 1px solid black;
+	border: 1px solid rgba(111, 111, 111, 0.5);
     border-top: none;
+    border-bottom: none;
 	margin-top: -4px;
 	width: calc(100% - 42px);
 	display: none;
 }
 
-.term{
-	border: 1px solid black;
+#related-term-suggestions-section {
+    position: absolute;
+    background: white;
+    border: 1px solid rgba(111, 111, 111, 0.5);
     border-top: none;
+    margin-top: -4px;
+    width: calc(100% - 42px);
+    display: none; 
+}
+
+
+.term{
+	border-bottom: 1px solid rgba(111, 111, 111, 0.5);
 	box-shadow: -2px 2px 2px rgba(20, 20, 20, 0.4);
 }
 
@@ -379,6 +393,10 @@ input {
 	background: #dab6f3;
 }
 
+#process-percentage {
+    background: #f6fd35;
+}
+
 #other-percentage {
 	background: #cacaca;
 }
@@ -422,20 +440,16 @@ input {
 	float: right;
 }
 
-.definition-category-section {
-	margin: 8px 0 12px 0;
-    font-size: 1em;
-}
-
-.term-suggestions-section {
-	display: none;
-}
 
 .definition-term {
 	font-weight: 400;
 	color: #5a6061;
 	font-family: 'Lusitana', serif;
 	font-size: 1.7em;
+}
+
+.definition-related-terms {
+    margin-top: 15px;
 }
 
 .definition-column {
@@ -473,7 +487,7 @@ input {
 .textarea-label {
 	font-size: 0.8em;
 	font-weight: 600;
-	margin: 5px 0;
+	margin: 15px 0 5px 0;
 	padding: 2px 8px;
     background: #eccba6;
     display: inline-block;
@@ -518,6 +532,10 @@ input {
 	color: #b50000;
 	font-weight: 600;
 	margin:5px 0px;
+}
+
+.definition-category-section select {
+    font-size: 1em;
 }
 
 
@@ -914,6 +932,14 @@ input {
         margin: 0;
     }
 
+    #term-suggestions-section {
+        width: calc(100% - 32px);
+    }
+
+    #related-term-suggestions-section {
+        width: calc(100% - 32px);
+    }
+
     /* POP OUT */
 
     #new-definition, #report, #notifications {  
@@ -1077,21 +1103,6 @@ input {
         font-weight: 600;
     }
 
-    #tool-percentage {
-        background: #d4bda1;
-    }
-
-    #concept-percentage {
-        background: #a9f768;
-    }
-
-    #language-percentage {
-        background: #dab6f3;
-    }
-
-    #other-percentage {
-        background: #cacaca;
-    }
 
 
 
@@ -1128,13 +1139,11 @@ input {
         width: calc(100% - 14px);
     }
 
-    .definition-category-section {
-        margin: 8px 0 12px 0;
-    }
-
     .definition-term {
         font-size: 1.5em;
     }
+
+
 
     .definition-column {
         line-height: 1.5;
@@ -1168,7 +1177,7 @@ input {
     .textarea-label {
         font-size: 0.8em;
         font-weight: 600;
-        margin: 5px 0;
+        margin: 15px 0 5px 0;
         padding: 2px 8px;
         background: #eccba6;
         display: inline-block;
@@ -1213,6 +1222,16 @@ input {
         color: #b50000;
         font-weight: 600;
         margin:5px 0px;
+    }
+
+    .definition-category-section {
+        margin: 0;
+        width: calc(84vw);
+        font-size: 1em
+    }
+
+    .definition-category-section select {
+        font-size: 0.7em;
     }
 
 

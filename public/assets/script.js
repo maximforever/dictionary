@@ -6,16 +6,24 @@ var currentNotificationCounter = 0;
 
 var screenWidth = $(window).width();
 
-
 function main(){
 
     $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
 
     resetNavBar();
 
+    if($("#definitions-section").height() < 5){
+        search();
+    }
+
+
     $("body").on("click", function(e){
         $("#error, #message").text("").hide();
         $("#terms-section").text("");
+
+        $("#term-suggestions-section").hide();
+        $("#related-suggestions-section").hide();
+
 
         if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
            $("#notifications").hide();              
@@ -30,11 +38,29 @@ function main(){
 		getDefinition(term);
 	});
 
-    $("body").on("click", ".term-suggestion-link", function(){
+    $("body").on("click", ".definition-suggestion-link", function(){
+        console.log("beep");
+        var term = this.dataset.id;
+        $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
         $("#term-suggestions-section").hide();
-        var term = this.getAttribute("id");
-        $("#definition-term-textarea").val(term)
+    });
+
+    $("body").on("click", ".related-suggestion-link", function(){
+        console.log("beep");
+        
+        var term = this.dataset.id;
+
+        if(term[term.length - 1] != ","){
+            term = term + ", ";
+        }   
+
+        var currentText = $("#related-term-textarea").val();
+
+        $("#related-term-textarea").val(currentText.substring(0, currentText.lastIndexOf(",") + 1) + " " + term);
+        $("#related-term-suggestions-section").empty();
+        $("#related-term-suggestions-section").hide();
+        $("#related-term-textarea").focus();
     });
 
     $("body").on("click", ".report-post", function(){
@@ -102,7 +128,6 @@ function main(){
 
     });
 
-
     $("body").on("click", ".delete-post", function(){
         var confirmation = confirm("Are you sure you want to delete this post?");
         if(confirmation){
@@ -110,7 +135,18 @@ function main(){
         }
     });
 
+/*    $("body").on("focusout", "#definition-term-textarea", function(){
+        setTimeout(function(){
+            $("#term-suggestions-section").hide();
+        }, 500)     
+    });
 
+    $("body").on("focusout", "#related-term-textarea", function(){
+        setTimeout(function(){
+            $("#related-term-suggestions-section").hide();
+        }, 500)
+    });
+*/
     
 /* LISTENERS */
 
@@ -149,14 +185,32 @@ function main(){
         if($("#definition-term-textarea").val().length > 2){
             $("#term-suggestions-section").empty();
             $("#term-suggestions-section").show();
-            searchForDefinitions();
+            var searchTerm = $("#definition-term-textarea").val().trim();
+            
+            searchForDefinitions(searchTerm);
         } else {
             $("#term-suggestions-section").hide();
         }
 
         if(e.which == 8){
             $("#term-suggestions-section").empty();
-            console.log("8! Say 8! I'm an 8 again!");
+        }
+    });
+
+    $("body").on("keyup", "#related-term-textarea", function(e){
+        if($("#related-term-textarea").val().length > 2){
+            $("#related-term-suggestions-section").empty();
+            $("#related-term-suggestions-section").show();
+            var searchTerm = $("#related-term-textarea").val().split(",");       // a little more complicated here - only the last word after the comma
+            searchTerm = searchTerm[searchTerm.length - 1].trim();
+            console.log("Search Term: " + searchTerm);
+            searchForDefinitions(searchTerm);
+        } else {
+            $("#related-term-suggestions-section").hide();
+        }
+
+        if(e.which == 8){
+            $("#related-term-suggestions-section").empty();
         }
     });
 
@@ -240,19 +294,7 @@ function main(){
     $("body").on("click", "#logout", function(){
         logout();
     });
-
-
-
-/* ONE-CLICK ADMIN LOGIN */
-
-    $("body").on("click", "#master-log-in", function(){
-        adminLogin();
-    });
-
-
 }
-
-
 
 
 
@@ -296,9 +338,11 @@ function showSignup(){
 }
 
 function search(){
-	var searchTerm = $("#search-bar").val().trim();
+	
 
-    if(searchTerm){
+    if($("#search-bar").val()){
+
+        var searchTerm = $("#search-bar").val().trim();
 
     	var searchQuery = {
     		term: searchTerm.toLowerCase()
@@ -311,7 +355,7 @@ function search(){
             success: function(result){
             	if(result.status == "success"){
             		$("#terms-section").empty();
-            		console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
+            		// console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
 
             		if(result.count > 0){
                         $("#definitions-section").empty();
@@ -339,8 +383,7 @@ function search(){
     }
 }
 
-function searchForDefinitions(){
-    var searchTerm = $("#definition-term-textarea").val().trim();
+function searchForDefinitions(searchTerm){
 
     if(searchTerm){
         var searchQuery = {
@@ -353,7 +396,8 @@ function searchForDefinitions(){
             url: "/search",
             success: function(result){
                 if(result.status == "success"){
-                    $("#term-suggestions-section").empty();
+
+                    $("#term-suggestions-section, #related-term-suggestions-section").empty();
 
                     result.body.forEach(function(term){
                         displayDefinitionSuggestion(term);
@@ -403,8 +447,33 @@ function addDefinition(){
 
     var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
-	var relatedTerms = $("#new-definition-related-terms").val();
+	var relatedTermsArray;
+    var relatedTerms = [];
+
+    if($("#related-term-textarea").val()){
+        relatedTermsArray = $("#related-term-textarea").val().trim().split(",");
+        
+        console.log("relatedTermsArray");
+        console.log(relatedTermsArray);
+
+        relatedTermsArray.forEach(function(term){
+
+            console.log("term");
+            console.log(term);
+            term = term.trim();
+
+            if(validateInput(term)){
+                console.log("adding " + term);
+                relatedTerms.push(term);
+            }
+
+        });
+    }
+
     
+
+    console.log("relatedTerms");
+    console.log(relatedTerms);
 
     if(definitionBody.trim()){
         if(definitionBody.length <= 500){
@@ -431,7 +500,7 @@ function addDefinition(){
 
                                 $("#terms-section").empty();
                                 $("#definitions-section").empty();
-                                $("#new-definition-related-terms").empty();
+                                $("#related-term-suggestions-section").empty();
                                 $("select[name='category'").val(null)
 
                                 if(result.status == "success"){
@@ -444,7 +513,8 @@ function addDefinition(){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> is live!</div>");
                                     }
                                     
-                                    $("#new-definition-textarea").val("");            
+                                    $("#new-definition-textarea").val("");
+                                    $("#related-term-textarea").val("");            
                                     $("#new-definition").hide();
                                 } else {
                                     // $("#definitions-section").empty();
@@ -662,7 +732,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             $("#definitions-section").append(definitionCategoryTemplate);
 
-            var toolCount = languageCount = conceptCount = otherCount = 0;
+            var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
 
             for(var i = 0; i < definitions.length; i++){
                 switch(definitions[i].category){
@@ -675,6 +745,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                     case "language":
                         languageCount++;
                         break;
+                    case "process":
+                        processCount++;
+                        break;
                     case "other":
                         otherCount++;
                         break;
@@ -686,6 +759,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             var toolPercent = toolCount/definitions.length;
             var conceptPercent = conceptCount/definitions.length;
             var languagePercent = languageCount/definitions.length;
+            var processPercent = processCount/definitions.length;
             var otherPercent = otherCount/definitions.length;
 
             var maxCategoryWidth = 300;
@@ -700,6 +774,8 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
             $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 5 + "px")
             $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
+            $("#process-percentage").css("width", processPercent * maxCategoryWidth + 5 + "px")
+            $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
             $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 5 + "px")
             $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
@@ -709,13 +785,20 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
 
                 var myTemplate =  Handlebars.compile(definitionTemplate);
+                var hasRelatedTerms = false;
+
+                if(thisDefinition.related.length > 0){
+                    hasRelatedTerms = true
+                }
 
                 var context = {
                     definition: thisDefinition,
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
                     id: thisDefinition.id,
-                    commentCount: thisDefinition.comments.length
+                    commentCount: thisDefinition.comments.length,
+                    related: thisDefinition.related,
+                    hasRelated: hasRelatedTerms
                 };
 
                 var compiled = myTemplate(context)
@@ -804,7 +887,8 @@ function displaySearchTerm(term){
 } 
 
 function displayDefinitionSuggestion(term){
-    $("#term-suggestions-section").append("<div class = 'term'><span class = 'title'><span id = '" + term.name + "' class ='term-suggestion-link'>" + term.name + "</span></span></div>");
+    $("#term-suggestions-section").append("<div class = 'term'><span class = 'title'><span data-id = '" + term.name + "' class ='term-suggestion-link definition-suggestion-link'>" + term.name + "</span></span></div>");
+    $("#related-term-suggestions-section").append("<div class = 'term'><span class = 'title'><span data-id = '" + term.name + "' class ='term-suggestion-link related-suggestion-link'>" + term.name + "</span></span></div>");
 } 
 
 

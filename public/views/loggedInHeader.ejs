@@ -32,49 +32,54 @@
 </div>
 
 <div class = "pop-out" id = "new-definition">
-    <div class = "header">
-        <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-    </div>
-    <% if(!session.user){ %>
-        <p class = "log-in-please">
-            You must <span class = "link bold log-in-link">log in</span> to add a new definition.
-            <ul><li>5-sec <span class = "link bold sign-up-link">sign up</span> - no email confirmation</li></ul>
-        </p>
-    <% } else { %>
-        
-        <h3>Add your own explanation</h3>
-        <ul>
-            <li>Write for a total beginner - avoid industry jargon</li>
-            <li>Answer these questions:</li>
-            <ol>
-                <li>What does <span class = "new-definition-term"></span> do?</li>
-                <li>What is <span class = "new-definition-term"></span> commonly used with?</li>
-                <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>?</li>
-                <li>Are there alternatives to <span class = "new-definition-term"></span>?</li>
-            </ol>
-        </ul>
+            <div class = "header">
+                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+            </div>
+            <% if(!session.user){ %>
+                <p class = "log-in-please">
+                    You must <span class = "link bold log-in-link">log in</span> to add a new definition.
+                    <ul><li>5-sec <span class = "link bold sign-up-link">sign up</span> - no email confirmation</li></ul>
+                </p>
+            <% } else { %>
+                
+                <h3>Add your own explanation</h3>
+                <ul>
+                    <li>Write for a total beginner - avoid industry jargon</li>
+                    <li>Answer these questions:</li>
+                    <ol>
+                        <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
+                        <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>?</li>
+                        <li>What are some alternatives to <span class = "new-definition-term"></span>?</li>
+                    </ol>
+                </ul>
 
-        <p class = "textarea-label">Term</p>
-        <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
-        <div id = "term-suggestions-section"></div>
+                <p class = "textarea-label">Term</p>
+                <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
+                <div id = "term-suggestions-section"></div>
 
-        <div class = "definition-category-section">
-            <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-            <input type="radio" name = "definition-category" class = "definition-category" data-category = "tool">tool, library, or framework (ex: NPM, React.js, grunt, Sublime Text)<br>
-            <input type="radio" name = "definition-category" class = "definition-category" data-category = "concept">concept (ex: recursion, hash, MVC)<br>
-            <input type="radio" name = "definition-category" class = "definition-category" data-category = "language">language or environment (ex: Perl, Node.js)<br>
-            <input type="radio" name = "definition-category" class = "definition-category" data-category = "other">other
+                <div class = "definition-category-section">
+                    <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
+                    <select class = "definition-category-section" name = "category">
+                        <option disabled selected value></option>
+                        <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
+                        <option data-category = "tool" value="tool">Tool (ex: NPM, grunt, Sublime Text)</option>
+                        <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
+                        <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
+                        <option data-category = "other" value="other">Other</option>
+                    </select>
+                </div>
+
+
+                <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+                <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
+                <p class = "textarea-label">Related terms (comma separated, please)</p>
+                <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+                <div id = "related-term-suggestions-section"></div>
+                <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
+                <div class = "new-definition-error"></div>
+                <button id = "add-definition">Add</button>
+                <% } %>
         </div>
-
-        <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When is it used?</p>
-        <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
-        <p class = "textarea-label">Related terms (comma separated, please)</p>
-        <textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
-        <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
-        <div class = "new-definition-error"></div>
-        <button id = "add-definition">Add</button>
-        <% } %>
-</div>
 
 <div class = "pop-out" id = "report">
     <div class = "header">

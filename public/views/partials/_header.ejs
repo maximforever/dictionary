@@ -82,10 +82,9 @@
                     <li>Write for a total beginner - avoid industry jargon</li>
                     <li>Answer these questions:</li>
                     <ol>
-                        <li>What does <span class = "new-definition-term"></span> do?</li>
-                        <li>What is <span class = "new-definition-term"></span> commonly used with?</li>
+                        <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
                         <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>?</li>
-                        <li>Are there alternatives to <span class = "new-definition-term"></span>?</li>
+                        <li>What are some alternatives to <span class = "new-definition-term"></span>?</li>
                     </ol>
                 </ul>
 
@@ -106,10 +105,11 @@
                 </div>
 
 
-                <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When is it used?</p>
-                <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "definition"></textarea>
+                <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+                <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
                 <p class = "textarea-label">Related terms (comma separated, please)</p>
-                <textarea id = "new-definition-related-terms" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+                <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+                <div id = "related-term-suggestions-section"></div>
                 <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
                 <div class = "new-definition-error"></div>
                 <button id = "add-definition">Add</button>

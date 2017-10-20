@@ -165,7 +165,7 @@ function addDefinition(db, req, callback){
 						created: Date(),
 						body: req.body.definition,
 						category: req.body.category,
-						related: []
+						related: req.body.related
 					}
 					if(approvedDefinitions.length > 5){
 						console.log("Auto approve based on positive submission history");
