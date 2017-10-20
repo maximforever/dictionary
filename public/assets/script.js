@@ -787,7 +787,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var myTemplate =  Handlebars.compile(definitionTemplate);
                 var hasRelatedTerms = false;
 
-                if(thisDefinition.related.length > 0){
+                if(thisDefinition.related){
                     hasRelatedTerms = true
                 }
 
