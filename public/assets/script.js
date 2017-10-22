@@ -110,7 +110,8 @@ function main(){
     });
 
     $("body").on("click", "#submission-table-toggle", function(){
-        $("#submission-status-table").toggle();        
+        $("#submission-status-table").toggle();
+        $("#submission-table-toggle").find("i").toggleClass("fa-minus");        
     });
 
     $("body").on("click", ".comment-on-post", function(){
@@ -509,8 +510,10 @@ function addDefinition(){
                                     
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
                                     } else {
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> is live!</div>");
+                                        $("#message").css("display", "block").text("Your definition for'" + result.term + "'is live!");
                                     }
                                     
                                     $("#new-definition-textarea").val("");

@@ -307,33 +307,42 @@ function addComment(db, req, callback){
 
 					if(commentApproved){
 
-						newCommentQuery = {
-							id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
-							term: req.body.term,
-							post_id: parseInt(req.body.post_id),
-							author: req.session.user.username,
-							upvotes: 0,
-							downvotes: 0, 
-							reportCount: 0,
-							removed: false,
-							approved: true,
-							rejected: false,
-							date: Date(),
-							body: req.body.commentBody
+						var definitionQuery = {
+							id: parseInt(req.body.post_id)
 						}
 
-						database.create(db, "comments", newCommentQuery, function createComment(newComment){
-							callback({
-								status: "success",
-								comment: newComment.ops[0]
-							});
-						});
+						database.read(db, "definitions", definitionQuery, function fetchDefinition(definitions){
+							if(definitions.length == 1){
+								newCommentQuery = {
+									id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
+									term: definitions[0].term,
+									post_id: parseInt(req.body.post_id),
+									author: req.session.user.username,
+									upvotes: 0,
+									downvotes: 0, 
+									reportCount: 0,
+									removed: false,
+									approved: true,
+									rejected: false,
+									date: Date(),
+									body: req.body.commentBody
+								}
+
+								database.create(db, "comments", newCommentQuery, function createComment(newComment){
+									callback({
+										status: "success",
+										comment: newComment.ops[0]
+									});
+								});
+
+
+							} else {
+								callback({ status: "fail", message: "No corresponding definition found" });
+							}
+						})
 
 					} else {
-						callback({
-							status: "fail",
-							message: errorMessage
-						});
+						callback({ status: "fail", message: errorMessage });
 					}
 				});
 			} else {
