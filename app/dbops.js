@@ -50,6 +50,15 @@ function getDefinitions(db, req, callback){
 		})
 
 		var commentQuery;
+		var voteQuery;
+
+		if(definitions.length > 0){
+			voteQuery = {
+				id: definitions[0].id,
+				type: "definition"
+			}
+		}
+		
 
 		if (ids.length){
 			commentQuery = {
@@ -64,74 +73,56 @@ function getDefinitions(db, req, callback){
 
 		database.read(db, "comments", commentQuery, function(comments){
 
-			console.log("Found " + comments.length + " comments for " + definitions.length + " definitions")
-			var responsesToReturn = [];
+			database.read(db, "votes", voteQuery, function(votes){
 
-			definitions.forEach(function(definition){
-				if(((definition.upvotes - definition.downvotes) >= -5)){
+				console.log("Found " + comments.length + " comments for " + definitions.length + " definitions")
+				var responsesToReturn = [];
 
-					definition.comments = [];
+				definitions.forEach(function(definition){
+					if(((definition.upvotes - definition.downvotes) >= -5)){
 
-					var associatedComments = [];
+						definition.comments = [];
 
-					comments.forEach(function(comment){
+						var associatedComments = [];
 
-						if(comment.post_id == definition.id){
+						comments.forEach(function(comment){
 
-							comment.owner = false;
+							if(comment.post_id == definition.id){
 
-							if(req.session.user && comment.author == req.session.user.username){
-								comment.owner = true;
+								comment.owner = false;
+
+								if(req.session.user && comment.author == req.session.user.username){
+									comment.owner = true;
+								}
+
+								associatedComments.push(comment);
 							}
 
-							associatedComments.push(comment);
+						})
+
+
+						// while we're getting these... let's mark definitions authored by the requesting user
+						definition.owner = false;
+
+						if(req.session.user && definition.author == req.session.user.username){
+							definition.owner = true;
 						}
 
-					})
-
-
-					// while we're getting these... let's mark definitions authored by the requesting user
-					definition.owner = false;
-
-					if(req.session.user && definition.author == req.session.user.username){
-						definition.owner = true;
+						definition.comments = associatedComments;
+						console.log("definition");
+						console.log(definition);
+						responsesToReturn.push(definition);
 					}
+				})
 
-					definition.comments = associatedComments;
-					console.log("definition");
-					console.log(definition);
-					responsesToReturn.push(definition);
-				}
+				callback({
+					status: "success",
+					count: responsesToReturn.length,
+					body: responsesToReturn
+				});
+
 			})
-
-			callback({
-				status: "success",
-				count: responsesToReturn.length,
-				body: responsesToReturn
-			});
-
-
 		})
-	});
-}
-
-
-function getSpecificDefinition(db, req, callback){
-
-
-	searchQuery = {
-		id: parseInt(req.body.id)
-	}
-
-	database.read(db, "definitions", searchQuery, function(searchResult){
-
-		console.log(searchResult);
-
-		callback({
-			status: "success",
-			body: searchResult[0]
-		});
-
 	});
 }
 
@@ -151,11 +142,11 @@ function addDefinition(db, req, callback){
 
 					console.log("This user has submitted " + approvedDefinitions.length + " definitions");
 
-					newDefinitionQuery = {
+					var newDefinitionQuery = {
 						id: Math.floor(Date.now()/Math.random()),							// hopefully this should give us a random ID
 						term: req.body.term.trim().toLowerCase(),
 						author: req.session.user.username,
-						upvotes: 0,
+						upvotes: 1,
 						downvotes: 0, 
 						reportCount: 0,
 						removed: false,
@@ -167,6 +158,15 @@ function addDefinition(db, req, callback){
 						category: req.body.category,
 						related: req.body.related
 					}
+
+					var newVote = {
+						post: newDefinitionQuery.id,
+						author: newDefinitionQuery.author,
+						direction: "up",
+						date: Date(),
+						type: "definition"
+					}
+
 					if(approvedDefinitions.length > 5){
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
@@ -215,10 +215,12 @@ function addDefinition(db, req, callback){
 							database.create(db, "terms", termQuery, function createdTerm(newTerm){
 								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 									console.log(newDefinition.ops[0]);
-									callback({
-										status: "success",
-										termAdded: newDefinitionQuery.approved,
-										term: newDefinition.ops[0].term
+									database.create(db, "votes", newVote, function createdVote(newVote){
+										callback({
+											status: "success",
+											termAdded: newDefinitionQuery.approved,
+											term: newDefinition.ops[0].term
+										});
 									});
 								});
 							});
@@ -226,10 +228,12 @@ function addDefinition(db, req, callback){
 							console.log("Someone has already created the term '" + termQuery.name + "'");
 							database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 								console.log(newDefinition.ops[0]);
-								callback({
-									status: "success",
-									termAdded: newDefinitionQuery.approved,
-									term: newDefinition.ops[0].term
+								database.create(db, "votes", newVote, function createdVote(newVote){
+									callback({
+										status: "success",
+										termAdded: newDefinitionQuery.approved,
+										term: newDefinition.ops[0].term
+									});
 								});
 							});
 						} else {
@@ -422,12 +426,12 @@ function vote(db, req, callback){
 	}
 
 	var newVote = {
-			post: parseInt(req.body.id),
-			author: voter,
-			direction: req.body.direction,
-			date: Date(),
-			type: req.body.type
-		}
+		post: parseInt(req.body.id),
+		author: voter,
+		direction: req.body.direction,
+		date: Date(),
+		type: req.body.type
+	}
 
 	database.read(db, "votes", voteQuery, function checkForExistingVote(existingVotes){
 
@@ -1146,7 +1150,6 @@ function validateInput(string){
 /* MODULE EXPORES */
 module.exports.search = search;
 module.exports.getDefinitions = getDefinitions;
-module.exports.getSpecificDefinition = getSpecificDefinition;
 module.exports.addDefinition = addDefinition;
 module.exports.getComments = getComments;
 module.exports.addComment = addComment;

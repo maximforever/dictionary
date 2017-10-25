@@ -4,7 +4,11 @@ var currentTerm = null;
 var currentNotifications = [];
 var currentNotificationCounter = 0;
 
+var activeTermIndex = -1;
+
 var screenWidth = $(window).width();
+
+
 
 function main(){
 
@@ -136,24 +140,24 @@ function main(){
         }
     });
 
-/*    $("body").on("focusout", "#definition-term-textarea", function(){
-        setTimeout(function(){
-            $("#term-suggestions-section").hide();
-        }, 500)     
+    $("body").on("mouseenter", ".term-link", function(){
+        activeTermIndex = $(".term-link").index(this);
+        console.log(activeTermIndex);
     });
 
-    $("body").on("focusout", "#related-term-textarea", function(){
-        setTimeout(function(){
-            $("#related-term-suggestions-section").hide();
-        }, 500)
+    $("body").on("mouseleave", ".term-link", function(){
+        activeTermIndex = -1;
     });
-*/
+
     
 /* LISTENERS */
 
 	$("body").on("keydown", function(e){                        
 	    if(e.which == 13){                                         // 13 = ENTER
 	        if($("#search-bar").is(":focus")){ 
+                if(activeTermIndex > -1){
+                    $("#search-bar").val($(".term-link").eq(activeTermIndex).text());
+                }
                 search();
             } else if($("#signup-password").is(":focus") || $("#signup-login").is(":focus") ){
                 signup();
@@ -165,16 +169,41 @@ function main(){
         if(e.which == 27){                                         // 27 = ESC
             $(".pop-out").hide();
         }
-	});
 
-	$("#search-bar").on("keyup", function(e){
+        if(e.which == 38 || e.which == 40){                         // 38 = up arrow, 40 = down arrow
+            
+            var termLinks = $(".term-link");
+
+            if(termLinks.length > 0){ 
+
+                if(e.which == 38){
+                    activeTermIndex--;
+                    if(activeTermIndex  < 0){  activeTermIndex = termLinks.length-1 }
+                }
+
+                if(e.which == 40){
+                    activeTermIndex++;
+                    if(activeTermIndex  > (termLinks.length-1)){  activeTermIndex = 0 }
+                }
+
+
+                termLinks.removeClass("term-link-selected");
+                termLinks.eq(activeTermIndex).addClass("term-link-selected");
+    
+            } else {
+                console.log("No term links in sight");
+            }
+        }
+	}); 
+
+	$("#search-bar").on("keydown", function(e){
 		if($("#search-bar").val().length > 2){
 	    	search();
 		} else {
 			$("#terms-section").empty();
 		}
 
-		if(e.which == 8){
+		if(e.which == 8){                                         // 8 = backspace
 			$("#new-definition").hide();
             $("#definitions-section").empty();
 			console.log("8! Say 8! I'm an 8 again!");
@@ -653,7 +682,7 @@ function login(){
                         for(var i = 0; i < $(".add-one").length - 1; i++){
                             var element = $(".add-one")[i];
                             var id = element.dataset.id;
-                            element.innerHTML = "<h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
+                            element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
                         }
 
                         $(".comment").removeClass("add-one");
@@ -1085,7 +1114,7 @@ function getComments(definitionId){
                 displayCommentsOnPage(result.comments, commentSection); 
 
                 if(result.isLoggedIn){
-                    commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + definitionId + " data-term = ''>Add</button></div></div>");
+                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + definitionId + " data-term = ''>Add</button></div></div>");
                 } else {
                     commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }

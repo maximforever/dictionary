@@ -49,6 +49,11 @@ input {
 	cursor: pointer;
 }
 
+.term-link-selected{
+    background: rgb(125, 161, 196);
+    cursor: pointer;
+}
+
 .bold {
 	font-weight: 600;
 }

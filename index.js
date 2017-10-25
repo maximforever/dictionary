@@ -178,31 +178,6 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
-    app.post("/get-specific-definition", function(req, res){
-        dbops.getSpecificDefinition(db, req, function getDefinitions(response){
-            if(response.status == "success"){
-                req.session.message = "Got a result!"
-
-                res.send({
-                    status: "success",
-                    count: response.count,
-                    body: response.body
-                });
-
-            } else if(response.status == "fail"){
-                res.send({
-                    status: "fail",
-                    error: response.message
-                });
-            } else {
-                res.send({
-                    status: "fail",
-                    error: "Something strange happened"
-                })
-            }   
-        });
-    });
-
     app.post("/new-definition", function(req, res){
 
         dbops.addDefinition(db, req, function confirmDefinition(response){
