@@ -339,8 +339,6 @@ input {
     display: block;
     border: 1px solid rgba(10,10,10, 0.5);
     border-left: 4px solid black;
-    display: inline-block;
-	width: 20vw;
 	min-width: 400px;
 	font-size: 0.85em;
 	font-weight: 600;
@@ -355,18 +353,12 @@ input {
 
 .category-stat {
 	padding: 5px 0px;
+    display: inline;
 }
 
 .category-label {
-	width: 72px;
 	display: inline-block;
-    text-align: right;
-    margin-right: 5px;
     font-weight: 300;
-}
-
-.category-percentage-wrapper {
-    display: inline-block;
     margin-right: 10px;
 }
 
@@ -374,44 +366,52 @@ input {
 	min-height: 100%;
     background: gray;
     display: inline-block;
-    border: 1px solid black;
-    border-left: 3px solid black;
-    text-align: right;
+    border: 1px solid rgba(154, 154, 154, 0.59);
+    text-align: center;
     font-size: 0.9em;
     padding: 2px 0px;
     border-radius: 3px;
 }
 
+.category-legend{
+    padding: 10px 0 0 0;
+}
+
+.category-box {
+    height: 1em;
+    width: 1em;
+    border: 1px solid rgba(10, 10, 10, 0.2);
+    display: inline-block;
+    border-radius: 2px; 
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+
 .percentage-label{
 	margin: 0px 5px;
-    margin-left: 10px;
     font-weight: 700;
 }
 
-#tool-percentage {
+#tool-percentage, .tool {
     background: #55d4ff;
-	/*background: #d4bda1;*/
+    text-align: center;
 }
 
-#concept-percentage {
+#concept-percentage, .concept {
 	background: #d43eff;
-    /*background: #a9f768;*/
 }
 
-#language-percentage {
-    background: #37e037;;
-	/*background: #dab6f3;*/
+#language-percentage, .language {
+    background: #37e037;
 }
 
-#process-percentage {
-    background: #ff7f3a;;
-    /*background: #dab6f3;*/
+#process-percentage, .process {
+    background: #ff7f3a;
 }
 
 
-#other-percentage {
+#other-percentage, .other {
 	background: #cacaca;
-    /*background: #cacaca;*/
 }
 
 
@@ -1083,15 +1083,15 @@ input {
 
     /* CATEGORY CHART*/
 
-
     #category-summary {
-        padding: 10px 15px;
-        display: block;
-        width: auto;
-        min-width: 200px;
+        border-left: 2px solid black;
+        font-weight: 600;
+        margin: 0;
+        min-width: auto;
     }
 
     #category-summary h3 {
+        font-size: 1.3em;
         margin: 0 0 5px 0;
         font-family: 'Lusitana', sans-serif;
         font-weight: 400;
@@ -1104,11 +1104,12 @@ input {
 
     .category-label {
         font-size: 0.9em;
+        display: block;
+        margin-top: 3px;
     }
 
     .category-percentage-wrapper {
         display: inline-block;
-        margin-right: 10px;
     }
 
     .category-percentage {

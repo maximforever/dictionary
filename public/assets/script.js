@@ -769,6 +769,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             $("#definitions-section").empty();
 
             $("#definitions-section").append(definitionCategoryTemplate);
+            $("#category-title-label").text(definitions[0].term)
 
             var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
 
@@ -800,21 +801,23 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
             var processPercent = processCount/definitions.length;
             var otherPercent = otherCount/definitions.length;
 
-            var maxCategoryWidth = 300;
+            ;
+
+            var maxCategoryWidth = $("#category-summary").width() - 200;
 
             if(screenWidth < 980){
-                maxCategoryWidth = 180;
+                maxCategoryWidth = 100;
             }
 
-            $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 5 + "px")
+            $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 30 + "px")
             $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
-            $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 5 + "px")
+            $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 30 + "px")
             $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
-            $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 5 + "px")
+            $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 30 + "px")
             $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
-            $("#process-percentage").css("width", processPercent * maxCategoryWidth + 5 + "px")
+            $("#process-percentage").css("width", processPercent * maxCategoryWidth + 30 + "px")
             $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
-            $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 5 + "px")
+            $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 30 + "px")
             $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
             // a bit of handlebars magic
