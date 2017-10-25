@@ -643,7 +643,13 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
 
                 $("#" + elementId).find(".definition-score").text(updatedScore) 
 
+                $("#" + elementId).find(".voting-button").removeClass("persistVote");
 
+                console.log(result.definition)
+
+                if(result.definition.changedVote){
+                    $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").addClass("persistVote");    
+                }
 
                 console.log(result.message);
             } else {
@@ -848,7 +854,16 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 displayCommentsOnPage(thisDefinition.comments, commentSection);
                 commentSection.hide();
 
+                console.log("thisDefinition");
+                console.log(thisDefinition);
 
+                if(thisDefinition.authorUpvote){
+                    $("#" + thisDefinition.id).find(".voting-button[data-vote='up']").addClass("persistVote");
+                }
+
+                if(thisDefinition.authorDownvote){
+                    $("#" + thisDefinition.id).find(".voting-button[data-vote='down']").addClass("persistVote");
+                }
 
             });
 

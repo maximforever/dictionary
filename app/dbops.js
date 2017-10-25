@@ -54,7 +54,7 @@ function getDefinitions(db, req, callback){
 
 		if(definitions.length > 0){
 			voteQuery = {
-				id: definitions[0].id,
+				post: definitions[0].id,
 				type: "definition"
 			}
 		}
@@ -107,6 +107,31 @@ function getDefinitions(db, req, callback){
 						if(req.session.user && definition.author == req.session.user.username){
 							definition.owner = true;
 						}
+
+						definition.authorUpvote = false;
+						definition.authorDownvote = false;
+
+
+						console.log("definition.id");
+						console.log(definition.id);
+						
+						
+						votes.forEach(function(vote){
+							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == definition.author){
+								console.log("vote");
+								console.log(vote);
+
+								if(vote.direction == "up"){
+									definition.authorUpvote = true;
+								}
+
+								if(vote.direction == "down"){
+									definition.authorDownvote = true;
+								}
+
+							}
+						})
+						
 
 						definition.comments = associatedComments;
 						console.log("definition");
@@ -498,6 +523,7 @@ function vote(db, req, callback){
 
 					
 						database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+							newDefinition.changedVote = false;
 							console.log("newDefinition")
 							callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
 						})
@@ -547,8 +573,9 @@ function createNewVote(db, req, newVote, callback){
 			thisVoteCollection = req.body.type + "s";
 
 			database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-				console.log("newDefinition")
-				console.log(newDefinition)
+				console.log("newDefinition");
+				console.log(newDefinition);
+				newDefinition.changedVote = true;
 				callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
 			})
 		} else {

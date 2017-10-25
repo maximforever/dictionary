@@ -491,10 +491,14 @@ input {
 	float: right;
 }
 
+.persistVote{
+    color: #d57915;
+}
+
 .definition-score {
 	padding: 0px 10px;
 	font-weight: 600;
-	color: green;
+	color: #5a6061;
 }
 
 .textarea-label {
@@ -1179,12 +1183,6 @@ input {
         text-align: center;
         vertical-align: top;
         float: right;
-    }
-
-    .definition-score {
-        padding: 0px 10px;
-        font-weight: 600;
-        color: green;
     }
 
     .textarea-label {
