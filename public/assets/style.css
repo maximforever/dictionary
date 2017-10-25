@@ -351,6 +351,11 @@ input {
     font-weight: 400;
 }
 
+.category-bar {
+    border: 1px solid #5a6061;
+    border-radius: 3px;
+}
+
 .category-stat {
 	padding: 5px 0px;
     display: inline;
@@ -366,11 +371,9 @@ input {
 	min-height: 100%;
     background: gray;
     display: inline-block;
-    border: 1px solid rgba(154, 154, 154, 0.59);
     text-align: center;
     font-size: 0.9em;
     padding: 2px 0px;
-    border-radius: 3px;
 }
 
 .category-legend{
@@ -380,7 +383,7 @@ input {
 .category-box {
     height: 1em;
     width: 1em;
-    border: 1px solid rgba(10, 10, 10, 0.2);
+    border: 1px solid #5a6061;
     display: inline-block;
     border-radius: 2px; 
     vertical-align: text-bottom;

@@ -803,11 +803,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             ;
 
-            var maxCategoryWidth = $("#category-summary").width() - 200;
-
-            if(screenWidth < 980){
-                maxCategoryWidth = 100;
-            }
+            var maxCategoryWidth = $(".category-bar").width() - 151;
 
             $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 30 + "px")
             $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
