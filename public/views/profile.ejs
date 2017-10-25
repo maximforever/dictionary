@@ -6,67 +6,72 @@
 
 
 	<div class = "profile-links">
-		<a href = "#live-definition-section">Definitions</a> | <a href = "#live-comments-section">Comments</a> 
+		<a id = "live-definition-section-link">Definitions</a> | <a id = "live-comment-section-link">Comments</a> 
 		<% if (displayFullProfile) { %> 
-			<div class = "bold link" id = "submission-table-toggle">
-				| <i class="fa fa-plus" aria-hidden="true"></i> See all submissions
+			| <div class = "bold link" id = "submission-table-toggle">
+				 <a id = "definition-status-section-link">Submission Status</a>
 			</div>
 		<% } %>
 	</div>
 
-	<h4>Definitions:</h4>
+	
 
 	<% if (displayFullProfile) { %>
 
-		
+		<div id = "definition-status-section">
 
-		<div id = "submission-status-table">
+			<h4>Definition status:</h4>
 
-			<div class = "status-row status-row-headers">
-				<div class = "status-definition">
-					<span class = "bold">DEFINITION</span>
-				</div><!-- 
-			--><div class = "status-submission-date">
-					<span class = "bold">SUBMITTED</span>
-				</div><!-- 
-			 --><div class = "status">
-			 		<span class = "bold">STATUS</span>
-				</div>
-			</div>
+			<div id = "submission-status-table">
 
-			<% definitions.forEach(function(definition){ %>
-
-
-				<% var status; %>
-				<% 
-					if (definition.removed){ 
-						status = "removed";
-					} else if (definition.rejected) { 
-						status = "rejected";
-					} else if (definition.approved) {
-						status = "approved";
-					} else {
-						status = "pending";
-					}
-				%>
-				<div class = "status-row">
+				<div class = "status-row status-row-headers">
 					<div class = "status-definition">
-						<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
-						<span class = "definition-body"><%= definition.body %></span><br>	
+						<span class = "bold">DEFINITION</span>
 					</div><!-- 
-				--><% if (session.user && username == session.user.username || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true")) { %><div class = "status-submission-date">
-						<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+				--><div class = "status-submission-date">
+						<span class = "bold">SUBMITTED</span>
 					</div><!-- 
 				 --><div class = "status">
-				 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+				 		<span class = "bold">STATUS</span>
 					</div>
-					<% } %>
 				</div>
-			<% }) %>
+
+				<% definitions.forEach(function(definition){ %>
+
+
+					<% var status; %>
+					<% 
+						if (definition.removed){ 
+							status = "removed";
+						} else if (definition.rejected) { 
+							status = "rejected";
+						} else if (definition.approved) {
+							status = "approved";
+						} else {
+							status = "pending";
+						}
+					%>
+					<div class = "status-row">
+						<div class = "status-definition">
+							<span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
+							<span class = "definition-body"><%= definition.body %></span><br>	
+						</div><!-- 
+					--><% if (session.user && username == session.user.username || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true")) { %><div class = "status-submission-date">
+							<span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+						</div><!-- 
+					 --><div class = "status">
+					 		<span class = "submission-status post-<%= status %>"><%= status %></span>
+						</div>
+						<% } %>
+					</div>
+				<% }) %>
+			</div>
 		</div>
 	<% } %>
 
 	<div class = "live-definitions" id = "live-definition-section">
+
+		<h4>Definitions:</h4>
 
 		<% definitions.forEach(function(definition){ %>
 
@@ -115,10 +120,9 @@
 		<% } %>
 	</div>
 
+	<div class = "live-comments" id = "live-comment-section">
 
-	<h4>Comments:</h4>
-
-	<div class = "live-comments" id = "live-comments-section">
+		<h4>Comments:</h4>
 
 		<% comments.forEach(function(comment){ %>
 

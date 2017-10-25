@@ -113,11 +113,6 @@ function main(){
         
     });
 
-    $("body").on("click", "#submission-table-toggle", function(){
-        $("#submission-status-table").toggle();
-        $("#submission-table-toggle").find("i").toggleClass("fa-minus");        
-    });
-
     $("body").on("click", ".comment-on-post", function(){
 
         $(".fa-chevron-circle-up[data-id=" + this.dataset.id + "]").toggle();
@@ -147,6 +142,34 @@ function main(){
 
     $("body").on("mouseleave", ".term-link", function(){
         activeTermIndex = -1;
+    });
+
+    $("body").on("click", "#live-definition-section-link", function(){
+        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
+        $("#live-definition-section-link").addClass("active-profile-tab");
+        $("#live-comment-section, #definition-status-section").hide();
+        $("#live-definition-section").show();
+    });
+
+    $("body").on("click", "#live-comment-section-link", function(){
+        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
+        $("#live-comment-section-link").addClass("active-profile-tab");
+        $("#live-definition-section, #definition-status-section").hide();
+        $("#live-comment-section").show();
+    });
+
+    $("body").on("click", "#definition-status-section-link", function(){
+        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
+        $("#definition-status-section-link").addClass("active-profile-tab");
+        $("#live-definition-section, #live-comment-section").hide();
+        $("#definition-status-section").show();
+    });
+
+    $("body").on("click", ".one-notification a", function(){
+        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
+        $("#definition-status-section-link").addClass("active-profile-tab");
+        $("#live-definition-section, #live-comment-section").hide();
+        $("#definition-status-section").show();
     });
 
     
@@ -845,16 +868,13 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
 
                 if(isLoggedIn){
-                    commentSection.append("<div class = 'comment'><h4>New comment:</h4><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
+                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
                     commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
                 }
 
                 displayCommentsOnPage(thisDefinition.comments, commentSection);
                 commentSection.hide();
-
-                console.log("thisDefinition");
-                console.log(thisDefinition);
 
                 if(thisDefinition.authorUpvote){
                     $("#" + thisDefinition.id).find(".voting-button[data-vote='up']").addClass("persistVote");

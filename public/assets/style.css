@@ -271,11 +271,11 @@ input {
 
 .comment {
 	display: block;
-	background: #f2f5e9;
-	box-shadow: none;
-	padding: 20px;
-	margin: 20px 0;
-	border: 1px solid rgba(10,10,10, 0.2);
+    background: #f2f5e9;
+    box-shadow: none;
+    padding: 5px 20px 15px 20px;
+    margin: 15px 0;
+    border: 1px solid rgba(10,10,10, 0.2);
     border-bottom: 1px solid rgba(136, 98, 45, 0.7);
     border-radius: 3px;
     box-shadow: 0 0 3px rgba(10,10,10, 0.2);
@@ -433,6 +433,7 @@ input {
 
 .add-one {
 	background: #d3e486;
+    padding: 20px;
 }
 
 .term .title {
@@ -593,7 +594,7 @@ input {
 	display: inline;
 }
 
-.links button {
+button {
 	margin-left: 10px;
     border-radius: 0;
     border: 1px solid #000000;
@@ -604,7 +605,7 @@ input {
     vertical-align: top;
 }
 
-.links button:hover {
+button:hover {
 	background: #d57915;
 	border: 1px solid black;
 }
@@ -665,6 +666,24 @@ input {
 	font-family: 'Lusitana', serif;
 
 }
+
+#live-definition-section, #live-comment-section {
+    display: none;
+}
+
+.active-profile-tab {
+    padding: 3px 15px;
+    border-radius: 4px;
+    background: orange;
+    color: black;
+}
+
+.active-profile-tab:hover {
+    background: blue;
+    color: white;
+}
+
+
 
 .post-removed {
 	color: #4c107b;
@@ -875,9 +894,6 @@ input {
 	font-weight: 600
 }
 
-#submission-status-table {
-    display: none;
-}
 
 #submission-table-toggle {
     margin-bottom: 10px;
@@ -1547,9 +1563,6 @@ input {
         font-weight: 600
     }
 
-    #submission-status-table {
-        display: none;
-    }
 
     #submission-table-toggle {
         margin-bottom: 10px;
