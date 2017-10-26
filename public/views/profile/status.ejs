@@ -1,0 +1,67 @@
+<% include ../partials/_header.ejs %>
+
+<div id = "main-section">
+
+    <h2>User profile: <span class = "profile-username"><%= username %></h2>
+
+    <div class = "profile-links">
+        <a class = "profile-section-tab" href = "/profile/<%= username %>/definitions">Definitions</a>
+        <a class = "profile-section-tab" href = "/profile/<%= username %>/comments">Comments</a> 
+        <% if (displayFullProfile) { %> 
+            <a class = "profile-section-tab active-profile-tab" href = "/profile/<%= username %>/status">Submissions</a>
+        <% } %>
+    </div>
+
+    <div id = "definition-status-section">
+
+        <div id = "submission-status-table">
+
+            <div class = "status-row status-row-headers">
+                <div class = "status-definition">
+                    <span class = "bold">DEFINITION</span>
+                </div><!-- 
+            --><div class = "status-submission-date">
+                    <span class = "bold">SUBMITTED</span>
+                </div><!-- 
+             --><div class = "status">
+                    <span class = "bold">STATUS</span>
+                </div>
+            </div>
+
+            <% definitions.forEach(function(definition){ %>
+
+
+                <% var status; %>
+                <% 
+                    if (definition.removed){ 
+                        status = "removed";
+                    } else if (definition.rejected) { 
+                        status = "rejected";
+                    } else if (definition.approved) {
+                        status = "approved";
+                    } else {
+                        status = "pending";
+                    }
+                %>
+                <div class = "status-row">
+                    <div class = "status-definition">
+                        <span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
+                        <span class = "definition-body"><%= definition.body %></span><br>   
+                    </div><!-- 
+                --><% if (session.user && username == session.user.username || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true")) { %><div class = "status-submission-date">
+                        <span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+                    </div><!-- 
+                 --><div class = "status">
+                        <span class = "submission-status post-<%= status %>"><%= status %></span>
+                    </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>    
+
+</div>
+
+
+
+<% include ../partials/_footer.ejs %>

@@ -651,7 +651,7 @@ button:hover {
 	border-top: 1px solid gray;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
-    margin: 0 auto;
+    margin: 15px auto;
     min-width: 410px;
     box-shadow: 0px 0px 10px rgb(138, 130, 121);
 }
@@ -667,23 +667,28 @@ button:hover {
 
 }
 
-#live-definition-section, #live-comment-section {
-    display: none;
-}
-
-.active-profile-tab {
-    padding: 3px 15px;
+.profile-section-tab {
+    width: 150px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid gray;
+    padding: 3px 0;
     border-radius: 4px;
-    background: orange;
-    color: black;
 }
 
-.active-profile-tab:hover {
+.profile-section-tab:hover{
     background: blue;
     color: white;
 }
 
+/*#live-definition-section, #live-comment-section, #definition-status-section {
+    display: none;
+}*/
 
+.active-profile-tab {
+    background: orange;
+    color: black;
+}
 
 .post-removed {
 	color: #4c107b;
@@ -893,13 +898,6 @@ button:hover {
 	color: #ea5859;
 	font-weight: 600
 }
-
-
-#submission-table-toggle {
-    margin-bottom: 10px;
-    display: inline;    
-}
-
 
 /* MOBILE STYLING */
 
@@ -1360,17 +1358,16 @@ button:hover {
     }
 
     #submission-status-table {
-        border-top: 1px solid gray;
-        border-left: 1px solid gray;
-        border-right: 1px solid gray;
-        margin: 0 auto;
         min-width: 100px;
-        box-shadow: 0px 0px 10px rgb(138, 130, 121);
     }
 
     .submission-status {
         font-size: 0.7em;
         padding: 5px;
+    }
+
+    .profile-section-tab {
+        width: 32%;
     }
 
     .post-removed {

@@ -144,34 +144,6 @@ function main(){
         activeTermIndex = -1;
     });
 
-    $("body").on("click", "#live-definition-section-link", function(){
-        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
-        $("#live-definition-section-link").addClass("active-profile-tab");
-        $("#live-comment-section, #definition-status-section").hide();
-        $("#live-definition-section").show();
-    });
-
-    $("body").on("click", "#live-comment-section-link", function(){
-        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
-        $("#live-comment-section-link").addClass("active-profile-tab");
-        $("#live-definition-section, #definition-status-section").hide();
-        $("#live-comment-section").show();
-    });
-
-    $("body").on("click", "#definition-status-section-link", function(){
-        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
-        $("#definition-status-section-link").addClass("active-profile-tab");
-        $("#live-definition-section, #live-comment-section").hide();
-        $("#definition-status-section").show();
-    });
-
-    $("body").on("click", ".one-notification a", function(){
-        $("#live-definition-section-link, #live-comment-section-link, #definition-status-section-link").removeClass("active-profile-tab");
-        $("#definition-status-section-link").addClass("active-profile-tab");
-        $("#live-definition-section, #live-comment-section").hide();
-        $("#definition-status-section").show();
-    });
-
     
 /* LISTENERS */
 
@@ -1008,9 +980,9 @@ function addNotificationsToScreen(){
         if(!(typeof(notification) == "undefined")){
 
             if(notification.type == "definition"){
-                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile/status'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
             } else if (notification.type = "comment"){
-                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile'>Your comment has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+                $("#notifications-section").append("<div class = 'notification-panel one-notification'>Your comment has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</span></div>");
             }            
         }  
     }

@@ -347,14 +347,27 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.get("/profile", function(req, res){
         if(req.session.user){
-            res.redirect("/profile/" + req.session.user.username);
+            res.redirect("/profile/" + req.session.user.username + "/definitions");
         } else {
             res.redirect("/")
         }
     })
 
-    app.get("/profile/:username", function(req, res){
+    app.get("/profile/status", function(req, res){
+        if(req.session.user){
+            res.redirect("/profile/" + req.session.user.username + "/status");
+        } else {
+            res.redirect("/")
+        }
+    })
+
+    app.get("/profile/:username/:section", function(req, res){
         
+        var profile = "profile/definitions";
+
+        if(req.params.section == "comments"){ profile = "profile/comments" }
+        if(req.params.section == "status"){ profile = "profile/status" }
+
         var fullProfile = false;
 
         if(req.session.user){
@@ -368,9 +381,9 @@ MongoClient.connect(dbAddress, function(err, db){
             console.log(response);
             if(response.status == "success"){
                 if(req.session.user && req.params.username.trim() == req.session.user){
-                    res.render("profile", {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, comments: response.comments, displayFullProfile: fullProfile});
+                    res.render(profile, {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, comments: response.comments, displayFullProfile: fullProfile});
                 } else {
-                    res.render("profile", {definitions: response.definitions, username: req.params.username, comments: response.comments, displayFullProfile: fullProfile});
+                    res.render(profile, {definitions: response.definitions, username: req.params.username, comments: response.comments, displayFullProfile: fullProfile});
                 }   
             } else {
                 req.session.error = "Something strange happened"; 
