@@ -12,6 +12,12 @@ var screenWidth = $(window).width();
 
 function main(){
 
+
+
+
+
+
+
     $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
 
     resetNavBar();
@@ -642,6 +648,9 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
 
                 console.log(result.definition)
 
+
+                $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").removeClass("persistVote"); 
+
                 if(result.definition.changedVote){
                     $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").addClass("persistVote");    
                 }
@@ -751,12 +760,9 @@ function logout(){
 
 function displayDefinitionsOnPage(definitions, isLoggedIn){
 
-   
     $("#definitions-section").empty();
 
     definitions = sortPosts(definitions);
-
-    
 
     $.get('views/components/definition.html', function(definitionTemplate) {
         $.get('views/components/definitionCategory.html', function(definitionCategoryTemplate) {
@@ -819,7 +825,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var myTemplate =  Handlebars.compile(definitionTemplate);
                 var hasRelatedTerms = false;
 
-                if(thisDefinition.related){
+                if(thisDefinition.related.length){
                     hasRelatedTerms = true
                 }
 

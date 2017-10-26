@@ -331,7 +331,7 @@ MongoClient.connect(dbAddress, function(err, db){
                     message: response.message
                 });
             } else {
-                res.render("loggedInHeader");
+                res.render("components/loggedInHeader");
             }
         });
     });
@@ -363,19 +363,22 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.get("/profile/:username/:section", function(req, res){
         
-        var profile = "profile/definitions";
-
-        if(req.params.section == "comments"){ profile = "profile/comments" }
-        if(req.params.section == "status"){ profile = "profile/status" }
 
         var fullProfile = false;
 
         if(req.session.user){
             if((req.session.user.username == req.params.username) || (req.session.user.admin == "true") || (req.session.user.moderator  == "true") ){
-                console.log("Getting full profile");
                 fullProfile = true;
             }
         }
+
+
+        var profile = "profile/definitions";
+
+        if(req.params.section == "comments"){ profile = "profile/comments" }
+        if(req.params.section == "status" && fullProfile){ profile = "profile/status" }
+
+        
 
         dbops.getUserData(db, req, req.params.username, function getData(response){
             console.log(response);

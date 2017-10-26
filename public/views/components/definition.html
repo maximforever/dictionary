@@ -7,7 +7,7 @@
 
 			{{#if hasRelated}}
 
-			<div class = "definition-related-terms"><span class = "bold">Related terms: </span> 
+			<div class = "definition-related-terms"><span class = "bold">See: </span> 
 				{{#each related}}
 					<span class= "related-term"><a href = "/{{this}}">{{this}}</a>, </span>
 				{{/each}}
@@ -29,7 +29,7 @@
 
 	<div class = "info-row">
 		<div class = "edit-history-column">
-	 		<a href = "/profile/{{definition.author}}">@{{definition.author}}</a> on {{editDate}}
+	 		<a href = "/profile/{{definition.author}}/definitions">@{{definition.author}}</a> on {{editDate}}
 	 		<br>
 	 		{{#if definition.owner}}
 	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions">Delete</div>

@@ -33,42 +33,62 @@ function search(db, req, callback){
 }
 
 
+/*function getDefinitions(db, req, type, callback){*/
 function getDefinitions(db, req, callback){
 
-	searchQuery = {
+	var searchQuery = {
 		term: req.body.term,
 		removed: false, 
 		approved: true
 	}
 
+/*	if(type == "user"){
+		var searchQuery = {
+			author: req.params,
+			removed: false, 
+			approved: true
+		}
+	}*/
+
 	database.read(db, "definitions", searchQuery, function(definitions){
 
 		var ids = [];
-
-		definitions.forEach(function(definition){
-			ids.push({post_id: definition.id});
-		})
+		var vote_ids = [];
 
 		var commentQuery;
 		var voteQuery;
+		var currentUser;
 
-		if(definitions.length > 0){
-			voteQuery = {
-				post: definitions[0].id,
-				type: "definition"
-			}
-		}
-		
+		definitions.forEach(function(definition){
+			ids.push({post_id: definition.id});
+			vote_ids.push({post: definition.id});
+		})
 
 		if (ids.length){
 			commentQuery = {
 				removed: false,
 				$or: ids
 			}
+
+			voteQuery = {
+				$or: vote_ids	,
+				type: "definition"
+			}
+
 		} else {
 			commentQuery = {
 				post_id: Date.now()*Math.random()*-1				// this effectively assures an empty search, because we're looking for a negative decimal ID
 			}
+
+			voteQuery = {
+				post: Date.now()*Math.random()*-1				// this effectively assures an empty search, because we're looking for a negative decimal ID
+			}
+		}
+
+		if(req.session.user){
+			currentUser = req.session.user.username
+		} else {
+			currentUser = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
 		}
 
 		database.read(db, "comments", commentQuery, function(comments){
@@ -117,11 +137,12 @@ function getDefinitions(db, req, callback){
 						
 						
 						votes.forEach(function(vote){
-							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == definition.author){
+							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == currentUser){
 								console.log("vote");
 								console.log(vote);
 
 								if(vote.direction == "up"){
+									console.log("This up vote belongs to " + currentUser);
 									definition.authorUpvote = true;
 								}
 
@@ -505,7 +526,7 @@ function vote(db, req, callback){
 					})
 
 				} else {
-					// if vote already recorded, remove it (if upvoting after already upvoting, remove upvote)
+					// if vote already recorded in the same direction, remove it (if upvoting after already upvoting, remove upvote)
 					console.log("vote already recorded");
 					database.remove(db, "votes", voteQuery, function removeVote(removedVote){
 
@@ -1021,7 +1042,7 @@ function getUserData(db, req, user, callback){
 			removed: false
 		}
 
-		definitionQuery = {
+		var definitionQuery = {
 			author: user,
 			approved: true,
 			removed: false,
