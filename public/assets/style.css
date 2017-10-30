@@ -251,7 +251,7 @@ input {
 
 .definition {
 	margin: 35px auto 0 auto;
-    padding: 15px 20px 20px 20px;
+    
     display: block;
     box-shadow: 0px 0px 5px rgba(131, 142, 66, 0.5);
     min-width: 300px;
@@ -260,6 +260,11 @@ input {
     border: 1px solid rgba(190, 173, 127, 0.6);
     border-top: 2px solid #88612c;
 }
+
+.definition-main-body{
+    padding: 15px 10px 20px 20px;
+}
+
 
 .definition-accent {
 	margin: 35px auto;
@@ -506,7 +511,7 @@ input {
     display: inline-block;
     vertical-align: top;
     line-height: 1.4;
-    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .definition-history{
@@ -515,10 +520,11 @@ input {
 }
 
 .definition-meta{
-	width: 100%;
 	font-size: 0.85em;
-    height: 2.5em;
-    margin-bottom: 5px;
+    height: 2em;
+    background: #DCDCDC;
+    padding: 5px 20px;
+    background: #e0ea8e;
 }
 
 .definition-actions {
@@ -528,14 +534,13 @@ input {
 .voting-column {
 	display: inline-block;
 	width: calc(5% - 2px);
-    border-right: 2px solid black;
+    border-left: 2px solid black;
 }
 
 .voting-section{
 	margin: 0;
 	text-align: center;
 	vertical-align: top;
-	float: left;
 }
 
 .persistVote{
@@ -543,7 +548,6 @@ input {
 }
 
 .definition-score {
-	padding: 0px 10px;
 	font-weight: 600;
 	color: #5a6061;
 }
@@ -1068,7 +1072,6 @@ button:hover {
 
     .definition {
         margin: 20px auto 0 auto;
-        padding: 15px;
         min-width: 100px;
         background: #f5ffc0;
         border-radius: 3px;
@@ -1201,11 +1204,13 @@ button:hover {
     .definition-column {
         line-height: 1.5;
         font-size: 0.9em;
-        width: 90%;
+        width: calc(90% - 10px);
     }
 
     .voting-column {
         display: inline-block;
+        float: none;
+        width: calc(10% - 2px);
     }
 
     .voting-section{
