@@ -162,6 +162,19 @@ input {
     display: none; 
 }
 
+.related-term {
+    font-size: 0.9em;
+    padding: 0px 10px;
+    border: 1px solid gray;
+    border-radius: 6px;
+}
+
+.related-term:hover {
+    color: white;
+    background: orange;
+    border-color: black;
+}
+
 
 .term{
 	border-bottom: 1px solid rgba(111, 111, 111, 0.5);
@@ -272,13 +285,11 @@ input {
 .comment {
 	display: block;
     background: #f2f5e9;
-    box-shadow: none;
-    padding: 5px 20px 15px 20px;
+    padding: 10px 20px 15px 20px;
     margin: 15px 0;
     border: 1px solid rgba(10,10,10, 0.2);
-    border-bottom: 1px solid rgba(136, 98, 45, 0.7);
     border-radius: 3px;
-    box-shadow: 0 0 3px rgba(10,10,10, 0.2);
+
     min-width: 300px;
 }
 
@@ -289,9 +300,10 @@ input {
 }
 
 .comment-column {
-	width: 80%;
+    width: calc(95% - 10px);
+    padding-left: 10px;
     display: inline-block;
-    fvertical-align: top;
+    vertical-align: top;
 }
 
 .comment h4{
@@ -314,20 +326,32 @@ input {
 	display: none;
 }
 
-.delete-post {
-    margin: 5px 5px 0 0;
+.delete-post, .report-post, .comment-on-post {
+    margin-left: 5px;
     color: #7b1b1a;
     background: #f17372;
-    padding: 3px 5px;
+    padding: 3px 8px;
     border-radius: 5px;
     display: inline-block;
 }
 
-.delete-post:hover {
+.delete-post, .report-post {
+    margin-top: 1px;
+}
+
+.comment-on-post {
+    background: none;
+    border: 1px solid gray;
+}
+
+.delete-post:hover, .report-post:hover {
     color: #ffeaea;
     background: #d42812;
 }
 
+.fa-chevron-circle-down{
+    display: none;
+}
 
 /* CATEGORY CHART*/
 
@@ -348,7 +372,13 @@ input {
 #category-summary h3 {
 	margin: 0 0 5px 0;
 	font-family: 'Enriqueta', serif;
-    font-weight: 400;
+    font-weight: 700;
+}
+
+.category-title {
+    color: #5a6061;
+    font-family: 'Enriqueta', serif;
+    font-size: 1.4em;
 }
 
 .category-bar {
@@ -365,6 +395,8 @@ input {
 	display: inline-block;
     font-weight: 300;
     margin-right: 10px;
+    font-family: Enriqueta, sans-serif;
+    font-size: 0.95em;
 }
 
 .category-percentage {
@@ -470,29 +502,40 @@ input {
 }
 
 .definition-column {
-	width: 80%;
-	display: inline-block;
-	vertical-align: top;
-	line-height: 1.4;
+	width: calc(95% - 10px);
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.4;
+    padding-left: 10px;
 }
 
-.edit-history-column{
-	width: 80%;
-	display: inline-block;
-	vertical-align: top;
+.definition-history{
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.definition-meta{
+	width: 100%;
 	font-size: 0.85em;
+    height: 2.5em;
+    margin-bottom: 5px;
+}
+
+.definition-actions {
+    float: right;
 }
 
 .voting-column {
 	display: inline-block;
-	width: 20%;
+	width: calc(5% - 2px);
+    border-right: 2px solid black;
 }
 
 .voting-section{
 	margin: 0;
 	text-align: center;
 	vertical-align: top;
-	float: right;
+	float: left;
 }
 
 .persistVote{
@@ -514,19 +557,6 @@ input {
     display: inline-block;
 }
 
-.info-row {
-	margin-top: 15px;
-}
-
-.post-actions-column{
-	text-align: right;
-	width: 20%;
-	display: inline-block;
-}
-
-.report-post {
-	text-decoration: underline;
-}
 
 .comment-on-post {
 	z-index: 0;
@@ -536,16 +566,6 @@ input {
 }
 
 .comment-count{
-	z-index: 1;
-    font-size: 0.8em;
-    color: #FFFFFF;
-    opacity: 1;
-    width: 32px;
-    text-align: center;
-    position: relative;
-    float: right;
-    margin-top: -25px;
-    margin-left: -35px;
     pointer-events: none;
 }
 
@@ -621,6 +641,11 @@ button:hover {
 
 #login-username, #signup-username {
 	margin-right: 8px;
+}
+
+#login-section, #signup-section {
+    display: none;
+    width: 100%;
 }
 
 /* REPORT */
@@ -754,6 +779,10 @@ button:hover {
     background: #ceb486;
     padding: 3px 8px;
     display: inline-block;
+}
+
+.profile-links {
+    margin-bottom: 35px;
 }
 
 /* NOTIFICATIONS */
@@ -1072,12 +1101,6 @@ button:hover {
         margin-bottom: 10px;
     }
 
-    .comment-column {
-        width: 90%;
-        display: inline-block;
-        vertical-align: top;
-    }
-
     .comment h4{
         margin: 0 0 10px 0;
     }
@@ -1093,11 +1116,6 @@ button:hover {
     .button-wrapper {
         text-align: right;
     }
-
-    .fa-chevron-circle-up{
-        display: none;
-    }
-
 
     /* CATEGORY CHART*/
 
@@ -1186,14 +1204,8 @@ button:hover {
         width: 90%;
     }
 
-    .edit-history-column{
-        width: 65%;
-        font-size: 0.8em;
-    }
-
     .voting-column {
         display: inline-block;
-        width: 10%;
     }
 
     .voting-section{
@@ -1212,39 +1224,12 @@ button:hover {
         display: inline-block;
     }
 
-    .info-row {
-        margin-top: 15px;
-    }
-
-    .post-actions-column{
-        text-align: right;
-        width: 35%;
-        display: inline-block;
-    }
-
-    .report-post {
-        text-decoration: underline;
-    }
 
     .comment-on-post {
         z-index: 0;
         color: #000000;
         text-align: center;
         float: right;
-    }
-
-    .comment-count{
-        z-index: 1;
-        font-size: 0.8em;
-        color: #FFFFFF;
-        opacity: 1;
-        width: 32px;
-        text-align: center;
-        position: relative;
-        float: right;
-        margin-top: -25px;
-        margin-left: -35px;
-        pointer-events: none;
     }
 
     .report-error, .new-definition-error, .new-comment-error {
@@ -1330,10 +1315,7 @@ button:hover {
         width: 28vw;
     }
 
-    #login-section, #signup-section {
-        display: none;
-        width: 100%;
-    }
+
 
 
 
@@ -1417,10 +1399,6 @@ button:hover {
 
     .status-row-headers {
         font-size: 0.9em;
-    }
-
-    .edit-history {
-        font-size: 0.8em;
     }
 
     .profile-links {

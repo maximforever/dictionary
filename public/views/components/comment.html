@@ -1,24 +1,32 @@
 <div class = "comment" id = "{{id}}">
 	
-	<div class = "comment-column">
-		<div class = "comment-body">
-			{{comment.body}}
-		</div>
-		<div class = "edit-history-column">
-	 		<a href = "/profile/{{comment.author}}/definition">@{{comment.author}}</a> on {{date}}
-	 		<br>
+	<div class = "definition-meta">
+		<span class = "definition-history">
+			<a href = "/profile/{{definition.author}}/definitions">@{{comment.author}}</a> on {{date}}
+ 		</span>
+
+		<span class = "definition-actions">
 	 		{{#if comment.owner}}
-	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "comments">Delete</div>
+	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "comments"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
 	 		{{/if}}
-			<span class = "report-post link bold" data-id = "{{id}}" data-type = "comments">Report</span>
-		</div>
-	</div><!-- 
- --><div class = "voting-column">
+	 		<div class = "bold link report-post" data-id = "{{id}}" data-type = "comments"><i class="fa fa-flag-o" aria-hidden="true"></i></div>
+		</span>
+	</div>
+
+
+
+	<div class = "voting-column">
 		<div class = "voting-section">	
 			<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-vote = "up" data-type = "comment" aria-hidden="true"></i><br>
 			<span class = "definition-score">{{score}}</span><br>
 			<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-vote = "down" data-type = "comment" aria-hidden="true"></i>
 		</div>
+	</div><!-- 
+ --><div class = "comment-column">
+		<div class = "comment-body">
+			{{comment.body}}
+		</div>
+		
 	</div>
 </div>
 

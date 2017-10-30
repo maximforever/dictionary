@@ -1,47 +1,47 @@
 <div class = "definition" id = "{{id}}">
 
 	<div class = "main-row">
-		<div class = "definition-column">
-			<div class = "definition-term">{{definition.term}}</div>
-			<div class = "definition-body">{{definition.body}}</div>
 
-			{{#if hasRelated}}
+		<div class = "definition-meta">
+			<span class = "definition-history">
+				<a href = "/profile/{{definition.author}}/definitions">@{{definition.author}}</a> on {{editDate}}
+	 		</span>
 
-			<div class = "definition-related-terms"><span class = "bold">See: </span> 
-				{{#each related}}
-					<span class= "related-term"><a href = "/{{this}}">{{this}}</a>, </span>
-				{{/each}}
-			</div>
+	 		<span class = "definition-actions">
+		 		{{#if definition.owner}}
+		 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
+		 		{{/if}}
+				<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-flag-o" aria-hidden="true"></i></span>
+				
+				<span class = "link comment-on-post" data-id = "{{id}}" data-term = "{{definition.term}}" >
+					<i class="fa fa-chevron-circle-down" data-id = "{{id}}" data-term = "{{definition.term}}" aria-hidden="true"></i>
+					<i class="fa fa-comment" data-id = "{{id}}" data-term = "{{definition.term}}" aria-hidden="true"></i>
 
-			{{/if}}
+					<span class = "comment-count" data-id = "{{id}}">{{definition.comments.length}}</span>
+				</span>
 
+			</span>
+		</div>
 
-
-		</div><!-- 
-	 --><div class = "voting-column">
+		<div class = "voting-column">
 			<div class = "voting-section">	
 				<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "up" data-type = "definition" aria-hidden="true"></i><br>
 				<span class = "definition-score">{{score}}</span><br>
 				<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "down" data-type = "definition" aria-hidden="true"></i>
 			</div>
-		</div>
-	</div>
-
-	<div class = "info-row">
-		<div class = "edit-history-column">
-	 		<a href = "/profile/{{definition.author}}/definitions">@{{definition.author}}</a> on {{editDate}}
-	 		<br>
-	 		{{#if definition.owner}}
-	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions">Delete</div>
-	 		{{/if}}
-			<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions">Report</span>
 		</div><!-- 
-	 --><div class = "post-actions-column">
-			<span class = "link comment-on-post" data-id = "{{id}}" data-term = "{{definition.term}}" >
-				<i class="fa fa-chevron-circle-up fa-2x" data-id = "{{id}}" data-term = "{{definition.term}}" aria-hidden="true"></i>
-				<i class="fa fa-comment fa-2x" data-id = "{{id}}" data-term = "{{definition.term}}" aria-hidden="true"></i>
-				<span class = "comment-count" data-id = "{{id}}">{{definition.comments.length}}</span>
-			</span>
+     --><div class = "definition-column">
+			<div class = "definition-body">{{definition.body}}</div>
+
+			{{#if hasRelated}}
+
+			<div class = "definition-related-terms">
+				{{#each related}}
+					<a href = "/{{this}}" class= "related-term">{{this}}</a>
+				{{/each}}
+			</div>
+
+			{{/if}}
 		</div>
 	</div>
 

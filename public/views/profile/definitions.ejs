@@ -12,54 +12,9 @@
         <% } %>
     </div>
 
-    <div class = "live-definitions" id = "live-definition-section">
-
-        <% definitions.forEach(function(definition){ %>
-
-            <% if (definition.approved && !definition.removed){ %>
-
-                <% var score = definition.upvotes - definition.downvotes %>
-
-                <div class = "definition" id = "<%= definition.id %>">
-
-                    <div class = "main-row">
-                        <div class = "definition-column">
-                            <div class = "definition-term"><a href = "/<%= definition.term %>"><%= definition.term %></a></div>
-                            <div class = "definition-body"><%= definition.body %></div>
-                        </div><!-- 
-                     --><div class = "voting-column">
-                            <div class = "voting-section">  
-                                <i class="fa fa-chevron-up voting-button link" data-id = "<%= definition.id %>" data-term = "<%= definition.term %>" data-vote = "up" data-type = "definition" aria-hidden="true"></i><br>
-                                <span class = "definition-score"><%= score %></span><br>
-                                <i class="fa fa-chevron-down voting-button link" data-id = "<%= definition.id %>" data-term = "<%= definition.term %>" data-vote = "down" data-type = "definition" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class = "info-row">
-                        <div class = "edit-history-column">
-                            Created by <a href = "/profile/<%= definition.author %>">@<%= definition.author %></a> on <%= definition.lastEdit.substr(4, 11) %>
-                            <br>
-                            <% if (displayFullProfile){ %>
-                                <div class = "bold link delete-post" data-id = "<%= definition.id %>" data-type = "definitions">Delete</div>
-                            <% } %>
-                            <span class = "report-post link bold" data-id = "<%= definition.id %>" data-type = "definitions">Report</span>
-                        </div><!-- 
-                     -->
-                    </div>
-
-                </div>
-                <div class = "comments-section" data-id = "<%= definition.id %>">
-                </div>
-
-
-            <% } %>
-        <% }) %>
-
-        <% if (definitions.length == 0){ %>
-            <%= username %> has not added any definitions
-        <% } %>
+    <div id = "definitions-section">
     </div>
+
 
 </div>
 

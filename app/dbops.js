@@ -32,8 +32,6 @@ function search(db, req, callback){
 	});
 }
 
-
-/*function getDefinitions(db, req, type, callback){*/
 function getDefinitions(db, req, callback){
 
 	var searchQuery = {
@@ -42,13 +40,13 @@ function getDefinitions(db, req, callback){
 		approved: true
 	}
 
-/*	if(type == "user"){
+	if(req.body.user && (req.body.user == true || req.body.user == "true")){
 		var searchQuery = {
-			author: req.params,
+			author: req.body.author,
 			removed: false, 
 			approved: true
 		}
-	}*/
+	}
 
 	database.read(db, "definitions", searchQuery, function(definitions){
 
@@ -131,15 +129,8 @@ function getDefinitions(db, req, callback){
 						definition.authorUpvote = false;
 						definition.authorDownvote = false;
 
-
-						console.log("definition.id");
-						console.log(definition.id);
-						
-						
 						votes.forEach(function(vote){
 							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == currentUser){
-								console.log("vote");
-								console.log(vote);
 
 								if(vote.direction == "up"){
 									console.log("This up vote belongs to " + currentUser);
@@ -155,8 +146,6 @@ function getDefinitions(db, req, callback){
 						
 
 						definition.comments = associatedComments;
-						console.log("definition");
-						console.log(definition);
 						responsesToReturn.push(definition);
 					}
 				})
@@ -186,6 +175,17 @@ function addDefinition(db, req, callback){
 
 				database.read(db, "definitions", userSubmissionsQuery, function fetchUser(approvedDefinitions){
 
+
+					var relatedTerms = [];
+
+					// let's make sure the related terms exist and are kosher
+					req.body.related.forEach(function(term){
+						if(term.trim().length && validateInput(term)){
+							relatedTerms.push(term)
+						}
+					})
+
+
 					console.log("This user has submitted " + approvedDefinitions.length + " definitions");
 
 					var newDefinitionQuery = {
@@ -202,7 +202,7 @@ function addDefinition(db, req, callback){
 						created: Date(),
 						body: req.body.definition,
 						category: req.body.category,
-						related: req.body.related
+						related: relatedTerms
 					}
 
 					var newVote = {
@@ -414,6 +414,15 @@ function getComments(db, req, callback){
 		post_id: parseInt(req.body.id),
 		removed: false
 	}
+
+
+	if(req.body.user && (req.body.user == true || req.body.user == "true")){
+		var searchQuery = {
+			author: req.body.author,
+			removed: false, 
+			approved: true
+		}
+	}	
 
 	database.read(db, "comments", searchQuery, function(searchResult){
 
@@ -1024,7 +1033,7 @@ function updateUserRoles(db, req, callback){
 
 			callback({status: "success", 
 				message: "Updated the user role", roles: updatedUserRoles})
-		})
+		})  
 		
 	} else {
 		callback({status: "fail", message: "Not an admin"})
@@ -1065,8 +1074,6 @@ function getUserData(db, req, user, callback){
 			if(user.length == 1){
 
 				console.log("Requesting user is logged in and " + userQuery.username + " is a real user");
-
-
 
 				database.read(db, "definitions", definitionQuery, function fetchDefinitions(allDefinitions){
 					database.read(db, "comments", commentQuery, function fetchComments(allComments){

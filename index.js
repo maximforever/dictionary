@@ -89,11 +89,6 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(function(req, res, next){
 
-/*        console.log("[[req.session]]");
-        console.log(req.session);
-        console.log("req.session.id");
-        console.log(req.session.id);*/
-
         if(req.session.user){
             dbops.getUpdatedUser(db, req, function moveOn(suspended){
 
@@ -145,6 +140,9 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.post("/get-definitions", function(req, res){
+
+        console.log("GET DEFINITIONS POST:");
+        console.log(req.body);
         dbops.getDefinitions(db, req, function getDefinitions(response){
             if(response.status == "success"){
                 req.session.message = "Got a result!"
@@ -361,8 +359,22 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     })
 
+    app.get("/profile/:username/views/components/:component", function(req, res){
+
+        console.log("WE WANT A COMMENT!");
+
+        if(req.params.component == "comment.html"){
+            res.send("components/comment.html")
+        } else if(req.params.component == "comment.html"){
+
+        }
+    })
+
     app.get("/profile/:username/:section", function(req, res){
         
+
+        console.log("req.params");
+        console.log(req.params);
 
         var fullProfile = false;
 
@@ -373,26 +385,29 @@ MongoClient.connect(dbAddress, function(err, db){
         }
 
 
-        var profile = "profile/definitions";
+        var profile = "profile/definitions";            // this takes care of typos and defaults to the definitions page
 
         if(req.params.section == "comments"){ profile = "profile/comments" }
         if(req.params.section == "status" && fullProfile){ profile = "profile/status" }
 
-        
-
-        dbops.getUserData(db, req, req.params.username, function getData(response){
-            console.log(response);
-            if(response.status == "success"){
-                if(req.session.user && req.params.username.trim() == req.session.user){
-                    res.render(profile, {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, comments: response.comments, displayFullProfile: fullProfile});
+        if(req.params.section == "definitions" || req.params.section == "comments" || req.params.section == "status"){
+            dbops.getUserData(db, req, req.params.username, function getData(response){
+                if(response.status == "success"){
+                    if(req.session.user && req.params.username.trim() == req.session.user){
+                        res.render(profile, {definitions: response.definitions, notifications: response.notifications, username: req.session.user.username, comments: response.comments, displayFullProfile: fullProfile});
+                    } else {
+                        res.render(profile, {definitions: response.definitions, username: req.params.username, comments: response.comments, displayFullProfile: fullProfile});
+                    }   
                 } else {
-                    res.render(profile, {definitions: response.definitions, username: req.params.username, comments: response.comments, displayFullProfile: fullProfile});
+                    req.session.error = "Something strange happened"; 
+                    res.redirect("/");
                 }   
-            } else {
-                req.session.error = "Something strange happened"; 
-                res.redirect("/");
-            }   
-        });
+            });
+        } else {
+            res.redirect("/");
+        }
+
+        
 
     })
 

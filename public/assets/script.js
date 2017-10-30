@@ -9,20 +9,31 @@ var activeTermIndex = -1;
 var screenWidth = $(window).width();
 
 
-
 function main(){
 
+    if(location.pathname.indexOf("/profile") != -1){
+        
+         var pathArray = location.pathname.split("/");
 
+        if(pathArray.length == 4){
 
+            var username = pathArray[2];
+            if(location.pathname.indexOf("/definitions") != -1){ 
+                getDefinition(username, true);
+            } else if(location.pathname.indexOf("/comments") != -1){
 
+                getCommentsForUser(username);
+            }
 
+        }
+    }
 
 
     $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
 
     resetNavBar();
 
-    if($("#definitions-section").height() < 5){
+    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1){
         search();
     }
 
@@ -45,7 +56,7 @@ function main(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
 		currentTerm = term;
-		getDefinition(term);
+		getDefinition(term, false);
 	});
 
     $("body").on("click", ".definition-suggestion-link", function(){
@@ -121,17 +132,9 @@ function main(){
 
     $("body").on("click", ".comment-on-post", function(){
 
-        $(".fa-chevron-circle-up[data-id=" + this.dataset.id + "]").toggle();
+        $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
         $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
         $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
-        
-
-        if($(".comment-count[data-id=" + this.dataset.id + "]").css("opacity") == 1){
-            $(".comment-count[data-id=" + this.dataset.id + "]").css("opacity", 0);
-        } else {
-            $(".comment-count[data-id=" + this.dataset.id + "]").css("opacity", 1);
-        }
-
     });
 
     $("body").on("click", ".delete-post", function(){
@@ -371,7 +374,7 @@ function showSignup(){
 function search(){
 	
 
-    if($("#search-bar").val()){
+    if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
 
         var searchTerm = $("#search-bar").val().trim();
 
@@ -392,7 +395,7 @@ function search(){
                         $("#definitions-section").empty();
 
                         if(result.count == 1){                          // if there's only one term, display the definition
-                            getDefinition(result.body[0].name);
+                            getDefinition(result.body[0].name, false);
                             currentTerm = result.body[0].name;
                         } else {
                             result.body.forEach(function(term){
@@ -444,13 +447,21 @@ function searchForDefinitions(searchTerm){
     }
 }
 
-function getDefinition(thisTerm){
+function getDefinition(query, forUser){
 
     $("#definitions-section").empty();
 
 	var searchQuery = {
-		term: thisTerm.toLowerCase()
+		term: query.toLowerCase(),
+        user: false
 	}
+
+    if(forUser){
+        searchQuery = {
+            author: query.toLowerCase(),
+            user: true
+        }
+    }
 
 	$.ajax({
         type: "post",
@@ -459,13 +470,19 @@ function getDefinition(thisTerm){
         success: function(result){
         	if(result.status == "success"){
 
-                var searchTerm = $("#search-bar").val().trim();
-
+                if(!forUser){
+                    var searchTerm = $("#search-bar").val().trim();
+                }
+                
             	if(result.count > 0){
                     $("#definitions-section").empty();
-                    displayDefinitionsOnPage(result.body, result.isLoggedIn);
+
+                    console.log(result.body);
+                    displayDefinitionsOnPage(result.body, result.isLoggedIn, forUser);
 	            } else {
-                    $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                    if(!forUser){
+                        $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                    } 
                 }
         	} else {
         		console.log(result.error)
@@ -536,7 +553,7 @@ function addDefinition(){
 
                                 if(result.status == "success"){
                                     
-                                    getDefinition(result.term);
+                                    getDefinition(result.term, false);
                                     
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
@@ -683,7 +700,7 @@ function login(){
                     $("#login-username, #login-password, #signup-username, #signup-password").val("");
                     $("#error").text(result.message).css("display", "block");
                 } else {
-                    if(window.location.href.indexOf("/profile") == -1 ){
+                    if(window.location.pathname.indexOf("/profile") == -1 ){
                         $("#header-section").empty().append(result);
                         $("#signup-section, #login-section").hide();
 
@@ -758,64 +775,72 @@ function logout(){
  
 }
 
-function displayDefinitionsOnPage(definitions, isLoggedIn){
+function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
+
+    console.log("DISPLAY DEFINITIONS IS CALLED");
+
 
     $("#definitions-section").empty();
 
     definitions = sortPosts(definitions);
 
-    $.get('views/components/definition.html', function(definitionTemplate) {
-        $.get('views/components/definitionCategory.html', function(definitionCategoryTemplate) {
+    $.get('/views/components/definition.html', function(definitionTemplate) {
+        $.get('/views/components/definitionCategory.html', function(definitionCategoryTemplate) {
 
             $("#definitions-section").empty();
 
-            $("#definitions-section").append(definitionCategoryTemplate);
-            $("#category-title-label").text(definitions[0].term)
+            // only display the category graphic on the search page, not on profiles
+            if(!forUser){
 
-            var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
+                $("#definitions-section").append(definitionCategoryTemplate);
+                $("#category-title-label").text(definitions[0].term)
 
-            for(var i = 0; i < definitions.length; i++){
-                switch(definitions[i].category){
-                    case "tool":
-                        toolCount++;
-                        break;
-                    case "concept":
-                        conceptCount++;
-                        break;
-                    case "language":
-                        languageCount++;
-                        break;
-                    case "process":
-                        processCount++;
-                        break;
-                    case "other":
-                        otherCount++;
-                        break;
-                    default:
-                        otherCount++;
+                var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
+
+                for(var i = 0; i < definitions.length; i++){
+                    switch(definitions[i].category){
+                        case "tool":
+                            toolCount++;
+                            break;
+                        case "concept":
+                            conceptCount++;
+                            break;
+                        case "language":
+                            languageCount++;
+                            break;
+                        case "process":
+                            processCount++;
+                            break;
+                        case "other":
+                            otherCount++;
+                            break;
+                        default:
+                            otherCount++;
+                    }
                 }
+
+                var toolPercent = toolCount/definitions.length;
+                var conceptPercent = conceptCount/definitions.length;
+                var languagePercent = languageCount/definitions.length;
+                var processPercent = processCount/definitions.length;
+                var otherPercent = otherCount/definitions.length;
+
+
+                var maxCategoryWidth = $(".category-bar").width() - 151;
+
+                $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 30 + "px");
+                $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 30 + "px");
+                $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 30 + "px");
+                $("#process-percentage").css("width", processPercent * maxCategoryWidth + 30 + "px");
+                $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 30 + "px");
+
+                $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
+                $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
+                $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
+                $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
+                $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
+
             }
-
-            var toolPercent = toolCount/definitions.length;
-            var conceptPercent = conceptCount/definitions.length;
-            var languagePercent = languageCount/definitions.length;
-            var processPercent = processCount/definitions.length;
-            var otherPercent = otherCount/definitions.length;
-
-            ;
-
-            var maxCategoryWidth = $(".category-bar").width() - 151;
-
-            $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 30 + "px")
-            $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
-            $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 30 + "px")
-            $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
-            $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 30 + "px")
-            $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
-            $("#process-percentage").css("width", processPercent * maxCategoryWidth + 30 + "px")
-            $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
-            $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 30 + "px")
-            $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
 
             // a bit of handlebars magic
 
@@ -825,8 +850,8 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
                 var myTemplate =  Handlebars.compile(definitionTemplate);
                 var hasRelatedTerms = false;
 
-                if(thisDefinition.related.length){
-                    hasRelatedTerms = true
+                if(thisDefinition.related && thisDefinition.related.length){
+                    hasRelatedTerms = true;
                 }
 
                 var context = {
@@ -864,8 +889,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn){
 
             });
 
-            $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
-
+            if(!forUser){
+                $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
+            }
         }, 'html')
     }, 'html')
 }
@@ -874,7 +900,7 @@ function displayCommentsOnPage(comments, commentSection){
 
     comments = sortPosts(comments);
 
-    $.get('views/components/comment.html', function(commentTemplate) {
+    $.get('/views/components/comment.html', function(commentTemplate) {
 
         // a bit of handlebars magic
 
@@ -1004,7 +1030,7 @@ function displayReport(id, type){
     $("#report-content").empty();
 
     if(type == "definitions"){
-        $("#report-content").append($("#" + id).find(".definition-column").text().trim());
+        $("#report-content").append($("#" + id).find(".definition-body").text().trim());
     } else if (type == "comments"){
         $("#report-content").append($("#" + id).find(".comment-body").text().trim());
     }
@@ -1041,7 +1067,7 @@ function submitReport(){
                 $("input[name='report']").prop('checked', false);
                 $("#report").hide();
                 if(result.status == "success"){
-                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted and will be reviewed shortly.</div>");
+                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted. Thank you for helping make Hackterms better!</div>");
                 } else {
                     $("#definitions-section").prepend("<div class = 'definition add-confirmation'>" + result.error + "</div>");
                 }
@@ -1103,16 +1129,13 @@ function deletePost(thisId, thisType){
 
 /* COMMENTS */
 
-function getComments(definitionId){
+function getCommentsForUser(query){
 
-    var commentSection = $(".comments-section[data-id=" + definitionId + "]");
-
-    commentSection.empty();
-
-    console.log("getting comments!");
+    var commentSection = $("#live-comment-section");
 
     var searchQuery = {
-        id: definitionId
+        author: query.toLowerCase(),
+        user: true
     }
 
     $.ajax({
@@ -1124,12 +1147,6 @@ function getComments(definitionId){
 
                 commentSection.empty();
                 displayCommentsOnPage(result.comments, commentSection); 
-
-                if(result.isLoggedIn){
-                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + definitionId + " data-term = ''>Add</button></div></div>");
-                } else {
-                    commentSection.append("<div class = 'comment add-one'><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
-                }
 
             } else {
                 console.log(result.error);
