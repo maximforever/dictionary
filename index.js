@@ -359,6 +359,10 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     })
 
+    app.get("/profile/:username", function(req, res){
+            res.redirect("/profile/" + req.params.username + "/definitions");
+    })
+
     app.get("/profile/:username/views/components/:component", function(req, res){
 
         console.log("WE WANT A COMMENT!");

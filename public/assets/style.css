@@ -290,12 +290,14 @@ input {
 .comment {
 	display: block;
     background: #f2f5e9;
-    padding: 10px 20px 15px 20px;
     margin: 15px 0;
     border: 1px solid rgba(10,10,10, 0.2);
     border-radius: 3px;
-
     min-width: 300px;
+}
+
+.comment-main-body{
+    padding: 15px;
 }
 
 .comment-body {
@@ -306,13 +308,9 @@ input {
 
 .comment-column {
     width: calc(95% - 10px);
-    padding-left: 10px;
+    padding-right: 10px;
     display: inline-block;
     vertical-align: top;
-}
-
-.comment h4{
-	margin: 0 0 10px 0;
 }
 
 .new-comment-textarea {
@@ -522,9 +520,16 @@ input {
 .definition-meta{
 	font-size: 0.85em;
     height: 2em;
-    background: #DCDCDC;
+    /*background: #DCDCDC;*/
     padding: 5px 20px;
     background: #e0ea8e;
+}
+
+.comment-meta{
+    font-size: 0.85em;
+    height: 2em;
+    background: #DCDCDC;
+    padding: 5px 20px;
 }
 
 .definition-actions {
@@ -1097,11 +1102,27 @@ button:hover {
 
     .comment {
         min-width: 100px;
+    }
+
+    .definition-main-body{
         padding: 15px 10px;
     }
 
+    .comment-meta{
+        padding: 0px 10px;
+    }
+
+
     .comment-body {
         margin-bottom: 10px;
+    }
+
+    .comment-main-body{
+        padding: 10px;
+    }
+
+    .comment-column{
+        width: calc(90% - 10px);
     }
 
     .comment h4{

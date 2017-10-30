@@ -1,6 +1,6 @@
 <div class = "comment" id = "{{id}}">
 	
-	<div class = "definition-meta">
+	<div class = "comment-meta">
 		<span class = "definition-history">
 			<a href = "/profile/{{definition.author}}/definitions">@{{comment.author}}</a> on {{date}}
  		</span>
@@ -14,19 +14,20 @@
 	</div>
 
 
-
-	<div class = "voting-column">
-		<div class = "voting-section">	
-			<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-vote = "up" data-type = "comment" aria-hidden="true"></i><br>
-			<span class = "definition-score">{{score}}</span><br>
-			<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-vote = "down" data-type = "comment" aria-hidden="true"></i>
+	<div class = "comment-main-body">
+		<div class = "comment-column">
+			<div class = "comment-body">
+				{{comment.body}}
+			</div>
+			
+		</div><!-- 
+	 --><div class = "voting-column">
+			<div class = "voting-section">	
+				<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-vote = "up" data-type = "comment" aria-hidden="true"></i><br>
+				<span class = "definition-score">{{score}}</span><br>
+				<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-vote = "down" data-type = "comment" aria-hidden="true"></i>
+			</div>
 		</div>
-	</div><!-- 
- --><div class = "comment-column">
-		<div class = "comment-body">
-			{{comment.body}}
-		</div>
-		
 	</div>
 </div>
 
