@@ -200,6 +200,7 @@ input {
     min-height: 10vh;
     min-width: 300px;
     border-radius: 3px;
+    display: none;
 }
 
 .pop-out h3 {
@@ -215,7 +216,7 @@ input {
 	margin-top: 3px;
 }
 
-.log-in-please{
+.login-please{
 	margin: 30px 0 0 0;
 }
 
@@ -361,7 +362,6 @@ input {
 
 #category-summary {
 	background-color: #f2f5e8;
-	box-shadow: 0px 0px 10px rgb(128, 121, 102);
     padding: 15px 20px;
     display: block;
     border: 1px solid rgba(10,10,10, 0.5);
@@ -375,13 +375,17 @@ input {
 #category-summary h3 {
 	margin: 0 0 5px 0;
 	font-family: 'Enriqueta', serif;
-    font-weight: 700;
 }
 
 .category-title {
     color: #5a6061;
     font-family: 'Enriqueta', serif;
     font-size: 1.4em;
+    font-weight: 400;
+}
+
+#category-title-label{
+    font-weight: 700;
 }
 
 .category-bar {
@@ -577,7 +581,6 @@ input {
 .report-error, .new-definition-error, .new-comment-error {
 	color: #b50000;
 	font-weight: 600;
-	margin:5px 0px;
 }
 
 .definition-category-section select {
@@ -621,8 +624,6 @@ input {
 }
 
 button {
-	margin-left: 10px;
-    border-radius: 0;
     border: none;
     background: #2E58D1;
     color: white;
@@ -654,42 +655,39 @@ button:hover {
     width: 100%;
 }
 
-#sign-up-modal {
-    display: none;
+
+#password-reset-link {
+    margin: 0;
+    text-align: left;
 }
 
-#signup-section {
+#signup-section, #login-section {
     text-align: center;
     padding-top: 15px;
 }
 
-#sign-up-modal{
+#signup-modal, #login-modal{
     width: calc(36vw - 44px);
     left: 32vw;
     padding-top: 0;
 }
 
-#login-username, #login-password {
-    margin-left: 5px;
-}
-
-#signup-username, #signup-password, #signup-email {
+.pop-out input{
     display: block;
     width: calc(100% - 12px);
     border: 1px solid #989494;
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: 8px;
     font-size: 1.5em;
-    box-shadow: 0 0 5px rgba(10, 10, 10, 0.5);
     padding: 2px 5px 5px 5px;
     margin-right: 8px;
 }
 
-#signup-action{
+#signup-action, #login-action{
     padding: 8px 15px;
     font-size: 1.3em;
-    margin: 10px 0 0 0;
-
+    margin: 20px 0 10px 0;
+    width: 100%;
 }
 
 #signup-options {
@@ -698,6 +696,20 @@ button:hover {
     margin: 2px 88px 0 0;
 }
 
+.account-title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #afafaf;
+}
+
+.active-account-title {
+    color: black;
+}
+
+.report-error {
+    min-height: 1.5em;
+    text-align: left;
+}
 
 /* REPORT */
 
@@ -1082,7 +1094,7 @@ button:hover {
         margin-top: 3px;
     }
 
-    .log-in-please{
+    .login-please{
         margin: 30px 0 0 0;
     }
 
@@ -1287,7 +1299,6 @@ button:hover {
     .report-error, .new-definition-error, .new-comment-error {
         color: #b50000;
         font-weight: 600;
-        margin:5px 0px;
     }
 
     .definition-category-section {
@@ -1342,20 +1353,7 @@ button:hover {
         cursor: pointer;
     }
 
-    #login-username, #login-password {
-        width: 28vw;
-        margin: 0 5px 0 0;
-    }
-
-    #password-reset-link {
-        margin: 0;
-    }
-
-    #login-section{
-        text-align: left;
-    }
-
-    #sign-up-modal {
+    #signup-modal, #login-modal {
         width: calc(94vw - 34px);
         left: 3vw;
     }

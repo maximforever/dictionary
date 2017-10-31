@@ -309,7 +309,8 @@ MongoClient.connect(dbAddress, function(err, db){
             } else if(response.status == "fail"){
                 res.send({
                     status: "fail",
-                    message: response.message
+                    message: response.message,
+                    errorType: response.errorType
                 });
             } else {
                 res.send({
@@ -326,7 +327,8 @@ MongoClient.connect(dbAddress, function(err, db){
             if(response.status == "fail"){
                 res.send({
                     status: "fail",
-                    message: response.message
+                    message: response.message,
+                    errorType: response.errorType
                 });
             } else {
                 res.render("components/loggedInHeader");

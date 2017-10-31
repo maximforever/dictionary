@@ -288,8 +288,9 @@ function main(){
     });
     
     $("body").on("click", "#close", function(){
+        $(".pop-out").find("input").val("");
+        $(".pop-out").find(".report-error").text("");
         $(".pop-out").hide();
-
     });
 
     /* ACCOUNT LINKS*/
@@ -298,7 +299,7 @@ function main(){
         showLogin();
     });
 
-    $("body").on("click", ".log-in-link", function(){
+    $("body").on("click", ".login-link", function(){
         $(".pop-out").hide();
         $("#terms-section").empty();
         showLogin();
@@ -338,7 +339,7 @@ function main(){
 function resetNavBar(){
     $("#login-username, #login-password, #signup-username, #signup-password").val("");
     $("#login-section").hide();
-    $("#sign-up-modal").hide();
+    $("#signup-modal").hide();
     $("#login, #signup").show();
     $(".account").show();
 
@@ -349,28 +350,17 @@ function resetNavBar(){
 }
 
 function showLogin(){
-    $("#sign-up-modal").hide();
-    $(".account").hide();
-    $("#login, #signup").hide();
+    $("#signup-modal").hide();
+    $("#login-modal").show();
     $("#login-section").show();
     $("#login-username").focus();
-
-    if(screenWidth < 980){
-        $("#home-link").css("float", "none").css("text-align", "left");
-    }
 }
 
 function showSignup(){
-/*    $(".account").hide();
-    $("#login, #signup").hide();
-    $("#login-section").hide();*/
-    $("#sign-up-modal").show();
+    $("#login-modal").hide();
+    $("#signup-modal").show();
     $("#signup-section").show();
-    $("#signup-username").focus();
-
-/*    if(screenWidth < 980){
-        $("#home-link").css("float", "none").css("text-align", "left");
-    }*/
+    $("#signup-email").focus();
 }
 
 function search(){
@@ -478,8 +468,6 @@ function getDefinition(query, forUser){
                 
             	if(result.count > 0){
                     $("#definitions-section").empty();
-
-                    console.log(result.body);
                     displayDefinitionsOnPage(result.body, result.isLoggedIn, forUser);
 	            } else {
                     if(!forUser){
@@ -578,8 +566,7 @@ function addDefinition(){
 
                     } else {
                         $(".new-definition-error").text("No profanity or links, please");
-                    }
-            		
+                    }            		
                 } else {
                     $(".new-definition-error").text("Please pick a category for this definition");
                 }
@@ -699,8 +686,7 @@ function login(){
             success: function(result){   
 
                 if(result.status == "fail"){
-                    $("#login-username, #login-password, #signup-username, #signup-password").val("");
-                    $("#error").text(result.message).css("display", "block");
+                    $("." + result.errorType + "-error").text(result.message).css("display", "block");
                 } else {
                     if(window.location.pathname.indexOf("/profile") == -1 ){
                         $("#header-section").empty().append(result);
@@ -733,6 +719,7 @@ function login(){
 function signup(){
 
     var signupData = {
+        email: $("#signup-email").val(),
         username: $("#signup-username").val(),
         password: $("#signup-password").val()
     }
@@ -749,8 +736,8 @@ function signup(){
                 //  showLogin();                            // looks kind of jarring
                     $("#message").text(result.message).css("display", "block");
                 } else {
-                    $("#login-username, #login-password, #signup-username, #signup-password").val("");
-                    $("#error").text(result.message).css("display", "block");
+                    $(".report-error").text("");
+                    $("." + result.errorType + "-error").text(result.message).css("display", "block");
                 }
             }
         })
@@ -778,9 +765,6 @@ function logout(){
 }
 
 function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
-
-    console.log("DISPLAY DEFINITIONS IS CALLED");
-
 
     $("#definitions-section").empty();
 
@@ -827,6 +811,51 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var processPercent = processCount/definitions.length;
                 var otherPercent = otherCount/definitions.length;
 
+
+                var sortedCategories = [];
+                var unsortedCategories = [
+                    {
+                        percentage: toolPercent, 
+                        name: "#tool-percentage"
+                    },
+                    {
+                        percentage: conceptPercent, 
+                        name: "#concept-percentage"
+                    },
+                    {
+                        percentage: languagePercent, 
+                        name: "#language-percentage"
+                    },
+                    {
+                        percentage: processPercent, 
+                        name: "#process-percentage"
+                    },
+                    {
+                        percentage: otherPercent, 
+                        name: "#other-percentage"
+                    },
+                ]
+
+                for(var i = 0; i < 5; i++){
+
+                    var maxPercentage = 0;
+                    var maxIndex = 0;
+
+                    console.log(unsortedCategories);
+
+                    for(var j = 0; j < unsortedCategories.length; j++){
+
+                        if(unsortedCategories[j].percentage > maxPercentage){
+                            maxPercentage == unsortedCategories[j].percentage;
+                            maxIndex = j;   
+                        }
+                    }
+
+                    sortedCategories.push(unsortedCategories[maxIndex]);
+                    unsortedCategories.splice(maxIndex, 1);
+
+                }
+
                 var minWidth = 0.05;
 
                 if(screenWidth < 980){
@@ -836,6 +865,17 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var remainingWidth = 1 - minWidth*5; 
 
 
+                for(var k = 0; k < sortedCategories.length; k++){
+
+                    var idName = sortedCategories[k].name.substring(1, sortedCategories[k].name.length);
+
+
+                    $(".category-bar").append("<div class = 'category-stat' id = '" + idName + "'><span class = 'percentage-label' id = '" + idName + "-label'></span></div>");
+
+                    $(sortedCategories[k].name).css("width", (sortedCategories[k].percentage*remainingWidth + minWidth)*100 + "%");
+                    $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
+                }
+/*
 
                 $("#tool-percentage").css("width", (toolPercent*remainingWidth + minWidth)*100 + "%");
                 $("#concept-percentage").css("width", (conceptPercent*remainingWidth + minWidth)*100 + "%");
@@ -847,7 +887,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
                 $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
                 $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
-                $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%");
+                $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%"); */
 
             }
 
@@ -882,7 +922,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 if(isLoggedIn){
                     commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
-                    commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold log-in-link'>Log in</span> to leave a comment!</div>");
+                    commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold login-link'>Log in</span> to leave a comment!</div>");
                 }
 
                 displayCommentsOnPage(thisDefinition.comments, commentSection);

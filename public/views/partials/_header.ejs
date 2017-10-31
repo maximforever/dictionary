@@ -60,13 +60,6 @@
                 <% } %>
             </div>
 
-            <div id = "login-section">
-                <input type = "text" id = "login-username" placeholder = "username"><input type = "password" id = "login-password" placeholder = "password"><button id = "login-action">Log in</button><i class="fa fa-times fa-1x link" aria-hidden="true" id = "account-close"></i>
-                <br>
-                <!-- <div id = "signup-options">
-                    <span class = "link" id = "password-reset-link">Forgot your password?</span>
-                </div>-->
-            </div> 
         </div>
 
         <div class = "pop-out" id = "new-definition">
@@ -74,8 +67,8 @@
                 <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
             </div>
             <% if(!session.user){ %>
-                <p class = "log-in-please">
-                    Please <span class = "link bold log-in-link">log in</span> or <span class = "link bold sign-up-link">sign up</span> to add a new definition.
+                <p class = "login-please">
+                    Please <span class = "link bold login-link">log in</span> or <span class = "link bold sign-up-link">sign up</span> to add a new definition.
                 </p>
             <% } else { %>
                 
@@ -154,17 +147,47 @@
             </div>
         </div>
 
-        <div class = "pop-out" id = "sign-up-modal">
+        <div class = "pop-out" id = "signup-modal">
             <div class = "header">
                 <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
             </div>
             <div id = "signup-section">
-                <br>
-                <input type = "text" id = "signup-email" placeholder = "email">
+                
+                <div class = "account-title">
+                    <span class = "sign-up-link active-account-title"> Sign up</span> | <span class = "login-link"> Log in</span> 
+                </div>
+                
+                <div class = "report-error email-error"></div>
+                <input type = "email" id = "signup-email" placeholder = "email">
+                
+                <div class = "report-error username-error"></div>
                 <input type = "text" id = "signup-username" placeholder = "username">
+                
+                <div class = "report-error password-error"></div>
                 <input type = "password" id = "signup-password" placeholder = "password">
 
                 <button id = "signup-action">Sign up</button>
+            </div>
+        </div>
+
+        <div class = "pop-out" id = "login-modal">
+            <div class = "header">
+                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+            </div>
+            <div id = "login-section">
+                
+                <div class = "account-title">
+                    <span class = "sign-up-link"> Sign up</span> | <span class = "login-link active-account-title"> Log in</span> 
+                </div>
+
+                <div class = "report-error username-error"></div>
+                <input type = "text" id = "login-username" placeholder = "username">
+                
+                <div class = "report-error password-error"></div>
+                <input type = "password" id = "login-password" placeholder = "password">
+
+                <button id = "login-action">Log In</button>
+                <div class = "link" id = "password-reset-link">Forgot your password?</div>
             </div>
         </div>
     

@@ -1,7 +1,7 @@
 const database = require("./database");
 const bcrypt = require('bcrypt');                         // encrypt passwords
 
-const commonPasswords = ["123456", "password", "password1", "password123", "password321", "123456", "654321", "12345678", "87654321", "football", "qwerty", "1234567890", "1234567", "princess"]
+const commonPasswords = ["123456", "password", "password1", "password123", "password321", "123456", "654321", "12345678", "87654321", "football", "qwerty", "1234567890", "1234567", "princess", "aaaaaa", "111111"]
 
 
 function search(db, req, callback){
@@ -827,48 +827,54 @@ function signup(db, req, callback){
 	if(req.body.username.trim().length && req.body.password.trim().length){    	// let's make sure the username and password aren't empty
 		if(req.body.username.trim().length && req.body.password.trim().length > 5){    
 			if(req.body.username.replace(/\s/g, '').length == req.body.username.length){
-				if(commonPasswords.indexOf(req.body.password.trim()) == -1){
-					bcrypt.genSalt(10, function(err, salt) {
-					    bcrypt.hash(req.body.password, salt, function(err, hash) {
-					   		var newUser = {
-					   			username: req.body.username.toLowerCase(),
-					            password: hash,
-					            lastLoggedOn: Date(),
-					            suspended: false,
-					            admin: false,
-					            moderator: false,
-					   			data: {
-					   				username: req.body.username.toLowerCase(),
-					   				newNotifications: false 
-					   			}
-					        }
+				if(req.body.email.trim().length && req.body.email.indexOf("@") != -1 && req.body.email.indexOf(".") != -1){
 
-							var userQuery = {
-								username: newUser.username,
-							}
+					if(commonPasswords.indexOf(req.body.password.trim()) == -1){
+						bcrypt.genSalt(10, function(err, salt) {
+						    bcrypt.hash(req.body.password, salt, function(err, hash) {
+						   		var newUser = {
+						   			email: req.body.email.trim().toLowerCase(),
+						   			username: req.body.username.trim().toLowerCase(),
+						            password: hash,
+						            lastLoggedOn: Date(),
+						            suspended: false,
+						            admin: false,
+						            moderator: false,
+						   			data: {
+						   				username: req.body.username.toLowerCase(),
+						   				newNotifications: false 
+						   			}
+						        }
 
-							database.read(db, "users", userQuery, function(existingUsers){
-								if(existingUsers.length == 0){																		
-									database.create(db, "users", newUser, function(newlyCreatedUser){
-										callback({status: "success", message: "Account created. Go ahead and log in!", user: newlyCreatedUser[0]})
-									});
-								} else {	
-									callback({status: "fail", message: "That username is not available"})
+								var userQuery = {
+									username: newUser.username,
 								}
-							})     
-					    });
-					});
+
+								database.read(db, "users", userQuery, function(existingUsers){
+									if(existingUsers.length == 0){																		
+										database.create(db, "users", newUser, function(newlyCreatedUser){
+											callback({status: "success", message: "Account created. Go ahead and log in!", user: newlyCreatedUser[0]})
+										});
+									} else {	
+										callback({status: "fail", message: "That username is not available", errorType: "username"})
+									}
+								})     
+						    });
+						});
+					} else {
+						callback({status: "fail", message: "Do you want to get hacked? Because that's how you get hacked.", errorType: "password"});
+					}
 				} else {
-					callback({status: "fail", message: "Do you want to get hacked? Because that's how you get hacked."});
+					callback({status: "fail", message: "Please double check that email", errorType: "email"});
 				}
 			} else {
-				callback({status: "fail", message: "No spaces in the username, please"});
+				callback({status: "fail", message: "No spaces in the username, please", errorType: "username"});
 			}
 		} else {
-			callback({status: "fail", message: "Password must be 6 characters or longer"});
+			callback({status: "fail", message: "Password must be 6 characters or longer", errorType: "password"});
 		}
 	} else {
-		callback({status: "fail", message: "Username an password can't be blank"})
+		callback({status: "fail", message: "Username an password can't be blank", errorType: "username"})
 	}
 }
 
@@ -907,21 +913,21 @@ function login(db, req, callback){
 							})
 						} else {
 							req.session.user = null;
-							callback({status: "fail", message: "Your account has been suspended"})
+							callback({status: "fail", message: "Your account has been suspended", errorType: "username"})
 						}
 					} else {
 						req.session.user = null;
-						callback({status: "fail", message: "Login or password are incorrect"})
+						callback({status: "fail", message: "Login or password are incorrect", errorType: "username"})
 					}
 				});										
 			} else {
 				req.session.user = null;
-				callback({status: "fail", message: "Login or password are incorrect"})
+				callback({status: "fail", message: "Login or password are incorrect", errorType: "username"})
 			}
 		});
 
 	} else {
-		callback({status: "fail", message: "Name is blank"})
+		callback({status: "fail", message: "Username is blank", errorType: "username"})
 	}
 }
 
