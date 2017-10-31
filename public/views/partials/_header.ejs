@@ -5,13 +5,11 @@
 
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
-
-
-
     <!-- fonts -->
 
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Enriqueta:400,700" rel="stylesheet">
+
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,13 +60,13 @@
                 <% } %>
             </div>
 
-            <div id = "signup-section">
-                <input type = "text" id = "signup-username" placeholder = "username"><input type = "password" id = "signup-password" placeholder = "password"><button id = "signup-action">Sign up</button><i class="fa fa-times fa-1x link" aria-hidden="true" id = "account-close"></i>
-            </div>    
-
             <div id = "login-section">
                 <input type = "text" id = "login-username" placeholder = "username"><input type = "password" id = "login-password" placeholder = "password"><button id = "login-action">Log in</button><i class="fa fa-times fa-1x link" aria-hidden="true" id = "account-close"></i>
-            </div>
+                <br>
+                <!-- <div id = "signup-options">
+                    <span class = "link" id = "password-reset-link">Forgot your password?</span>
+                </div>-->
+            </div> 
         </div>
 
         <div class = "pop-out" id = "new-definition">
@@ -77,8 +75,7 @@
             </div>
             <% if(!session.user){ %>
                 <p class = "log-in-please">
-                    You must <span class = "link bold log-in-link">log in</span> to add a new definition.
-                    <ul><li>5-sec <span class = "link bold sign-up-link">sign up</span> - no email confirmation</li></ul>
+                    Please <span class = "link bold log-in-link">log in</span> or <span class = "link bold sign-up-link">sign up</span> to add a new definition.
                 </p>
             <% } else { %>
                 
@@ -156,6 +153,23 @@
                 <div class = "notification-panel notification-control scroll-down"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
             </div>
         </div>
+
+        <div class = "pop-out" id = "sign-up-modal">
+            <div class = "header">
+                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+            </div>
+            <div id = "signup-section">
+                <br>
+                <input type = "text" id = "signup-email" placeholder = "email">
+                <input type = "text" id = "signup-username" placeholder = "username">
+                <input type = "password" id = "signup-password" placeholder = "password">
+
+                <button id = "signup-action">Sign up</button>
+            </div>
+        </div>
+    
+
+
     </div>
 
     

@@ -289,6 +289,7 @@ function main(){
     
     $("body").on("click", "#close", function(){
         $(".pop-out").hide();
+
     });
 
     /* ACCOUNT LINKS*/
@@ -337,7 +338,7 @@ function main(){
 function resetNavBar(){
     $("#login-username, #login-password, #signup-username, #signup-password").val("");
     $("#login-section").hide();
-    $("#signup-section").hide();
+    $("#sign-up-modal").hide();
     $("#login, #signup").show();
     $(".account").show();
 
@@ -348,9 +349,9 @@ function resetNavBar(){
 }
 
 function showLogin(){
+    $("#sign-up-modal").hide();
     $(".account").hide();
     $("#login, #signup").hide();
-    $("#signup-section").hide();
     $("#login-section").show();
     $("#login-username").focus();
 
@@ -360,15 +361,16 @@ function showLogin(){
 }
 
 function showSignup(){
-    $(".account").hide();
+/*    $(".account").hide();
     $("#login, #signup").hide();
-    $("#login-section").hide();
+    $("#login-section").hide();*/
+    $("#sign-up-modal").show();
     $("#signup-section").show();
     $("#signup-username").focus();
 
-    if(screenWidth < 980){
+/*    if(screenWidth < 980){
         $("#home-link").css("float", "none").css("text-align", "left");
-    }
+    }*/
 }
 
 function search(){
@@ -825,14 +827,21 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var processPercent = processCount/definitions.length;
                 var otherPercent = otherCount/definitions.length;
 
+                var minWidth = 0.05;
 
-                var maxCategoryWidth = $(".category-bar").width() - 151;
+                if(screenWidth < 980){
+                    minWidth = 0.1;
+                }
 
-                $("#tool-percentage").css("width", toolPercent * maxCategoryWidth + 30 + "px");
-                $("#concept-percentage").css("width", conceptPercent * maxCategoryWidth + 30 + "px");
-                $("#language-percentage").css("width", languagePercent * maxCategoryWidth + 30 + "px");
-                $("#process-percentage").css("width", processPercent * maxCategoryWidth + 30 + "px");
-                $("#other-percentage").css("width", otherPercent * maxCategoryWidth + 30 + "px");
+                var remainingWidth = 1 - minWidth*5; 
+
+
+
+                $("#tool-percentage").css("width", (toolPercent*remainingWidth + minWidth)*100 + "%");
+                $("#concept-percentage").css("width", (conceptPercent*remainingWidth + minWidth)*100 + "%");
+                $("#language-percentage").css("width", (languagePercent*remainingWidth + minWidth)*100+ "%");
+                $("#process-percentage").css("width", (processPercent*remainingWidth + minWidth)*100 + "%");
+                $("#other-percentage").css("width", (otherPercent*remainingWidth + minWidth)*100 + "%");
 
                 $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
                 $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");

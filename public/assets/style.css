@@ -75,14 +75,14 @@ input {
 #home-link {
     float: left;
     font-family: "Enriqueta", serif;
-    font-size: 1.7em;
+    font-size: 2.5em;
     font-weight: 400;
     margin-bottom: 20px;
 }
 
 #main-section {
 	padding: 0 5vw;
-	min-height: 80vh;			/* not sure why not 85*/
+	min-height: 79vh;			/* not sure why not 85*/
 }
 
 #footer-section	 {
@@ -94,7 +94,6 @@ input {
 }
 
 #footer-section p {
-	margin: 0 -10% 0 0;
 	padding: 10px 0;
 }
 
@@ -167,12 +166,12 @@ input {
     padding: 0px 10px;
     border: 1px solid gray;
     border-radius: 6px;
+    background: #e0ea8e;
 }
 
 .related-term:hover {
     color: white;
     background: orange;
-    border-color: black;
 }
 
 
@@ -192,23 +191,24 @@ input {
 	width: calc(64vw - 44px);
     border: 1px solid rgba(10,10,10, 0.4);
     z-index: 2;
-    box-shadow: -0 0 35px rgba( 20, 20, 20, 0.5);
+    box-shadow: 0px 0px 15px rgba( 20, 20, 20, 0.5);
     position: absolute;
     top: 15vh;
     left: 18vw;
-    background: #EAEAEA;
+    background: #ffffff;
     padding: 20px;
     min-height: 10vh;
     min-width: 300px;
+    border-radius: 3px;
 }
 
 .pop-out h3 {
 	margin-top: 0;
 }
 
-.pop-out .header i {
-	float: right;
-	margin: -15px -10px 0 0;
+.pop-out .header {
+	text-align: right;
+    padding-top: 6px;
 }
 
 .pop-out ul {
@@ -390,8 +390,13 @@ input {
 }
 
 .category-stat {
-	padding: 5px 0px;
-    display: inline;
+    height: 15px;
+    background: gray;
+    display: inline-block;
+    text-align: center;
+    font-size: 0.9em;
+    padding: 2px 0px;
+    min-width: 5%;
 }
 
 .category-label {
@@ -400,15 +405,6 @@ input {
     margin-right: 10px;
     font-family: Enriqueta, sans-serif;
     font-size: 0.95em;
-}
-
-.category-percentage {
-	min-height: 100%;
-    background: gray;
-    display: inline-block;
-    text-align: center;
-    font-size: 0.9em;
-    padding: 2px 0px;
 }
 
 .category-legend{
@@ -521,7 +517,7 @@ input {
 	font-size: 0.85em;
     height: 2em;
     /*background: #DCDCDC;*/
-    padding: 5px 20px;
+    padding: 5px 15px 5px 20px;
     background: #e0ea8e;
 }
 
@@ -613,6 +609,7 @@ input {
 
 .links {
 	text-align: right;
+    min-height: 1.7em;
 }
 
 .links .link {
@@ -626,17 +623,21 @@ input {
 button {
 	margin-left: 10px;
     border-radius: 0;
-    border: 1px solid #000000;
+    border: none;
     background: #2E58D1;
     color: white;
     font-family: 'Muli', sans-serif;
+    font-weight: 300;
     font-size: 0.9em;
     vertical-align: top;
+    border-radius: 5px;
+    padding: 3px 8px;
+    box-shadow: 0 1px 9px rgb(47, 89, 209);
 }
 
 button:hover {
 	background: #d57915;
-	border: 1px solid black;
+    box-shadow: 0 1px 9px #d57915;
 }
 
 #new-alert {
@@ -648,14 +649,55 @@ button:hover {
 	cursor: pointer;
 }
 
-#login-username, #signup-username {
-	margin-right: 8px;
-}
-
-#login-section, #signup-section {
+#login-section, {
     display: none;
     width: 100%;
 }
+
+#sign-up-modal {
+    display: none;
+}
+
+#signup-section {
+    text-align: center;
+    padding-top: 15px;
+}
+
+#sign-up-modal{
+    width: calc(36vw - 44px);
+    left: 32vw;
+    padding-top: 0;
+}
+
+#login-username, #login-password {
+    margin-left: 5px;
+}
+
+#signup-username, #signup-password, #signup-email {
+    display: block;
+    width: calc(100% - 12px);
+    border: 1px solid #989494;
+    margin: 0;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    box-shadow: 0 0 5px rgba(10, 10, 10, 0.5);
+    padding: 2px 5px 5px 5px;
+    margin-right: 8px;
+}
+
+#signup-action{
+    padding: 8px 15px;
+    font-size: 1.3em;
+    margin: 10px 0 0 0;
+
+}
+
+#signup-options {
+    font-weight: 600;
+    font-size: 0.9em;
+    margin: 2px 88px 0 0;
+}
+
 
 /* REPORT */
 
@@ -957,7 +999,7 @@ button:hover {
     #home-link {
         display: block;
         margin-bottom: 10px;
-        font-size: 1.3em;
+        font-size: 2em;
         margin-top: -2px;
     }
 
@@ -1032,9 +1074,8 @@ button:hover {
         margin-top: 0;
     }
 
-    .pop-out .header i {
-        float: right;
-        margin: -15px -10px 0 0;
+    .pop-out .header {
+        text-align: right;   
     }
 
     .pop-out ul {
@@ -1108,10 +1149,13 @@ button:hover {
         padding: 15px 10px;
     }
 
+    .definition-meta {
+        padding: 5px 10px;
+    }
+
     .comment-meta{
         padding: 0px 10px;
     }
-
 
     .comment-body {
         margin-bottom: 10px;
@@ -1153,13 +1197,6 @@ button:hover {
     #category-summary h3 {
         font-size: 1.3em;
         margin: 0 0 5px 0;
-        font-family: 'Enriqueta', serif;
-        font-weight: 400;
-    }
-
-    .category-stat {
-        padding: 5px 0px;
-        height: 20px;
     }
 
     .category-label {
@@ -1167,21 +1204,10 @@ button:hover {
         margin-top: 3px;
     }
 
-    .category-percentage-wrapper {
-        display: inline-block;
-    }
-
-    .category-percentage {
-        height: 15px;
-    }
-
     .percentage-label{
         font-size: 0.9em;
         font-weight: 600;
     }
-
-
-
 
     /* NEW DEFINITION */
 
@@ -1307,23 +1333,6 @@ button:hover {
         display: inline;
     }
 
-    .links button {
-        margin-left: 10px;
-        border-radius: 0;
-        border: 1px solid #000000;
-        background: #2E58D1;
-        color: white;
-        font-family: 'Muli', sans-serif;
-        font-size: 0.9em;
-        vertical-align: top;
-        padding: 3px 5px;
-    }
-
-    .links button:hover {
-        background: #d57915;
-        border: 1px solid black;
-    }
-
     #new-alert {
         color: red;
     }
@@ -1334,15 +1343,27 @@ button:hover {
     }
 
     #login-username, #login-password {
-        width: 30vw;
-    }
-
-    #signup-username, #signup-password {
         width: 28vw;
+        margin: 0 5px 0 0;
     }
 
+    #password-reset-link {
+        margin: 0;
+    }
 
+    #login-section{
+        text-align: left;
+    }
 
+    #sign-up-modal {
+        width: calc(94vw - 34px);
+        left: 3vw;
+    }
+
+    #signup-options {
+        text-align: left;
+        margin-top: 4px;
+    }
 
 
 
@@ -1572,3 +1593,12 @@ button:hover {
 
 
 }
+
+
+@media screen and (max-width: 768px){
+    #home-link {
+        font-size: 1.3em
+    }
+
+}
+
