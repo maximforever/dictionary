@@ -353,14 +353,20 @@ function showLogin(){
     $("#signup-modal").hide();
     $("#login-modal").show();
     $("#login-section").show();
-    $("#login-username").focus();
+
+    if(screenWidth > 980) {
+        $("#login-username").focus();
+    }
+    
 }
 
 function showSignup(){
     $("#login-modal").hide();
     $("#signup-modal").show();
     $("#signup-section").show();
-    $("#signup-email").focus();
+    if(screenWidth > 980) {
+        $("#login-username").focus();
+    }
 }
 
 function search(){
