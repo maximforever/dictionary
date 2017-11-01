@@ -10,8 +10,6 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Enriqueta:400,700" rel="stylesheet">
 
-
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel = "stylesheet" type = "text/css" href ="/assets/style.css"/>
     <link rel="shortcut icon" type="image/png" href="/assets/icon.png">
@@ -21,15 +19,10 @@
 <div class = "alert">
 
     <span id = "error">
-        <% if(typeof(session.error) != "undefined"){ %> 
-            <%= JSON.stringify(session.error) %>
-        <% } %>
-
+        <%= error %>
     </span>
     <span id = "message">
-        <% if(typeof(session.message) != "undefined"){ %>
-            <%= JSON.stringify(session.message) %>
-        <% } %>
+        <%= message %>
     </span>
 
 
@@ -166,7 +159,7 @@
                 <div class = "report-error password-error"></div>
                 <input type = "password" id = "signup-password" placeholder = "password">
 
-                <button id = "signup-action">Sign up</button>
+                <button class = "account-submit-button" id = "signup-action">Sign up</button>
             </div>
         </div>
 
@@ -186,12 +179,32 @@
                 <div class = "report-error password-error"></div>
                 <input type = "password" id = "login-password" placeholder = "password">
 
-                <button id = "login-action">Log In</button>
+                <button class = "account-submit-button" id = "login-action">Log In</button>
                 <div class = "link" id = "password-reset-link">Forgot your password?</div>
+            </div>
+        </div>
+
+        <div class = "pop-out" id = "password-reset-modal">
+            <div class = "header">
+                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+            </div>
+            <div id = "password-reset-section">   
+                <div class = "account-title">
+                    <span class = "sign-up-link"><span class = "login-link active-account-title">Reset your password</span></span> 
+                </div>
+
+                <p>Enter the the email address that you used to register and we'll send you a link to reset your password!</p>
+                <p id = "reset-request-confirm">If we have your email on file, you will receive an instructions to reset your password shortly!</p>
+
+                <div class = "report-error email-error"></div>
+                <input type = "email" id = "password-reset-email" placeholder = "email">
+
+                <button class = "account-submit-button" id = "password-reset-action">Send Email</button>
             </div>
         </div>
     
 
+        
 
     </div>
 

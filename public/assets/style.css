@@ -23,35 +23,22 @@ input {
 	font-size: 1em;
 }
 
-.term-link {
-	text-decoration: none;
-	display: block;
-	padding: 5px 10px;
-	background: rgb(220, 239, 236);
-	color: #2E58D1;
-	font-family: "Enriqueta", serif;
-    font-weight: 700;
+button {
+    border: none;
+    background: #2E58D1;
+    color: white;
+    font-family: 'Muli', sans-serif;
+    font-weight: 300;
+    font-size: 0.9em;
+    vertical-align: top;
+    border-radius: 5px;
+    padding: 3px 8px;
+    box-shadow: 0 1px 9px rgb(47, 89, 209);
 }
 
-.term-suggestion-link {
-    font-family: 'Enriqueta', serif;
-    font-weight: 400;
-	text-decoration: none;
-	font-size: 0.7em;
-	display: block;
-	padding: 3px 6px;
-	background: rgb(220, 239, 236);
-	color: #2E58D1;
-}
-
-.term-link:hover, .term-suggestion-link:hover {
-	background: rgb(125, 161, 196);
-	cursor: pointer;
-}
-
-.term-link-selected{
-    background: rgb(125, 161, 196);
-    cursor: pointer;
+button:hover {
+    background: #d57915;
+    box-shadow: 0 1px 9px #d57915;
 }
 
 .bold {
@@ -178,6 +165,37 @@ input {
 .term{
 	border-bottom: 1px solid rgba(111, 111, 111, 0.5);
 	box-shadow: -2px 2px 2px rgba(20, 20, 20, 0.4);
+}
+
+.term-link {
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    background: rgb(220, 239, 236);
+    color: #2E58D1;
+    font-family: "Enriqueta", serif;
+    font-weight: 700;
+}
+
+.term-suggestion-link {
+    font-family: 'Enriqueta', serif;
+    font-weight: 400;
+    text-decoration: none;
+    font-size: 0.7em;
+    display: block;
+    padding: 3px 6px;
+    background: rgb(220, 239, 236);
+    color: #2E58D1;
+}
+
+.term-link:hover, .term-suggestion-link:hover {
+    background: rgb(125, 161, 196);
+    cursor: pointer;
+}
+
+.term-link-selected{
+    background: rgb(125, 161, 196);
+    cursor: pointer;
 }
 
 
@@ -319,7 +337,9 @@ input {
     padding: 6px;
     font-size: 0.9em;
     line-height: 1.4;
-    width: calc(100% - 14px);
+    width: calc(100% - 34px);
+    margin: 10px auto;
+    display: block;
 }
 
 .button-wrapper {
@@ -346,6 +366,10 @@ input {
 .comment-on-post {
     background: none;
     border: 1px solid gray;
+}
+
+.add-comment {
+    margin: 0 10px 10px 0;
 }
 
 .delete-post:hover, .report-post:hover {
@@ -581,6 +605,7 @@ input {
 .report-error, .new-definition-error, .new-comment-error {
 	color: #b50000;
 	font-weight: 600;
+    margin: 10px 10px 0 10px;
 }
 
 .definition-category-section select {
@@ -623,24 +648,6 @@ input {
 	display: inline;
 }
 
-button {
-    border: none;
-    background: #2E58D1;
-    color: white;
-    font-family: 'Muli', sans-serif;
-    font-weight: 300;
-    font-size: 0.9em;
-    vertical-align: top;
-    border-radius: 5px;
-    padding: 3px 8px;
-    box-shadow: 0 1px 9px rgb(47, 89, 209);
-}
-
-button:hover {
-	background: #d57915;
-    box-shadow: 0 1px 9px #d57915;
-}
-
 #new-alert {
 	color: red;
 }
@@ -655,24 +662,46 @@ button:hover {
     width: 100%;
 }
 
+#password-reset-section p{
+    text-align: left;
+    margin-bottom: 0;
+}
+
 
 #password-reset-link {
     margin: 0;
     text-align: left;
 }
 
-#signup-section, #login-section {
+#reset-request-confirm {
+    font-size: 1.2em;
+    text-align: center;
+    display: none;
+}
+
+#signup-section, #login-section, #password-reset-section {
     text-align: center;
     padding-top: 15px;
 }
 
-#signup-modal, #login-modal{
+
+.standalone-password-reset-page {
+    max-width: 400px;
+    margin: 10vh auto;
+}
+
+.standalone-password-reset-page .account-title {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+}
+
+#signup-modal, #login-modal, #password-reset-modal{
     width: calc(36vw - 44px);
     left: 32vw;
     padding-top: 0;
 }
 
-.pop-out input{
+.pop-out input, #password-reset-section input{
     display: block;
     width: calc(100% - 12px);
     border: 1px solid #989494;
@@ -683,7 +712,7 @@ button:hover {
     margin-right: 8px;
 }
 
-#signup-action, #login-action{
+.account-submit-button {
     padding: 8px 15px;
     font-size: 1.3em;
     margin: 20px 0 10px 0;
@@ -702,6 +731,11 @@ button:hover {
     color: #afafaf;
 }
 
+.account-title span:hover{
+    color: #d57915;
+    cursor: pointer;
+}
+
 .active-account-title {
     color: black;
 }
@@ -709,6 +743,7 @@ button:hover {
 .report-error {
     min-height: 1.5em;
     text-align: left;
+    margin-left: 0;
 }
 
 /* REPORT */
@@ -1186,11 +1221,7 @@ button:hover {
     }
 
     .new-comment-textarea {
-        resize: none;
-        padding: 6px;
-        font-size: 0.9em;
-        line-height: 1.4;
-        width: calc(100% - 14px);
+        width: calc(100% - 34px);
     }
 
     .button-wrapper {
@@ -1353,7 +1384,7 @@ button:hover {
         cursor: pointer;
     }
 
-    #signup-modal, #login-modal {
+    #signup-modal, #login-modal, #password-reset-modal {
         width: calc(94vw - 34px);
         left: 3vw;
     }

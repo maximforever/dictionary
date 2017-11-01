@@ -1,5 +1,7 @@
 const database = require("./database");
 const bcrypt = require('bcrypt');                         // encrypt passwords
+const nodemailer = require('nodemailer');
+
 
 const commonPasswords = ["123456", "password", "password1", "password123", "password321", "123456", "654321", "12345678", "87654321", "football", "qwerty", "1234567890", "1234567", "princess", "aaaaaa", "111111"]
 
@@ -865,7 +867,7 @@ function signup(db, req, callback){
 						callback({status: "fail", message: "Do you want to get hacked? Because that's how you get hacked.", errorType: "password"});
 					}
 				} else {
-					callback({status: "fail", message: "Please double check that email", errorType: "email"});
+					callback({status: "fail", message: "This is not a valid email", errorType: "email"});
 				}
 			} else {
 				callback({status: "fail", message: "No spaces in the username, please", errorType: "username"});
@@ -909,7 +911,25 @@ function login(db, req, callback){
 				                var day = 60000*60*24;
 				                req.session.expires = new Date(Date.now() + (30*day));          // this helps the session keep track of the expire date
 				                req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
-				                callback({status: "success", message: "Logged in"});
+				                
+				                var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+
+				                var fullDate = new Date();
+
+				                var newVisit = {
+				                	username: existingUsers[0].username,
+				                	date: fullDate,
+				                	ip: userIP,
+				                	day: fullDate.getDate(),
+				                	month: fullDate.getMonth(),
+				                	year: fullDate.getFullYear()
+				                }
+
+
+				                database.create(db, "visits", newVisit, function recordLogin(){
+				                	callback({status: "success", message: "Logged in"});
+				                })
+
 							})
 						} else {
 							req.session.user = null;
@@ -1146,6 +1166,147 @@ function deletePost(db, req, callback){
 
 
 
+
+function passwordResetRequest(db, req, callback){
+	
+	if(req.body.email.indexOf("@") != -1 && req.body.email.indexOf(".") != -1){
+		var userQuery = {
+			email: req.body.email
+		}
+
+		database.read(db, "users", userQuery, function getUsers(users){
+
+			if(users.length == 1){
+
+				console.log("Yep, " + users[0].username + " is a valid user");
+
+				var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+
+				var dateNow = Date.now()
+				var dateExpires = dateNow + 1000 * 60 * 60 * 24;
+
+				var passwordResetRequest = {
+					id: generateHash(16),
+					date: dateNow,
+					expires: dateExpires,			// tomorrow
+					completed: false,
+					username: users[0].username,
+					ip: userIP											// later, it'd be cool to check if the password reset is coming from somewhere sketchy
+				}
+
+				database.create(db, "passwordResets", passwordResetRequest, function confirmRequest(request){
+
+					// send email here
+
+					callback({status: "success", message: "If we have your email on file, you will receive an instructions to reset your password shortly!"});
+				});
+
+			} else {
+				console.log("Nope, that's not a valid email");
+				callback({status: "success", message: "If we have your email on file, you will receive an instructions to reset your password shortly!"})
+			}
+		});
+
+	} else {
+		callback({status: "fail", message: "This is not a valid email"})
+	}
+}
+
+function checkPasswordReset(db, req, callback){
+	
+	if(req.params.id.trim().length){
+		
+		var resetQuery = {
+			id: req.params.id.trim()
+		}
+
+		database.read(db, "passwordResets", resetQuery, function checkReset(resets){
+
+			if(resets.length == 1){
+
+				if(Date.now() < resets[0].expires && !resets[0].completed){
+					callback({status: "success"});
+				} else {
+					callback({status: "fail"})
+				}
+			
+			} else {
+				callback({status: "fail"})
+			}
+		});
+
+	} else {
+		callback({status: "fail"})
+	}
+}
+
+function passwordResetAction(db, req, callback){
+	
+	if(req.body.password === req.body.passwordConfirmation){
+		
+		var resetQuery = {
+			id: req.body.token,
+			completed: false
+		}
+
+		database.read(db, "passwordResets", resetQuery, function checkReset(resets){
+
+			if(resets.length == 1){
+				if(Date.now() < resets[0].expires && !resets[0].completed){
+					if(commonPasswords.indexOf(req.body.password.trim()) == -1){
+						
+						bcrypt.genSalt(10, function(err, salt) {
+						    bcrypt.hash(req.body.password, salt, function(err, hash) {
+						   		
+						   		var userQuery = {
+						   			username: resets[0].username,
+						        }
+
+						        var userUpdateQuery = {
+						        	$set: {
+						        		password: hash
+						        	}
+						        }
+
+						        var resetUpdate = {
+						        	$set: {
+						        		completed: true
+						        	}
+						        }
+
+						        /*
+									1. set new user password hash
+									2. set password reset to completed
+						        */
+
+						        database.update(db, "users", userQuery, userUpdateQuery, function confirmPasswordChange(updatedUser){
+						        	database.update(db, "passwordResets", resetQuery, resetUpdate, function updateResetRequest(updatedRequest){
+						        		callback({status: "success"})
+						        	})
+						        })
+						    })
+						}) 
+
+					} else {
+						callback({status: "fail", message: "Do you want to get hacked? Because that's how you get hacked.", errorType: "password"});
+					}
+
+				} else {
+					callback({status: "fail", message: "This password reset has expired. Please request a new password request."})
+				}
+			
+			} else {
+				callback({status: "fail"})
+			}
+		});
+
+	} else {
+		callback({status: "fail", message: "Your password confiamtion does not match"})
+	}
+}
+
+
+
 /* NON-DB FUNCTIONS */
 
 function generateHash(hashLength){
@@ -1231,3 +1392,6 @@ module.exports.updateUserRoles = updateUserRoles;
 
 module.exports.getUserData = getUserData;
 module.exports.clearNotifications = clearNotifications;
+module.exports.passwordResetRequest = passwordResetRequest;
+module.exports.checkPasswordReset = checkPasswordReset;
+module.exports.passwordResetAction = passwordResetAction;

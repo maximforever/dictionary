@@ -11,6 +11,18 @@ var screenWidth = $(window).width();
 
 function main(){
 
+    if($("#error").text().trim().length){
+        $("#error").show().css("display",  "block");
+    } else {
+        $("#error").hide();
+    }
+
+    if($("#message").text().trim().length){
+        $("#message").show().css("display",  "block");
+    } else {
+        $("#message").hide();
+    }
+
     if(location.pathname.indexOf("/profile") != -1){
         
          var pathArray = location.pathname.split("/");
@@ -28,9 +40,6 @@ function main(){
         }
     }
 
-
-    $("#error, #message").text("").hide();          /* THIS NEEDS TO BE FIXED!! */
-
     resetNavBar();
 
     if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1){
@@ -39,7 +48,10 @@ function main(){
 
 
     $("body").on("click", function(e){
+
+
         $("#error, #message").text("").hide();
+
         $("#terms-section").text("");
 
         $("#term-suggestions-section").hide();
@@ -330,6 +342,41 @@ function main(){
     $("body").on("click", "#logout", function(){
         logout();
     });
+
+    $("body").on("click", "#password-reset-action", function(){
+
+        var email = $("#password-reset-email").val();
+        if(email.indexOf("@") != -1 && email.indexOf(".") != -1){
+            passwordReset();
+        } else {
+            $(".email-error").text("That is not a valid email");
+        }
+    });
+
+    $("body").on("click", "#password-reset-submit-action", function(){
+
+        var password = $("#password-reset").val();
+        var passwordConfirmation = $("#password-reset-confirmation").val();
+
+
+        if(password === passwordConfirmation){
+            if(password.length > 5){
+                submitPasswordReset();
+            } else {
+                $(".password-error").text("Your password must be at least 6 characters long"); 
+            }
+        } else {
+            $(".password-error").text("Your password confirmation doesn't match");
+        }
+
+    });
+
+    $("body").on("click", "#password-reset-link", function(){
+        resetNavBar();
+        $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
+        $("#reset-request-confirm").hide();
+        $("#password-reset-modal").show();
+    });
 }
 
 
@@ -338,8 +385,9 @@ function main(){
 
 function resetNavBar(){
     $("#login-username, #login-password, #signup-username, #signup-password").val("");
-    $("#login-section").hide();
+    $("#login-section, #signup-section").hide();
     $("#signup-modal").hide();
+    $("#login-modal").hide();
     $("#login, #signup").show();
     $(".account").show();
 
@@ -350,6 +398,8 @@ function resetNavBar(){
 }
 
 function showLogin(){
+    window.scrollTo(0, 0);
+
     $("#signup-modal").hide();
     $("#login-modal").show();
     $("#login-section").show();
@@ -361,6 +411,8 @@ function showLogin(){
 }
 
 function showSignup(){
+    window.scrollTo(0, 0);
+
     $("#login-modal").hide();
     $("#signup-modal").show();
     $("#signup-section").show();
@@ -590,7 +642,9 @@ function addDefinition(){
 
 function addComment(button){
 
-    var commentBodyText = button.parentElement.previousSibling.previousSibling.value;
+
+    console.log("button.dataset.id: " + button.dataset.id);
+    var commentBodyText = $(".new-comment-textarea[data-id='" + button.dataset.id + "']").val();
 
     if(commentBodyText.trim()){
         
@@ -703,12 +757,29 @@ function login(){
                         for(var i = 0; i < $(".add-one").length - 1; i++){
                             var element = $(".add-one")[i];
                             var id = element.dataset.id;
-                            element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
+                            element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
                         }
 
                         $(".comment").removeClass("add-one");
 
-                        $("#message").css("display", "block").text("You are logged in");
+                        var welcomeMessages = [
+                            "Welcome back!",
+                            "Good to see you again",
+                            "Let the learning begin",
+                            "Happy [insert-day-of-week here]",
+                            "Did you know Guyana is in South America?",
+                            "You are logged in",
+                            "The humans suspect nothing",
+                            "0001 0011 1011 0001  I mean ... hello human!",
+                            "function(){req.session.insert.express.joke}",
+                            "Did you drink enough water today?",
+                            "In this day in history, people just like you did cool things",
+                            "'Hackterms' is a noun, in case you were wondering"
+                        ]
+
+                        var message = welcomeMessages[Math.floor(Math.random()*welcomeMessages.length)];
+
+                        $("#message").css("display", "block").text(message);
                     } else {
                         location.reload();
                     }
@@ -739,7 +810,6 @@ function signup(){
             success: function(result){
                 if(result.status == "success"){
                     resetNavBar();
-                //  showLogin();                            // looks kind of jarring
                     $("#message").text(result.message).css("display", "block");
                 } else {
                     $(".report-error").text("");
@@ -751,6 +821,63 @@ function signup(){
         console.log("invalid signup");
         $("#error").text("Username or password can't be blank").css("display", "block");
     }
+}
+
+function passwordReset(){
+
+    var resetData = {
+        email: $("#password-reset-email").val().toLowerCase().trim()
+    }
+
+
+    $.ajax({
+        type: "post",
+        data: resetData,
+        url: "/password-reset-request",
+        success: function(result){
+            if(result.status == "success"){                
+                $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p, .email-error").hide();
+                $("#reset-request-confirm").show();
+            } else {
+                $(".report-error").text("");
+                $("." + result.errorType + "-error").text(result.message).css("display", "block");
+            }
+        }
+    })
+ 
+}
+
+
+function submitPasswordReset(){
+
+    var resetData = {
+        token: $(".standalone-password-reset-page")[0].dataset.token,
+        password: $("#password-reset").val(),
+        passwordConfirmation: $("#password-reset-confirmation").val()
+    }
+
+    console.log("resetting your password");
+
+
+    $.ajax({
+        type: "post",
+        data: resetData,
+        url: "/password-reset",
+        success: function(result){
+
+            if(result.status == "success"){                
+                $("#password-reset-section").hide();
+                $("#password-reset-section").remove();
+                $("#login-modal, #login-section").show()
+                $("#message").css("display", "block").text("Your password has been reset!");
+            } else {   
+                $(".password-error").text(result.message);
+                $("#password-reset").val("");
+                $("#password-reset-confirmation").val("");
+            }
+        }
+    });
+ 
 }
 
 function logout(){
@@ -926,7 +1053,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
 
                 if(isLoggedIn){
-                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><br><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
+                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + thisDefinition.id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
                     commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold login-link'>Log in</span> to leave a comment!</div>");
                 }

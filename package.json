@@ -26,6 +26,7 @@
     "express-session": "^1.15.5",
     "fs": "0.0.1-security",
     "mongodb": "^2.2.31",
+    "nodemailer": "^4.3.1",
     "nodemon": "^1.12.1"
   },
   "engines": {

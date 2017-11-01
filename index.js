@@ -84,6 +84,11 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(function(req, res, next) {                                          
         app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
+        app.locals.error = req.session.error;
+        app.locals.message = req.session.message;
+        req.session.message = null;
+        req.session.error = null;
+
         next();
     })
 
@@ -117,7 +122,6 @@ MongoClient.connect(dbAddress, function(err, db){
         // res.send("Thanks for searching for " + req.body.term + ", come again!");
         dbops.search(db, req, function tryToSearch(response){
             if(response.status == "success"){
-                req.session.message = "Got a result!"
 
                 res.send({
                     status: "success",
@@ -145,7 +149,6 @@ MongoClient.connect(dbAddress, function(err, db){
         console.log(req.body);
         dbops.getDefinitions(db, req, function getDefinitions(response){
             if(response.status == "success"){
-                req.session.message = "Got a result!"
 
                 console.log("definition count: " + response.count);
 
@@ -254,7 +257,6 @@ MongoClient.connect(dbAddress, function(err, db){
         console.log("getting comments!");
         dbops.getComments(db, req, function getComments(response){
             if(response.status == "success"){
-                req.session.message = "Got a result!"
 
                 console.log("comment count: " + response.count);
 
@@ -349,7 +351,8 @@ MongoClient.connect(dbAddress, function(err, db){
         if(req.session.user){
             res.redirect("/profile/" + req.session.user.username + "/definitions");
         } else {
-            res.redirect("/")
+            req.session.error = "Please log in to see your profile";
+            res.redirect("/");
         }
     })
 
@@ -629,6 +632,40 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     });
 
+
+    app.post("/password-reset-request", function(req, res){
+        dbops.passwordResetRequest(db, req, function confirmReset(response){
+            res.send({status: response.status, message: response.message});
+        });
+
+    });
+
+    app.get("/password-reset/:id", function(req, res){
+        dbops.checkPasswordReset(db, req, function confirmReset(response){
+            
+            if(response.status == "success")
+                res.render("password-reset.ejs", {token: req.params.id});
+            else {
+                req.session.error = "This password reset request has expired. Please request another password reset."
+                res.redirect("/");
+            }
+        });
+    });
+
+    app.post("/password-reset", function(req, res){
+        dbops.passwordResetAction(db, req, function confirmReset(response){
+            
+            if(response.status == "success")
+                res.send({status: "success"});
+            else {
+                res.send({ status: "fail", message: response.message })
+            }
+        });
+    });
+
+
+
+
     // putting this last to make sure we don't overwrite any other routes
 
     // alternatively, can say "if term != profile, etc... "
@@ -636,6 +673,8 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/:term", function(req, res){
         res.render("index", {searchTerm: req.params.term});
     });
+
+
 
 
 
