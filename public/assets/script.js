@@ -751,7 +751,12 @@ function login(){
                 if(result.status == "fail"){
                     $("." + result.errorType + "-error").text(result.message).css("display", "block");
                 } else {
-                    if(window.location.pathname.indexOf("/profile") == -1 ){
+
+                    if(window.location.pathname.indexOf("/profile") != -1 ){
+                        location.reload();
+                    } else if(window.location.pathname.indexOf("/password-reset") != -1){
+                        window.location.href = "http://hackterms.com";
+                    } else {
                         $("#header-section").empty().append(result);
                         $("#signup-section, #login-section").hide();
 
@@ -784,9 +789,7 @@ function login(){
 
                         $("#error").hide();
                         $("#message").css("display", "block").text(message);
-                    } else {
-                        location.reload();
-                    }
+                    } 
                 }
             }
         })
