@@ -1215,8 +1215,9 @@ function passwordResetRequest(db, req, callback){
 					var mailOptions = {
 					    from: 'Hackterms <hello@hackterms.com>',
 					    to:  users[0].email, 
-					    subject: 'Hackterms Password Reset', 
-					    text: emailBody
+					    subject: 'Reset Your Password', 
+					    text: "Here is the password reset link you requested: www.hackterms.com/password-reset/" + passwordResetRequest.id,
+					    html: emailBody
 					};
 
 					transporter.sendMail(mailOptions, function(error, info){

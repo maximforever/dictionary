@@ -776,7 +776,7 @@ function login(){
                             "0001 0011 1011 0001  I mean ... hello human!",
                             "function(){req.session.insert.express.joke}",
                             "Did you drink enough water today?",
-                            "In this day in history, people just like you did cool things",
+                            "On this day in history... people just like you did cool things",
                             "'Hackterms' is a noun, in case you were wondering"
                         ]
 
