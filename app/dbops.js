@@ -1208,11 +1208,15 @@ function passwordResetRequest(db, req, callback){
 
 				database.create(db, "passwordResets", passwordResetRequest, function confirmRequest(request){
 
+ 
+					var emailBody = "<p>Hey " +  users[0].username + "!<br><br>Here is the password reset link you requested: <br><br>www.hackterms.com/password-reset/" + passwordResetRequest.id + "<br><br>If you did not request this password request, please ignore this email.<br><br>Thanks!<br>~Hackterms Team";
+
+
 					var mailOptions = {
-					    from: 'Hackterms <hello@hackterms.com>', // sender address
-					    to: 'receiver@destination.com', // list of receivers
-					    subject: 'Hackwords Password Reset', // Subject line
-					    text: "test email" 
+					    from: 'Hackterms <hello@hackterms.com>',
+					    to:  users[0].email, 
+					    subject: 'Hackterms Password Reset', 
+					    text: emailBody
 					};
 
 					transporter.sendMail(mailOptions, function(error, info){
