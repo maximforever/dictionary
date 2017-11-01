@@ -168,7 +168,9 @@ function main(){
     
 /* LISTENERS */
 
-	$("body").on("keydown", function(e){                        
+
+	$("body").on("keydown", function(e){        
+
 	    if(e.which == 13){                                         // 13 = ENTER
 	        if($("#search-bar").is(":focus")){ 
                 if(activeTermIndex > -1){
@@ -188,6 +190,7 @@ function main(){
 
         if(e.which == 38 || e.which == 40){                         // 38 = up arrow, 40 = down arrow
             
+
             var termLinks = $(".term-link");
 
             if(termLinks.length > 0){ 
@@ -205,27 +208,13 @@ function main(){
 
                 termLinks.removeClass("term-link-selected");
                 termLinks.eq(activeTermIndex).addClass("term-link-selected");
+
     
             } else {
                 console.log("No term links in sight");
             }
         }
 	}); 
-
-	$("#search-bar").on("keydown", function(e){
-		if($("#search-bar").val().length > 2){
-	    	search();
-		} else {
-			$("#terms-section").empty();
-		}
-
-		if(e.which == 8){                                         // 8 = backspace
-			$("#new-definition").hide();
-            $("#definitions-section").empty();
-			console.log("8! Say 8! I'm an 8 again!");
-		}
-	});
-
 
     $("body").on("keyup", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
@@ -240,6 +229,23 @@ function main(){
 
         if(e.which == 8){
             $("#term-suggestions-section").empty();
+        }
+    });
+
+    $("#search-bar").on("keyup", function(e){
+
+        if($("#search-bar").val().length > 2){
+            if(e.which < 37 || e.which > 40){       // 37-40 are arrow keys
+                search();
+            }
+        } else {
+            $("#terms-section").empty();
+        }
+
+        if(e.which == 8){                                         // 8 = backspace
+            $("#new-definition").hide();
+            $("#definitions-section").empty();
+            console.log("8! Say 8! I'm an 8 again!");
         }
     });
 
@@ -259,7 +265,6 @@ function main(){
             $("#related-term-suggestions-section").empty();
         }
     });
-
 
 
 	$("body").on("keyup", "#new-definition-textarea", function(){
