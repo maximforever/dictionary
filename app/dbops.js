@@ -2,6 +2,17 @@ const database = require("./database");
 const bcrypt = require('bcrypt');                         // encrypt passwords
 const nodemailer = require('nodemailer');
 
+var transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.ZOHO_USERNAME,
+        pass: process.env.ZOHO_PASSWORD 
+    }
+});
+
+
 
 const commonPasswords = ["123456", "password", "password1", "password123", "password321", "123456", "654321", "12345678", "87654321", "football", "qwerty", "1234567890", "1234567", "princess", "aaaaaa", "111111"]
 
@@ -110,6 +121,7 @@ function getDefinitions(db, req, callback){
 							if(comment.post_id == definition.id){
 
 								comment.owner = false;
+								comment.term = definition.term
 
 								if(req.session.user && comment.author == req.session.user.username){
 									comment.owner = true;
@@ -1196,9 +1208,23 @@ function passwordResetRequest(db, req, callback){
 
 				database.create(db, "passwordResets", passwordResetRequest, function confirmRequest(request){
 
-					// send email here
+					var mailOptions = {
+					    from: 'Hackterms <hello@hackterms.com>', // sender address
+					    to: 'receiver@destination.com', // list of receivers
+					    subject: 'Hackwords Password Reset', // Subject line
+					    text: "test email" 
+					};
 
-					callback({status: "success", message: "If we have your email on file, you will receive an instructions to reset your password shortly!"});
+					transporter.sendMail(mailOptions, function(error, info){
+					    if(error){
+					        console.log(error);
+					    }else{
+					        console.log('Message sent: ' + info.response);
+					        callback({status: "success", message: "If we have your email on file, you will receive an instructions to reset your password shortly!"});
+					    };
+					});
+
+					
 				});
 
 			} else {

@@ -605,9 +605,11 @@ function addDefinition(){
                                     
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
+                                        $("#error").hide();
                                         $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
                                     } else {
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> is live!</div>");
+                                        $("#error").hide();
                                         $("#message").css("display", "block").text("Your definition for'" + result.term + "'is live!");
                                     }
                                     
@@ -724,6 +726,7 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
                 console.log(result.message);
             } else {
                 console.log("something went wrong");
+                $("#message").hide();
                 $("#error").text(result.error).css("display", "block");
             }
         }
@@ -779,6 +782,7 @@ function login(){
 
                         var message = welcomeMessages[Math.floor(Math.random()*welcomeMessages.length)];
 
+                        $("#error").hide();
                         $("#message").css("display", "block").text(message);
                     } else {
                         location.reload();
@@ -788,6 +792,7 @@ function login(){
         })
     } else {
         console.log("invalid login");
+        $("#error").hide();
         $("#message").text("Username or password can't be blank").css("display", "block");
     }
 
@@ -801,8 +806,10 @@ function signup(){
         password: $("#signup-password").val()
     }
 
+    $(".report-error").text("");
 
-    if(signupData.username.trim().length){
+
+    if(signupData.username.trim().length && signupData.email.trim().length && signupData.password.trim().length){
         $.ajax({
             type: "post",
             data: signupData,
@@ -810,6 +817,7 @@ function signup(){
             success: function(result){
                 if(result.status == "success"){
                     resetNavBar();
+                    $("#error").hide();
                     $("#message").text(result.message).css("display", "block");
                 } else {
                     $(".report-error").text("");
@@ -818,8 +826,19 @@ function signup(){
             }
         })
     } else {
-        console.log("invalid signup");
-        $("#error").text("Username or password can't be blank").css("display", "block");
+
+        if(!signupData.email.trim().length){
+            $(".email-error").text("Email can't be blank");
+        }
+
+        if(!signupData.username.trim().length){
+            $(".username-error").text("Username can't be blank");
+        }
+
+        if(!signupData.password.trim().length){
+            $(".password-error").text("Password can't be blank");
+        }
+        
     }
 }
 
@@ -868,7 +887,8 @@ function submitPasswordReset(){
             if(result.status == "success"){                
                 $("#password-reset-section").hide();
                 $("#password-reset-section").remove();
-                $("#login-modal, #login-section").show()
+                $("#login-modal, #login-section").show();
+                $("#error").hide();
                 $("#message").css("display", "block").text("Your password has been reset!");
             } else {   
                 $(".password-error").text(result.message);
@@ -1072,7 +1092,13 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
             });
 
             if(!forUser){
-                $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
+                
+                if(isLoggedIn){
+                    $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
+                } else {
+                    $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold login-link'>Add your own!<span></div>");
+                }
+                
             }
         }, 'html')
     }, 'html')
