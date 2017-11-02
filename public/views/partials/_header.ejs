@@ -64,66 +64,74 @@
                     Please <span class = "link bold login-link">log in</span> or <span class = "link bold sign-up-link">sign up</span> to add a new definition.
                 </p>
             <% } else { %>
-                
-                <h3>Add a definition</h3>
-                <ul>
-                    <li>Avoid industry jargon</li>
-                    <li>Answer these questions:</li>
-                    <ol>
-                        <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
-                        <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>? What are some alternatives to <span class = "new-definition-term"></span>?</li>
-                    </ol>
-                </ul>
+                <div id = "new-definition-modal">
+                    <h3>Add a definition</h3>
+                    <ul>
+                        <li>Avoid industry jargon</li>
+                        <li>Answer these questions:</li>
+                        <ol>
+                            <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
+                            <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>? What are some alternatives to <span class = "new-definition-term"></span>?</li>
+                        </ol>
+                    </ul>
 
-                <p class = "textarea-label">Term</p>
-                <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
-                <div id = "term-suggestions-section"></div>
+                    <p class = "textarea-label">Term</p>
+                    <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
+                    <div id = "term-suggestions-section"></div>
 
-                <div class = "definition-category-section">
-                    <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                    <select class = "definition-category-section" name = "category">
-                        <option disabled selected value></option>
-                        <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
-                        <option data-category = "tool" value="tool">Tool (ex: NPM, grunt, Sublime Text)</option>
-                        <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
-                        <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
-                        <option data-category = "other" value="other">Other</option>
-                    </select>
+                    <div class = "definition-category-section">
+                        <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
+                        <select class = "definition-category-section" name = "category">
+                            <option disabled selected value></option>
+                            <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
+                            <option data-category = "tool" value="tool">Tool (ex: NPM, grunt, Sublime Text)</option>
+                            <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
+                            <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
+                            <option data-category = "other" value="other">Other</option>
+                        </select>
+                    </div>
+
+
+                    <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+                    <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
+                    <p class = "textarea-label">Related terms (comma separated, please)</p>
+                    <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+                    <div id = "related-term-suggestions-section"></div>
+                    <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
+                    <div class = "new-definition-error"></div>
+                    <button id = "add-definition">Add</button>
                 </div>
-
-
-                <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
-                <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
-                <p class = "textarea-label">Related terms (comma separated, please)</p>
-                <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
-                <div id = "related-term-suggestions-section"></div>
-                <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
-                <div class = "new-definition-error"></div>
-                <button id = "add-definition">Add</button>
-                <% } %>
+            <% } %>
         </div>
 
         <div class = "pop-out" id = "report">
             <div class = "header">
                 <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-                <div class = "report-body">
-                    <h3>Report a definition</h3>
-                    <div id = "report-content"></div>
-                    <p>This should be removed because:</p>
-                    <input id = "report-offensive" type="radio" name = "report" class = "report-option" data-reason = "offensive">
-                    <label for="report-offensive">it contains offensive or abusive content</label><br>
-                    <input id = "report-spam" type="radio" name = "report" class = "report-option" data-reason = "spam">
-                    <label for="report-spam">it is spam or advertisement</label><br>
-                    <input id = "report-wrong" type="radio" name = "report" class = "report-option" data-reason = "wrong">
-                    <label for="report-wrong">it is completely incorrect</label><br>
-                    <input id = "report-irrelevant" type="radio" name = "report" class = "report-option" data-reason = "irrelevant">
-                    <label for="report-irrelevant">it is not related to programming</label><br>
-                    <input id = "report-other" type="radio" name = "report" class = "report-option" data-reason = "other">
-                    <label for="report-other">other</label><br>
-                    <div class ="report-error"></div>
-                    <button id = "submit-report">Submit</button>
+            </div>
+            <div class = "report-body">
+                <h3>Report a definition</h3>
+                <div id = "report-content"></div>
+                <p>This should be removed because:</p>
 
-                </div>
+                <input id = "report-offensive" type="radio" name = "report" class = "report-option" data-reason = "offensive">
+                <label for="report-offensive">it contains offensive or abusive content</label><br>
+                
+                <input id = "report-spam" type="radio" name = "report" class = "report-option" data-reason = "spam">
+                <label for="report-spam">it is spam or advertisement</label><br>
+                
+                <input id = "report-wrong" type="radio" name = "report" class = "report-option" data-reason = "wrong">
+                <label for="report-wrong">it is completely incorrect</label><br>
+                
+                <input id = "report-irrelevant" type="radio" name = "report" class = "report-option" data-reason = "irrelevant">
+                <label for="report-irrelevant">it is not related to programming</label><br>
+                
+                <input id = "report-other" type="radio" name = "report" class = "report-option" data-reason = "other">
+                <label for="report-other">other</label><br>
+                
+                <div class ="report-error"></div>
+                
+                <button id = "submit-report">Submit</button>
+
             </div>
         </div>
 
@@ -177,9 +185,10 @@
                 
                 <div class = "report-error password-error"></div>
                 <input type = "password" id = "login-password" placeholder = "password">
-
-                <button class = "account-submit-button" id = "login-action">Log In</button>
                 <div class = "link" id = "password-reset-link">Forgot your password?</div>
+                
+                <button class = "account-submit-button" id = "login-action">Log In</button>
+                
             </div>
         </div>
 
