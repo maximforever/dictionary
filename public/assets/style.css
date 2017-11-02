@@ -1039,14 +1039,8 @@ button:hover {
     font-weight: 300;
     font-size: 1.5em;
     margin-bottom: 10px;
-    color: #88612c;
     display: inline;
 }
-
-.faq-question:hover {
-    color: #d57915;
-}
-
 .faq-answer {
     font-family: 'Muli', serif;
     font-weight: 300;
@@ -1059,6 +1053,10 @@ button:hover {
 
 .faq-control {
     color: #88612c;
+}
+
+.faq-control:hover {
+    color: #d57915;
 }
 
 .hide-answer {
