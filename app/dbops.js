@@ -923,7 +923,7 @@ function login(db, req, callback){
 
 				                var day = 60000*60*24;
 				                req.session.expires = new Date(Date.now() + (30*day));          // this helps the session keep track of the expire date
-				                req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
+				                //req.session.cookie.maxAge = (30*day);                           // this is what makes the cookie expire
 				                
 				                var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
 
@@ -1343,7 +1343,6 @@ function getFAQ(db, req, callback){
 	})
 }
 
-
 /* NON-DB FUNCTIONS */
 
 function generateHash(hashLength){
@@ -1396,7 +1395,6 @@ function validateInput(string){
                     console.log(wordArray[j] + " looks like a link");
                 } 
             }
-
         } 
     }
 

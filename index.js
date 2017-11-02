@@ -7,6 +7,7 @@ const express = require("express");                     // express
 const MongoClient = require('mongodb').MongoClient;     // talk to mongo
 const bodyParser = require('body-parser');              // parse request body
 var session = require('express-session');               // create sessions
+var cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(session);   // store sessions in Mongo so we don't get dropped on every server restart
 const bcrypt = require('bcrypt');                       // encrypt passwords
 
@@ -24,7 +25,7 @@ var dbAddress;
 
 
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
-    dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds147864.mlab.com:47864/dev-dictionary";
+    dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds243325.mlab.com:43325/hackterms";
 } else {
     dbAddress = "mongodb://localhost:27017/dictionary";
 }
@@ -42,7 +43,7 @@ MongoClient.connect(dbAddress, function(err, db){
     }));
 
     app.use(bodyParser.json());                         // for parsing application/json
-
+    app.use(cookieParser());                            // parse cookies
     
 /*    app.use(function(req, res, next){
 
@@ -58,15 +59,22 @@ MongoClient.connect(dbAddress, function(err, db){
     })
 
 */
-     var secretHash = dbops.generateHash(16);            // generate secret for unique session
-    
+
 
     var thisDb = db;
 
 
+    app.use(function(req, res, next){  
+
+
+        next();
+    });
+
+
+
     app.use(session({                                
-            secret: secretHash,
-            saveUninitialized: true,
+            secret: "kittens",             // generate secret for unique session
+            saveUninitialized: false,
             resave: true,
             secure: false,
             cookie: {
@@ -79,6 +87,9 @@ MongoClient.connect(dbAddress, function(err, db){
     app.use(function(req, res, next){                                           // logs request URL
         var timeNow = new Date();
         console.log("-----> " + req.method.toUpperCase() + " " + req.url + " on " + timeNow);  
+        console.log("COOKIES:");
+        console.log(req.session.id)
+        console.log(req.cookies["connect.sid"]);
         next();
     });
 
@@ -349,8 +360,7 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.get("/logout", function(req, res){
-        req.session.user = null;
-        req.session.expires = new Date(Date.now);       /* not sure if this is needed */
+        req.session.destroy();  
         res.send({
             status: "success",
             message: "Logged out"
