@@ -174,7 +174,7 @@ button:hover {
     background: rgb(220, 239, 236);
     color: #2E58D1;
     font-family: "Enriqueta", serif;
-    font-weight: 700;
+    font-weight: 300;
 }
 
 .term-suggestion-link {
@@ -502,6 +502,8 @@ button:hover {
 
 #new-definition h3 {
 	margin-bottom: 10px;
+    font-weight: 300;
+    font-size: 1.5em;
 }
 
 #new-definition textarea {

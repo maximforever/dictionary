@@ -55,7 +55,7 @@ function main(){
         $("#terms-section").text("");
 
         $("#term-suggestions-section").hide();
-        $("#related-suggestions-section").hide();
+        $("#related-term-suggestions-section").hide();
 
 
         if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
@@ -214,6 +214,7 @@ function main(){
 
     $("body").on("keyup", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
+            $("#related-term-suggestions-section").hide();
             $("#term-suggestions-section").empty();
             $("#term-suggestions-section").show();
             var searchTerm = $("#definition-term-textarea").val().trim();
@@ -757,6 +758,11 @@ function login(){
                             var id = element.dataset.id;
                             element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
                         }
+                        // replace .login-link with #new-def-link
+
+                        $(".login-link").attr("id", "new-def-link");
+                        $(".login-link").removeClass("login-link");
+
 
                         $(".comment").removeClass("add-one");
 
