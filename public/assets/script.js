@@ -411,6 +411,9 @@ function resetNavBar(){
 }
 
 function showLogin(){
+
+    $(".report-error").text("");
+
     window.scrollTo(0, 0);
 
     $("#signup-modal").hide();

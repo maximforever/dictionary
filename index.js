@@ -44,36 +44,18 @@ MongoClient.connect(dbAddress, function(err, db){
 
     app.use(bodyParser.json());                         // for parsing application/json
     app.use(cookieParser());                            // parse cookies
-    
-/*    app.use(function(req, res, next){
-
-        console.log("---> req.session");
-        console.log(req.session);
-
-
-        if(typeof(req.session) == "undefined" || req.session.expires <= Date.now()){
-            console.log("Totally new user");
-            secretHash = dbops.generateHash(16);            // generate secret for unique session
-        }
-        next();
-    })
-
-*/
 
 
     var thisDb = db;
 
-
     app.use(function(req, res, next){  
-
-
         next();
     });
 
 
 
     app.use(session({                                
-            secret: "kittens",             // generate secret for unique session
+            secret:  dbops.generateHash(16),             // generate secret for unique session
             saveUninitialized: false,
             resave: true,
             secure: false,

@@ -67,7 +67,7 @@ function getDefinitions(db, req, callback){
 		var vote_ids = [];
 
 		var commentQuery;
-		var voteQuery;
+		var definitionVoteQuery;
 		var currentUser;
 
 		definitions.forEach(function(definition){
