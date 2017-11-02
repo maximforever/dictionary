@@ -69,7 +69,7 @@ button:hover {
 
 #main-section {
 	padding: 0 5vw;
-	min-height: 79vh;			/* not sure why not 85*/
+	min-height: 74vh;			/* not sure why not 85*/
 }
 
 #footer-section	 {
@@ -1030,7 +1030,7 @@ button:hover {
 /* FAQ */
 
 .faq-one-question{
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     clear: both;
 }
 
@@ -1099,6 +1099,7 @@ button:hover {
 
     #main-section {
         padding: 0;
+        /*min-height: 80vh;*/
     }
 
     #footer-section  {
@@ -1106,7 +1107,7 @@ button:hover {
     }
 
     #footer-section p {
-        margin: 0;
+        margin: 20px 0 10px 0;
         padding-bottom: 10px;
         font-size: 0.8em;
     }
@@ -1667,7 +1668,7 @@ button:hover {
     /* FAQ */
 
     .faq-question {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
 
     .faq-answer {

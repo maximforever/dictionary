@@ -72,7 +72,6 @@ function main(){
 	});
 
     $("body").on("click", ".definition-suggestion-link", function(){
-        console.log("beep");
         var term = this.dataset.id;
         $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
@@ -80,8 +79,7 @@ function main(){
     });
 
     $("body").on("click", ".related-suggestion-link", function(){
-        console.log("beep");
-        
+
         var term = this.dataset.id;
 
         if(term[term.length - 1] != ","){
@@ -99,7 +97,6 @@ function main(){
     $("body").on("click", ".report-post", function(){
         window.scrollTo(0, 0);
         $(".add-confirmation").remove();
-        console.log(this.dataset.id);
         displayReport(this.dataset.id, this.dataset.type);
     });
 
@@ -158,7 +155,6 @@ function main(){
 
     $("body").on("mouseenter", ".term-link", function(){
         activeTermIndex = $(".term-link").index(this);
-        console.log(activeTermIndex);
     });
 
     $("body").on("mouseleave", ".term-link", function(){
@@ -245,7 +241,6 @@ function main(){
         if(e.which == 8){                                         // 8 = backspace
             $("#new-definition").hide();
             $("#definitions-section").empty();
-            console.log("8! Say 8! I'm an 8 again!");
         }
     });
 
@@ -255,7 +250,6 @@ function main(){
             $("#related-term-suggestions-section").show();
             var searchTerm = $("#related-term-textarea").val().split(",");       // a little more complicated here - only the last word after the comma
             searchTerm = searchTerm[searchTerm.length - 1].trim();
-            console.log("Search Term: " + searchTerm);
             searchForDefinitions(searchTerm);
         } else {
             $("#related-term-suggestions-section").hide();
@@ -457,7 +451,6 @@ function search(){
             success: function(result){
             	if(result.status == "success"){
             		$("#terms-section").empty();
-            		// console.log("Found " + result.count + " (possible) definitions for '" + searchTerm + "'");
 
             		if(result.count > 0){
                         $("#definitions-section").empty();
@@ -506,7 +499,7 @@ function searchForDefinitions(searchTerm){
                     });
                                                        
                 } else {
-                    console.log(result.error)
+                    console.log(result.error);
                 }
             }
         })
@@ -566,28 +559,18 @@ function addDefinition(){
 
     if($("#related-term-textarea").val()){
         relatedTermsArray = $("#related-term-textarea").val().trim().split(",");
-        
-        console.log("relatedTermsArray");
-        console.log(relatedTermsArray);
 
         relatedTermsArray.forEach(function(term){
 
-            console.log("term");
-            console.log(term);
             term = term.trim();
 
             if(validateInput(term)){
-                console.log("adding " + term);
                 relatedTerms.push(term);
             }
 
         });
     }
 
-    
-
-    console.log("relatedTerms");
-    console.log(relatedTerms);
 
     if(definitionBody.trim()){
         if(definitionBody.length <= 500){
@@ -662,8 +645,6 @@ function addDefinition(){
 
 function addComment(button){
 
-
-    console.log("button.dataset.id: " + button.dataset.id);
     var commentBodyText = $(".new-comment-textarea[data-id='" + button.dataset.id + "']").val();
 
     if(commentBodyText.trim()){
@@ -681,14 +662,12 @@ function addComment(button){
                 success: function(result){
                     if(result.status == "success"){ 
 
-                        console.log(result);
-
                         $(".new-comment-textarea[data-id='" + button.dataset.id + "']").val("");
                     
                         var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
                         var commentToAdd = [result.comment];
 
-                        console.log($(".comment-count[data-id='" + result.comment.post_id + "']"));
+
                         $(".comment-count[data-id='" + result.comment.post_id + "']").text(parseInt($(".comment-count[data-id='" + result.comment.post_id + "']").text()) + 1);
 
                         displayCommentsOnPage(commentToAdd, commentSection);
@@ -729,19 +708,12 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
                 var updatedScore = result.definition.upvotes - result.definition.downvotes;
 
                 $("#" + elementId).find(".definition-score").text(updatedScore) 
-
                 $("#" + elementId).find(".voting-button").removeClass("persistVote");
-
-                console.log(result.definition)
-
-
                 $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").removeClass("persistVote"); 
 
                 if(result.definition.changedVote){
                     $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").addClass("persistVote");    
                 }
-
-                console.log(result.message);
             } else {
                 console.log("something went wrong");
                 $("#message").hide();
@@ -812,7 +784,6 @@ function login(){
             }
         })
     } else {
-        console.log("invalid login");
         $("#error").hide();
         $("#message").text("Username or password can't be blank").css("display", "block");
     }
@@ -895,9 +866,6 @@ function submitPasswordReset(){
         password: $("#password-reset").val(),
         passwordConfirmation: $("#password-reset-confirmation").val()
     }
-
-    console.log("resetting your password");
-
 
     $.ajax({
         type: "post",
@@ -1014,8 +982,6 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
                     var maxPercentage = 0;
                     var maxIndex = 0;
-
-                    console.log(unsortedCategories);
 
                     for(var j = 0; j < unsortedCategories.length; j++){
 
@@ -1212,7 +1178,6 @@ function displayNotification(){
                 
 
             } else {
-                console.log("something went wrong");
                 $("#error").text(updatedUserData.error).css("display", "block");
             }
         }
@@ -1228,7 +1193,7 @@ function addNotificationsToScreen(){
         if(!(typeof(notification) == "undefined")){
 
             if(notification.type == "definition"){
-                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile/status'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</a></span></div>");
+                $("#notifications-section").append("<div class = 'notification-panel one-notification'><a href = '/profile/status'>Your submission <span class ='bold'>" + notification.term + "</span> has been <span class ='submission-update post-"+ notification.status + "'>" + notification.status + "</a></span></div>");
             } else if (notification.type = "comment"){
                 $("#notifications-section").append("<div class = 'notification-panel one-notification'>Your comment has been <span class ='submission-update post-"+notification.status + "'>" + notification.status + "</span></div>");
             }            
@@ -1313,8 +1278,6 @@ function acknowledgeNotifications(){
 }
 
 function deletePost(thisId, thisType){
-    console.log(thisId);
-    console.log(thisType);
 
     var deleteInfo = {
         id: thisId,
@@ -1394,20 +1357,17 @@ function validateInput(string){
     for(var j = 0; j < wordArray.length; j++){
         if(forbiddenWords.indexOf(wordArray[j]) != -1){
             isStringValid = false;
-            console.log(wordArray[j] + " is not allowed");
         } else {
 
             for(var h = 0; h < extraBadWords.length; h++){
                 if(wordArray[j].indexOf(extraBadWords[h]) != -1){
                     isStringValid = false;
-                    console.log(wordArray[j] + " is not allowed");
                 } 
             }
 
             for(var k = 0; k < linkWords.length; k++){
                 if(string.indexOf(linkWords[k]) != -1){
                     isStringValid = false;
-                    console.log(wordArray[j] + " looks like a link");
                 } 
             }
         } 
