@@ -75,13 +75,13 @@ button:hover {
 #footer-section	 {
   color: black;
   font-weight: 500;
-  text-align: right;
+  text-align: center;
   min-height: calc(5vh - 20px);
 
 }
 
 #footer-section p {
-	padding: 10px 0;
+	padding-top: 10px;
 }
 
 #footer-section .fa-heart{
@@ -637,7 +637,7 @@ button:hover {
 
 .links {
 	text-align: right;
-    min-height: 1.7em;
+    min-height: 4em;
 }
 
 .links .link {
@@ -1026,6 +1026,53 @@ button:hover {
 	font-weight: 600
 }
 
+
+/* FAQ */
+
+.faq-one-question{
+    margin-bottom: 10px;
+    clear: both;
+}
+
+.faq-question {
+    font-family: 'Enriqueta', serif;
+    font-weight: 300;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #88612c;
+    display: inline;
+}
+
+.faq-question:hover {
+    color: #d57915;
+}
+
+.faq-answer {
+    font-family: 'Muli', serif;
+    font-weight: 300;
+    line-height: 1.5;
+    background: #d4ccc2;
+    padding: 10px;
+    margin-top: 10px;
+    display: none;
+}
+
+.faq-control {
+    color: #88612c;
+}
+
+.hide-answer {
+    display: none;
+}
+
+.faq-title {
+    text-align: center;
+    margin: 10px 0px;
+    font-size: 2.5em;
+}
+
+
+
 /* MOBILE STYLING */
 
 @media screen and (max-width: 980px){
@@ -1066,10 +1113,6 @@ button:hover {
 
     #footer-section .fa-heart{
         color: red;
-    }
-
-    #creator-link {
-        font-weight: 600;
     }
 
     /* SEARCH BAR */
@@ -1365,6 +1408,7 @@ button:hover {
 
     .links {
         text-align: right;
+        min-height: 2em;
     }
 
     .links .link {
@@ -1618,6 +1662,17 @@ button:hover {
     #submission-table-toggle {
         margin-bottom: 10px;
         display: inline;    
+    }
+
+    /* FAQ */
+
+    .faq-question {
+        font-size: 1.3em;
+    }
+
+    .faq-answer {
+        line-height: 1.5;
+        padding: 10px;
     }
 
 

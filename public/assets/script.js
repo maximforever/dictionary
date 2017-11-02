@@ -382,6 +382,19 @@ function main(){
         $("#reset-request-confirm").hide();
         $("#password-reset-modal").show();
     });
+
+    $("body").on("click", ".toggle-answer", function(){
+        $("#" + this.id).find(".show-answer").toggle();
+        $("#" + this.id).find(".hide-answer").toggle();
+        $("#" + this.id).find(".faq-answer").toggle();
+    });
+
+    $("body").on("click", "#password-reset-link", function(){
+        resetNavBar();
+        $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
+        $("#reset-request-confirm").hide();
+        $("#password-reset-modal").show();
+    });
 }
 
 
@@ -670,7 +683,7 @@ function addComment(button){
 
                         console.log(result);
 
-                        button.parentElement.previousSibling.previousSibling.value = "";
+                        $(".new-comment-textarea[data-id='" + button.dataset.id + "']").val("");
                     
                         var commentSection = $(".comments-section[data-id=" + button.dataset.id + "]");
                         var commentToAdd = [result.comment];
@@ -1035,20 +1048,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
                     $(sortedCategories[k].name).css("width", (sortedCategories[k].percentage*remainingWidth + minWidth)*100 + "%");
                     $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
-                }
-/*
-
-                $("#tool-percentage").css("width", (toolPercent*remainingWidth + minWidth)*100 + "%");
-                $("#concept-percentage").css("width", (conceptPercent*remainingWidth + minWidth)*100 + "%");
-                $("#language-percentage").css("width", (languagePercent*remainingWidth + minWidth)*100+ "%");
-                $("#process-percentage").css("width", (processPercent*remainingWidth + minWidth)*100 + "%");
-                $("#other-percentage").css("width", (otherPercent*remainingWidth + minWidth)*100 + "%");
-
-                $("#concept-percentage-label").text(Math.floor(conceptPercent * 100) + "%");
-                $("#tool-percentage-label").text(Math.floor(toolPercent * 100) + "%");
-                $("#language-percentage-label").text(Math.floor(languagePercent * 100) + "%");
-                $("#process-percentage-label").text(Math.floor(processPercent * 100) + "%");
-                $("#other-percentage-label").text(Math.floor(otherPercent * 100) + "%"); */
+                } 
 
             }
 

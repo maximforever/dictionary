@@ -117,6 +117,16 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/", function(req, res){
         res.render("index", {searchTerm: ""});
     });
+
+    app.get("/faq", function(req, res){
+
+        res.render("faq");
+
+/*        dbops.getFAQ(db, req, function(faq){
+            res.render("faq", {faqData: faq});
+        }); */
+        
+    });
     
     app.post("/search", function(req, res){
         // res.send("Thanks for searching for " + req.body.term + ", come again!");

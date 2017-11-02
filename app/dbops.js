@@ -81,7 +81,7 @@ function getDefinitions(db, req, callback){
 				$or: ids
 			}
 
-			voteQuery = {
+			definitionVoteQuery = {
 				$or: vote_ids	,
 				type: "definition"
 			}
@@ -104,12 +104,13 @@ function getDefinitions(db, req, callback){
 
 		database.read(db, "comments", commentQuery, function(comments){
 
-			database.read(db, "votes", voteQuery, function(votes){
+			database.read(db, "votes", definitionVoteQuery, function(definitionVotes){
 
 				console.log("Found " + comments.length + " comments for " + definitions.length + " definitions")
 				var responsesToReturn = [];
 
 				definitions.forEach(function(definition){
+
 					if(((definition.upvotes - definition.downvotes) >= -5)){
 
 						definition.comments = [];
@@ -143,7 +144,7 @@ function getDefinitions(db, req, callback){
 						definition.authorUpvote = false;
 						definition.authorDownvote = false;
 
-						votes.forEach(function(vote){
+						definitionVotes.forEach(function(vote){
 							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == currentUser){
 
 								if(vote.direction == "up"){
@@ -1336,6 +1337,11 @@ function passwordResetAction(db, req, callback){
 	}
 }
 
+function getFAQ(db, req, callback){	
+	database.read(db, "faq", {}, function getUpdatedFAQ(thisFAQ){
+		callback({faq: thisFAQ})
+	})
+}
 
 
 /* NON-DB FUNCTIONS */
@@ -1422,7 +1428,10 @@ module.exports.getUserRoles = getUserRoles;
 module.exports.updateUserRoles = updateUserRoles;
 
 module.exports.getUserData = getUserData;
+module.exports.getFAQ = getFAQ;
+
 module.exports.clearNotifications = clearNotifications;
 module.exports.passwordResetRequest = passwordResetRequest;
 module.exports.checkPasswordReset = checkPasswordReset;
 module.exports.passwordResetAction = passwordResetAction;
+
