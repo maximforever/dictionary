@@ -546,10 +546,10 @@ button:hover {
 
 
 .definition-term {
-	font-weight: 400;
-	color: #5a6061;
-	font-family: 'Enriqueta', serif;
-	font-size: 1.7em;
+	color: #616161;
+    font-family: 'Enriqueta', serif;
+    font-size: 1.3em;
+    font-weight: 300;
 }
 
 .definition-related-terms {
@@ -1015,7 +1015,7 @@ button:hover {
 }
 
 .approve, .remove-report {
-	background: #1acdfb;
+	background: #0dc4f3;
 }
 
 .approve:hover, .remove-report:hover {
@@ -1077,6 +1077,10 @@ button:hover {
 #suspension-section {
 	color: #ea5859;
 	font-weight: 600
+}
+
+.post-actions-column {
+    float: right;
 }
 
 
@@ -1352,7 +1356,7 @@ button:hover {
     /* NEW DEFINITION */
 
     .new-definition-term {
-        font-weight: 600;
+        font-size: 1.1em;
     }
 
     .add-confirmation {
@@ -1382,16 +1386,16 @@ button:hover {
         width: calc(100% - 14px);
     }
 
-    .definition-term {
-        font-size: 1.5em;
-    }
-
-
 
     .definition-column {
         line-height: 1.5;
         font-size: 0.9em;
         width: calc(90% - 10px);
+    }
+
+
+    .definition-history{
+        font-size: 0.9em;
     }
 
     .voting-column {

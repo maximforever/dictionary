@@ -1,23 +1,39 @@
 <div class = "definition" id = "{{id}}">
 
 	<div class = "main-row">
-		<div class = "definition-column">
-			<div class = "definition-term">{{definition.term}}</div>
-			<div class = "definition-body">{{definition.body}}</div>
-		</div>
-	</div>
 
-	<div class = "info-row">
-		<div class = "edit-history-column">
-	 		Submitted by @{{definition.author}} on {{created}}
-		</div><!-- 
-	 --><div class = "post-actions-column">
-			<button class = "admin-decision reject" data-vote = "rejected" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition.term}}"><i class="fa fa-times" aria-hidden="true"></i></button>
-			<button class = "admin-decision approve" data-vote = "approved" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition.term}}"><i class="fa fa-check" aria-hidden="true"></i></button>
+		<div class = "definition-meta">
+			<span class = "definition-history">
+				<span class = "definition-term">{{definition.term}}</span>
+	 		</span>
+
+	 		<div class = "post-actions-column">
+				<button class = "admin-decision reject" data-vote = "rejected" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition.term}}"><i class="fa fa-times" aria-hidden="true"></i></button>
+				<button class = "admin-decision approve" data-vote = "approved" data-id = "{{id}}" data-type = "definition" data-author = "{{definition.author}}" data-term = "{{definition.term}}"><i class="fa fa-check" aria-hidden="true"></i></button>
+			</div>
+		</div>
+
+		<div class = "definition-main-body">
+			<div class = "definition-column">
+				<div class = "definition-body">{{definition.body}}</div>
+
+				{{#if hasRelated}}
+
+				<div class = "definition-related-terms">
+					{{#each related}}
+						<a href = "/{{this}}" class= "related-term">{{this}}</a>
+					{{/each}}
+				</div>
+
+				{{/if}}
+			</div>
+			<div class = "definition-history">
+				<a href = "/profile/{{definition.author}}/definitions">@{{definition.author}}</a> on {{created}}
+			</div>
 		</div>
 	</div>
 
 </div>
-
-
+<div class = "comments-section" data-id = "{{id}}">
+</div>
 
