@@ -613,9 +613,9 @@ function addDefinition(){
                                         $("#error").hide();
                                         $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
                                     } else {
-                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> is live!</div>");
+                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for '<span class = 'bold'>" + result.term + "</span>' is live!</div>");
                                         $("#error").hide();
-                                        $("#message").css("display", "block").text("Your definition for'" + result.term + "'is live!");
+                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' is live!");
                                     }
                                     
                                     $("#new-definition-textarea").val("");

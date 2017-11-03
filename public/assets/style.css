@@ -513,6 +513,7 @@ button:hover {
 	background: #eca921;
     border: 2px solid black;
     margin-bottom: 35px;
+    padding: 10px;
 }
 
 .add-one {
@@ -727,8 +728,8 @@ button:hover {
 }
 
 #signup-modal, #login-modal, #password-reset-modal{
-    width: calc(36vw - 44px);
-    left: 32vw;
+    width: 400px;
+    left: calc(50vw - 200px);
     padding-top: 0;
 }
 

@@ -7,7 +7,6 @@ const express = require("express");                     // express
 const MongoClient = require('mongodb').MongoClient;     // talk to mongo
 const bodyParser = require('body-parser');              // parse request body
 var session = require('express-session');               // create sessions
-var cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(session);   // store sessions in Mongo so we don't get dropped on every server restart
 const bcrypt = require('bcrypt');                       // encrypt passwords
 
@@ -43,16 +42,8 @@ MongoClient.connect(dbAddress, function(err, db){
     }));
 
     app.use(bodyParser.json());                         // for parsing application/json
-    app.use(cookieParser());                            // parse cookies
-
 
     var thisDb = db;
-
-    app.use(function(req, res, next){  
-        next();
-    });
-
-
 
     app.use(session({                                
             secret:  dbops.generateHash(16),             // generate secret for unique session
@@ -66,21 +57,28 @@ MongoClient.connect(dbAddress, function(err, db){
             store: new MongoStore({ db: thisDb })
     }));
 
+
     app.use(function(req, res, next){                                           // logs request URL
         var timeNow = new Date();
         console.log("-----> " + req.method.toUpperCase() + " " + req.url + " on " + timeNow);  
-        console.log("COOKIES:");
-        console.log(req.session.id)
-        console.log(req.cookies["connect.sid"]);
+        
+        console.log(req.session.id);
+        console.log(req.session.cookie);
+
+
         next();
     });
 
     app.use(function(req, res, next) {                                          
-        app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
-        app.locals.error = req.session.error;
-        app.locals.message = req.session.message;
-        req.session.message = null;
-        req.session.error = null;
+        
+        if(req.session){
+            app.locals.session = req.session;                                       // makes session available to all views <--- is this necessary/secure?
+            app.locals.error = req.session.error;
+            app.locals.message = req.session.message;
+            req.session.message = null;
+            req.session.error = null;
+    
+        }
 
         next();
     })
