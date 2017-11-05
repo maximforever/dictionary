@@ -977,13 +977,16 @@ function logVisit(db, req, callback){
 	var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
     var thisUsername = null;
 
+    var fullDate = new Date();
+
     if(req.session.user){
     	thisUsername = req.session.user.username
     }
 
+
     var newVisit = {
     	username: thisUsername,
-    	date: new Date(),
+    	date: fullDate,
     	ip: userIP,
     	page: req.url
     }
@@ -999,6 +1002,8 @@ function logVisit(db, req, callback){
 		}, function (error, response, body) {
 			
 		    if (!error && response.statusCode === 200) {
+
+		    	newVisit.location = body;
 
 		        database.create(db, "visits", newVisit, function recordLogin(){
 			    	callback();
