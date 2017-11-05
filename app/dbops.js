@@ -991,12 +991,15 @@ function logVisit(db, req, callback){
 
     if(req.url != "/get-definitions" && req.url != "/search"){
 
+    	console.log("userIP: " + userIP);
+
     	request({
 		    url: "https://geoip-db.com/json/" + userIP,
 		    json: true
 		}, function (error, response, body) {
-
 		    if (!error && response.statusCode === 200) {
+
+
 
 		    	newVisit.location = body;
 
