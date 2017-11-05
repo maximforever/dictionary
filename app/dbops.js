@@ -1,6 +1,7 @@
 const database = require("./database");
 const bcrypt = require('bcrypt');                         // encrypt passwords
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');				  // send email
+var request = require('request');                         // send HTTP requests
 
 var transporter = nodemailer.createTransport({
     host: 'smtp.zoho.com',
@@ -32,16 +33,32 @@ function search(db, req, callback){
 		}
 	}
 
+
+	var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+
+    var thisUsername = null;
+
+    if(req.session.user){
+    	thisUsername = req.session.user.username
+    }
+
+	var newSearchRecord = {
+		term: req.body.term,
+		username: thisUsername,
+		ip: userIP,
+		date: new Date()
+	}
+
 	database.read(db, "terms", searchQuery, function(searchResult){
+		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
 
-		console.log(searchResult);
+			callback({
+				status: "success",
+				count: searchResult.length,
+				body: searchResult
+			});
 
-		callback({
-			status: "success",
-			count: searchResult.length,
-			body: searchResult
 		});
-
 	});
 }
 
@@ -148,7 +165,6 @@ function getDefinitions(db, req, callback){
 							if(parseInt(vote.post) == parseInt(definition.id) && vote.author == currentUser){
 
 								if(vote.direction == "up"){
-									console.log("This up vote belongs to " + currentUser);
 									definition.authorUpvote = true;
 								}
 
@@ -932,23 +948,7 @@ function login(db, req, callback){
 				                }
 
 
-				                var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
-
-				                var fullDate = new Date();
-
-				                var newVisit = {
-				                	username: existingUsers[0].username,
-				                	date: fullDate,
-				                	ip: userIP,
-				                	day: fullDate.getDate(),
-				                	month: fullDate.getMonth(),
-				                	year: fullDate.getFullYear()
-				                }
-
-
-				                database.create(db, "visits", newVisit, function recordLogin(){
-				                	callback({status: "success", message: "Logged in"});
-				                })
+				                callback({status: "success", message: "Logged in"});
 
 							})
 						} else {
@@ -971,6 +971,49 @@ function login(db, req, callback){
 	}
 }
 
+
+function logVisit(db, req, callback){
+
+	var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+    var thisUsername = null;
+
+    if(req.session.user){
+    	thisUsername = req.session.user.username
+    }
+
+    var newVisit = {
+    	username: thisUsername,
+    	date: new Date(),
+    	ip: userIP,
+    	page: req.url
+    }
+
+
+    if(req.url != "/get-definitions" && req.url != "/search"){
+
+    	request({
+		    url: "https://geoip-db.com/json/" + userIP,
+		    json: true
+		}, function (error, response, body) {
+
+		    if (!error && response.statusCode === 200) {
+
+		    	newVisit.location = body;
+
+		        database.create(db, "visits", newVisit, function recordLogin(){
+			    	callback();
+			    })
+		    } else {
+		    	callback();
+		    }
+		})
+    	
+    } else {
+    	callback();
+    }
+
+    
+}
 
 function getUpdatedUser(db, req, callback){
 
@@ -1420,6 +1463,8 @@ module.exports.addComment = addComment;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
 module.exports.deletePost = deletePost;
+
+module.exports.logVisit = logVisit;
 
 module.exports.signup = signup;
 module.exports.login = login;

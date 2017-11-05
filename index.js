@@ -10,6 +10,7 @@ var session = require('express-session');               // create sessions
 const MongoStore = require('connect-mongo')(session);   // store sessions in Mongo so we don't get dropped on every server restart
 const bcrypt = require('bcrypt');                       // encrypt passwords
 
+
 const app = express();
 app.set("port", process.env.PORT || 3000)                        // we're gonna start a server on whatever the environment port is or on 3000
 app.set("views", path.join(__dirname, "/public/views"));        // tells us where our views are
@@ -58,12 +59,14 @@ MongoClient.connect(dbAddress, function(err, db){
     }));
 
     app.use(function(req, res, next){                                           // logs request URL
-        var timeNow = new Date();
-        console.log("-----> " + req.method.toUpperCase() + " " + req.url + " on " + timeNow);  
         
-        console.log(req.session.id);
-        console.log(req.session.cookie);
 
+        var timeNow = new Date();
+        console.log("-----> " + req.method.toUpperCase() + " " + req.url + " on " + timeNow); 
+
+        dbops.logVisit(db, req, function(){
+            console.log("visit logged");            
+        }) 
 
         next();
     });
