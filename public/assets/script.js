@@ -443,8 +443,9 @@ function showSignup(){
     $("#login-modal").hide();
     $("#signup-modal").show();
     $("#signup-section").show();
+    
     if(screenWidth > 980) {
-        $("#login-username").focus();
+        $("#signup-email").focus();
     }
 }
 

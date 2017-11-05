@@ -25,7 +25,9 @@ input {
 	font-size: 1em;
 }
 
-input:focus {outline: none; }
+input:focus {
+    outline: none; 
+}
 
 button {
     border: none;
@@ -38,7 +40,7 @@ button {
     vertical-align: top;
     border-radius: 5px;
     padding: 3px 8px;
-    box-shadow: 0 1px 9px rgba(47, 89, 209, 0.8);
+    box-shadow: 0 1px 4px rgba(47, 89, 209, 0.8);
 }
 
 button:hover {
@@ -755,6 +757,12 @@ button:hover {
     padding: 2px 5px 5px 5px;
     margin-right: 8px;
 }
+
+.pop-out input:focus, #password-reset-section input:focus {
+    border:1px solid blue;
+    transition: border;   
+}
+
 
 .pop-out input[type="radio"], .pop-out input[type="checkbox"]{
     display: inline;
