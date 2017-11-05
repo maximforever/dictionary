@@ -28,11 +28,7 @@
     <div class = "header">
         <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
     </div>
-    <% if(!session.user){ %>
-        <p class = "login-please">
-            Please <span class = "link bold login-link">log in</span> or <span class = "link bold sign-up-link">sign up</span> to add a new definition.
-        </p>
-    <% } else { %>
+    <% if(session.user){ %>
         <div id = "new-definition-modal">
             <h3>Add a definition</h3>
             <ul>
@@ -154,7 +150,16 @@
         
         <div class = "report-error password-error"></div>
         <input type = "password" id = "login-password" placeholder = "password">
-        <div class = "link" id = "password-reset-link">Forgot your password?</div>
+
+
+        <div class = "login-additional-options">
+            <div class = "stay-signed-in">
+                <i class="fa fa-square-o" aria-hidden="true" id = "remember-account"></i>
+                <span class = "toggle-label">Remember me</span>
+            </div>
+            <div class = "link" id = "password-reset-link">Forgot your password?</div>
+        </div>
+        
 
         <button class = "account-submit-button" id = "login-action">Log In</button>
         

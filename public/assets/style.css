@@ -695,10 +695,22 @@ button:hover {
     margin-bottom: 0;
 }
 
+#remember-account {
+    transform: scale(1.2);
+    vertical-align: bottom;
+    margin-left: 2px;
+    width: 17px;;
+}
+
+.stay-signed-in {
+    text-align: left;
+    display: inline;
+    float: left;
+    width: 40%;
+}
 
 #password-reset-link {
-    margin: 0;
-    text-align: left;
+    float: right;
 }
 
 #reset-request-confirm {
@@ -744,7 +756,7 @@ button:hover {
     margin-right: 8px;
 }
 
-.pop-out input[type="radio"]{
+.pop-out input[type="radio"], .pop-out input[type="checkbox"]{
     display: inline;
     width: 2%;
 }
@@ -786,6 +798,7 @@ button:hover {
     text-align: left;
     margin-left: 0;
 }
+
 
 /* REPORT */
 
@@ -1488,6 +1501,7 @@ button:hover {
 
     #signup-modal, #login-modal, #password-reset-modal {
         width: calc(94vw - 34px);
+        /*max-width: 400px;*/
         left: 3vw;
     }
 

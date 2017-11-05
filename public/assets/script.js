@@ -161,6 +161,17 @@ function main(){
         activeTermIndex = -1;
     });
 
+    $("body").on("click", ".stay-signed-in", function(){
+
+        if($("#remember-account").hasClass("fa-check-square-o")){
+            $("#remember-account").removeClass("fa-check-square-o");
+            $("#remember-account").addClass("fa-square-o");
+        } else {
+            $("#remember-account").removeClass("fa-square-o");
+            $("#remember-account").addClass("fa-check-square-o");
+        }
+    });
+
     
 /* LISTENERS */
 
@@ -453,11 +464,12 @@ function search(){
             data: searchQuery,
             url: "/search",
             success: function(result){
+
             	if(result.status == "success"){
             		$("#terms-section").empty();
 
+
             		if(result.count > 0){
-                        $("#definitions-section").empty();
 
                         if(result.count == 1){                          // if there's only one term, display the definition
                             getDefinition(result.body[0].name, false);
@@ -466,11 +478,26 @@ function search(){
                             result.body.forEach(function(term){
                                 displaySearchTerm(term);
                             });
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         }
+
+                        if(result.loggedIn == "true" || result.loggedIn == true){
+                            console.log("logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                        } else {
+                            console.log("NOT logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
+                        }
+
             		} else {
+                        console.log("NO RESULTS");
                         $("#definitions-section").empty();
-                        $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                        if(result.loggedIn){
+                            console.log("logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                        } else {
+                            console.log("NOT logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
+                        }
                     }      		
             	} else {
             		console.log(result.error)
@@ -544,6 +571,7 @@ function getDefinition(query, forUser){
                     displayDefinitionsOnPage(result.body, result.isLoggedIn, forUser);
 	            } else {
                     if(!forUser){
+                        $("#definitions-section").empty();
                         $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                     } 
                 }
@@ -611,7 +639,7 @@ function addDefinition(){
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
                                         $("#error").hide();
-                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
+                                        // $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
                                     } else {
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for '<span class = 'bold'>" + result.term + "</span>' is live!</div>");
                                         $("#error").hide();
@@ -732,7 +760,9 @@ function login(){
 
     var loginData = {
         username: $("#login-username").val().toLowerCase(),
-        password: $("#login-password").val()
+        password: $("#login-password").val(),
+        rememberMe: $("#remember-account").hasClass("fa-check-square-o")
+
     }
 
     if(loginData.username.trim().length && loginData.password.trim().length){
@@ -761,7 +791,6 @@ function login(){
                             var id = element.dataset.id;
                             element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
                         }
-                        // replace .login-link with #new-def-link
 
                         $(".login-link").attr("id", "new-def-link");
                         $(".login-link").removeClass("login-link");
@@ -770,14 +799,14 @@ function login(){
                         $(".comment").removeClass("add-one");
 
                         var welcomeMessages = [
-                            "Welcome back!",
+                            "Welcome back",
                             "Good to see you again",
-                            "Let the learning begin",
+                            "Let the learning begin!",
                             "Happy [insert-day-of-week here]",
                             "Did you know Guyana is in South America?",
                             "You are logged in",
                             "The humans suspect nothing",
-                            "0001 0011 1011 0001  I mean ... hello human!",
+                            "0001 0011 1011 0001  I mean, uh ... hello,  human",
                             "function(){req.session.insert.express.joke}",
                             "Did you drink enough water today?",
                             "On this day in history... people just like you did cool things",
@@ -967,25 +996,35 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var unsortedCategories = [
                     {
                         percentage: toolPercent, 
-                        name: "#tool-percentage"
+                        name: "#tool-percentage",
+                        categoryName: "Tool/Library",
+                        short: "tool"
                     },
                     {
                         percentage: conceptPercent, 
-                        name: "#concept-percentage"
+                        name: "#concept-percentage",
+                        categoryName: "Concept",
+                        short: "concept"
                     },
                     {
                         percentage: languagePercent, 
-                        name: "#language-percentage"
+                        name: "#language-percentage",
+                        categoryName: "Language/Environment/Framework",
+                        short: "language"
                     },
                     {
                         percentage: processPercent, 
-                        name: "#process-percentage"
+                        name: "#process-percentage",
+                        categoryName: "Process",
+                        short: "process"
                     },
                     {
                         percentage: otherPercent, 
-                        name: "#other-percentage"
+                        name: "#other-percentage",
+                        categoryName: "Other",
+                        short: "other"
                     },
-                ]
+                ];
 
                 for(var i = 0; i < 5; i++){
 
@@ -995,7 +1034,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                     for(var j = 0; j < unsortedCategories.length; j++){
 
                         if(unsortedCategories[j].percentage > maxPercentage){
-                            maxPercentage == unsortedCategories[j].percentage;
+                            maxPercentage = unsortedCategories[j].percentage;
                             maxIndex = j;   
                         }
                     }
@@ -1005,24 +1044,21 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
                 }
 
-                var minWidth = 0.05;
-
-                if(screenWidth < 980){
-                    minWidth = 0.1;
-                }
-
-                var remainingWidth = 1 - minWidth*5; 
-
+                console.log(sortedCategories);
 
                 for(var k = 0; k < sortedCategories.length; k++){
 
                     var idName = sortedCategories[k].name.substring(1, sortedCategories[k].name.length);
 
+                    if(sortedCategories[k].percentage > 0){
+                        $(".category-bar").append("<div class = 'category-stat' id = '" + idName + "'><span class = 'percentage-label' id = '" + idName + "-label'></span></div>");
+                        $(sortedCategories[k].name).css("width", sortedCategories[k].percentage*100 + "%");
+                        $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
+                        $(".category-legend").append("<span class = 'category-label'><div class = 'category-box " + sortedCategories[k].short + "'></div>" + sortedCategories[k].categoryName + "</span>");
 
-                    $(".category-bar").append("<div class = 'category-stat' id = '" + idName + "'><span class = 'percentage-label' id = '" + idName + "-label'></span></div>");
-
-                    $(sortedCategories[k].name).css("width", (sortedCategories[k].percentage*remainingWidth + minWidth)*100 + "%");
-                    $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
+                        
+                    }
+                    
                 } 
 
             }

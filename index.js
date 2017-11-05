@@ -22,7 +22,6 @@ const database = require("./app/database");
 
 var dbAddress;
 
-
 if(process.env.LIVE){                                                                           // this is how I do config, folks. put away your pitforks, we're all learning here.
     dbAddress = "mongodb://" + process.env.MLAB_USERNAME + ":" + process.env.MLAB_PASSWORD + "@ds243325.mlab.com:43325/hackterms";
 } else {
@@ -45,18 +44,18 @@ MongoClient.connect(dbAddress, function(err, db){
 
     var thisDb = db;
 
-    app.use(session({                                
-            secret:  dbops.generateHash(16),             // generate secret for unique session
-            saveUninitialized: false,
-            resave: true,
-            secure: false,
-            cookie: {
-                originalMaxAge: 60000*60*24*14,
-                expires: new Date(Date.now() + 60000*60*24*14)
-            },
-            store: new MongoStore({ db: thisDb })
-    }));
+    var sessionSecret = process.env.SESSION_SECRET || "ejqjxvsh994hw8e7fl4gbnslvt3";
 
+    app.use(session({                                
+            secret: sessionSecret,             
+            saveUninitialized: false,
+            resave: false,
+            secure: false,
+            store: new MongoStore({ 
+                db: thisDb,
+                ttl: 14 * 24 * 60 * 60   
+             })
+    }));
 
     app.use(function(req, res, next){                                           // logs request URL
         var timeNow = new Date();
@@ -78,8 +77,13 @@ MongoClient.connect(dbAddress, function(err, db){
             req.session.message = null;
             req.session.error = null;
     
-        }
+            if(req.session.user){                                                   // track whether a user is logged in
+                req.session.loggedIn = true;
+            } else {
+                req.session.loggedIn = false;
+            }
 
+        }
         next();
     })
 
@@ -120,14 +124,19 @@ MongoClient.connect(dbAddress, function(err, db){
     });
     
     app.post("/search", function(req, res){
-        // res.send("Thanks for searching for " + req.body.term + ", come again!");
         dbops.search(db, req, function tryToSearch(response){
             if(response.status == "success"){
+
+                var isLoggedIn = false;
+                if(req.session.user){
+                    isLoggedIn = true;
+                }
 
                 res.send({
                     status: "success",
                     count: response.count,
-                    body: response.body
+                    body: response.body,
+                    loggedIn: isLoggedIn
                 });
 
             } else if(response.status == "fail"){
@@ -340,7 +349,7 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.get("/logout", function(req, res){
-        req.session.destroy();  
+        req.session.destroy();   
         res.send({
             status: "success",
             message: "Logged out"
