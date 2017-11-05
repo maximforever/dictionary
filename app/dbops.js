@@ -994,16 +994,16 @@ function logVisit(db, req, callback){
     	console.log("userIP: " + userIP);
 
     	request({
-		    url: "https://geoip-db.com/jsonp/" + userIP
+		    url: "http://ip-api.com/json/" + userIP,
+		    json: true
 		}, function (error, response, body) {
 			
 		    if (!error && response.statusCode === 200) {
 
-		    	newVisit.location = body;
-
 		        database.create(db, "visits", newVisit, function recordLogin(){
 			    	callback();
 			    })
+
 		    } else {
 		    	callback();
 		    }
