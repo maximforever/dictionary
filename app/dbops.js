@@ -994,12 +994,10 @@ function logVisit(db, req, callback){
     	console.log("userIP: " + userIP);
 
     	request({
-		    url: "https://geoip-db.com/json/" + userIP,
-		    json: true
+		    url: "https://geoip-db.com/jsonp/" + userIP
 		}, function (error, response, body) {
+			
 		    if (!error && response.statusCode === 200) {
-
-
 
 		    	newVisit.location = body;
 
