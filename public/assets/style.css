@@ -701,7 +701,18 @@ button:hover {
     transform: scale(1.2);
     vertical-align: bottom;
     margin-left: 2px;
-    width: 17px;;
+    width: 17px;
+    z-index: 1;
+}
+
+#hidden-remember-account-checkbox[type="checkbox"]{
+    display: inline;
+    width: 2%;
+    z-index: 0;
+    position: absolute;
+    margin: 7px 0 0 2px;
+    transform: scale(1.4);
+    opacity: 0;
 }
 
 .stay-signed-in {
@@ -764,7 +775,7 @@ button:hover {
 }
 
 
-.pop-out input[type="radio"], .pop-out input[type="checkbox"]{
+.pop-out input[type="radio"]{
     display: inline;
     width: 2%;
 }
@@ -1429,7 +1440,7 @@ button:hover {
         margin: 0;
         text-align: center;
         vertical-align: top;
-        float: right;
+        padding-left: 8px;
     }
 
     .textarea-label {
