@@ -1093,18 +1093,31 @@ function getMetrics(db, req, callback){
 
 	var visitsQuery = {}
 
+	var definitionCountQuery = {
+		approved: true,
+		removed: false
+	}
+
+	var termCountQuery = {
+	}
+
 
 	database.read(db, "users", userQuery, function getUsers(userList){
 		database.read(db, "visits", visitsQuery, function getVisits(visitList){
+			database.count(db, "definitions", definitionCountQuery, function getDefinitionCount(thisDefinitionCount){
+				database.count(db, "terms", termCountQuery, function getTermCount(thisTermCount){
+					var thisVisitCount = visitList.length;
+					var thisUserCount = userList.length;
 
-			var thisVisitCount = visitList.length;
-			var thisUserCount = userList.length;
-
-			callback({
-				visitCount: thisVisitCount,
-				userCount: thisUserCount,
-				visits: visitList,
-				users: userList
+					callback({
+						visitCount: thisVisitCount,
+						userCount: thisUserCount,
+						visits: visitList,
+						users: userList,
+						definitionCount: thisDefinitionCount,
+						termCount: thisTermCount
+					})
+				})
 			})
 
 		})

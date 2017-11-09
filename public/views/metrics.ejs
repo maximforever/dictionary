@@ -2,13 +2,18 @@
 
 <div id = "main-section">
 
-<div class = "metric">Users: <%= userCount %></div>
+<div class = "metric">
+    Users: <span class = "bold"><%= userCount %></span>
+</div>
 <br>
 
-<% users.forEach(function(user){ %>
+<% for(var i = 0; i < userCount; i++){ %>
+    
+    <% var user = users[i] %>
+
         <div class = "one-user">
         <div class = "metric-table metric-username">
-            <%= user.username %>
+            <%= (i+1) %>. <a class = "bold" href = "/profile/<%= user.username %>"><%= user.username %></a>
         </div>
 
         <div class = "metric-table metric-username">
@@ -20,12 +25,18 @@
         </div>
     </div>
 
-<% }) %>
+<% } %>
 
 <br><br><br>
 
 
-<div class = "metric">Visits: <%= visitCount %></div>
+<div class = "metric">Visits: <span class = "bold"><%= visitCount %></span></div>
+
+<br>
+
+<div class = "metric">
+    Definitions: <span class = "bold"><%= definitionCount %></span> for <span class = "bold"><%= termCount %></span> terms
+</div>
 
 
 </div>

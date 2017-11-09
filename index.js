@@ -134,7 +134,9 @@ MongoClient.connect(dbAddress, function(err, db){
                     visitCount: response.visitCount,
                     userCount: response.userCount, 
                     visits: response.visits, 
-                    users: response.users
+                    users: response.users,
+                    definitionCount: response.definitionCount,
+                    termCount: response.termCount
                 });
 
             });
