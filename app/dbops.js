@@ -864,6 +864,7 @@ function signup(db, req, callback){
 						bcrypt.genSalt(10, function(err, salt) {
 						    bcrypt.hash(req.body.password, salt, function(err, hash) {
 						   		var newUser = {
+						   			createdOn: Date(),
 						   			email: req.body.email.trim().toLowerCase(),
 						   			username: req.body.username.trim().toLowerCase(),
 						            password: hash,

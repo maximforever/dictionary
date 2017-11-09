@@ -804,14 +804,15 @@ function login(){
                             "Good to see you again",
                             "Let the learning begin!",
                             "Happy [insert-day-of-week here]",
-                            "Did you know Guyana is in South America?",
+                            "Did you know Guyana is located in South America?",
                             "You are logged in",
-                            "The humans suspect nothing",
+                            "0745 The humans suspect nothing",
                             "0001 0011 1011 0001  I mean, uh ... hello,  human",
                             "function(){req.session.insert.express.joke}",
                             "Did you drink enough water today?",
                             "On this day in history... people just like you did cool things",
-                            "'Hackterms' is a noun, in case you were wondering"
+                            "'Hackterms' is a noun, in case you were wondering",
+                            "<div>My job is to show you errors and confirmations. </div>"
                         ]
 
                         var message = welcomeMessages[Math.floor(Math.random()*welcomeMessages.length)];

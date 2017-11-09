@@ -14,13 +14,12 @@
         </span>
         <div class = "faq-answer" data-id = "1">Hackterms is a community-sourced dictionary of coding terms. Use it to quickly understand:
             <ul>
-                <li>Why someone would use this tool/process/language</li>
-                <li>What the pros, cons, and alternatives are</li>
-                <li>Where the term fits in within the coding ecosystem</li>
-                <li>How things connect</li>
+                <li>why, where, and when someone would use a tool/process/language</li>
+                <li>what the pros, cons, and alternatives are</li>
+                <li>where this term fits in within the coding ecosystem</li>
             </ul>
 
-            Hackterms is not a holistic resource to learn to code. Think of it as a roadmap to the modern development landscape.
+            Hackterms is not a holistic resource to learn to code - it will usually tell you <span class = "bold">"why"</span>, <span class = "bold">"when"</span>, and <span class = "bold">"where"</span>, but not the <span class = "bold">"how"</span>. Think of it as a Hitchhike's Guide to the modern development landscape.
         </div>
     </div>
 
@@ -98,7 +97,7 @@
             <i class="fa fa-minus hide-answer" aria-hidden="true"></i>
             <div class = "faq-question">I found something abusive, offensive, or spammy on the site</div>
         </span>
-        <div class = "faq-answer" data-id = "7">Any user can report a definition or comment - you don't even need to log in. Click the red flag icon on the top right of any post.</div>
+        <div class = "faq-answer" data-id = "7">Any user can report a definition or comment - you don't even need to log in. Click the red flag icon<span class = "report-post link bold" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-flag-o" aria-hidden="true"></i></span> on the top right of any post.</div>
     </div>
 
     <div class = "faq-one-question toggle-answer" id = "8">
@@ -116,7 +115,7 @@
             <i class="fa fa-minus hide-answer" aria-hidden="true"></i>
             <div class = "faq-question">Can I delete my comment or definition?</div>
         </span>
-        <div class = "faq-answer" data-id = "9">Yep! Once you log in, you can do this from <a href = "/profile">your profile</a> by clicking the trash icon on the top right of your post.</div>
+        <div class = "faq-answer" data-id = "9">Yep! Once you log in, you can do this from <a href = "/profile">your profile </a> or the search page by clicking the trash icon<span class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-trash-o" aria-hidden="true"></i></span> on the top right of your post.</div>
     </div>
 
     <div class = "faq-one-question toggle-answer" id = "10">
@@ -125,19 +124,19 @@
             <i class="fa fa-minus hide-answer" aria-hidden="true"></i>
             <div class = "faq-question">Can I contribute to or improve Hackterms?</div>
         </span>
-        <div class = "faq-answer" data-id = "10">Absolutely -  <a href="mailto:max@hackterms.com" target="_blank">shoot me an email</a> if you want to contribute or just say hello!</div>
+        <div class = "faq-answer" data-id = "10">Absolutely -  <a href="mailto:hello@hackterms.com" target="_blank">shoot me an email</a> if you want to contribute or just say hello!</div>
     </div>
 
     <div class = "faq-one-question toggle-answer" id = "11">
         <span class = "faq-control">
             <i class="fa fa-plus show-answer" aria-hidden="true"></i>
             <i class="fa fa-minus hide-answer" aria-hidden="true"></i>
-            <div class = "faq-question">Is there a tradeoff between simplicity and accuracy?</div>
+            <div class = "faq-question">Isn't there a tradeoff between simplicity and accuracy?</div>
         </span>
         <div class = "faq-answer" data-id = "11">
-            Yes. Hackterms aims for simplicity, clarity, and high-level understanding.
+            Yes. Hackterms aims for simplicity and high-level understanding. We want you to understand the <span class = "bold">"why"</span>, <span class = "bold">"when"</span>, and <span class = "bold">"where"</span> of programming terminology - not the <span class = "bold">"how"</span>.
             <br><br>
-            Sometimes this means sacrificing accuracy for the sake of readability. Fortunately, lots of other great resources on the web will teach you the ins-and-outs of any topics.
+            Sometimes this means sacrificing accuracy for the sake of readability. However, lots of other great resources on the web will provide in-depth dicussion of any programming topic.
         </div>
     </div>
 
@@ -148,9 +147,15 @@
             <div class = "faq-question">Why did you create Hackterms?</div>
         </span>
         <div class = "faq-answer" data-id = "12">
-            For me, the hardest thing about learning to code was connected the dots. I struggled with questions like: where is the line between the language and the framework? Why are there so many tools, and do I need to learn them all right now? What do these things do?
+            For me, the hardest thing about learning to code was connected the dots. I struggled with questions like: 
 
-            This resonated with my fellow devs, so I decided to create a quick reference to answer these questions. 
+            <ul>
+                <li>where does the the Ruby language end and the Rails framework begin?</li>
+                <li>what is bower, vim, grunt, middleware, PostgreSQL, and which of these do I need to learn right now?</li>
+                <li>are git and TDD crucial to getting my first website up and running?</li>
+            </ul>
+
+            This type of confusion resonated with my fellow devs, so I decided to create a community-sourced reference to help newcomers tackle these questions. 
         </div>
     </div>
 
