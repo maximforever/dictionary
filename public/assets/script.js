@@ -1094,6 +1094,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                 var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
 
                 if(isLoggedIn){
+                    commentSection.append("<div class = 'comment-connector'><div class = 'connector'></div></div>");
                     commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + thisDefinition.id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
                 } else {
                     commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold login-link'>Log in</span> to leave a comment!</div>");

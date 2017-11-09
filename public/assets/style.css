@@ -334,10 +334,20 @@ button:hover {
 .comment {
 	display: block;
     background: #f2f5e9;
-    margin: 15px 0;
     border: 1px solid rgba(10,10,10, 0.2);
     border-radius: 3px;
     min-width: 300px;
+}
+
+.comment-connector{
+    height: 8px;
+}
+
+.connector{
+    border: 1px solid #88612c;
+    width: 0;
+    height: 100%;
+    margin: 0 auto;
 }
 
 .comment-main-body{
@@ -581,7 +591,7 @@ button:hover {
     font-size: 0.85em;
     height: 2em;
     background: #bebdd0;
-    padding: 5px 20px;
+    padding: 2px 20px;
 }
 
 .definition-actions {
@@ -769,7 +779,8 @@ button:hover {
 }
 
 .pop-out input:focus, #password-reset-section input:focus {
-    border:1px solid blue;
+    border: 1px solid rgba(0, 0, 255, 0.7);
+    border-bottom: 2px solid blue;
     transition: border;   
 }
 

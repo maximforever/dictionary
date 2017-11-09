@@ -874,7 +874,15 @@ function signup(db, req, callback){
 						            moderator: false,
 						   			data: {
 						   				username: req.body.username.toLowerCase(),
-						   				newNotifications: false 
+						   				newNotifications: false,
+						   				badges: {
+						   					topContributor: false,		// top 5% of contributions?
+						   					professor: false,			// added 10+ definitions
+						   					og: false, 					// first 50 contributors
+						   					cunningLinguist: false,		// added 10+ comments
+						   					gottaCatchThemAll: false	// added a definition in every category
+						   				}
+
 						   			}
 						        }
 
