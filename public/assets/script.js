@@ -389,10 +389,11 @@ function main(){
         $("#password-reset-modal").show();
     });
 
-    $("body").on("click", ".toggle-answer", function(){
-        $("#" + this.id).find(".show-answer").toggle();
-        $("#" + this.id).find(".hide-answer").toggle();
-        $("#" + this.id).find(".faq-answer").toggle();
+    $("body").on("click", ".faq-control", function(){
+        console.log("click");
+        $("#" + this.id).parent().find(".show-answer").toggle();
+        $("#" + this.id).parent().find(".hide-answer").toggle();
+        $("#" + this.id).parent().find(".faq-answer").toggle();
     });
 
     $("body").on("click", "#password-reset-link", function(){
