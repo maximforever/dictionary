@@ -1061,12 +1061,12 @@ function getUpdatedUser(db, req, callback){
 function getAdminData(db, req, callback){
 	if(req.session.user.admin || req.session.user.moderator){    	
 
-		unapprovedDefinitionsQuery = {
+		var unapprovedDefinitionsQuery = {
 			approved: false,
 			rejected: false
 		}
 
-		unresolvedReportsQuery = {
+		var unresolvedReportsQuery = {
 			resolved: false
 		}
 
@@ -1082,10 +1082,44 @@ function getAdminData(db, req, callback){
 }
 
 
+
+
+function getMetrics(db, req, callback){	
+
+
+	var userQuery = {
+		suspended: false
+	}
+
+	var visitsQuery = {}
+
+
+	database.read(db, "users", userQuery, function getUsers(userList){
+		database.read(db, "visits", visitsQuery, function getVisits(visitList){
+
+			var thisVisitCount = visitList.length;
+			var thisUserCount = userList.length;
+
+			callback({
+				visitCount: thisVisitCount,
+				userCount: thisUserCount,
+				visits: visitList,
+				users: userList
+			})
+
+		})
+	})
+
+
+
+}
+
+
+
 function getUserRoles(db, req, callback){
 	if(req.session.user.admin){    	
 
-		userQuery = {
+		var userQuery = {
 			username: req.body.username
 		}
 
@@ -1275,7 +1309,7 @@ function passwordResetRequest(db, req, callback){
 				database.create(db, "passwordResets", passwordResetRequest, function confirmRequest(request){
 
  
-					var emailBody = "<p>Hey " +  users[0].username + "!<br><br>Here is the password reset link you requested: <br><br>www.hackterms.com/password-reset/" + passwordResetRequest.id + "<br><br>If you did not request this password request, please ignore this email.<br><br>Thanks!<br>~Hackterms Team";
+					var emailBody = "<p>Hey " +  users[0].username + "!<br><br>Here is the password reset link you requested: <br><br>www.hackterms.com/password-reset/" + passwordResetRequest.id + "<br><br>If you did not request this password request, please ignore this email.<br><br>Thanks!<br>~your Hackterms friends";
 
 
 					var mailOptions = {
@@ -1486,6 +1520,7 @@ module.exports.login = login;
 module.exports.getUpdatedUser = getUpdatedUser;
 
 module.exports.getAdminData = getAdminData;
+module.exports.getMetrics = getMetrics;
 module.exports.adminVote = adminVote;
 module.exports.addReport = addReport;
 

@@ -119,13 +119,36 @@ MongoClient.connect(dbAddress, function(err, db){
     app.get("/faq", function(req, res){
 
         res.render("faq");
-
-/*        dbops.getFAQ(db, req, function(faq){
-            res.render("faq", {faqData: faq});
-        }); */
         
     });
     
+    
+    app.get("/metrics", function(req, res){
+
+
+        if(req.session.user && req.session.user.username == "max"){
+
+            dbops.getMetrics(db, req, function retrieveData(response){
+
+                res.render("metrics", {
+                    visitCount: response.visitCount,
+                    userCount: response.userCount, 
+                    visits: response.visits, 
+                    users: response.users
+                });
+
+            });
+
+        } else {
+            res.redirect("/");
+        }
+        
+    });
+
+
+
+
+
     app.post("/search", function(req, res){
         dbops.search(db, req, function tryToSearch(response){
             if(response.status == "success"){

@@ -1,0 +1,34 @@
+<% include partials/_header.ejs %>
+
+<div id = "main-section">
+
+<div class = "metric">Users: <%= userCount %></div>
+<br>
+
+<% users.forEach(function(user){ %>
+        <div class = "one-user">
+        <div class = "metric-table metric-username">
+            <%= user.username %>
+        </div>
+
+        <div class = "metric-table metric-username">
+            <%= user.email %>
+        </div>
+
+        <div class = "metric-table metric-username">
+            <%= user.data.createdAt %>
+        </div>
+    </div>
+
+<% }) %>
+
+<br><br><br>
+
+
+<div class = "metric">Visits: <%= visitCount %></div>
+
+
+</div>
+
+<% include partials/_footer.ejs %>
+

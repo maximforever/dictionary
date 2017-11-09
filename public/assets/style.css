@@ -385,7 +385,7 @@ button:hover {
 	display: none;
 }
 
-.delete-post, .report-post, .comment-on-post {
+.delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
     margin-left: 5px;
     color: #7b1b1a;
     background: #f17372;
@@ -1124,6 +1124,18 @@ button:hover {
 .post-actions-column {
     float: right;
 }
+
+.metric {
+    font-family: "Zilla Slab", serif;
+    font-weight: 400;
+    font-size: 1.5em;
+}
+
+.metric-table {
+    display: inline-block;
+    width: 15%;
+}
+
 
 
 /* FAQ */

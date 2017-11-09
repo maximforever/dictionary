@@ -54,6 +54,18 @@ function remove(db, col, query, callback){
 };
 
 
+function count(db, col, obj, callback){                                
+    console.log("DB: counting");
+    db.collection(col).count(function(err, count){
+        if (err){
+            console.log("MAYDAY! MAYDAY! Crashing.");
+            return console.log(err);
+        }
+        console.log("FIND: pulled " + count + " records from '" + col + "' for the query:");
+        console.log(obj);
+        callback(count);
+    })
+}
 
 
 
@@ -65,3 +77,5 @@ module.exports.create = create;
 module.exports.read = read;
 module.exports.update = update;
 module.exports.remove = remove;
+
+module.exports.count = count;
