@@ -1093,13 +1093,13 @@ function getMetrics(db, req, callback){
 
 	var visitsQuery = {}
 
-	var approvedDefinitionCountQuery = {
+	var approvedDefinitionQuery = {
 		removed: false,
 		rejected: false,
 		approved: true
 	}
 
-	var unapprovedDefinitionCountQuery = {
+	var unapprovedDefinitionQuery = {
 		rejected: false, 
 		approved: false
 	}
@@ -1110,21 +1110,19 @@ function getMetrics(db, req, callback){
 
 	database.read(db, "users", userQuery, function getUsers(userList){
 		database.read(db, "visits", visitsQuery, function getVisits(visitList){
-			database.read(db, "definitions", approvedDefinitionCountQuery, function getApprovedDefinitionCount(thisApprovedDefinitionCount){
-				database.read(db, "definitions", unapprovedDefinitionCountQuery, function getUnapprovedDefinitionCount(thisUnapprovedDefinitionCount){
+			database.read(db, "definitions", approvedDefinitionQuery, function getApprovedDefinitionCount(approvedDefs){
+				database.read(db, "definitions", unapprovedDefinitionQuery, function getUnapprovedDefinitionCount(unapprovedDefs){
 					database.count(db, "terms", termCountQuery, function getTermCount(thisTermCount){
 						var thisVisitCount = visitList.length;
 						var thisUserCount = userList.length;
-						var approvedDefCount = thisApprovedDefinitionCount.length;
-						var unapprovedDefCount = thisUnapprovedDefinitionCount.length;
 
 						callback({
 							visitCount: thisVisitCount,
 							userCount: thisUserCount,
 							visits: visitList,
 							users: userList,
-							approvedDefinitionCount: approvedDefCount,
-							unapprovedDefinitionCount: unapprovedDefCount,
+							approvedDefinitions: approvedDefs,
+							unapprovedDefinitions: unapprovedDefs,
 							termCount: thisTermCount
 						})
 					})

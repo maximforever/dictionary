@@ -1137,6 +1137,29 @@ button:hover {
     width: 32%;
 }
 
+.metric-username {
+    width: 20%;
+}
+
+.metric-email {
+    width: 40%;
+}
+
+.metric-date {
+    width:35%;
+}
+
+.metric-definition {
+    padding: 5px 0px;
+    display: inline-block;
+    width: 30%;
+}
+
+.metric-definition-author{
+    display: inline-block;
+}
+
+
 
 
 /* FAQ */
@@ -1788,6 +1811,32 @@ button:hover {
     .faq-answer {
         line-height: 1.5;
         padding: 10px;
+    }
+
+    .metric-table {
+        display: inline-block;
+        width: 32%;
+        font-size: 0.8em;
+    }
+
+    .metric-username {
+        width: 26%;
+    }
+
+    .metric-email {
+        width: 43%;
+    }
+
+    .metric-date {
+        width: 25%;
+    }
+
+    .metric-definition {
+        width: 60%;
+    }
+
+    .metric-definition-author{
+        float: right;   
     }
 
 

@@ -138,8 +138,10 @@ MongoClient.connect(dbAddress, function(err, db){
                     userCount: response.userCount, 
                     visits: response.visits, 
                     users: response.users,
-                    approvedDefinitionCount: response.approvedDefinitionCount,
-                    unapprovedDefinitionCount: response.unapprovedDefinitionCount,
+                    approvedDefinitions: response.approvedDefinitions,
+                    unapprovedDefinitions: response.unapprovedDefinitions,
+                    approvedDefinitionCount: response.approvedDefinitions.length,
+                    unapprovedDefinitionCount: response.unapprovedDefinitions.length,
                     termCount: response.termCount
                 });
 

@@ -2,46 +2,64 @@
 
 <div id = "main-section">
 
-<div class = "metric">
-    Users: <span class = "bold"><%= userCount %></span>
-</div>
-<br>
-
-<% for(var i = 0; i < userCount; i++){ %>
-    
-    <% var user = users[i] %>
-
-        <div class = "one-user">
-        <div class = "metric-table metric-username">
-            <%= (i+1) %>. <a class = "bold" href = "/profile/<%= user.username %>"><%= user.username %></a>
-        </div>
-
-        <div class = "metric-table metric-username">
-            <%= user.email %>
-        </div>
-
-        <div class = "metric-table metric-username">
-            <% if(user.createdOn && user.createdOn.length){ %>
-                <%= new Date(user.createdOn).toLocaleDateString('en-US'); %>
-            <% } %>
-        </div>
+    <div class = "metric">
+        Users: <span class = "bold"><%= userCount %></span>
     </div>
-
-<% } %>
-
-<br><br><br>
-
-
-<div class = "metric">Visits: <span class = "bold"><%= visitCount %></span></div>
-
-<br>
-
-<div class = "metric">
-    Approved definitions: <span class = "bold"><%= approvedDefinitionCount %></span> for <span class = "bold"><%= termCount %></span> terms
     <br>
-    Unapproved definitions: <span class = "bold"><%= unapprovedDefinitionCount %></span>
-</div>
 
+    <% for(var i = 0; i < userCount; i++){ %>
+        
+        <% var user = users[i] %>
+
+            <div class = "one-user">
+            <div class = "metric-table metric-username">
+                <%= (i+1) %>. <a class = "bold" href = "/profile/<%= user.username %>"><%= user.username %></a>
+            </div>
+
+            <div class = "metric-table metric-email">
+                <%= user.email %>
+            </div>
+
+            <div class = "metric-table metric-date">
+                <% if(user.createdOn && user.createdOn.length){ %>
+                    <%= new Date(user.createdOn).toLocaleDateString('en-US'); %>
+                <% } %>
+            </div>
+        </div>
+
+    <% } %>
+
+    <br><br><br>
+
+
+    <div class = "metric">Visits: <span class = "bold"><%= visitCount %></span></div>
+    <br>
+
+    <div class = "metric">
+        Approved definitions: <span class = "bold"><%= approvedDefinitionCount %></span> for <span class = "bold"><%= termCount %></span> terms
+        <br>
+        Unapproved definitions: <span class = "bold"><%= unapprovedDefinitionCount %></span>
+    </div>
+    <br><br>
+    <div class = "metric">Approved Definitions:</div>
+
+    <% approvedDefinitions.forEach(function(def){ %>
+        <div class = "metric-definition bold"><a class = "bold" href ="<%= def.term %>"><%= def.term %></a> </div>
+        <div class = "metric-definition-author"><a href ="profile/<%= def.author %>"><%= def.author %></a></div>
+        <br>
+    <% }) %>
+
+    <br>
+
+    <div class = "metric">Unapproved Definitions:</div>
+
+    <% unapprovedDefinitions.forEach(function(def){ %>
+        <div class = "metric-definition bold"><a class = "bold" href ="<%= def.term %>"><%= def.term %></a> </div>
+        <div class = "metric-definition-author"><a href ="profile/<%= def.author %>"><%= def.author %></a></div>
+        <br>
+    <% }) %>
+
+    <br>
 
 </div>
 
