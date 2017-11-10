@@ -47,7 +47,7 @@ function main(){
     }
 
 
-    $("body").on("click", function(e){
+    $("body").on("touchstart click", function(e){
 
 
         $("#error, #message").text("").hide();
@@ -64,21 +64,21 @@ function main(){
     });
 
 
-	$("body").on("click", ".term-link", function(){
+	$("body").on("touchstart click", ".term-link", function(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
 		currentTerm = term;
 		getDefinition(term, false);
 	});
 
-    $("body").on("click", ".definition-suggestion-link", function(){
+    $("body").on("touchstart click", ".definition-suggestion-link", function(){
         var term = this.dataset.id;
         $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
         $("#term-suggestions-section").hide();
     });
 
-    $("body").on("click", ".related-suggestion-link", function(){
+    $("body").on("touchstart click", ".related-suggestion-link", function(){
 
         var term = this.dataset.id;
 
@@ -94,25 +94,25 @@ function main(){
         $("#related-term-textarea").focus();
     });
 
-    $("body").on("click", ".report-post", function(){
+    $("body").on("touchstart click", ".report-post", function(){
         window.scrollTo(0, 0);
         $(".add-confirmation").remove();
         displayReport(this.dataset.id, this.dataset.type);
     });
 
-    $("body").on("click", "#submit-report", function(){
+    $("body").on("touchstart click", "#submit-report", function(){
         submitReport();
     });
 
-    $("body").on("click", "input[name='report']", function(){
+    $("body").on("touchstart click", "input[name='report']", function(){
         $(".report-error").empty();
     });
 
-    $("body").on("click", "#new-alert", function(){
+    $("body").on("touchstart click", "#new-alert", function(){
         acknowledgeNotifications();
     });
 
-    $("body").on("click", ".notification-bell", function(){
+    $("body").on("touchstart click", ".notification-bell", function(){
 
         if($(".notifications-body").height() > 0) {
             $(".notifications-body").hide();
@@ -124,14 +124,14 @@ function main(){
         
     });
 
-    $("body").on("click", ".scroll-up", function(){
+    $("body").on("touchstart click", ".scroll-up", function(){
         if(currentNotificationCounter < (currentNotifications.length-1)){
             currentNotificationCounter++;
             addNotificationsToScreen();
         }
     });
 
-    $("body").on("click", ".scroll-down", function(){
+    $("body").on("touchstart click", ".scroll-down", function(){
         if(currentNotificationCounter >= 5){
             currentNotificationCounter--;
             addNotificationsToScreen();
@@ -139,14 +139,14 @@ function main(){
         
     });
 
-    $("body").on("click", ".comment-on-post", function(){
+    $("body").on("touchstart click", ".comment-on-post", function(){
 
         $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
         $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
         $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
     });
 
-    $("body").on("click", ".delete-post", function(){
+    $("body").on("touchstart click", ".delete-post", function(){
         var confirmation = confirm("Are you sure you want to delete this post?");
         if(confirmation){
             deletePost(this.dataset.id, this.dataset.type);
@@ -161,7 +161,7 @@ function main(){
         activeTermIndex = -1;
     });
 
-    $("body").on("click", ".stay-signed-in", function(){
+    $("body").on("touchstart click", ".stay-signed-in", function(){
 
         if($("#remember-account").hasClass("fa-check-square-o")){
             $("#remember-account").removeClass("fa-check-square-o");
@@ -283,16 +283,16 @@ function main(){
         }
 	})
 
-	$("body").on("click", "#add-definition", function(){
+	$("body").on("touchstart click", "#add-definition", function(){
 		addDefinition();
 	});
 
 
-    $("body").on("click", ".add-comment", function(){
+    $("body").on("touchstart click", ".add-comment", function(){
         addComment(this);
     });
 
-    $("body").on("click", ".voting-button", function(){
+    $("body").on("touchstart click", ".voting-button", function(){
         var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
         var id = this.dataset.id;
         var term = this.dataset.term;
@@ -301,7 +301,7 @@ function main(){
         voteOnPost(direction, id, term, type);
     })
 
-    $("body").on("click", "#new-def-link", function(){
+    $("body").on("touchstart click", "#new-def-link", function(){
         window.scrollTo(0, 0);
         $("#new-definition").show();
         $("#definition-term-textarea").val($("#search-bar").val());
@@ -310,7 +310,7 @@ function main(){
         $("#terms-section").empty();
     });
     
-    $("body").on("click", "#close", function(){
+    $("body").on("touchstart click", "#close", function(){
         $(".pop-out").find("input").val("");
         $(".pop-out").find(".report-error").text("");
         $(".pop-out").hide();
@@ -318,43 +318,43 @@ function main(){
 
     /* ACCOUNT LINKS*/
 
-    $("body").on("click", "#login", function(){
+    $("body").on("touchstart click", "#login", function(){
         showLogin();
     });
 
-    $("body").on("click", ".login-link", function(){
+    $("body").on("touchstart click", ".login-link", function(){
         $(".pop-out").hide();
         $("#terms-section").empty();
         showLogin();
     });
 
-    $("body").on("click", ".sign-up-link", function(){
+    $("body").on("touchstart click", ".sign-up-link", function(){
         $(".pop-out").hide();
         $("#terms-section").empty();
         showSignup();
     });
 
-    $("body").on("click", "#signup", function(){
+    $("body").on("touchstart click", "#signup", function(){
         showSignup();
     });
 
-    $("body").on("click", "#account-close", function(){
+    $("body").on("touchstart click", "#account-close", function(){
         resetNavBar();
     });
 
-    $("body").on("click", "#login-action", function(){
+    $("body").on("touchstart click", "#login-action", function(){
         login();
     });
 
-    $("body").on("click", "#signup-action", function(){
+    $("body").on("touchstart click", "#signup-action", function(){
         signup();
     });
 
-    $("body").on("click", "#logout", function(){
+    $("body").on("touchstart click", "#logout", function(){
         logout();
     });
 
-    $("body").on("click", "#password-reset-action", function(){
+    $("body").on("touchstart click", "#password-reset-action", function(){
 
         var email = $("#password-reset-email").val();
         if(email.indexOf("@") != -1 && email.indexOf(".") != -1){
@@ -364,7 +364,7 @@ function main(){
         }
     });
 
-    $("body").on("click", "#password-reset-submit-action", function(){
+    $("body").on("touchstart click", "#password-reset-submit-action", function(){
 
         var password = $("#password-reset").val();
         var passwordConfirmation = $("#password-reset-confirmation").val();
@@ -382,21 +382,21 @@ function main(){
 
     });
 
-    $("body").on("click", "#password-reset-link", function(){
+    $("body").on("touchstart click", "#password-reset-link", function(){
         resetNavBar();
         $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
         $("#reset-request-confirm").hide();
         $("#password-reset-modal").show();
     });
 
-    $("body").on("click", ".faq-control", function(){
+    $("body").on("touchstart click", ".faq-control", function(){
         console.log("click");
         $("#" + this.id).parent().find(".show-answer").toggle();
         $("#" + this.id).parent().find(".hide-answer").toggle();
         $("#" + this.id).parent().find(".faq-answer").toggle();
     });
 
-    $("body").on("click", "#password-reset-link", function(){
+    $("body").on("touchstart click", "#password-reset-link", function(){
         resetNavBar();
         $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
         $("#reset-request-confirm").hide();

@@ -12,6 +12,7 @@ body{
 a, .link {
 	text-decoration: none;
 	color: #2E58D1;
+    cursor: pointer;
 }
 
 a:hover, .link:hover {
