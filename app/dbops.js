@@ -1001,7 +1001,7 @@ function logVisit(db, req, callback){
     }
 
 
-    if(req.url != "/get-definitions" && req.url != "/search" && req.url != "/metrics"){
+    if(req.url != "/get-definitions" && req.url != "/search" && req.url != "/metrics" && thisUsername != "max"){
 
     	console.log("userIP: " + userIP);
 
