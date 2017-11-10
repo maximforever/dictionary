@@ -11,7 +11,7 @@ function main(){
 
 	/* LISTENERS */
 
-	$("body").on("click", ".admin-decision", function(){
+	$("body").on("touchstart click", ".admin-decision", function(){
 
 		var votingData = {
 		        id: this.dataset.id,
@@ -48,27 +48,27 @@ function main(){
 
     });
 
-    $("body").on("click", "#unapproved-definitions-link", function(){
+    $("body").on("touchstart click", "#unapproved-definitions-link", function(){
 		getAdminData("definitions");
     });
 
-    $("body").on("click", "#unresolved-reports-link", function(){
+    $("body").on("touchstart click", "#unresolved-reports-link", function(){
         getAdminData("reports");
     });
 
-    $("body").on("click", "#unreviewed-comments", function(){
+    $("body").on("touchstart click", "#unreviewed-comments", function(){
         getAdminData("comments");
     });
 
-    $("body").on("click", "#find-user", function(){
+    $("body").on("touchstart click", "#find-user", function(){
     	getUserRoles($("#user-role-search"));
     });
 
-    $("body").on("click", "#update-user-roles", function(){
+    $("body").on("touchstart click", "#update-user-roles", function(){
     	updateUserRoles();
     });
 
-     $("body").on("click", "#user-role-manager", function(){
+     $("body").on("touchstart click", "#user-role-manager", function(){
     	getRoleEditor();
     });
 
