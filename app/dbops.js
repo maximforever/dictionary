@@ -1093,7 +1093,7 @@ function getMetrics(db, req, callback){
 
 
 	var userQuery = {
-		suspended: false
+
 	}
 
 	var visitsQuery = {}
