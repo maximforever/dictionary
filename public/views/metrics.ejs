@@ -21,7 +21,9 @@
         </div>
 
         <div class = "metric-table metric-username">
-            <%= user.createdOn %>
+            <% if(user.createdOn && user.createdOn.length){ %>
+                <%= new Date(user.createdOn).toLocaleDateString('en-US'); %>
+            <% } %>
         </div>
     </div>
 
