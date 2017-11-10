@@ -130,12 +130,16 @@ MongoClient.connect(dbAddress, function(err, db){
 
             dbops.getMetrics(db, req, function retrieveData(response){
 
+                console.log("unapproved: " + response.unapprovedDefinitionCount);
+
+
                 res.render("metrics", {
                     visitCount: response.visitCount,
                     userCount: response.userCount, 
                     visits: response.visits, 
                     users: response.users,
-                    definitionCount: response.definitionCount,
+                    approvedDefinitionCount: response.approvedDefinitionCount,
+                    unapprovedDefinitionCount: response.unapprovedDefinitionCount,
                     termCount: response.termCount
                 });
 
