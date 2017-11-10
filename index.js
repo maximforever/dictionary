@@ -429,9 +429,10 @@ MongoClient.connect(dbAddress, function(err, db){
         console.log(req.params);
 
         var fullProfile = false;
+        var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
 
         if(req.session.user){
-            if((req.session.user.username == req.params.username) || (req.session.user.admin == "true") || (req.session.user.moderator  == "true") ){
+            if((req.session.user.username == req.params.username) || moderator){
                 fullProfile = true;
             }
         }
@@ -439,8 +440,8 @@ MongoClient.connect(dbAddress, function(err, db){
 
         var profile = "profile/definitions";            // this takes care of typos and defaults to the definitions page
 
-        if(req.params.section == "comments"){ profile = "profile/comments" }
-        if(req.params.section == "status" && fullProfile){ profile = "profile/status" }
+        if(req.params.section == "comments"){ profile = "profile/comments"; }
+        if(req.params.section == "status" && fullProfile){ profile = "profile/status"; }
 
         if(req.params.section == "definitions" || req.params.section == "comments" || req.params.section == "status"){
             dbops.getUserData(db, req, req.params.username, function getData(response){

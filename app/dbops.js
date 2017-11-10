@@ -210,12 +210,13 @@ function addDefinition(db, req, callback){
 					var relatedTerms = [];
 
 					// let's make sure the related terms exist and are kosher
-					req.body.related.forEach(function(term){
-						if(term.trim().length && validateInput(term)){
-							relatedTerms.push(term)
-						}
-					})
-
+					if(req.body.related){
+						req.body.related.forEach(function(term){
+							if(term.trim().length && validateInput(term)){
+								relatedTerms.push(term)
+							}
+						})
+					}
 
 					console.log("This user has submitted " + approvedDefinitions.length + " definitions");
 
@@ -244,7 +245,11 @@ function addDefinition(db, req, callback){
 						type: "definition"
 					}
 
-					if(approvedDefinitions.length > 5){
+					var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
+
+
+
+					if(approvedDefinitions.length > 5 || moderator ){
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
 

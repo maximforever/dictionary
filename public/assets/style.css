@@ -1820,15 +1820,16 @@ button:hover {
     }
 
     .metric-username {
-        width: 26%;
+        width: 40%;
     }
 
     .metric-email {
         width: 43%;
+        display: none;  
     }
 
     .metric-date {
-        width: 25%;
+        width: 40%;
     }
 
     .metric-definition {
