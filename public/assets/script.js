@@ -179,16 +179,29 @@ function main(){
 	$("body").on("keydown", function(e){        
 
 	    if(e.which == 13){                                         // 13 = ENTER
-	        if($("#search-bar").is(":focus")){ 
+	        
+            if($("#search-bar").is(":focus")){ 
+
                 if(activeTermIndex > -1){
-                    $("#search-bar").val($(".term-link").eq(activeTermIndex).text());
+                    var term = $(".term-link").eq(activeTermIndex).text();
+                    $("#search-bar").val(term);
+                    $("#terms-section").empty();
+                    activeTermIndex = -1;
+                    getDefinition(term, false);
+                } else {
+                    console.log("ALSO SEARCHING LOL");
+                    search();
                 }
-                search();
+
+                
+
             } else if($("#signup-password").is(":focus") || $("#signup-login").is(":focus") ){
                 signup();
             } else if ($("#login-password").is(":focus") || $("#login-login").is(":focus") ){
                 login();
             }
+
+
 	    }
 
         if(e.which == 27){                                         // 27 = ESC
@@ -212,6 +225,7 @@ function main(){
                     if(activeTermIndex  > (termLinks.length-1)){  activeTermIndex = 0 }
                 }
 
+                console.log(activeTermIndex);
 
                 termLinks.removeClass("term-link-selected");
                 termLinks.eq(activeTermIndex).addClass("term-link-selected");
@@ -243,7 +257,7 @@ function main(){
     $("#search-bar").on("keyup", function(e){
 
         if($("#search-bar").val().length > 2){
-            if(e.which < 37 || e.which > 40){       // 37-40 are arrow keys
+            if((e.which < 37 || e.which > 40) && e.which != 13){       // 37-40 are arrow keys
                 search();
             }
         } else {
@@ -451,7 +465,6 @@ function showSignup(){
 }
 
 function search(){
-	
 
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
 
@@ -1048,8 +1061,6 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                     unsortedCategories.splice(maxIndex, 1);
 
                 }
-
-                console.log(sortedCategories);
 
                 for(var k = 0; k < sortedCategories.length; k++){
 
