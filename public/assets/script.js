@@ -482,6 +482,16 @@ function search(){
                             });
                         }
 
+                        $("#definitions-section").empty();
+
+                        if(result.loggedIn == "true" || result.loggedIn == true){
+                            console.log("logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                        } else {
+                            console.log("NOT logged in");
+                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
+                        }
+
             		} else {
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
