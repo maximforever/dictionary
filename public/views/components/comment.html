@@ -4,16 +4,15 @@
 <div class = "comment" id = "{{id}}">
 	
 	<div class = "comment-meta">
-		<span class = "definition-history">
+		<div class = "definition-history">
 			<a href = "/profile/{{comment.author}}/definitions">@{{comment.author}}</a> on {{date}} (<a href = "/{{comment.term}}">{{comment.term}}</a>)
- 		</span>
-
-		<span class = "definition-actions">
+ 		</div><!-- 
+     --><div class = "definition-actions">
 	 		{{#if comment.owner}}
 	 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "comments"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
 	 		{{/if}}
 	 		<div class = "bold link report-post" data-id = "{{id}}" data-type = "comments"><i class="fa fa-flag-o" aria-hidden="true"></i></div>
-		</span>
+		</div>
 	</div>
 
 

@@ -144,6 +144,7 @@ function main(){
         $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
         $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
         $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
+        
     });
 
     $("body").on("touchstart click", ".delete-post", function(){
