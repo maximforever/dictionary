@@ -429,7 +429,11 @@ MongoClient.connect(dbAddress, function(err, db){
         console.log(req.params);
 
         var fullProfile = false;
-        var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
+        var moderator = false;
+
+        if(req.session.user && (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true)){
+            moderator = true;
+        }
 
         if(req.session.user){
             if((req.session.user.username == req.params.username) || moderator){

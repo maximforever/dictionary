@@ -225,7 +225,7 @@ function main(){
                     if(activeTermIndex  > (termLinks.length-1)){  activeTermIndex = 0 }
                 }
 
-                console.log(activeTermIndex);
+                // console.log(activeTermIndex);
 
                 termLinks.removeClass("term-link-selected");
                 termLinks.eq(activeTermIndex).addClass("term-link-selected");
