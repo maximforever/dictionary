@@ -154,7 +154,7 @@ function main(){
 
         setTimeout(function(){
             openComments = false;
-        }, 100)
+        }, 100);
         
 
     });
@@ -270,7 +270,8 @@ function main(){
     $("#search-bar").on("keyup", function(e){
 
         if($("#search-bar").val().length > 2){
-            if((e.which < 37 || e.which > 40) && e.which != 13){       // 37-40 are arrow keys, 13 is enter
+            if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192)){       // 48-90 are letters and numbers
+                console.log(e.which);   
                 logSearch();
                 search();
             }
@@ -512,10 +513,8 @@ function search(){
                         $("#definitions-section").empty();
 
                         if(result.loggedIn == "true" || result.loggedIn == true){
-                            console.log("logged in");
                             $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         } else {
-                            console.log("NOT logged in");
                             $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
                         }
 
@@ -543,15 +542,9 @@ function search(){
 
 function logSearch(){
 
-
-
-
-
     if($("#search-bar").val()){
 
-
         var currentText = $("#search-bar").val().trim().toLowerCase();
-
 
         setTimeout(function checkIfAddedSearch(){
 
@@ -562,7 +555,11 @@ function logSearch(){
                 term: newText
             }
 
+            //if after 2 seconds the search bar contents have not changed, log the search
+
             if(done){
+
+                console.log("recording search for " + searchQuery.term);
 
                 $.ajax({
                     type: "post",
@@ -575,7 +572,7 @@ function logSearch(){
 
             }
 
-        }, 3000)
+        }, 2000)
 
     } 
 }

@@ -42,32 +42,14 @@ function search(db, req, callback){
     	thisUsername = req.session.user.username;
     }
 
-	var newSearchRecord = {
-		term: req.body.term,
-		username: thisUsername,
-		ip: userIP,
-		date: new Date()
-	}
-
 	database.read(db, "terms", searchQuery, function(searchResult){
 
-		if(thisUsername != "max"){
-			database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
-
-				callback({
-					status: "success",
-					count: searchResult.length,
-					body: searchResult
-				});
-
-			});
-		} else {
-			callback({
-				status: "success",
-				count: searchResult.length,
-				body: searchResult
-			});
-		}
+		callback({
+			status: "success",
+			count: searchResult.length,
+			body: searchResult
+		});
+		
 
 	});
 }
@@ -200,6 +182,31 @@ function getDefinitions(db, req, callback){
 			})
 		})
 	});
+}
+
+function logSearch(db, req, callback){
+
+	var userIP = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+    var thisUsername = null;
+
+    if(req.session.user){
+    	thisUsername = req.session.user.username;
+    }
+
+	var newSearchRecord = {
+		term: req.body.term,
+		username: thisUsername,
+		ip: userIP,
+		date: new Date()
+	}
+
+	if(thisUsername != "max"){
+		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
+			callback();
+		});
+	}
+
+
 }
 
 function addDefinition(db, req, callback){
@@ -1542,6 +1549,7 @@ function validateInput(string){
 
 /* MODULE EXPORES */
 module.exports.search = search;
+module.exports.logSearch = logSearch;
 module.exports.getDefinitions = getDefinitions;
 module.exports.addDefinition = addDefinition;
 module.exports.getComments = getComments;

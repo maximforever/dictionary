@@ -187,6 +187,17 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
+
+
+
+
+
+    app.post("/log-search", function(req, res){
+        dbops.logSearch(db, req, function logSearch(){
+            res.send({ status: "success" });
+        });
+    });
+
     app.post("/get-definitions", function(req, res){
 
         console.log("GET DEFINITIONS POST:");
