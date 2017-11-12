@@ -39,7 +39,7 @@ function search(db, req, callback){
     var thisUsername = null;
 
     if(req.session.user){
-    	thisUsername = req.session.user.username
+    	thisUsername = req.session.user.username;
     }
 
 	var newSearchRecord = {
@@ -50,15 +50,25 @@ function search(db, req, callback){
 	}
 
 	database.read(db, "terms", searchQuery, function(searchResult){
-		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
 
+		if(thisUsername != "max"){
+			database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
+
+				callback({
+					status: "success",
+					count: searchResult.length,
+					body: searchResult
+				});
+
+			});
+		} else {
 			callback({
 				status: "success",
 				count: searchResult.length,
 				body: searchResult
 			});
+		}
 
-		});
 	});
 }
 
