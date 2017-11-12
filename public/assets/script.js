@@ -4,6 +4,9 @@ var currentTerm = null;
 var currentNotifications = [];
 var currentNotificationCounter = 0;
 
+var lastSearchedTerm = null;
+var openComments = false;
+
 var activeTermIndex = -1;
 
 var screenWidth = $(window).width();
@@ -139,12 +142,21 @@ function main(){
         
     });
 
-    $("body").on("touchstart click", ".comment-on-post", function(){
+    $("body").on("touchstart click", ".comment-on-post", function(e){
 
-        $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
-        $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
-        $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
+        if(!openComments){
+            $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
+            $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
+            $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
+
+            openComments = true;
+        }
+
+        setTimeout(function(){
+            openComments = false;
+        }, 100)
         
+
     });
 
     $("body").on("touchstart click", ".delete-post", function(){
@@ -258,7 +270,8 @@ function main(){
     $("#search-bar").on("keyup", function(e){
 
         if($("#search-bar").val().length > 2){
-            if((e.which < 37 || e.which > 40) && e.which != 13){       // 37-40 are arrow keys
+            if((e.which < 37 || e.which > 40) && e.which != 13){       // 37-40 are arrow keys, 13 is enter
+                logSearch();
                 search();
             }
         } else {
@@ -526,6 +539,47 @@ function search(){
     	console.log("you're not searching for anything!");
     }
 }
+
+
+function logSearch(){
+
+
+
+
+
+    if($("#search-bar").val()){
+
+
+        var currentText = $("#search-bar").val().trim().toLowerCase();
+
+
+        setTimeout(function checkIfAddedSearch(){
+
+            var newText = $("#search-bar").val().trim().toLowerCase();
+            var done = (currentText == newText);
+
+            var searchQuery = {
+                term: newText
+            }
+
+            if(done){
+
+                $.ajax({
+                    type: "post",
+                    data: searchQuery,
+                    url: "/log-search",
+                    success: function(result){
+                        console.log("logged " + newText);
+                    }
+                });
+
+            }
+
+        }, 3000)
+
+    } 
+}
+
 
 function searchForDefinitions(searchTerm){
 

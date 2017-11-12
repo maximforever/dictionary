@@ -585,7 +585,7 @@ button:hover {
 
 .comment-meta{
     font-size: 0.85em;
-    height: 2em;
+    min-height: 2em;
     background: #bebdd0;
     padding: 2px 20px;
 }
@@ -1385,7 +1385,7 @@ button:hover {
     }
 
     .comment-meta{
-        padding: 0px 10px;
+        padding: 2px 10px;
     }
 
     .definition-history{
