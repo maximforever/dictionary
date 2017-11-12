@@ -3,12 +3,11 @@
 	<div class = "main-row">
 
 		<div class = "definition-meta">
-			<span class = "definition-history">
+			<div class = "definition-history">
 				<a class = "link definition-term" href = "/{{definition.term}}">{{definition.term}}</a> |	
 				<a href = "/profile/{{definition.author}}/definitions">@{{definition.author}}</a><!--  on {{editDate}} -->
-	 		</span>
-
-	 		<span class = "definition-actions">
+	 		</div><!-- 
+	 	 --><div class = "definition-actions">
 		 		{{#if definition.owner}}
 		 			<div class = "bold link delete-post" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
 		 		{{/if}}
@@ -21,7 +20,7 @@
 					<span class = "comment-count" data-id = "{{id}}">{{definition.comments.length}}</span>
 				</span>
 
-			</span>
+			</div>
 		</div>
 
 		<div class = "definition-main-body">

@@ -576,14 +576,9 @@ button:hover {
     padding-right: 10px;
 }
 
-.definition-history{
-    font-weight: 700;
-    vertical-align: middle;
-}
-
 .definition-meta{
 	font-size: 0.85em;
-    height: 2em;
+    min-height: 2em;
     padding: 5px 15px 5px 20px;
     background: #c6e060;
 }
@@ -595,8 +590,18 @@ button:hover {
     padding: 2px 20px;
 }
 
+.definition-history{
+    font-weight: 700;
+    vertical-align: middle;
+    display: inline-block;
+    width: 80%;
+}
+
 .definition-actions {
-    float: right;
+    text-align: right;
+    vertical-align: top;
+    display: inline-block;
+    width: 20%;
 }
 
 .voting-column {
@@ -1383,6 +1388,14 @@ button:hover {
         padding: 0px 10px;
     }
 
+    .definition-history{
+        width: 60%;
+    }
+
+    .definition-actions {
+        width: 40%;
+    }
+
     .comment-body {
         margin-bottom: 10px;
     }
@@ -1446,6 +1459,12 @@ button:hover {
     .add-one {
         background: #d3e486;
     }
+
+    .related-term {
+        display: inline-block;
+        margin: 2px;
+    }
+
 
     .term .title {
         font-size: 1.5em;
