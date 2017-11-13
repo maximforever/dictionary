@@ -52,10 +52,15 @@ MongoClient.connect(dbAddress, function(err, db){
             saveUninitialized: false,
             resave: false,
             secure: false,
+            expires: null,
+            cookie: {
+                maxAge: null
+            },
             store: new MongoStore({ 
                 db: thisDb,
-                ttl: 14 * 24 * 60 * 60   
-             })
+                ttl: 60*60*12,                  // in seconds - so, 12 hours total. Ths should hopefully expire and remove sessions for users that haven't logged in
+                autoRemove: 'native'
+            })
     }));
 
     app.use(function(req, res, next){                                           // logs request URL

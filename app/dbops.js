@@ -968,10 +968,7 @@ function login(db, req, callback){
 				                req.session.user.moderator = existingUsers[0].moderator;
 
 				                var day = 60000*60*24;
-				                req.session.expires = new Date(Date.now() + (14*day));          // this helps the session keep track of the expire date
-
-				                req.session.cookie.expires = false;
-
+				                
 				                if(req.body.rememberMe == "true" || req.body.rememberMe == true){
 				                	req.session.cookie.expires = new Date(Date.now() + (14*day));
 				                	req.session.cookie.maxAge = (14*day);                           // this is what makes the cookie expire
