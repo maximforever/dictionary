@@ -36,7 +36,6 @@ function main(){
             if(location.pathname.indexOf("/definitions") != -1){ 
                 getDefinition(username, true);
             } else if(location.pathname.indexOf("/comments") != -1){
-
                 getCommentsForUser(username);
             }
 
@@ -270,8 +269,7 @@ function main(){
     $("#search-bar").on("keyup", function(e){
 
         if($("#search-bar").val().length > 2){
-            if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192)){       // 48-90 are letters and numbers
-                console.log(e.which);   
+            if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192)){       // 48-90 are letters and numbers 
                 logSearch();
                 search();
             }
@@ -708,7 +706,7 @@ function addDefinition(){
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
                                         $("#error").hide();
-                                        // $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review.");
+                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review and will be up shortly!");
                                     } else {
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for '<span class = 'bold'>" + result.term + "</span>' is live!</div>");
                                         $("#error").hide();
@@ -1470,9 +1468,6 @@ function validateInput(string){
 
     // 2. check every word against a list of offensive terms; see if it's a link other than example.com
 
-    console.log("string");
-    console.log(string);
-
     for(var j = 0; j < wordArray.length; j++){
         if(forbiddenWords.indexOf(wordArray[j]) != -1){
             isStringValid = false;
@@ -1487,7 +1482,6 @@ function validateInput(string){
             }
 
             for(var k = 0; k < linkWords.length; k++){
-                console.log(wordArray[j]);
                 if(string.indexOf(linkWords[k]) != -1 && string.indexOf("example.com") == -1){
                     isStringValid = false;
                     console.log(wordArray[j] + " looks like a link");

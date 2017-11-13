@@ -264,7 +264,8 @@ function addDefinition(db, req, callback){
 
 					var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
 
-					if((approvedDefinitions.length > 5 || moderator)){
+					// if((approvedDefinitions.length > 5 || moderator)){			
+					if(true){												// all definitions are auto-approved - change at launch!
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
 

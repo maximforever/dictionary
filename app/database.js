@@ -3,7 +3,7 @@ function create(db, col, obj, callback){
     db.collection(col).save(obj, function(err, result){
         if (err){
             console.log("MAYDAY! MAYDAY! Crashing.");
-            return console.log(err);
+            console.log(err);
         }
         console.log("Successfully saved this object to '" + col + "' :");
         console.log(obj);
@@ -16,7 +16,7 @@ function read(db, col, obj, callback){
     db.collection(col).find(obj).toArray(function(err, result){
         if (err){
             console.log("MAYDAY! MAYDAY! Crashing.");
-            return console.log(err);
+            console.log(err);
         }
         console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query:");
         console.log(obj);
@@ -47,7 +47,7 @@ function remove(db, col, query, callback){
     db.collection(col).remove(query, function removeThis(err, result) {
         if (err){
             console.log("MAYDAY! MAYDAY! Crashing.");
-            return console.log(err);
+            console.log(err);
         }
         callback("Database: Record successfully deleted");
     });
@@ -59,7 +59,7 @@ function count(db, col, obj, callback){
     db.collection(col).count(function(err, count){
         if (err){
             console.log("MAYDAY! MAYDAY! Crashing.");
-            return console.log(err);
+            console.log(err);
         }
         console.log("FIND: pulled " + count + " records from '" + col + "' for the query:");
         console.log(obj);
