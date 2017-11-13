@@ -304,7 +304,7 @@ button:hover {
     background: #f5ffc0;
     border-radius: 3px;
     border: 1px solid rgba(190, 173, 127, 0.6);
-    border-top: 2px solid #88612c;
+    border-top: 4px solid #88612c;
 }
 
 .definition-main-body{
@@ -1423,7 +1423,7 @@ button:hover {
     /* CATEGORY CHART*/
 
     #category-summary {
-        border-left: 2px solid black;
+        border-left: 2px solid #88612c;
         font-weight: 600;
         margin: 0;
         min-width: auto;
