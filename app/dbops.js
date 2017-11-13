@@ -264,9 +264,7 @@ function addDefinition(db, req, callback){
 
 					var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
 
-
-
-					if(approvedDefinitions.length > 5 || moderator ){
+					if((approvedDefinitions.length > 5 || moderator)){
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
 
@@ -1509,15 +1507,21 @@ function validateInput(string){
 
     // 1. split the string into an array of words
 
-    b = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
-    wordArray = b.split(" ");
+    var clearnString = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
+    var wordArray = clearnString.split(" ");
 
-    for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the value of the string
+    for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the length of the string
         if(wordArray[i].trim().length == 0) {
             wordArray.splice(i, 1);
         }
     }
     
+
+    // 2. check every word against a list of offensive terms; see if it's a link other than example.com
+
+    console.log("string");
+    console.log(string);
+
     for(var j = 0; j < wordArray.length; j++){
         if(forbiddenWords.indexOf(wordArray[j]) != -1){
             isStringValid = false;
@@ -1532,8 +1536,8 @@ function validateInput(string){
             }
 
             for(var k = 0; k < linkWords.length; k++){
-            	console.log(wordArray[j]);
-                if(string.indexOf(linkWords[k]) != -1){
+                console.log(wordArray[j]);
+                if(string.indexOf(linkWords[k]) != -1 && string.indexOf("example.com") == -1){
                     isStringValid = false;
                     console.log(wordArray[j] + " looks like a link");
                 } 
