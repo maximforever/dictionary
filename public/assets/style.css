@@ -1056,15 +1056,17 @@ button:hover {
 
 .all-terms-link-wrapper:hover {
     background: rgba(10, 10, 10, 0.1);
-    transform: scale(1.1, 1.1);
+    transform: scale(1.3, 1.3);
     font-weight: 600;
     transition-property: color, font-weight, font-size, background;
-    transition-duration: 0.25s;
+    transition-duration: 0.3s;
+    cursor: pointer;
 }
 
 .all-terms-link-wrapper:hover + .all-terms-link {
-    border-bottom: rgba(111, 71, 17, 0.8);
-    transition-property: border-bottom;
+    border-bottom: 2px solid rgba(111, 71, 17, 0.8);
+    margin: 10px auto;
+    transition-property: border-bottom, margin;
     transition-duration: 0.25s;
 }
 

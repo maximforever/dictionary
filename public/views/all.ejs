@@ -5,9 +5,9 @@
     <p class = "page-title">ALL TERMS</p>
 
     <% terms.forEach(function(term) { %>
-            <div class = "link all-terms-link-wrapper">
-                <div class = "all-terms-link" href = "/<%= term.name %>"><%= term.name %></div>
-            </div>
+            <a class = "link all-terms-link-wrapper" href = "/<%= term.name %>">
+                <div class = "all-terms-link"><%= term.name %></div>
+            </a>
     <% }) %>
 
 </div>
