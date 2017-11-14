@@ -2,7 +2,13 @@
 
 <div id = "main-section">
 
-    <div class = "metric">
+    <br>
+
+    <div class = "metric definition-count-metric">
+        Definitions: <span class = "bold definition-count"><%= approvedDefinitionCount %></span> for <span class = "bold"><%= termCount %></span> terms
+    </div>
+    <br>
+    <div class = "metric definition-count-metric">
         Users: <span class = "bold"><%= userCount - 3 %></span>
     </div>
     <br>
@@ -32,15 +38,11 @@
     <br><br><br>
 
 
-    <div class = "metric">Visits: <span class = "bold"><%= visitCount %></span></div>
+    <div class = "metric">Visits: <span class = "bold"><%= visitCount %></span>
     <br>
-
-    <div class = "metric">
-        Approved definitions: <span class = "bold"><%= approvedDefinitionCount %></span> for <span class = "bold"><%= termCount %></span> terms
-        <br>
-        Unapproved definitions: <span class = "bold"><%= unapprovedDefinitionCount %></span>
-    </div>
+    Unapproved definitions: <span class = "bold"><%= unapprovedDefinitionCount %></span>
     <br><br>
+    </div>
     <div class = "metric">Approved Definitions:</div>
 
     <% approvedDefinitions.forEach(function(def){ %>

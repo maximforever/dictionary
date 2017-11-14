@@ -1137,6 +1137,14 @@ button:hover {
     font-size: 1.5em;
 }
 
+.definition-count-metric {
+    font-size: 2em;
+    background: #ffffbd;
+    padding: 5px 20px;
+    display: inline-block;
+    margin-bottom: 25px;
+}
+
 .metric-table {
     display: inline-block;
     width: 32%;

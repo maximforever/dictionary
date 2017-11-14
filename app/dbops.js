@@ -968,7 +968,7 @@ function login(db, req, callback){
 				                req.session.user.moderator = existingUsers[0].moderator;
 
 				                var day = 60000*60*24;
-				                
+
 				                if(req.body.rememberMe == "true" || req.body.rememberMe == true){
 				                	req.session.cookie.expires = new Date(Date.now() + (14*day));
 				                	req.session.cookie.maxAge = (14*day);                           // this is what makes the cookie expire
@@ -1018,8 +1018,9 @@ function logVisit(db, req, callback){
     	page: req.url
     }
 
+    var ignoredUrls = ["/get-definitions", "/search", "/metrics", "/updated-user-data", "/log-search", "/login"]
 
-    if(req.url != "/get-definitions" && req.url != "/search" && req.url != "/metrics" && thisUsername != "max"){
+    if(ignoredUrls.indexOf(req.url) == -1 && thisUsername != "max"){
 
     	console.log("userIP: " + userIP);
 
@@ -1042,6 +1043,7 @@ function logVisit(db, req, callback){
 		})
     	
     } else {
+    	console.log("no need to log that page");
     	callback();
     }
 
