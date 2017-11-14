@@ -278,11 +278,18 @@ function main(){
         if($("#search-bar").val().length > 2){
             $("#main-section").prepend(e.which + "<br>");
 
-            if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
+            if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers 
 
                 logSearch();
                 search();
             }
+
+
+            if(e.which == 229){
+
+            }
+
+
         } else {
             $("#terms-section").empty();
         }
