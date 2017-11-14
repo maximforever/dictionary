@@ -478,9 +478,6 @@ function showSignup(){
 function search(){
 
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
-
-        $("#main-section").prepend("searching");
-
         var searchTerm = $("#search-bar").val().trim();
 
     	var searchQuery = {
@@ -495,8 +492,6 @@ function search(){
 
             	if(result.status == "success"){
             		$("#terms-section").empty();
-
-                    $("#main-section").prepend(JSON.stringify(result));
 
             		if(result.count > 0){
 
