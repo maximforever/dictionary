@@ -44,7 +44,16 @@ function main(){
 
     resetNavBar();
 
-    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1){
+    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1 && $("#search-bar").val().trim().length){
+        
+        var textLength = $("#search-bar").val().trim().length;
+        console.log(textLength);
+
+        if(screenWidth < 980 && textLength > 18){
+            var searchBarFontSize = (2.5 - (textLength - 18)*0.095) + "em";
+            console.log(searchBarFontSize);
+            $("#search-bar").css("font-size", searchBarFontSize);
+        }
         search();
     }
 
