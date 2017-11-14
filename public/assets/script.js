@@ -276,8 +276,6 @@ function main(){
 
     $("#search-bar").on("keyup", function(e){
         if($("#search-bar").val().length > 2){
-            $("#main-section").prepend(e.which + "<br>");
-
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
                 logSearch();
                 search();
@@ -492,7 +490,6 @@ function search(){
 
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
 
-        $("#main-section").prepend("searching...<br>");
         var searchTerm = $("#search-bar").val().trim();
 
     	var searchQuery = {
@@ -504,9 +501,7 @@ function search(){
             data: searchQuery,
             url: "/search",
             success: function(result){
-                $("#main-section").prepend("ajax response<br>");
             	if(result.status == "success"){
-                    $("#main-section").prepend(result.count + " results<br>");
             		$("#terms-section").empty();
 
             		if(result.count > 0){
