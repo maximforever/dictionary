@@ -247,7 +247,7 @@ function main(){
         }
 	}); 
 
-    $("body").on("keyup touchend", "#definition-term-textarea", function(e){
+    $("body").on("keyup", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
             $("#related-term-suggestions-section").hide();
             $("#term-suggestions-section").empty();
@@ -264,7 +264,7 @@ function main(){
         }
     });
 
-    $("#search-bar").on("keyup", function(e){
+    $("#search-bar").on("keyup touchend", function(e){
 
         if($("#search-bar").val().length > 2){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
