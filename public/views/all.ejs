@@ -1,0 +1,16 @@
+<% include partials/_header.ejs %>
+
+<div class = "all-terms-section" id = "main-section">
+
+    <p class = "page-title">ALL TERMS</p>
+
+    <% terms.forEach(function(term) { %>
+            <div class = "link all-terms-link-wrapper">
+                <div class = "all-terms-link" href = "/<%= term.name %>"><%= term.name %></div>
+            </div>
+    <% }) %>
+
+</div>
+
+<% include partials/_footer.ejs %>
+

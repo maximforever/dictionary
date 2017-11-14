@@ -122,9 +122,13 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
     app.get("/faq", function(req, res){
-
         res.render("faq");
-        
+    });
+
+    app.get("/all", function(req, res){
+        dbops.getAllTerms(db, req, function renderTerms(allTerms){
+            res.render("all", {terms: allTerms.terms});
+        })
     });
     
     

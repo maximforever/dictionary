@@ -1484,6 +1484,19 @@ function getFAQ(db, req, callback){
 	})
 }
 
+function getAllTerms(db, req, callback){	
+
+	// not using database.js for this
+	db.collection("terms").find({}).sort({name: 1}).toArray(function getTerms(err, result) {
+        if (err){
+            console.log("MAYDAY! MAYDAY! Crashing.");
+            console.log(err);
+        }
+
+        callback({terms: result});
+    });
+}
+
 /* NON-DB FUNCTIONS */
 
 function generateHash(hashLength){
@@ -1578,6 +1591,7 @@ module.exports.updateUserRoles = updateUserRoles;
 
 module.exports.getUserData = getUserData;
 module.exports.getFAQ = getFAQ;
+module.exports.getAllTerms = getAllTerms;
 
 module.exports.clearNotifications = clearNotifications;
 module.exports.passwordResetRequest = passwordResetRequest;

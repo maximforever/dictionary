@@ -1033,6 +1033,41 @@ button:hover {
 }
 
 
+/* ALL TERMS SECTION */
+
+.all-terms-section{
+    max-width: 600px;
+    margin: 0px auto;
+}
+
+.all-terms-link-wrapper {
+    display: block;
+    width: 100%;
+    font-size: 1.5em;
+    padding: 6px 0;
+    
+}
+
+.all-terms-link {
+    display: table;
+    margin: 0px auto;   
+    border-bottom: 1px solid rgba(111, 71, 17, 0.5);
+}
+
+.all-terms-link-wrapper:hover {
+    background: rgba(10, 10, 10, 0.1);
+    transform: scale(1.1, 1.1);
+    font-weight: 600;
+    transition-property: color, font-weight, font-size, background;
+    transition-duration: 0.25s;
+}
+
+.all-terms-link-wrapper:hover + .all-terms-link {
+    border-bottom: rgba(111, 71, 17, 0.8);
+    transition-property: border-bottom;
+    transition-duration: 0.25s;
+}
+
 /* ADMIN PANEL */
 
 #admin-panel-link {
@@ -1211,7 +1246,7 @@ button:hover {
     display: none;
 }
 
-.faq-title {
+.page-title {
     text-align: center;
     margin: 10px 0px;
     font-size: 2.5em;
@@ -1865,6 +1900,11 @@ button:hover {
 
     .metric-definition-author{
         float: right;   
+    }
+
+    .page-title {
+        margin-bottom: 15px;
+        font-size: 2em;
     }
 
 
