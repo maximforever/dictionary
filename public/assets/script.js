@@ -487,6 +487,8 @@ function showSignup(){
 function search(){
 
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
+
+        $("#main-section").prepend("searching...<br>");
         var searchTerm = $("#search-bar").val().trim();
 
     	var searchQuery = {
@@ -498,8 +500,9 @@ function search(){
             data: searchQuery,
             url: "/search",
             success: function(result){
-
+                $("#main-section").prepend("ajax response<br>");
             	if(result.status == "success"){
+                    $("#main-section").prepend(result.count + " results<br>");
             		$("#terms-section").empty();
 
             		if(result.count > 0){
