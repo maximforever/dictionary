@@ -44,7 +44,7 @@ function main(){
 
     resetNavBar();
 
-    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1 && $("#search-bar").val().trim().length){
+    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1 && location.pathname.indexOf("faq") == -1 && location.pathname.indexOf("password-reset") == -1 &&  location.pathname.indexOf("all") == -1 && $("#search-bar").val() && $("#search-bar").val().trim().length){
         
         var textLength = $("#search-bar").val().trim().length;
         console.log(textLength);
