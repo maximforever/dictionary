@@ -274,7 +274,8 @@ function main(){
         }
     });
 
-    $("#search-bar").on("keyup", function(e){
+    $("#search-bar").on("keyup input", function(e){
+        $("#main-section").prepend("keyup<br>")
         if($("#search-bar").val().length > 2){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
                 logSearch();
