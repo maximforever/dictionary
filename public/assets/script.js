@@ -266,9 +266,7 @@ function main(){
     });
 
     $("#search-bar").on("keyup", function(e){
-        $("#main-section").prepend($("#search-bar").val().length);
         if($("#search-bar").val().length > 2){
-            ;$("#main-section").prepend("s");
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
                 logSearch();
                 search();
@@ -480,6 +478,8 @@ function showSignup(){
 function search(){
 
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
+
+        $("#main-section").prepend("searching");
 
         var searchTerm = $("#search-bar").val().trim();
 
