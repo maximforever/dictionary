@@ -203,6 +203,7 @@ function main(){
                 } else {
                     search();
                 }
+                
 
             } else if($("#signup-password").is(":focus") || $("#signup-login").is(":focus") ){
                 signup();
@@ -246,7 +247,7 @@ function main(){
         }
 	}); 
 
-    $("body").on("keyup", "#definition-term-textarea", function(e){
+    $("body").on("keyup touchend", "#definition-term-textarea", function(e){
         if($("#definition-term-textarea").val().length > 2){
             $("#related-term-suggestions-section").hide();
             $("#term-suggestions-section").empty();
@@ -263,9 +264,9 @@ function main(){
         }
     });
 
-    $("#search-bar").on("keydown", function(e){
+    $("#search-bar").on("keyup", function(e){
 
-        if($("#search-bar").val().length > 1){                  // on keydown, the value lags one char behind - so this really means we're searching over 2 chars
+        if($("#search-bar").val().length > 2){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
                 logSearch();
                 search();
