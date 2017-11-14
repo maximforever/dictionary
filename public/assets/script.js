@@ -201,11 +201,8 @@ function main(){
                     activeTermIndex = -1;
                     getDefinition(term, false);
                 } else {
-                    console.log("ALSO SEARCHING LOL");
                     search();
                 }
-
-                
 
             } else if($("#signup-password").is(":focus") || $("#signup-login").is(":focus") ){
                 signup();
@@ -266,9 +263,9 @@ function main(){
         }
     });
 
-    $("#search-bar").on("keyup", function(e){
+    $("#search-bar").on("keydown", function(e){
 
-        if($("#search-bar").val().length > 2){
+        if($("#search-bar").val().length > 1){                  // on keydown, the value lags one char behind - so this really means we're searching over 2 chars
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8){       // 48-90 are letters and numbers 
                 logSearch();
                 search();
