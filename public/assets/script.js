@@ -46,7 +46,8 @@ function main(){
 
     if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1 && location.pathname.indexOf("faq") == -1 && location.pathname.indexOf("password-reset") == -1 &&  location.pathname.indexOf("all") == -1 && $("#search-bar").val() && $("#search-bar").val().trim().length){
         
-        var textLength = $("#search-bar").val().trim().length;
+        var term = $("#search-bar").val().trim();
+        var textLength = term.length;
         console.log(textLength);
 
         if(screenWidth < 980 && textLength > 18){
@@ -54,7 +55,8 @@ function main(){
             console.log(searchBarFontSize);
             $("#search-bar").css("font-size", searchBarFontSize);
         }
-        search();
+
+        getDefinition(term, false);
     }
 
 
