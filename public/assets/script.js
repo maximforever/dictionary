@@ -261,7 +261,7 @@ function main(){
 	}); 
 
     $("body").on("keyup", "#definition-term-textarea", function(e){
-        if($("#definition-term-textarea").val().length > 2){
+        if($("#definition-term-textarea").val().length > 1){
             $("#related-term-suggestions-section").hide();
             $("#term-suggestions-section").empty();
             $("#term-suggestions-section").show();
@@ -278,7 +278,7 @@ function main(){
     });
 
     $("#search-bar").on("keyup", function(e){
-        if($("#search-bar").val().length > 2){
+        if($("#search-bar").val().length > 1){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
                 logSearch();
                 search();
@@ -296,7 +296,7 @@ function main(){
     });
 
     $("body").on("keyup", "#related-term-textarea", function(e){
-        if($("#related-term-textarea").val().length > 2){
+        if($("#related-term-textarea").val().length > 1){
             $("#related-term-suggestions-section").empty();
             $("#related-term-suggestions-section").show();
             var searchTerm = $("#related-term-textarea").val().split(",");       // a little more complicated here - only the last word after the comma
@@ -559,7 +559,6 @@ function pageSearch(){
     }
 
     logSearch();
-
 
     $.ajax({
         type: "post",

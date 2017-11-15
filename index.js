@@ -731,9 +731,6 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
-
-
-
     // putting this last to make sure we don't overwrite any other routes
 
     // alternatively, can say "if term != profile, etc... "
