@@ -44,14 +44,13 @@ function main(){
 
     resetNavBar();
 
-    if($("#definitions-section").height() < 5 && location.pathname.indexOf("profile") == -1 && location.pathname.indexOf("faq") == -1 && location.pathname.indexOf("password-reset") == -1 &&  location.pathname.indexOf("all") == -1 && $("#search-bar").val() && $("#search-bar").val().trim().length){
+    if($("#definitions-section").height() < 5 && $("#search-bar").length == 1){
         
         var term = $("#search-bar").val().trim();
         var textLength = term.length;
 
         if(screenWidth < 980 && textLength > 18){
             var searchBarFontSize = (2.5 - (textLength - 18)*0.095) + "em";
-            console.log(searchBarFontSize);
             $("#search-bar").css("font-size", searchBarFontSize);
         }
 
@@ -83,6 +82,7 @@ function main(){
 		currentTerm = term;
         logSearch();
         window.history.pushState("object or string", "Title", "/" + term);      // update url
+
 		getDefinition(term, false);
 	});
 
@@ -247,8 +247,6 @@ function main(){
                     activeTermIndex++;
                     if(activeTermIndex  > (termLinks.length-1)){  activeTermIndex = 0 }
                 }
-
-                // console.log(activeTermIndex);
 
                 termLinks.removeClass("term-link-selected");
                 termLinks.eq(activeTermIndex).addClass("term-link-selected");
@@ -429,7 +427,6 @@ function main(){
     });
 
     $("body").on("touchstart click", ".faq-control", function(){
-        console.log("click");
         $("#" + this.id).parent().find(".show-answer").toggle();
         $("#" + this.id).parent().find(".hide-answer").toggle();
         $("#" + this.id).parent().find(".faq-answer").toggle();
@@ -530,15 +527,13 @@ function search(){
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
                         if(result.loggedIn){
-                            // console.log("logged in");
                             $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         } else {
-                            // console.log("NOT logged in");
                             $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
                         }
                     }      		
             	} else {
-            		console.log(result.error)
+            		console.log(result.error);
             	}
             }
         })
@@ -862,7 +857,6 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
                     $("#" + elementId).find(".voting-button[data-vote = '" + voteDirection + "']").addClass("persistVote");    
                 }
             } else {
-                console.log("something went wrong");
                 flash("error", result.error);
             }
         }
@@ -1426,7 +1420,6 @@ function acknowledgeNotifications(){
             if(result.status == "success"){
                 $(".notification-bell").removeAttr('id');
             } else {
-                console.log("something went wrong");f
                 flash("error", result.error);
             }
         }
@@ -1450,7 +1443,6 @@ function deletePost(thisId, thisType){
                 window.scrollTo(0, 0);
                 flash("error", "Your post has been deleted");
             } else {
-                console.log("Something went wrong");
                 flash("error", result.error);
             }
         }

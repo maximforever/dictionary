@@ -20,6 +20,8 @@ const commonPasswords = ["123456", "password", "password1", "password123", "pass
 
 function search(db, req, callback){
 
+	// ??
+
 	req.body.term = req.body.term.replace(String.fromCharCode(40),String.fromCharCode(92, 40));
 	req.body.term = req.body.term.replace(String.fromCharCode(41),String.fromCharCode(92, 41));
 	req.body.term = req.body.term.replace(String.fromCharCode(91),String.fromCharCode(92, 91));
@@ -300,10 +302,11 @@ function addDefinition(db, req, callback){
 
 					}
 
-
+					var termLink = cleanUrl(req.body.term);
 
 					termQuery = { 
-						name: req.body.term
+						name: req.body.term,
+						link: termLink
 					}
 
 					database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
@@ -1510,6 +1513,28 @@ function generateHash(hashLength){
     return hash;
 }
 
+function cleanUrl(text){
+
+	text = text.split("%").join("%25");
+	text = text.split(" ").join("%20");
+	text = text.split("$").join("%24");
+	text = text.split("&").join("%26");
+	text = text.split("`").join("%60");
+	text = text.split(":").join("%3A");
+	text = text.split("<").join("%3C");
+	text = text.split(">").join("%3E");
+	text = text.split("[").join("%5B");
+	text = text.split("]").join("%5D");
+	text = text.split("+").join("%2B");
+	text = text.split("#").join("%23");
+	text = text.split("@").join("%40");
+	text = text.split("/").join("%2F");
+
+	return text;
+
+}
+
+
 function validateInput(string){
 
     var isStringValid = true;
@@ -1520,8 +1545,8 @@ function validateInput(string){
 
     // 1. split the string into an array of words
 
-    var clearnString = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
-    var wordArray = clearnString.split(" ");
+    var cleanString = string.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");          // use regex to remove all punctuation
+    var wordArray = cleanString.split(" ");
 
     for(var i = (wordArray.length - 1); i >= 0; i--) {              // we need to go backwards because splitting changes the length of the string
         if(wordArray[i].trim().length == 0) {

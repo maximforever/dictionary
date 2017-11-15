@@ -736,6 +736,9 @@ MongoClient.connect(dbAddress, function(err, db){
     // alternatively, can say "if term != profile, etc... "
 
     app.get("/:term", function(req, res){
+
+        console.log(req.params.term);
+
         res.render("index", {searchTerm: req.params.term});
     });
 
