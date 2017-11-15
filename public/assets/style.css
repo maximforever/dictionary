@@ -662,19 +662,19 @@ button:hover {
 /* HEADER */
 
 .alert {
-	font-size: 0.9em;
 	text-align: center;
 }
 
 #error {
+    font-size: 0.9em;
     color: #651229;
     background: #f36e6e;
-
 	padding: 5px;
     display: none;
 }
 
 #message {
+    font-size: 0.9em;
 	color: #0c2b58;
     background: #82bef3;
 	padding: 5px;
@@ -1592,17 +1592,18 @@ button:hover {
     /* HEADER */
 
     .alert {
-        font-size: 0.9em;
         text-align: center;
     }
 
     #error {
+        font-size: 0.9em;
         color: #a20c09;
         background: #F1A19B;
         padding: 5px;
     }
 
     #message {
+        font-size: 0.9em;
         color: #1F3F6F;
         background: #A1D2FC;
         padding: 5px;

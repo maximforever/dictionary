@@ -63,7 +63,7 @@ function main(){
     $("body").on("touchstart click", function(e){
 
 
-        $("#error, #message").text("").hide();
+        $("#error, #message").text("").hide();      // THIS HIDES THE FLASH MESSAGE ON ANY CLICK
 
         $("#terms-section").text("");
 
@@ -757,12 +757,11 @@ function addDefinition(){
                                     
                                     if(!result.termAdded){
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
-                                        $("#error").hide();
-                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' has been submitted for review and will be up shortly!");
+                                        flash("message", "Your definition for '" + result.term + "' has been submitted for review and will be up shortly!");
+
                                     } else {
                                         $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for '<span class = 'bold'>" + result.term + "</span>' is live!</div>");
-                                        $("#error").hide();
-                                        $("#message").css("display", "block").text("Your definition for '" + result.term + "' is live!");
+                                        flash("message", "Your definition for '" + result.term + "' is live!");
                                     }
                                     
                                     $("#new-definition-textarea").val("");
@@ -865,8 +864,7 @@ function voteOnPost(voteDirection, elementId, voteTerm, voteType){
                 }
             } else {
                 console.log("something went wrong");
-                $("#message").hide();
-                $("#error").text(result.error).css("display", "block");
+                flash("error", result.error);
             }
         }
     })
@@ -933,15 +931,13 @@ function login(){
 
                         var message = welcomeMessages[Math.floor(Math.random()*welcomeMessages.length)];
 
-                        $("#error").hide();
-                        $("#message").css("display", "block").text(message);
+                        flash("message", message);
                     } 
                 }
             }
         })
     } else {
-        $("#error").hide();
-        $("#message").text("Username or password can't be blank").css("display", "block");
+        $(".username-error").text("Username or password can't be blank");
     }
 
 }
@@ -965,8 +961,7 @@ function signup(){
             success: function(result){
                 if(result.status == "success"){
                     resetNavBar();
-                    $("#error").hide();
-                    $("#message").text(result.message).css("display", "block");
+                    flash("message", result.message)
                 } else {
                     $(".report-error").text("");
                     $("." + result.errorType + "-error").text(result.message).css("display", "block");
@@ -1033,8 +1028,7 @@ function submitPasswordReset(){
                 $("#password-reset-section").hide();
                 $("#password-reset-section").remove();
                 $("#login-modal, #login-section").show();
-                $("#error").hide();
-                $("#message").css("display", "block").text("Your password has been reset!");
+                flash("message", "Your password has been reset!")
             } else {   
                 $(".password-error").text(result.message);
                 $("#password-reset").val("");
@@ -1053,7 +1047,7 @@ function logout(){
         success: function(result){
             if(result.status == "success"){
                 location.reload();
-                $("#error").text("Logged out").css("display", "block");
+                flash("error", "Logged out");
             } else {
                 $("#login-username, #login-password, #signup-username, #signup-password").val("");
             }
@@ -1341,7 +1335,7 @@ function displayNotification(){
                 
 
             } else {
-                $("#error").text(updatedUserData.error).css("display", "block");
+                flash("error", updatedUserData.error);
             }
         }
     })
@@ -1433,8 +1427,8 @@ function acknowledgeNotifications(){
             if(result.status == "success"){
                 $(".notification-bell").removeAttr('id');
             } else {
-                console.log("something went wrong");
-                $("#error").text(result.error).css("display", "block");
+                console.log("something went wrong");f
+                flash("error", result.error);
             }
         }
     })
@@ -1455,11 +1449,10 @@ function deletePost(thisId, thisType){
             if(result.status == "success"){
                 $("#" + thisId).remove();
                 window.scrollTo(0, 0);
-                $("#error").text("Your post has been deleted").css("display", "block");
-
+                flash("error", "Your post has been deleted");
             } else {
                 console.log("Something went wrong");
-                $("#error").text(result.error).css("display", "block");
+                flash("error", result.error);
             }
         }
     })
@@ -1543,6 +1536,18 @@ function validateInput(string){
     }
 
     return isStringValid;
+}
+
+
+function flash(type, text){
+
+    if(type == "error" || type == "message"){
+        $("#error, #message").hide();
+        $("#" + type).css("display", "block").text(text);
+    } else {
+        console.log("invalid flash type");
+    }
+
 }
 
 
