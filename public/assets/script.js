@@ -50,8 +50,9 @@ function main(){
         var textLength = term.length;
 
         if(screenWidth < 980 && textLength > 18){
-            var searchBarFontSize = (2.5 - (textLength - 18)*0.095) + "em";
-            $("#search-bar").css("font-size", searchBarFontSize);
+            var searchBarFontSize = (2.5 - (textLength - 18)*0.095);
+            if(searchBarFontSize < 1.3) { searchBarFontSize = 1.3 };
+            $("#search-bar").css("font-size", searchBarFontSize + "em");
         }
 
         pageSearch();

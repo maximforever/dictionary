@@ -426,7 +426,7 @@ button:hover {
     padding: 15px 20px;
     display: block;
     border: 1px solid rgba(10,10,10, 0.5);
-    border-left: 4px solid black;
+    border-left: 4px solid #88612c;
 	min-width: 400px;
 	font-size: 0.85em;
 	font-weight: 600;
