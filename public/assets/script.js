@@ -82,6 +82,7 @@ function main(){
         $("#search-bar").val(term);
 		currentTerm = term;
         logSearch();
+        window.history.pushState("object or string", "Title", "/" + term);      // update url
 		getDefinition(term, false);
 	});
 
