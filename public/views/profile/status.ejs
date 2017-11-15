@@ -30,22 +30,28 @@
 
             <% definitions.forEach(function(definition){ %>
 
+                <% if (displayFullProfile) { %> 
+                    <% var status; %>
+                    <% 
+                        if (definition.removed){ 
+                            status = "removed";
+                        } else if (definition.rejected) { 
+                            status = "rejected";
+                        } else if (definition.approved) {
+                            status = "approved";
+                        } else {
+                            status = "pending";
+                        }
+                    %>
+                <% } %>
 
-                <% var status; %>
-                <% 
-                    if (definition.removed){ 
-                        status = "removed";
-                    } else if (definition.rejected) { 
-                        status = "rejected";
-                    } else if (definition.approved) {
-                        status = "approved";
-                    } else {
-                        status = "pending";
-                    }
-                %>
                 <div class = "status-row">
                     <div class = "status-definition">
-                        <span class = "definition-term"><%= definition.term %> (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
+                        <span class = "definition-term">
+                            <a href = "/<%= definition.term %>">
+                                <%= definition.term %>        
+                            </a>
+                         (<%= (definition.upvotes - definition.downvotes) %>)</span><br>
                         <span class = "definition-body"><%= definition.body %></span><br>   
                     </div><!-- 
                 --><% if (session.user && username == session.user.username || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true")) { %><div class = "status-submission-date">

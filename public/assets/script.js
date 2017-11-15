@@ -1180,6 +1180,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
                 var context = {
                     definition: thisDefinition,
+                    link: cleanUrl(thisDefinition.term),
                     editDate: thisDefinition.lastEdit.substr(4, 11),
                     score: thisScore,
                     id: thisDefinition.id,
@@ -1243,6 +1244,7 @@ function displayCommentsOnPage(comments, commentSection){
 
             var context = {
                 comment: thisComment,
+                link: cleanUrl(thisComment.term),
                 date: thisComment.date.substr(4, 11),
                 score: thisScore,
                 id: thisComment.id
@@ -1541,7 +1543,26 @@ function flash(type, text){
 
 }
 
+function cleanUrl(text){
 
+    text = text.split("%").join("%25");
+    text = text.split(" ").join("%20");
+    text = text.split("$").join("%24");
+    text = text.split("&").join("%26");
+    text = text.split("`").join("%60");
+    text = text.split(":").join("%3A");
+    text = text.split("<").join("%3C");
+    text = text.split(">").join("%3E");
+    text = text.split("[").join("%5B");
+    text = text.split("]").join("%5D");
+    text = text.split("+").join("%2B");
+    text = text.split("#").join("%23");
+    text = text.split("@").join("%40");
+    text = text.split("/").join("%2F");
+
+    return text;
+
+}
 
 function trimRelatedTerms(){
     // add function to trim related terms into an array
