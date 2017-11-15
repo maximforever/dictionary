@@ -48,7 +48,6 @@ function main(){
         
         var term = $("#search-bar").val().trim();
         var textLength = term.length;
-        console.log(textLength);
 
         if(screenWidth < 980 && textLength > 18){
             var searchBarFontSize = (2.5 - (textLength - 18)*0.095) + "em";
@@ -56,7 +55,8 @@ function main(){
             $("#search-bar").css("font-size", searchBarFontSize);
         }
 
-        getDefinition(term, false);
+        pageSearch();
+
     }
 
 
@@ -546,6 +546,48 @@ function search(){
     }
 }
 
+function pageSearch(){
+
+    var searchTerm = $("#search-bar").val().trim().toLowerCase();
+    
+    $("#definitions-section").empty();
+
+    var searchQuery = {
+        term: searchTerm,
+        user: false
+    }
+
+    logSearch();
+
+
+    $.ajax({
+        type: "post",
+        data: searchQuery,
+        url: "/get-definitions",
+        success: function(result){
+            if(result.status == "success"){
+
+                var searchTerm = $("#search-bar").val().trim();
+                
+                // if we get a definition for this term, post it.
+
+                if(result.count > 0){
+                    $("#definitions-section").empty();
+                    displayDefinitionsOnPage(result.body, result.isLoggedIn, false);
+                } else {
+
+                    // if we don't, perform a regular search
+
+                    search();
+
+                }
+            } else {
+                console.log(result.error)
+            }
+        }
+    })
+
+}
 
 function logSearch(){
 
