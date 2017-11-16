@@ -5,7 +5,7 @@ var currentNotifications = [];
 var currentNotificationCounter = 0;
 
 var lastSearchedTerm = null;
-var openComments = false;
+var openComments = submitDefinition = toggleAnswer = false;
 
 var activeTermIndex = -1;
 
@@ -167,7 +167,7 @@ function main(){
 
         setTimeout(function(){
             openComments = false;
-        }, 100);
+        }, 200);
         
 
     });
@@ -428,6 +428,12 @@ function main(){
     });
 
     $("body").on("touchstart click", ".faq-control", function(){
+
+        if(e.type == "touchstart"){
+            $(this).off("click");
+        }
+
+
         $("#" + this.id).parent().find(".show-answer").toggle();
         $("#" + this.id).parent().find(".hide-answer").toggle();
         $("#" + this.id).parent().find(".faq-answer").toggle();
