@@ -519,7 +519,9 @@ button:hover {
 /* NEW DEFINITION */
 
 .new-definition-term {
-	font-weight: 600;
+    font-size: 1.1em;
+    font-family: "Zilla Slab", serif;
+    font-weight: 500;
 }
 
 .add-confirmation {
@@ -1492,10 +1494,6 @@ button:hover {
     }
 
     /* NEW DEFINITION */
-
-    .new-definition-term {
-        font-size: 1.1em;
-    }
 
     .add-confirmation {
         background: #eca921;

@@ -99,6 +99,7 @@ function main(){
         $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
         $("#term-suggestions-section").hide();
+        $(".new-definition-term").text(term);
     });
 
     $("body").on("touchstart click", ".related-suggestion-link", function(){
@@ -274,6 +275,9 @@ function main(){
             $("#term-suggestions-section").show();
             var searchTerm = $("#definition-term-textarea").val().trim();
             
+
+            $(".new-definition-term").text(searchTerm);
+
             searchForDefinitions(searchTerm);
         } else {
             $("#term-suggestions-section").hide();
@@ -365,11 +369,12 @@ function main(){
 
         if($("#category-title-label").length){
             $("#definition-term-textarea").val($("#category-title-label").text());
+            $(".new-definition-term").text($("#category-title-label").text())
         } else {
             $("#definition-term-textarea").val($("#search-bar").val());
+            $(".new-definition-term").text($("#search-bar").val())
         }
-
-        $(".new-definition-term").text($("#search-bar").val())
+        
         $("#definition-term-textarea").focus();
         $("#terms-section").empty();
     });
