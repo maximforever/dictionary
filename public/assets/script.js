@@ -5,7 +5,7 @@ var currentNotifications = [];
 var currentNotificationCounter = 0;
 
 var lastSearchedTerm = null;
-var openComments = submitDefinition = toggleAnswer = false;
+var openComments = submitDefinition = submitComment = toggleAnswer = false;
 
 var activeTermIndex = -1;
 
@@ -322,12 +322,28 @@ function main(){
 	})
 
 	$("body").on("touchstart click", "#add-definition", function(){
-		addDefinition();
-	});
+
+        if(!submitDefinition)
+		   addDefinition();
+	       submitDefinition = true;
+        }
+
+        setTimeout(function(){
+            submitDefinition = false;
+        }, 200);
+
+    });
 
 
     $("body").on("touchstart click", ".add-comment", function(){
-        addComment(this);
+        if(!submitComment)
+            addComment(this);
+            submitComment = true;
+        }
+
+        setTimeout(function(){
+            submitComment = false;
+        }, 200);
     });
 
     $("body").on("touchstart click", ".voting-button", function(){
@@ -429,14 +445,18 @@ function main(){
 
     $("body").on("touchstart click", ".faq-control", function(){
 
-        if(e.type == "touchstart"){
-            $(this).off("click");
+
+        if(!toggleAnswer)
+            $("#" + this.id).parent().find(".show-answer").toggle();
+            $("#" + this.id).parent().find(".hide-answer").toggle();
+            $("#" + this.id).parent().find(".faq-answer").toggle();
+            toggleAnswer = true;
         }
 
+        setTimeout(function(){
+            toggleAnswer = false;
+        }, 200);
 
-        $("#" + this.id).parent().find(".show-answer").toggle();
-        $("#" + this.id).parent().find(".hide-answer").toggle();
-        $("#" + this.id).parent().find(".faq-answer").toggle();
     });
 
     $("body").on("touchstart click", "#password-reset-link", function(){
