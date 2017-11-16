@@ -361,7 +361,14 @@ function main(){
     $("body").on("touchstart click", "#new-def-link", function(){
         window.scrollTo(0, 0);
         $("#new-definition").show();
-        $("#definition-term-textarea").val($("#search-bar").val());
+
+
+        if($("#category-title-label").length){
+            $("#definition-term-textarea").val($("#category-title-label").text());
+        } else {
+            $("#definition-term-textarea").val($("#search-bar").val());
+        }
+
         $(".new-definition-term").text($("#search-bar").val())
         $("#definition-term-textarea").focus();
         $("#terms-section").empty();
