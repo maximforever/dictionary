@@ -5,7 +5,7 @@ var currentNotifications = [];
 var currentNotificationCounter = 0;
 
 var lastSearchedTerm = null;
-var openComments = submitDefinition = submitComment = toggleAnswer = false;
+var touchToggle = false;
 
 var activeTermIndex = -1;
 
@@ -69,6 +69,13 @@ function main(){
 
         $("#term-suggestions-section").hide();
         $("#related-term-suggestions-section").hide();
+
+
+        setTimeout(function(){
+            console.log("false");
+            touchToggle = false;
+        }, 200);
+
 
 
         if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
@@ -157,18 +164,13 @@ function main(){
 
     $("body").on("touchstart click", ".comment-on-post", function(e){
 
-        if(!openComments){
+        if(!touchToggle){
             $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
             $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
             $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
 
-            openComments = true;
+            touchToggle = true;
         }
-
-        setTimeout(function(){
-            openComments = false;
-        }, 200);
-        
 
     });
 
@@ -189,12 +191,18 @@ function main(){
 
     $("body").on("touchstart click", ".stay-signed-in", function(){
 
-        if($("#remember-account").hasClass("fa-check-square-o")){
-            $("#remember-account").removeClass("fa-check-square-o");
-            $("#remember-account").addClass("fa-square-o");
-        } else {
-            $("#remember-account").removeClass("fa-square-o");
-            $("#remember-account").addClass("fa-check-square-o");
+        if(!touchToggle){
+
+            touchToggle = true;
+
+            if($("#remember-account").hasClass("fa-check-square-o")){
+                $("#remember-account").removeClass("fa-check-square-o");
+                $("#remember-account").addClass("fa-square-o");
+            } else {
+                $("#remember-account").removeClass("fa-square-o");
+                $("#remember-account").addClass("fa-check-square-o");
+            }
+
         }
     });
 
@@ -323,36 +331,31 @@ function main(){
 
 	$("body").on("touchstart click", "#add-definition", function(){
 
-        if(!submitDefinition){
+        if(!touchToggle){
 		   addDefinition();
-	       submitDefinition = true;
+	       touchToggle = true;
         }
-
-        setTimeout(function(){
-            submitDefinition = false;
-        }, 200);
-
     });
 
 
     $("body").on("touchstart click", ".add-comment", function(){
-        if(!submitComment){
+        if(!touchToggle){
+            touchToggle = true;
             addComment(this);
-            submitComment = true;
         }
 
-        setTimeout(function(){
-            submitComment = false;
-        }, 200);
     });
 
     $("body").on("touchstart click", ".voting-button", function(){
-        var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
-        var id = this.dataset.id;
-        var term = this.dataset.term;
-        var type = this.dataset.type;
+        if(!touchToggle){
+            touchToggle = true;
+            var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
+            var id = this.dataset.id;
+            var term = this.dataset.term;
+            var type = this.dataset.type;
 
-        voteOnPost(direction, id, term, type);
+            voteOnPost(direction, id, term, type);
+        }
     })
 
     $("body").on("touchstart click", "#new-def-link", function(){
@@ -446,16 +449,12 @@ function main(){
     $("body").on("touchstart click", ".faq-control", function(){
 
 
-        if(!toggleAnswer){
+        if(!touchToggle){
             $("#" + this.id).parent().find(".show-answer").toggle();
             $("#" + this.id).parent().find(".hide-answer").toggle();
             $("#" + this.id).parent().find(".faq-answer").toggle();
-            toggleAnswer = true;
+            touchToggle = true;
         }
-
-        setTimeout(function(){
-            toggleAnswer = false;
-        }, 200);
 
     });
 
