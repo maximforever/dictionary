@@ -1047,9 +1047,8 @@ button:hover {
     display: block;
     width: 100%;
     font-size: 1.5em;
-    padding: 6px 0;
-    margin: 4px auto;
-    
+    padding: 2px 0 6px 0;
+    margin: 8px auto;
 }
 
 .all-terms-link {
@@ -1061,9 +1060,10 @@ button:hover {
 
 .all-terms-link-wrapper:hover {
     background: rgba(10, 10, 10, 0.08);
+    box-shadow: 0px 0px 5px rgba(109, 104, 98, 0.5);
     transform: scale(1.2, 1.2);
     font-weight: 600;
-    transition-property: color, font-weight, font-size, background;
+    transition-property: color, font-weight, font-size, background, box-shadow;
     transition-duration: 0.3s;
     cursor: pointer;
 }
