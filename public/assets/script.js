@@ -323,7 +323,7 @@ function main(){
 
 	$("body").on("touchstart click", "#add-definition", function(){
 
-        if(!submitDefinition)
+        if(!submitDefinition){
 		   addDefinition();
 	       submitDefinition = true;
         }
@@ -336,7 +336,7 @@ function main(){
 
 
     $("body").on("touchstart click", ".add-comment", function(){
-        if(!submitComment)
+        if(!submitComment){
             addComment(this);
             submitComment = true;
         }
@@ -446,7 +446,7 @@ function main(){
     $("body").on("touchstart click", ".faq-control", function(){
 
 
-        if(!toggleAnswer)
+        if(!toggleAnswer){
             $("#" + this.id).parent().find(".show-answer").toggle();
             $("#" + this.id).parent().find(".hide-answer").toggle();
             $("#" + this.id).parent().find(".faq-answer").toggle();
