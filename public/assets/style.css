@@ -456,7 +456,6 @@ button:hover {
 }
 
 .category-stat {
-    height: 15px;
     background: gray;
     display: inline-block;
     text-align: center;
