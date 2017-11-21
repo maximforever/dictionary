@@ -13,7 +13,7 @@ a, .link {
   cursor: pointer; }
 
 a:hover, .link:hover {
-  color: #E58F59;
+  color: #E88D67;
   cursor: pointer; }
 
 input {
@@ -37,7 +37,7 @@ button {
   box-shadow: 0 1px 4px rgba(47, 89, 209, 0.8); }
 
 button:hover {
-  background: #E58F59;
+  background: #E88D67;
   box-shadow: 0 1px 9px rgba(213, 121, 21, 0.76); }
 
 .bold {
@@ -62,15 +62,15 @@ button:hover {
   margin-bottom: 20px; }
 
 #main-section {
-  padding: 0 5vw;
   min-height: 74vh;
   /* not sure why not 85*/ }
 
 #footer-section {
-  color: #2C363F;
+  color: rgba(44, 54, 63, 0.3);
   font-weight: 500;
   text-align: center;
-  min-height: calc(5vh - 20px); }
+  min-height: calc(5vh - 20px);
+  font-size: 0.8em; }
 
 #footer-section p {
   padding-top: 10px; }
@@ -86,20 +86,17 @@ button:hover {
   margin: 3vh 0 45px 0; }
 
 #search-bar-label {
-  margin: 0 0 0.5vh -5vw;
   font-weight: 300;
-  float: left;
-  clear: both; }
+  margin-bottom: 5px; }
 
 #search-bar {
   font-size: 2.5em;
   height: 47px;
-  margin-left: -5vw;
-  width: calc(80vw - 22px);
   padding: 5px 10px 10px 10px;
   display: block;
   border: 1px solid #c5c5c5;
   box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.5);
+  width: calc(100% - 22px);
   min-width: 300px;
   max-width: calc(1600px - 22px); }
 
@@ -114,9 +111,8 @@ button:hover {
   transition-duration: 0.25s; }
 
 #terms-section {
-  width: calc(80vw - 2px);
+  width: calc(100% - 2px);
   max-width: 1600px;
-  margin: 0px 0px 0px -5vw;
   display: block;
   border: 1px solid rgba(111, 111, 111, 0.5);
   border-top: none;
@@ -151,7 +147,7 @@ button:hover {
 
 .related-term:hover {
   color: white;
-  background: orange; }
+  background: #E88D67; }
 
 .term {
   border-bottom: 1px solid rgba(111, 111, 111, 0.5);
@@ -231,13 +227,8 @@ button:hover {
 
 /* DEFINITION */
 #definitions-section {
-  margin: 0 auto; }
-
-#definitions-section p {
-  margin-top: 5vh; }
-
-#definitions-section h3 {
-  margin-bottom: 0; }
+  margin: 0 auto;
+  padding: 0 5vw; }
 
 #definitions-section-title {
   margin-left: 20vw; }
@@ -262,7 +253,8 @@ button:hover {
   display: block;
   min-width: 300px;
   background: #ffffff;
-  border-radius: 3px; }
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(10, 10, 10, 0.2); }
 
 /* COMMENTS */
 .comments-section {
@@ -315,26 +307,25 @@ button:hover {
   display: none; }
 
 .delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
-  margin-left: 5px;
-  color: #7b1b1a;
-  background: #f17372;
-  padding: 3px 8px;
+  margin-left: 4px;
+  color: #2C363F;
+  padding: 0px 8px 3px 8px;
+  border: 1px solid rgba(44, 54, 63, 0.3);
   border-radius: 5px;
   display: inline-block; }
+  .delete-post:hover, .report-post:hover, .comment-on-post:hover, .report-post-invalid:hover, .delete-post-invalid:hover {
+    color: #ffffff;
+    background: #E88D67; }
 
 .delete-post, .report-post {
   margin-top: 1px; }
 
 .comment-on-post {
   background: none;
-  border: 1px solid gray; }
+  border: 1px solid rgba(44, 54, 63, 0.3); }
 
 .add-comment {
   margin: 0 10px 10px 0; }
-
-.delete-post:hover, .report-post:hover {
-  color: #ffeaea;
-  background: #d42812; }
 
 .fa-chevron-circle-down {
   display: none; }
@@ -349,7 +340,7 @@ button:hover {
   font-size: 0.85em;
   font-weight: 600;
   margin: 0;
-  box-shadow: none; }
+  box-shadow: 0 0 10px rgba(10, 10, 10, 0.2); }
 
 #category-summary h3 {
   margin: 0 0 5px 0;
@@ -497,7 +488,7 @@ button:hover {
   vertical-align: top; }
 
 .persistVote {
-  color: #d57915; }
+  color: #E88D67; }
 
 .definition-score {
   font-weight: 600;
@@ -556,7 +547,7 @@ button:hover {
   display: inline; }
 
 #new-alert {
-  color: red; }
+  color: #E88D67; }
 
 .notification-bell:hover {
   font-weight: bold;
@@ -659,7 +650,7 @@ button:hover {
   color: #afafaf; }
 
 .account-title span:hover {
-  color: #d57915;
+  color: #E88D67;
   cursor: pointer; }
 
 .active-account-title {
@@ -679,9 +670,8 @@ button:hover {
 
 #report-content {
   padding: 10px;
-  border: 1px solid gray;
   color: #b50000;
-  background: #cccccc;
+  background: rgba(44, 54, 63, 0.3);
   line-height: 1.3; }
 
 #submit-report {
@@ -722,15 +712,16 @@ button:hover {
   font-weight: 500; }
 
 .profile-section-tab:hover {
-  background: blue;
+  background: #E88D67;
   color: white; }
 
 /*#live-definition-section, #live-comment-section, #definition-status-section {
     display: none;
 }*/
 .active-profile-tab {
-  background: orange;
-  color: #2C363F; }
+  background: #58A4B0;
+  color: #ffffff;
+  font-weight: 400; }
 
 .post-removed {
   color: #4c107b;
@@ -768,12 +759,12 @@ button:hover {
   text-align: right; }
 
 .status-row {
-  background: #feffe3;
+  background: #ffffff;
   padding: 10px;
   border-bottom: 1px solid gray; }
 
 .status-row-headers {
-  background: #e4ceb3;
+  background: #ffffff;
   font-size: 0.85em; }
 
 .edit-history {
@@ -999,7 +990,7 @@ button:hover {
   color: #114B5F; }
 
 .faq-control:hover {
-  color: #d57915; }
+  color: #E88D67; }
 
 .hide-answer {
   display: none; }
@@ -1031,9 +1022,7 @@ button:hover {
   #footer-section p {
     margin: 20px 0 10px 0;
     padding-bottom: 10px;
-    font-size: 0.8em; }
-  #footer-section .fa-heart {
-    color: red; }
+    color: gray; }
   /* SEARCH BAR */
   #search-bar-div {
     margin: 20px 0 20px 0; }
@@ -1045,7 +1034,6 @@ button:hover {
     width: calc(90vw - 22px);
     padding: 3px 10px 8px 10px; }
   #terms-section {
-    width: calc(90vw - 2px);
     margin: 0; }
   #term-suggestions-section {
     width: calc(100% - 32px); }
@@ -1082,7 +1070,8 @@ button:hover {
     background: #F1A19B; }
   /* DEFINITION */
   #definitions-section {
-    margin: 0 auto; }
+    margin: 0 auto;
+    padding: 0; }
   #definitions-section p {
     margin-top: 5vh; }
   #definitions-section h3 {
@@ -1098,7 +1087,8 @@ button:hover {
   .definition-accent {
     min-width: 100px;
     margin: 20px 0px;
-    font-size: 0.85em; }
+    font-size: 0.85em;
+    border-width: 2px; }
   /* COMMENTS */
   .comments-section {
     margin: 0 auto 35px auto;
@@ -1147,8 +1137,6 @@ button:hover {
     background: #eca921;
     border: 2px solid #2C363F;
     margin-bottom: 35px; }
-  .add-one {
-    background: #d3e486; }
   .related-term {
     display: inline-block;
     margin: 2px; }
@@ -1220,7 +1208,7 @@ button:hover {
   .account {
     display: inline; }
   #new-alert {
-    color: red; }
+    color: #E88D67; }
   .notification-bell:hover {
     font-weight: bold;
     cursor: pointer; }

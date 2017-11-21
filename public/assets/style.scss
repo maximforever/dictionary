@@ -3,18 +3,18 @@
 
 $white: #ffffff;
 $beige: #f3eae0;
+// #BFB48F, #e9ece2
 $beige-dark: #e2d4c4;
 $blue-light: #58A4B0;
 $blue-dark: #114B5F;
 $gray: #2C363F;
 $gray-transparent: rgba(44, 54, 63, 0.3);
-$orange: #E58F59;
+$orange: #E88D67;
 
 
 body{
 	margin: 0;
 	background: $beige;
-    // background: linear-gradient(352deg, #f3eae0, #f3eae0, 75%, #d6bfa6); 
 	font-family: 'Muli', sans-serif;
 	font-weight: 300;
     min-height: 100vh;
@@ -57,7 +57,6 @@ button {
 
 button:hover {
     background: $orange;
-    //background: linear-gradient(5deg, #ab6121, #ab6121, 48%, #d57915);
     box-shadow: 0 1px 9px rgba(213, 121, 21, 0.76);
 }
 
@@ -89,15 +88,15 @@ button:hover {
 }
 
 #main-section {
-	padding: 0 5vw;
 	min-height: 74vh;			/* not sure why not 85*/
 }
 
 #footer-section	 {
-  color: $gray;
+  color: $gray-transparent;
   font-weight: 500;
   text-align: center;
   min-height: calc(5vh - 20px);
+  font-size: 0.8em;
 
 }
 
@@ -120,21 +119,18 @@ button:hover {
 }
 
 #search-bar-label {
-	margin: 0 0 0.5vh -5vw;
 	font-weight: 300;
-	float: left;
-    clear: both;
+    margin-bottom: 5px;
 }
 
 #search-bar {
 	font-size: 2.5em;
     height: 47px;
-	margin-left: -5vw;
-	width: calc(80vw - 22px);
 	padding: 5px 10px 10px 10px;
 	display: block;
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
+    width: calc(100% - 22px);
 	min-width: 300px;
 	max-width: calc(1600px - 22px);
 }
@@ -152,9 +148,8 @@ button:hover {
 }
 
 #terms-section {
-	width: calc(80vw - 2px);
+	width: calc(100% - 2px);
 	max-width: 1600px;
-	margin: 0px 0px 0px -5vw;
 	display: block;
     border: 1px solid rgba(111, 111, 111, 0.5);
     border-top: none;
@@ -193,7 +188,7 @@ button:hover {
 
 .related-term:hover {
     color: white;
-    background: orange;
+    background: $orange;
 }
 
 
@@ -291,14 +286,7 @@ button:hover {
 
 #definitions-section {
 	margin: 0 auto;
-}
-
-#definitions-section p{
-	margin-top: 5vh;
-}
-
-#definitions-section h3{
-	margin-bottom: 0;
+    padding: 0 5vw;
 }
 
 #definitions-section-title{
@@ -329,7 +317,7 @@ button:hover {
 	min-width: 300px;
 	background: $white;
 	border-radius: 3px;
-
+    box-shadow: 0 0 10px rgba(10,10,10, 0.2);
 }
 
 
@@ -396,12 +384,16 @@ button:hover {
 }
 
 .delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
-    margin-left: 5px;
-    color: #7b1b1a;
-    background: #f17372;
-    padding: 3px 8px;
+    margin-left: 4px;
+    color: #2C363F;
+    padding: 0px 8px 3px 8px;
+    border: 1px solid rgba(44, 54, 63, 0.3);
     border-radius: 5px;
     display: inline-block;
+    &:hover {
+        color: $white;
+        background: $orange;
+    }
 }
 
 .delete-post, .report-post {
@@ -410,16 +402,11 @@ button:hover {
 
 .comment-on-post {
     background: none;
-    border: 1px solid gray;
+    border: 1px solid $gray-transparent;
 }
 
 .add-comment {
     margin: 0 10px 10px 0;
-}
-
-.delete-post:hover, .report-post:hover {
-    color: #ffeaea;
-    background: #d42812;
 }
 
 .fa-chevron-circle-down{
@@ -430,7 +417,6 @@ button:hover {
 
 
 #category-summary {
-	//background-color: $beige-dark;
     padding: 15px 20px;
     display: block;
     border: 1px solid rgba(10,10,10, 0.5);
@@ -439,7 +425,7 @@ button:hover {
 	font-size: 0.85em;
 	font-weight: 600;
 	margin: 0;
-    box-shadow: none;
+    box-shadow: 0 0 10px rgba(10,10,10, 0.2);
 }
 
 #category-summary h3 {
@@ -624,7 +610,7 @@ button:hover {
 }
 
 .persistVote{
-    color: #d57915;
+    color: $orange;
 }
 
 .definition-score {
@@ -701,7 +687,7 @@ button:hover {
 }
 
 #new-alert {
-	color: red;
+	color: $orange;
 }
 
 .notification-bell:hover{
@@ -827,7 +813,7 @@ button:hover {
 }
 
 .account-title span:hover{
-    color: #d57915;
+    color: $orange;
     cursor: pointer;
 }
 
@@ -854,9 +840,8 @@ button:hover {
 
 #report-content {
 	padding: 10px;
-	border: 1px solid gray;
 	color: #b50000;
-	background: #cccccc;
+	background: $gray-transparent;
 	line-height: 1.3;
 }
 
@@ -905,7 +890,7 @@ button:hover {
 }
 
 .profile-section-tab:hover{
-    background: blue;
+    background: $orange;
     color: white;
 }
 
@@ -914,8 +899,9 @@ button:hover {
 }*/
 
 .active-profile-tab {
-    background: orange;
-    color: $gray;
+    background: $blue-light;
+    color: $white;
+    font-weight: 400;
 }
 
 .post-removed {
@@ -963,13 +949,13 @@ button:hover {
 }
 
 .status-row {
-    background: #feffe3;
+    background: $white;
 	padding: 10px;
 	border-bottom: 1px solid gray;
 }
 
 .status-row-headers {
-	background: #e4ceb3;
+	background: $white;
 	font-size: 0.85em;
 }
 
@@ -1246,7 +1232,7 @@ button:hover {
 }
 
 .faq-control:hover {
-    color: #d57915;
+    color: $orange;
 }
 
 .hide-answer {
@@ -1297,12 +1283,9 @@ button:hover {
     #footer-section p {
         margin: 20px 0 10px 0;
         padding-bottom: 10px;
-        font-size: 0.8em;
+        color: gray;
     }
 
-    #footer-section .fa-heart{
-        color: red;
-    }
 
     /* SEARCH BAR */
 
@@ -1322,7 +1305,6 @@ button:hover {
     }
 
     #terms-section {
-        width: calc(90vw - 2px);
         margin: 0;
     }
 
@@ -1383,6 +1365,7 @@ button:hover {
 
     #definitions-section {
         margin: 0 auto;
+        padding: 0;
     }
 
     #definitions-section p{
@@ -1409,6 +1392,7 @@ button:hover {
         min-width: 100px;
         margin: 20px 0px;
         font-size: 0.85em;
+        border-width: 2px;
     }
 
 
@@ -1501,9 +1485,6 @@ button:hover {
         margin-bottom: 35px;
     }
 
-    .add-one {
-        background: #d3e486;
-    }
 
     .related-term {
         display: inline-block;
@@ -1621,7 +1602,7 @@ button:hover {
     }
 
     #new-alert {
-        color: red;
+        color: $orange;
     }
 
     .notification-bell:hover{
