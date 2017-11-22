@@ -169,8 +169,8 @@ button:hover {
   font-size: 0.7em;
   display: block;
   padding: 3px 6px;
-  background: #dcefec;
-  color: #2E58D1; }
+  background: #ffffff;
+  color: #58A4B0; }
 
 .term-link:hover, .term-suggestion-link:hover, .term-link-selected {
   background: #dadada;
@@ -496,10 +496,11 @@ button:hover {
 
 .textarea-label {
   font-size: 0.8em;
-  font-weight: 600;
+  font-weight: 300;
   margin: 15px 0 5px 0;
   padding: 2px 8px;
-  background: #eccba6;
+  background: #114B5F;
+  color: white;
   display: inline-block; }
 
 .comment-on-post {
@@ -628,7 +629,7 @@ button:hover {
 
 .pop-out input[type="radio"] {
   display: inline;
-  width: 2%; }
+  width: 5%; }
 
 .pop-out label {
   font-weight: 400; }
@@ -1166,13 +1167,6 @@ button:hover {
     text-align: center;
     vertical-align: top;
     padding-left: 8px; }
-  .textarea-label {
-    font-size: 0.8em;
-    font-weight: 600;
-    margin: 15px 0 5px 0;
-    padding: 2px 8px;
-    background: #eccba6;
-    display: inline-block; }
   .comment-on-post {
     z-index: 0;
     color: #2C363F;

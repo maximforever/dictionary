@@ -214,8 +214,8 @@ button:hover {
     font-size: 0.7em;
     display: block;
     padding: 3px 6px;
-    background: rgb(220, 239, 236);
-    color: #2E58D1;
+    background: $white;
+    color: $blue-light;
 }
 
 .term-link:hover, .term-suggestion-link:hover, .term-link-selected {
@@ -620,10 +620,11 @@ button:hover {
 
 .textarea-label {
 	font-size: 0.8em;
-	font-weight: 600;
+	font-weight: 300;
 	margin: 15px 0 5px 0;
 	padding: 2px 8px;
-    background: #eccba6;
+    background: $blue-dark;
+    color: white;
     display: inline-block;
 }
 
@@ -786,7 +787,7 @@ button:hover {
 
 .pop-out input[type="radio"]{
     display: inline;
-    width: 2%;
+    width: 5%;
 }
 
 .pop-out label {
@@ -1533,16 +1534,6 @@ button:hover {
         vertical-align: top;
         padding-left: 8px;
     }
-
-    .textarea-label {
-        font-size: 0.8em;
-        font-weight: 600;
-        margin: 15px 0 5px 0;
-        padding: 2px 8px;
-        background: #eccba6;
-        display: inline-block;
-    }
-
 
     .comment-on-post {
         z-index: 0;
