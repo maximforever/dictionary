@@ -349,7 +349,7 @@ button:hover {
 }
 
 .comment-main-body{
-    padding: 15px;
+    padding: 10px 15px;
 }
 
 .comment-body {
@@ -360,6 +360,7 @@ button:hover {
 
 .comment-column {
     width: calc(95% - 10px);
+    line-height: 1.5;
     padding-right: 10px;
     display: inline-block;
     vertical-align: top;
@@ -579,7 +580,7 @@ button:hover {
 .comment-meta{
     font-size: 0.85em;
     min-height: 2em;
-    padding: 2px 20px;
+    padding: 2px 15px;
     border-bottom: 1px solid $gray-transparent;
 }
 
@@ -1109,6 +1110,11 @@ button:hover {
 	background: #95383A;
 }
 
+.definitions {
+    color: #1e440f;
+    background: #83d661;
+}
+
 .report-reason {
     font-size: 1.2em;
     display: block;
@@ -1127,10 +1133,6 @@ button:hover {
     font-weight: 600;
     margin-bottom: 5px;
     color: #4e4e4e;
-}
-
-.definitions {
-    color: #1e440f;
 }
 
 #user-role-editor {
@@ -1167,7 +1169,8 @@ button:hover {
 
 .definition-count-metric {
     font-size: 2em;
-    background: #ffffbd;
+    background: $blue-dark;
+    color: white;
     padding: 5px 20px;
     display: inline-block;
     margin-bottom: 25px;
@@ -1795,19 +1798,6 @@ button:hover {
 
     .reject:hover, .trash-post:hover{
         background: #95383A;
-    }
-
-    .report-reason {
-        width: 111%;
-    }
-
-    .report-type {
-        width: 111%;
-    }
-
-    .definitions {
-        color: #1e440f;
-        background: #83d661;
     }
 
     #user-role-editor {

@@ -46,7 +46,7 @@
     <div class = "metric">Approved Definitions:</div>
 
     <% approvedDefinitions.forEach(function(def){ %>
-        <div class = "metric-definition bold"><a class = "bold" href ="<%= def.term %>"><%= def.term %></a> </div>
+        <div class = "metric-definition"><a class = "bold" href ="<%= def.term %>"><%= def.term %></a> </div>
         <div class = "metric-definition-author"><a href ="profile/<%= def.author %>"><%= def.author %></a></div>
         <br>
     <% }) %>

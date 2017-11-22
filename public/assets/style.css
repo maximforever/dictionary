@@ -278,7 +278,7 @@ button:hover {
   margin: 0 auto; }
 
 .comment-main-body {
-  padding: 15px; }
+  padding: 10px 15px; }
 
 .comment-body {
   font-size: 0.85em;
@@ -287,6 +287,7 @@ button:hover {
 
 .comment-column {
   width: calc(95% - 10px);
+  line-height: 1.5;
   padding-right: 10px;
   display: inline-block;
   vertical-align: top; }
@@ -462,7 +463,7 @@ button:hover {
 .comment-meta {
   font-size: 0.85em;
   min-height: 2em;
-  padding: 2px 20px;
+  padding: 2px 15px;
   border-bottom: 1px solid rgba(44, 54, 63, 0.3); }
 
 .definition-history {
@@ -890,6 +891,10 @@ button:hover {
 .reject:hover, .trash-post:hover {
   background: #95383A; }
 
+.definitions {
+  color: #1e440f;
+  background: #83d661; }
+
 .report-reason {
   font-size: 1.2em;
   display: block;
@@ -907,9 +912,6 @@ button:hover {
   font-weight: 600;
   margin-bottom: 5px;
   color: #4e4e4e; }
-
-.definitions {
-  color: #1e440f; }
 
 #user-role-editor {
   margin: 20px 0px; }
@@ -939,7 +941,8 @@ button:hover {
 
 .definition-count-metric {
   font-size: 2em;
-  background: #ffffbd;
+  background: #114B5F;
+  color: white;
   padding: 5px 20px;
   display: inline-block;
   margin-bottom: 25px; }
@@ -1323,13 +1326,6 @@ button:hover {
     background: #ea5859; }
   .reject:hover, .trash-post:hover {
     background: #95383A; }
-  .report-reason {
-    width: 111%; }
-  .report-type {
-    width: 111%; }
-  .definitions {
-    color: #1e440f;
-    background: #83d661; }
   #user-role-editor {
     margin: 20px 0px; }
   #user-role-section {
