@@ -115,7 +115,7 @@ function main(){
         $("#related-term-textarea").val(currentText.substring(0, currentText.lastIndexOf(",") + 1) + " " + term);
         $("#related-term-suggestions-section").empty();
         $("#related-term-suggestions-section").hide();
-        $("#related-term-textarea").focus();
+        $("#definition-term-textarea").focus();
     });
 
     $("body").on("touchstart click", ".report-post", function(){
@@ -1256,9 +1256,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
             if(!forUser){
                 
                 if(isLoggedIn){
-                    $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Don't see a good definition? Add your own!<span></div>");
+                    $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Add a Definition<span></div>");
                 } else {
-                    $("#definitions-section").append("<button class = 'new-def-button login-link'>Don't see a good definition? Add your own!</div>");
+                    $("#definitions-section").append("<button class = 'new-def-button login-link'>Add a Definition</div>");
                 }
                 
             }
@@ -1336,7 +1336,7 @@ function displayDefinitionSuggestion(term){
 function displayAddDefinition(term){
     $("#report").hide();
 	$("#new-definition").show();
-    $("#new-definition-textarea").focus();
+    $("#definition-term-textarea").focus();
 	currentTerm = term;
 }
 
