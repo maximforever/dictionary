@@ -554,20 +554,10 @@ function search(){
 
                         $("#definitions-section").empty();
 
-                        if(result.loggedIn == "true" || result.loggedIn == true){
-                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
-                        } else {
-                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
-                        }
-
             		} else {
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
-                        if(result.loggedIn){
-                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
-                        } else {
-                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
-                        }
+                        displayDefinitionsOnPage([], result.isLoggedIn, false);
                     }      		
             	} else {
             		console.log(result.error);
@@ -716,15 +706,8 @@ function getDefinition(query, forUser){
                     var searchTerm = $("#search-bar").val().trim();
                 }
                 
-            	if(result.count > 0){
-                    $("#definitions-section").empty();
-                    displayDefinitionsOnPage(result.body, result.isLoggedIn, forUser);
-	            } else {
-                    if(!forUser){
-                        $("#definitions-section").empty();
-                        $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
-                    } 
-                }
+                displayDefinitionsOnPage(result.body, result.isLoggedIn, forUser);
+
         	} else {
         		console.log(result.error)
         	}
@@ -1090,180 +1073,193 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
     $("#definitions-section").empty();
 
-    definitions = sortPosts(definitions);
+    if(definitions.length > 0){
 
-    $.get('/views/components/definition.html', function(definitionTemplate) {
-        $.get('/views/components/definitionCategory.html', function(definitionCategoryTemplate) {
+        definitions = sortPosts(definitions);
 
-            $("#definitions-section").empty();
+        $.get('/views/components/definition.html', function(definitionTemplate){
+            $.get('/views/components/definitionCategory.html', function(definitionCategoryTemplate){
 
-            // only display the category graphic on the search page, not on profiles
-            if(!forUser){
+                $("#definitions-section").empty();
 
-                $("#definitions-section").append(definitionCategoryTemplate);
-                $("#category-title-label").text(definitions[0].term)
+                // only display the category graphic on the search page, not on profiles
+                if(!forUser){
 
-                var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
+                    $("#definitions-section").append(definitionCategoryTemplate);
+                    $("#category-title-label").text(definitions[0].term)
 
-                for(var i = 0; i < definitions.length; i++){
-                    switch(definitions[i].category){
-                        case "tool":
-                            toolCount++;
-                            break;
-                        case "concept":
-                            conceptCount++;
-                            break;
-                        case "language":
-                            languageCount++;
-                            break;
-                        case "process":
-                            processCount++;
-                            break;
-                        case "other":
-                            otherCount++;
-                            break;
-                        default:
-                            otherCount++;
-                    }
-                }
+                    var toolCount = languageCount = conceptCount = otherCount = processCount = 0;
 
-                var toolPercent = toolCount/definitions.length;
-                var conceptPercent = conceptCount/definitions.length;
-                var languagePercent = languageCount/definitions.length;
-                var processPercent = processCount/definitions.length;
-                var otherPercent = otherCount/definitions.length;
-
-
-                var sortedCategories = [];
-                var unsortedCategories = [
-                    {
-                        percentage: toolPercent, 
-                        name: "#tool-percentage",
-                        categoryName: "Tool/Library",
-                        short: "tool"
-                    },
-                    {
-                        percentage: conceptPercent, 
-                        name: "#concept-percentage",
-                        categoryName: "Concept",
-                        short: "concept"
-                    },
-                    {
-                        percentage: languagePercent, 
-                        name: "#language-percentage",
-                        categoryName: "Language/Environment/Framework",
-                        short: "language"
-                    },
-                    {
-                        percentage: processPercent, 
-                        name: "#process-percentage",
-                        categoryName: "Process",
-                        short: "process"
-                    },
-                    {
-                        percentage: otherPercent, 
-                        name: "#other-percentage",
-                        categoryName: "Other",
-                        short: "other"
-                    },
-                ];
-
-                for(var i = 0; i < 5; i++){
-
-                    var maxPercentage = 0;
-                    var maxIndex = 0;
-
-                    for(var j = 0; j < unsortedCategories.length; j++){
-
-                        if(unsortedCategories[j].percentage > maxPercentage){
-                            maxPercentage = unsortedCategories[j].percentage;
-                            maxIndex = j;   
+                    for(var i = 0; i < definitions.length; i++){
+                        switch(definitions[i].category){
+                            case "tool":
+                                toolCount++;
+                                break;
+                            case "concept":
+                                conceptCount++;
+                                break;
+                            case "language":
+                                languageCount++;
+                                break;
+                            case "process":
+                                processCount++;
+                                break;
+                            case "other":
+                                otherCount++;
+                                break;
+                            default:
+                                otherCount++;
                         }
                     }
 
-                    sortedCategories.push(unsortedCategories[maxIndex]);
-                    unsortedCategories.splice(maxIndex, 1);
+                    var toolPercent = toolCount/definitions.length;
+                    var conceptPercent = conceptCount/definitions.length;
+                    var languagePercent = languageCount/definitions.length;
+                    var processPercent = processCount/definitions.length;
+                    var otherPercent = otherCount/definitions.length;
 
-                }
 
-                for(var k = 0; k < sortedCategories.length; k++){
+                    var sortedCategories = [];
+                    var unsortedCategories = [
+                        {
+                            percentage: toolPercent, 
+                            name: "#tool-percentage",
+                            categoryName: "Tool/Library",
+                            short: "tool"
+                        },
+                        {
+                            percentage: conceptPercent, 
+                            name: "#concept-percentage",
+                            categoryName: "Concept",
+                            short: "concept"
+                        },
+                        {
+                            percentage: languagePercent, 
+                            name: "#language-percentage",
+                            categoryName: "Language/Environment/Framework",
+                            short: "language"
+                        },
+                        {
+                            percentage: processPercent, 
+                            name: "#process-percentage",
+                            categoryName: "Process",
+                            short: "process"
+                        },
+                        {
+                            percentage: otherPercent, 
+                            name: "#other-percentage",
+                            categoryName: "Other",
+                            short: "other"
+                        },
+                    ];
 
-                    var idName = sortedCategories[k].name.substring(1, sortedCategories[k].name.length);
+                    for(var i = 0; i < 5; i++){
 
-                    if(sortedCategories[k].percentage > 0){
-                        $(".category-bar").append("<div class = 'category-stat' id = '" + idName + "'><span class = 'percentage-label' id = '" + idName + "-label'></span></div>");
-                        $(sortedCategories[k].name).css("width", sortedCategories[k].percentage*100 + "%");
-                        $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
-                        $(".category-legend").append("<span class = 'category-label'><div class = 'category-box " + sortedCategories[k].short + "'></div>" + sortedCategories[k].categoryName + "</span>");
+                        var maxPercentage = 0;
+                        var maxIndex = 0;
 
-                        
+                        for(var j = 0; j < unsortedCategories.length; j++){
+
+                            if(unsortedCategories[j].percentage > maxPercentage){
+                                maxPercentage = unsortedCategories[j].percentage;
+                                maxIndex = j;   
+                            }
+                        }
+
+                        sortedCategories.push(unsortedCategories[maxIndex]);
+                        unsortedCategories.splice(maxIndex, 1);
+
                     }
-                    
-                } 
 
-            }
+                    for(var k = 0; k < sortedCategories.length; k++){
 
-            // a bit of handlebars magic
+                        var idName = sortedCategories[k].name.substring(1, sortedCategories[k].name.length);
 
-            definitions.forEach(function(thisDefinition){
-                var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
+                        if(sortedCategories[k].percentage > 0){
+                            $(".category-bar").append("<div class = 'category-stat' id = '" + idName + "'><span class = 'percentage-label' id = '" + idName + "-label'></span></div>");
+                            $(sortedCategories[k].name).css("width", sortedCategories[k].percentage*100 + "%");
+                            $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
+                            $(".category-legend").append("<span class = 'category-label'><div class = 'category-box " + sortedCategories[k].short + "'></div>" + sortedCategories[k].categoryName + "</span>");
 
-                var myTemplate =  Handlebars.compile(definitionTemplate);
-                var hasRelatedTerms = false;
+                            
+                        }
+                        
+                    } 
 
-                if(thisDefinition.related && thisDefinition.related.length){
-                    hasRelatedTerms = true;
                 }
 
-                var context = {
-                    definition: thisDefinition,
-                    link: cleanUrl(thisDefinition.term),
-                    editDate: thisDefinition.lastEdit.substr(4, 11),
-                    score: thisScore,
-                    id: thisDefinition.id,
-                    commentCount: thisDefinition.comments.length,
-                    related: thisDefinition.related,
-                    hasRelated: hasRelatedTerms
-                };
+                // a bit of handlebars magic
 
-                var compiled = myTemplate(context)
+                definitions.forEach(function(thisDefinition){
+                    var thisScore = thisDefinition.upvotes - thisDefinition.downvotes;
 
-                $("#definitions-section").append(compiled);
+                    var myTemplate =  Handlebars.compile(definitionTemplate);
+                    var hasRelatedTerms = false;
 
-                var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
+                    if(thisDefinition.related && thisDefinition.related.length){
+                        hasRelatedTerms = true;
+                    }
 
-                if(isLoggedIn){
-                    commentSection.append("<div class = 'comment-connector'><div class = 'connector'></div></div>");
-                    commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + thisDefinition.id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
-                } else {
-                    commentSection.append("<div class = 'comment-connector'><div class = 'connector'></div></div>");
-                    commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold login-link'>Log in</span> to leave a comment!</div>");
-                }
+                    var context = {
+                        definition: thisDefinition,
+                        link: cleanUrl(thisDefinition.term),
+                        editDate: thisDefinition.lastEdit.substr(4, 11),
+                        score: thisScore,
+                        id: thisDefinition.id,
+                        commentCount: thisDefinition.comments.length,
+                        related: thisDefinition.related,
+                        hasRelated: hasRelatedTerms
+                    };
 
-                displayCommentsOnPage(thisDefinition.comments, commentSection);
-                commentSection.hide();
+                    var compiled = myTemplate(context)
 
-                if(thisDefinition.authorUpvote){
-                    $("#" + thisDefinition.id).find(".voting-button[data-vote='up']").addClass("persistVote");
-                }
+                    $("#definitions-section").append(compiled);
 
-                if(thisDefinition.authorDownvote){
-                    $("#" + thisDefinition.id).find(".voting-button[data-vote='down']").addClass("persistVote");
-                }
+                    var commentSection = $(".comments-section[data-id=" + thisDefinition.id + "]");
 
-            });
+                    if(isLoggedIn){
+                        commentSection.append("<div class = 'comment-connector'><div class = 'connector'></div></div>");
+                        commentSection.append("<div class = 'comment'><div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + thisDefinition.id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + thisDefinition.id + " data-term = ''>Add</button></div></div>");
+                    } else {
+                        commentSection.append("<div class = 'comment-connector'><div class = 'connector'></div></div>");
+                        commentSection.append("<div class = 'comment add-one' data-id = " + thisDefinition.id + "><span class = 'link bold login-link'>Log in</span> to leave a comment!</div>");
+                    }
 
-            if(!forUser){
-                
-                if(isLoggedIn){
-                    $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Add a Definition<span></div>");
-                } else {
-                    $("#definitions-section").append("<button class = 'new-def-button login-link'>Add a Definition</div>");
-                }
-                
-            }
-        }, 'html')
-    }, 'html')
+                    displayCommentsOnPage(thisDefinition.comments, commentSection);
+                    commentSection.hide();
+
+                    if(thisDefinition.authorUpvote){
+                        $("#" + thisDefinition.id).find(".voting-button[data-vote='up']").addClass("persistVote");
+                    }
+
+                    if(thisDefinition.authorDownvote){
+                        $("#" + thisDefinition.id).find(".voting-button[data-vote='down']").addClass("persistVote");
+                    }
+
+                });
+
+                displayAddDefinitionButton(forUser, isLoggedIn);
+
+
+            }, 'html');
+        }, 'html');
+    } else {
+        var term = $("#search-bar").val();
+        $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold'>" + term + "</span> yet. You should add one!");
+        
+        displayAddDefinitionButton(forUser, isLoggedIn)
+    }
+
+}
+
+function displayAddDefinitionButton(forUser, isLoggedIn){
+    if(!forUser){
+        if(isLoggedIn){
+            $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Add a Definition<span></div>");
+        } else {
+            $("#definitions-section").append("<button class = 'new-def-button login-link'>Add a Definition</div>");
+        } 
+    }
 }
 
 function displayCommentsOnPage(comments, commentSection){
