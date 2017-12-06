@@ -257,6 +257,7 @@ button:hover {
   box-shadow: 0 0 10px rgba(10, 10, 10, 0.2); }
 
 .new-def-button {
+  width: 100%;
   font-size: 1.2em;
   margin: 30px auto 0 auto;
   padding: 12px 0px;
