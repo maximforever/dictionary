@@ -37,7 +37,7 @@
             <a id = "home-link" href = "/">Hackterms</a>
             <div class = "account">
                 <% if (typeof(session.user) == "undefined" || session.user == null){ %>
-                    <span class = "link bold" id = "signup">Sign Up</span>
+                    <button class = "link bold" id = "signup">Sign Up</button>
                     <span class = "link" id = "login">Log In</span>
                 <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
