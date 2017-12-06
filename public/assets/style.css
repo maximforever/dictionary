@@ -256,6 +256,14 @@ button:hover {
   border-radius: 3px;
   box-shadow: 0 0 10px rgba(10, 10, 10, 0.2); }
 
+.new-def-button {
+  font-size: 1.2em;
+  width: 70%;
+  margin: 30px auto 0 auto;
+  padding: 12px 0px;
+  display: block;
+  font-weight: 200; }
+
 /* COMMENTS */
 .comments-section {
   margin: 0 auto 35px auto;
@@ -514,7 +522,7 @@ button:hover {
   pointer-events: none; }
 
 .report-error, .new-definition-error, .new-comment-error {
-  color: rgba(44, 54, 63, 0.3);
+  color: #b50000;
   font-weight: 600;
   margin: 10px 10px 0 0; }
 
@@ -1094,6 +1102,10 @@ button:hover {
     font-size: 0.85em;
     border-width: 2px;
     padding: 15px 10px; }
+  .new-def-button {
+    font-size: 0.85em;
+    width: 100%;
+    margin-top: 20px; }
   /* COMMENTS */
   .comments-section {
     margin: 0 auto 35px auto;

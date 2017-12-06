@@ -1256,9 +1256,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
             if(!forUser){
                 
                 if(isLoggedIn){
-                    $("#definitions-section").append("<div class = 'definition-accent'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
+                    $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Don't see a good definition? Add your own!<span></div>");
                 } else {
-                    $("#definitions-section").append("<div class = 'definition-accent'>Don't see a good definition? <span class = 'link bold login-link'>Add your own!<span></div>");
+                    $("#definitions-section").append("<button class = 'new-def-button login-link'>Don't see a good definition? Add your own!</div>");
                 }
                 
             }

@@ -10,6 +10,7 @@ $blue-dark: #114B5F;
 $gray: #2C363F;
 $gray-transparent: rgba(44, 54, 63, 0.3);
 $orange: #E88D67;
+$red: #b50000;
 
 
 body{
@@ -318,6 +319,15 @@ button:hover {
 	background: $white;
 	border-radius: 3px;
     box-shadow: 0 0 10px rgba(10,10,10, 0.2);
+}
+
+.new-def-button {
+    font-size: 1.2em;
+    width: 70%;
+    margin: 30px auto 0 auto;
+    padding: 12px 0px;
+    display: block;
+    font-weight: 200;
 }
 
 
@@ -641,7 +651,7 @@ button:hover {
 }
 
 .report-error, .new-definition-error, .new-comment-error {
-	color: $gray-transparent;
+    color: $red;
 	font-weight: 600;
     margin: 10px 10px 0 0;
 }
@@ -1398,6 +1408,12 @@ button:hover {
         padding: 15px 10px;
     }
 
+    .new-def-button {
+        font-size: 0.85em;
+        width: 100%;
+        margin-top: 20px;
+    }
+
 
 
     /* COMMENTS */
@@ -1550,7 +1566,7 @@ button:hover {
     }
 
     .report-error, .new-definition-error, .new-comment-error {
-        color: #b50000;
+        color: $red;
         font-weight: 600;
     }
 
