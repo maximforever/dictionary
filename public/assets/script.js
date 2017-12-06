@@ -347,7 +347,6 @@ function main(){
             touchToggle = true;
             addComment(this);
         }
-
     });
 
     $("body").on("touchstart click", ".voting-button", function(){
@@ -556,18 +555,18 @@ function search(){
                         $("#definitions-section").empty();
 
                         if(result.loggedIn == "true" || result.loggedIn == true){
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         } else {
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
                         }
 
             		} else {
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
                         if(result.loggedIn){
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold' id = 'new-def-link'>Want to add one<span>?</div></div>");
                         } else {
-                            $("#definitions-section").append("<div class = 'definition-accent add-one'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
+                            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold no-def-term'>" + searchTerm + "</span>. <span class = 'link bold login-link'>Want to add one<span>?</div></div>");
                         }
                     }      		
             	} else {
@@ -1257,9 +1256,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
             if(!forUser){
                 
                 if(isLoggedIn){
-                    $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
+                    $("#definitions-section").append("<div class = 'definition-accent'>Don't see a good definition? <span class = 'link bold' id = 'new-def-link'>Add your own!<span></div>");
                 } else {
-                    $("#definitions-section").append("<div class = 'definition-accent add-one'>Don't see a good definition? <span class = 'link bold login-link'>Add your own!<span></div>");
+                    $("#definitions-section").append("<div class = 'definition-accent'>Don't see a good definition? <span class = 'link bold login-link'>Add your own!<span></div>");
                 }
                 
             }

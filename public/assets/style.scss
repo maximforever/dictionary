@@ -310,7 +310,7 @@ button:hover {
 
 .definition-accent {
 	margin: 35px auto;
-	padding: 20px;
+	padding: 15px 20px;
 	border: 1px solid $gray-transparent;
     border-left: 4px solid #114B5F;
 	display: block;
@@ -339,6 +339,11 @@ button:hover {
 
 .comment-connector{
     height: 8px;
+}
+
+.add-one {
+    padding: 15px;
+    border-left: 4px solid #114B5F;
 }
 
 .connector{
@@ -386,7 +391,7 @@ button:hover {
 
 .delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
     margin-left: 4px;
-    color: #2C363F;
+    color: $blue-light;
     padding: 0px 8px 3px 8px;
     border: 1px solid rgba(44, 54, 63, 0.3);
     border-radius: 5px;
@@ -404,6 +409,8 @@ button:hover {
 .comment-on-post {
     background: none;
     border: 1px solid $gray-transparent;
+    z-index: 0;
+    text-align: center;
 }
 
 .add-comment {
@@ -627,14 +634,6 @@ button:hover {
     background: $blue-dark;
     color: white;
     display: inline-block;
-}
-
-
-.comment-on-post {
-	z-index: 0;
-	color: $gray;
-	text-align: center;
-	//float: right;
 }
 
 .comment-count{
@@ -1396,6 +1395,7 @@ button:hover {
         margin: 20px 0px;
         font-size: 0.85em;
         border-width: 2px;
+        padding: 15px 10px;
     }
 
 
@@ -1410,6 +1410,11 @@ button:hover {
 
     .comment {
         min-width: 100px;
+    }
+
+    .add-one {
+        padding: 10px;
+        border-left: 2px solid #114B5F;
     }
 
     .definition-main-body{

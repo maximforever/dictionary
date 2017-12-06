@@ -247,7 +247,7 @@ button:hover {
 
 .definition-accent {
   margin: 35px auto;
-  padding: 20px;
+  padding: 15px 20px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-left: 4px solid #114B5F;
   display: block;
@@ -270,6 +270,10 @@ button:hover {
 
 .comment-connector {
   height: 8px; }
+
+.add-one {
+  padding: 15px;
+  border-left: 4px solid #114B5F; }
 
 .connector {
   border: 1px solid #114B5F;
@@ -309,7 +313,7 @@ button:hover {
 
 .delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
   margin-left: 4px;
-  color: #2C363F;
+  color: #58A4B0;
   padding: 0px 8px 3px 8px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-radius: 5px;
@@ -323,7 +327,9 @@ button:hover {
 
 .comment-on-post {
   background: none;
-  border: 1px solid rgba(44, 54, 63, 0.3); }
+  border: 1px solid rgba(44, 54, 63, 0.3);
+  z-index: 0;
+  text-align: center; }
 
 .add-comment {
   margin: 0 10px 10px 0; }
@@ -503,11 +509,6 @@ button:hover {
   background: #114B5F;
   color: white;
   display: inline-block; }
-
-.comment-on-post {
-  z-index: 0;
-  color: #2C363F;
-  text-align: center; }
 
 .comment-count {
   pointer-events: none; }
@@ -1091,13 +1092,17 @@ button:hover {
     min-width: 100px;
     margin: 20px 0px;
     font-size: 0.85em;
-    border-width: 2px; }
+    border-width: 2px;
+    padding: 15px 10px; }
   /* COMMENTS */
   .comments-section {
     margin: 0 auto 35px auto;
     width: 90%; }
   .comment {
     min-width: 100px; }
+  .add-one {
+    padding: 10px;
+    border-left: 2px solid #114B5F; }
   .definition-main-body {
     padding: 15px 10px; }
   .definition-meta {
