@@ -34,7 +34,7 @@ button {
   vertical-align: top;
   border-radius: 5px;
   padding: 3px 8px;
-  box-shadow: 0 1px 4px rgba(47, 89, 209, 0.8); }
+  box-shadow: 0 1px 4px rgba(44, 54, 63, 0.75); }
 
 button:hover {
   background: #E88D67;
