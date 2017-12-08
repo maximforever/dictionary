@@ -1191,7 +1191,6 @@ button:hover {
     padding-left: 8px; }
   .comment-on-post {
     z-index: 0;
-    color: #2C363F;
     text-align: center;
     float: right; }
   .report-error, .new-definition-error, .new-comment-error {
