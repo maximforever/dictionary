@@ -72,7 +72,6 @@ function main(){
 
 
         setTimeout(function(){
-            console.log("false");
             touchToggle = false;
         }, 200);
 
@@ -557,7 +556,7 @@ function search(){
             		} else {
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
-                        displayDefinitionsOnPage([], result.isLoggedIn, false);
+                        displayDefinitionsOnPage([], result.loggedIn, false);
                     }      		
             	} else {
             		console.log(result.error);
@@ -637,7 +636,7 @@ function logSearch(){
                     data: searchQuery,
                     url: "/log-search",
                     success: function(result){
-                        console.log("logged " + newText);
+                        //console.log("logged " + newText);
                     }
                 });
 
@@ -1247,7 +1246,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
         var term = $("#search-bar").val();
         $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold'>" + term + "</span> yet. You should add one!");
         
-        displayAddDefinitionButton(forUser, isLoggedIn)
+        displayAddDefinitionButton(forUser, isLoggedIn);
     }
 
 }
