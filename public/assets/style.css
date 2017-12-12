@@ -319,23 +319,19 @@ button:hover {
 .fa-chevron-circle-up {
   display: none; }
 
-.delete-post, .report-post, .comment-on-post, .report-post-invalid, .delete-post-invalid {
+.action-icon {
   margin-left: 4px;
   color: #58A4B0;
   padding: 0px 8px 3px 8px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-radius: 5px;
   display: inline-block; }
-  .delete-post:hover, .report-post:hover, .comment-on-post:hover, .report-post-invalid:hover, .delete-post-invalid:hover {
+  .action-icon:hover {
     color: #ffffff;
     background: #E88D67; }
 
-.delete-post, .report-post {
-  margin-top: 1px; }
-
 .comment-on-post {
   background: none;
-  border: 1px solid rgba(44, 54, 63, 0.3);
   z-index: 0;
   text-align: center; }
 
@@ -349,7 +345,7 @@ button:hover {
 #category-summary {
   padding: 15px 20px;
   display: block;
-  border: 1px solid rgba(10, 10, 10, 0.5);
+  border: 1px solid rgba(44, 54, 63, 0.3);
   border-left: 4px solid #114B5F;
   min-width: 400px;
   font-size: 0.85em;
@@ -484,13 +480,13 @@ button:hover {
   font-weight: 700;
   vertical-align: middle;
   display: inline-block;
-  width: 80%; }
+  width: 70%; }
 
 .definition-actions {
   text-align: right;
   vertical-align: top;
   display: inline-block;
-  width: 20%; }
+  width: 30%; }
 
 .voting-column {
   display: inline-block;

@@ -5,14 +5,18 @@ var currentNotifications = [];
 var currentNotificationCounter = 0;
 
 var lastSearchedTerm = null;
-var touchToggle = false;
 
 var activeTermIndex = -1;
 
 var screenWidth = $(window).width();
+var triggerEvent = "click";
 
 
 function main(){
+ 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        triggerEvent = "touchstart"
+    } 
 
     if($("#error").text().trim().length){
         $("#error").show().css("display",  "block");
@@ -60,7 +64,7 @@ function main(){
     }
 
 
-    $("body").on("touchstart click", function(e){
+    $("body").on(triggerEvent, function(e){
 
 
         $("#error, #message").text("").hide();      // THIS HIDES THE FLASH MESSAGE ON ANY CLICK
@@ -71,11 +75,6 @@ function main(){
         $("#related-term-suggestions-section").hide();
 
 
-        setTimeout(function(){
-            touchToggle = false;
-        }, 200);
-
-
 
         if(!($(e.target).hasClass('notification-header') || $(e.target).hasClass('notification-panel')|| $(e.target).hasClass('fa-chevron-down') || $(e.target).hasClass('fa-chevron-up'))){
            $("#notifications").hide();              
@@ -83,7 +82,7 @@ function main(){
     });
 
 
-	$("body").on("touchstart click", ".term-link", function(){
+	$("body").on(triggerEvent, ".term-link", function(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
 		currentTerm = term;
@@ -93,7 +92,7 @@ function main(){
 		getDefinition(term, false);
 	});
 
-    $("body").on("touchstart click", ".definition-suggestion-link", function(){
+    $("body").on(triggerEvent, ".definition-suggestion-link", function(){
         var term = this.dataset.id;
         $("#definition-term-textarea").val(term);
         $("#term-suggestions-section").empty();
@@ -101,7 +100,7 @@ function main(){
         $(".new-definition-term").text(term);
     });
 
-    $("body").on("touchstart click", ".related-suggestion-link", function(){
+    $("body").on(triggerEvent, ".related-suggestion-link", function(){
 
         var term = this.dataset.id;
 
@@ -117,25 +116,25 @@ function main(){
         $("#definition-term-textarea").focus();
     });
 
-    $("body").on("touchstart click", ".report-post", function(){
+    $("body").on(triggerEvent, ".report-post", function(){
         window.scrollTo(0, 0);
         $(".add-confirmation").remove();
         displayReport(this.dataset.id, this.dataset.type);
     });
 
-    $("body").on("touchstart click", "#submit-report", function(){
+    $("body").on(triggerEvent, "#submit-report", function(){
         submitReport();
     });
 
-    $("body").on("touchstart click", "input[name='report']", function(){
+    $("body").on(triggerEvent, "input[name='report']", function(){
         $(".report-error").empty();
     });
 
-    $("body").on("touchstart click", "#new-alert", function(){
+    $("body").on(triggerEvent, "#new-alert", function(){
         acknowledgeNotifications();
     });
 
-    $("body").on("touchstart click", ".notification-bell", function(){
+    $("body").on(triggerEvent, ".notification-bell", function(){
 
         if($(".notifications-body").height() > 0) {
             $(".notifications-body").hide();
@@ -147,14 +146,14 @@ function main(){
         
     });
 
-    $("body").on("touchstart click", ".scroll-up", function(){
+    $("body").on(triggerEvent, ".scroll-up", function(){
         if(currentNotificationCounter < (currentNotifications.length-1)){
             currentNotificationCounter++;
             addNotificationsToScreen();
         }
     });
 
-    $("body").on("touchstart click", ".scroll-down", function(){
+    $("body").on(triggerEvent, ".scroll-down", function(){
         if(currentNotificationCounter >= 5){
             currentNotificationCounter--;
             addNotificationsToScreen();
@@ -162,19 +161,15 @@ function main(){
         
     });
 
-    $("body").on("touchstart click", ".comment-on-post", function(e){
+    $("body").on(triggerEvent, ".comment-on-post", function(e){
 
-        if(!touchToggle){
-            $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
-            $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
-            $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
-
-            touchToggle = true;
-        }
+        $(".fa-chevron-circle-down[data-id=" + this.dataset.id + "]").toggle();
+        $(".comments-section[data-id=" + this.dataset.id + "]").toggle();
+        $(".fa-comment[data-id=" + this.dataset.id + "]").toggle();
 
     });
 
-    $("body").on("touchstart click", ".delete-post", function(){
+    $("body").on(triggerEvent, ".delete-post", function(){
         var confirmation = confirm("Are you sure you want to delete this post?");
         if(confirmation){
             deletePost(this.dataset.id, this.dataset.type);
@@ -189,21 +184,16 @@ function main(){
         activeTermIndex = -1;
     });
 
-    $("body").on("touchstart click", ".stay-signed-in", function(){
+    $("body").on(triggerEvent, ".stay-signed-in", function(){
 
-        if(!touchToggle){
-
-            touchToggle = true;
-
-            if($("#remember-account").hasClass("fa-check-square-o")){
-                $("#remember-account").removeClass("fa-check-square-o");
-                $("#remember-account").addClass("fa-square-o");
-            } else {
-                $("#remember-account").removeClass("fa-square-o");
-                $("#remember-account").addClass("fa-check-square-o");
-            }
-
+        if($("#remember-account").hasClass("fa-check-square-o")){
+            $("#remember-account").removeClass("fa-check-square-o");
+            $("#remember-account").addClass("fa-square-o");
+        } else {
+            $("#remember-account").removeClass("fa-square-o");
+            $("#remember-account").addClass("fa-check-square-o");
         }
+
     });
 
     
@@ -332,35 +322,29 @@ function main(){
         }
 	})
 
-	$("body").on("touchstart click", "#add-definition", function(){
+	$("body").on(triggerEvent, "#add-definition", function(){
 
-        if(!touchToggle){
-		   addDefinition();
-	       touchToggle = true;
-        }
+	   addDefinition();
     });
 
 
-    $("body").on("touchstart click", ".add-comment", function(){
-        if(!touchToggle){
-            touchToggle = true;
-            addComment(this);
-        }
+    $("body").on(triggerEvent, ".add-comment", function(){
+        addComment(this);
+        
     });
 
-    $("body").on("touchstart click", ".voting-button", function(){
-        if(!touchToggle){
-            touchToggle = true;
-            var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
-            var id = this.dataset.id;
-            var term = this.dataset.term;
-            var type = this.dataset.type;
+    $("body").on(triggerEvent, ".voting-button", function(){
+    
+        var direction = this.dataset.vote;               // .dataset is a quick way to get data attribute value
+        var id = this.dataset.id;
+        var term = this.dataset.term;
+        var type = this.dataset.type;
 
-            voteOnPost(direction, id, term, type);
-        }
+        voteOnPost(direction, id, term, type);
+    
     })
 
-    $("body").on("touchstart click", "#new-def-link", function(){
+    $("body").on(triggerEvent, "#new-def-link", function(){
         window.scrollTo(0, 0);
         $("#new-definition").show();
 
@@ -377,7 +361,7 @@ function main(){
         $("#terms-section").empty();
     });
     
-    $("body").on("touchstart click", "#close", function(){
+    $("body").on(triggerEvent, "#close", function(){
         $(".pop-out").find("input").val("");
         $(".pop-out").find(".report-error").text("");
         $(".pop-out").hide();
@@ -385,43 +369,43 @@ function main(){
 
     /* ACCOUNT LINKS*/
 
-    $("body").on("touchstart click", "#login", function(){
+    $("body").on(triggerEvent, "#login", function(){
         showLogin();
     });
 
-    $("body").on("touchstart click", ".login-link", function(){
+    $("body").on(triggerEvent, ".login-link", function(){
         $(".pop-out").hide();
         $("#terms-section").empty();
         showLogin();
     });
 
-    $("body").on("touchstart click", ".sign-up-link", function(){
+    $("body").on(triggerEvent, ".sign-up-link", function(){
         $(".pop-out").hide();
         $("#terms-section").empty();
         showSignup();
     });
 
-    $("body").on("touchstart click", "#signup", function(){
+    $("body").on(triggerEvent, "#signup", function(){
         showSignup();
     });
 
-    $("body").on("touchstart click", "#account-close", function(){
+    $("body").on(triggerEvent, "#account-close", function(){
         resetNavBar();
     });
 
-    $("body").on("touchstart click", "#login-action", function(){
+    $("body").on(triggerEvent, "#login-action", function(){
         login();
     });
 
-    $("body").on("touchstart click", "#signup-action", function(){
+    $("body").on(triggerEvent, "#signup-action", function(){
         signup();
     });
 
-    $("body").on("touchstart click", "#logout", function(){
+    $("body").on(triggerEvent, "#logout", function(){
         logout();
     });
 
-    $("body").on("touchstart click", "#password-reset-action", function(){
+    $("body").on(triggerEvent, "#password-reset-action", function(){
 
         var email = $("#password-reset-email").val();
         if(email.indexOf("@") != -1 && email.indexOf(".") != -1){
@@ -431,7 +415,7 @@ function main(){
         }
     });
 
-    $("body").on("touchstart click", "#password-reset-submit-action", function(){
+    $("body").on(triggerEvent, "#password-reset-submit-action", function(){
 
         var password = $("#password-reset").val();
         var passwordConfirmation = $("#password-reset-confirmation").val();
@@ -449,26 +433,22 @@ function main(){
 
     });
 
-    $("body").on("touchstart click", "#password-reset-link", function(){
+    $("body").on(triggerEvent, "#password-reset-link", function(){
         resetNavBar();
         $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
         $("#reset-request-confirm").hide();
         $("#password-reset-modal").show();
     });
 
-    $("body").on("touchstart click", ".faq-control", function(){
+    $("body").on(triggerEvent, ".faq-control", function(){
 
-
-        if(!touchToggle){
             $("#" + this.id).parent().find(".show-answer").toggle();
             $("#" + this.id).parent().find(".hide-answer").toggle();
             $("#" + this.id).parent().find(".faq-answer").toggle();
-            touchToggle = true;
-        }
 
     });
 
-    $("body").on("touchstart click", "#password-reset-link", function(){
+    $("body").on(triggerEvent, "#password-reset-link", function(){
         resetNavBar();
         $("#password-reset-email, #password-reset-action, #password-reset-modal .account-title, #password-reset-modal p").show();
         $("#reset-request-confirm").hide();
@@ -943,7 +923,8 @@ function login(){
 
                         var message = welcomeMessages[Math.floor(Math.random()*welcomeMessages.length)];
 
-                        flash("message", message);
+                        //flash("message", message);
+                        flash("message", "You are logged in");
                     } 
                 }
             }
@@ -1059,7 +1040,7 @@ function logout(){
         success: function(result){
             if(result.status == "success"){
                 location.reload();
-                flash("error", "Logged out");
+                flash("error", "You have been logged out");
             } else {
                 $("#login-username, #login-password, #signup-username, #signup-password").val("");
             }
