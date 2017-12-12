@@ -194,6 +194,7 @@ function main(){
             // fill out new def box with existing post
             $("#new-definition-textarea").val(post.body);
             $("#definition-term-textarea").val(post.term);
+            $(".new-definition-term").text(post.term);
             $(".definition-category-selection").val(post.category);
             $("#related-term-textarea").val(relatedTerms);
             $("#add-definition")[0].dataset.id = post.id;
@@ -1207,12 +1208,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
                             $(sortedCategories[k].name).css("width", sortedCategories[k].percentage*100 + "%");
                             $(sortedCategories[k].name + "-label").text(Math.floor(sortedCategories[k].percentage * 100) + "%");
                             $(".category-legend").append("<span class = 'category-label'><div class = 'category-box " + sortedCategories[k].short + "'></div>" + sortedCategories[k].categoryName + "</span>");
-
-                            
+      
                         }
-                        
-                    } 
-
+                    }  
                 }
 
                 // a bit of handlebars magic
