@@ -163,9 +163,6 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
 
-
-
-
     app.post("/search", function(req, res){
         dbops.search(db, req, function tryToSearch(response){
             if(response.status == "success"){
@@ -696,6 +693,30 @@ MongoClient.connect(dbAddress, function(err, db){
             res.send({
                 status: "fail",
                 error: "You must be logged in to delete posts"
+            })
+        }
+    });
+
+    app.post("/get-existing-post", function(req, res){
+        
+        if(req.session.user){
+            dbops.getExistingDefinition(db, req, function deletePost(response){
+                if(response.status == "success"){
+                    res.send({
+                        status: "success",
+                        post: response.post,
+                    });
+                } else if(response.status == "fail"){
+                    res.send({
+                        status: "fail",
+                        error: response.message
+                    });
+                }
+            });
+        } else {
+            res.send({
+                status: "fail",
+                error: "You must be logged in to edit a post"
             })
         }
     });

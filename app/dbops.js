@@ -267,10 +267,9 @@ function addDefinition(db, req, callback){
 					var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
 
 					// if((approvedDefinitions.length > 5 || moderator)){			
-					if(true){												// all definitions are auto-approved - change at launch!
+					if(true){			// all definitions are auto-approved - change at launch!
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
-
 
 						var newNotification = {
 							to: newDefinitionQuery.author,
@@ -327,16 +326,46 @@ function addDefinition(db, req, callback){
 							});
 						} else if (existingTerms.length == 1) {
 							console.log("Someone has already created the term '" + termQuery.name + "'");
-							database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
-								console.log(newDefinition.ops[0]);
-								database.create(db, "votes", newVote, function createdVote(newVote){
-									callback({
-										status: "success",
-										termAdded: newDefinitionQuery.approved,
-										term: newDefinition.ops[0].term
+
+							// we need to either create  a new id or update an existing one, depending on whethere there's an ID
+
+								
+							if(parseInt(req.body.id) == 0){
+								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
+									console.log(newDefinition.ops[0]);
+									database.create(db, "votes", newVote, function createdVote(newVote){
+										callback({
+											status: "success",
+											termAdded: newDefinitionQuery.approved,
+											term: newDefinition.ops[0].term
+										});
 									});
 								});
-							});
+							} else {
+								var definitionUpdateQuery = {
+									id: parseInt(req.body.id)
+								}
+
+								var updatedDefinition = {
+									$set: {
+										lastEdit: Date(),
+										body: req.body.definition,
+										category: req.body.category,
+										related: relatedTerms
+									}
+								}
+
+								database.update(db, "definitions", definitionUpdateQuery, updatedDefinition, function updateDefinition(updatedDefinition){
+									console.log("updatedDefinition");
+									console.log(updatedDefinition);
+									callback({
+										status: "success",
+										termAdded: false,
+										term: updatedDefinition.term
+									});
+								});
+							}
+
 						} else {
 							console.log("Multiple definitions for one term");
 							callback({
@@ -1320,6 +1349,50 @@ function deletePost(db, req, callback){
 	})
 }
 
+function getExistingDefinition(db, req, callback){
+
+	var postQuery = {
+		id: parseInt(req.body.id)
+	}
+
+	database.read(db, "definitions", postQuery, function findPost(posts){
+		if (posts.length == 1){
+
+			if(posts[0].author == req.session.user.username){
+
+				callback({status: "success", post: posts[0]});
+
+			} else {
+				callback({status: "fail", message: "You are not the author of this post"})
+			}
+		} else {
+			callback({status: "fail", message: "This post does not exist"})
+		}
+	})
+}
+
+function updateExistingDefinition(db, req, callback){
+
+	var postQuery = {
+		id: parseInt(req.body.id)
+	}
+
+	database.read(db, "definitions", postQuery, function findPost(posts){
+		if (posts.length == 1){
+
+			if(posts[0].author == req.session.user.username){
+
+				callback({status: "success", post: posts[0]});
+
+			} else {
+				callback({status: "fail", message: "You are not the author of this post"})
+			}
+		} else {
+			callback({status: "fail", message: "This post does not exist"})
+		}
+	})
+}
+
 
 
 
@@ -1598,6 +1671,7 @@ module.exports.getComments = getComments;
 module.exports.addComment = addComment;
 module.exports.vote = vote;
 module.exports.generateHash = generateHash;
+module.exports.getExistingDefinition = getExistingDefinition;
 module.exports.deletePost = deletePost;
 
 module.exports.logVisit = logVisit;

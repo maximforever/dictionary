@@ -367,11 +367,11 @@ button:hover {
   font-weight: 700; }
 
 .category-bar {
-  border: 1px solid #5a6061;
+  border: 1px solid #2C363F;
   border-radius: 3px; }
 
 .category-stat {
-  background: gray;
+  background: #2C363F;
   display: inline-block;
   text-align: center;
   font-size: 0.9em;
@@ -391,7 +391,7 @@ button:hover {
 .category-box {
   height: 1em;
   width: 1em;
-  border: 1px solid #5a6061;
+  border: 1px solid #2C363F;
   display: inline-block;
   border-radius: 2px;
   vertical-align: text-bottom;
@@ -422,12 +422,6 @@ button:hover {
   font-size: 1.1em;
   font-family: "Zilla Slab", serif;
   font-weight: 500; }
-
-.add-confirmation {
-  background: #eca921;
-  border: 2px solid #2C363F;
-  margin-bottom: 35px;
-  padding: 10px; }
 
 .term .title {
   font-size: 1.5em;

@@ -81,7 +81,7 @@
 
                     <div class = "definition-category-section">
                         <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                        <select class = "definition-category-section" name = "category">
+                        <select class = "definition-category-selection" name = "category">
                             <option disabled selected value></option>
                             <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
                             <option data-category = "tool" value="tool">Tool (ex: NPM, grunt, Sublime Text)</option>
@@ -99,7 +99,7 @@
                     <div id = "related-term-suggestions-section"></div>
                     <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
                     <div class = "new-definition-error"></div>
-                    <button id = "add-definition">Add</button>
+                    <button id = "add-definition" data-id = "0">Add</button>
                 </div>
             <% } %>
         </div>

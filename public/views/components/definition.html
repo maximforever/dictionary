@@ -13,7 +13,10 @@
 		 			<div class = "bold link action-icon edit-post" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-pencil" aria-hidden="true"></i></div>
 		 			<div class = "bold link action-icon delete-post" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-trash-o" aria-hidden="true"></i></div>
 		 		{{/if}}
-				<span class = "action-icon report-post bold" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-flag-o" aria-hidden="true"></i></span>
+
+		 		{{#unless definition.owner}}
+					<span class = "action-icon report-post bold" data-id = "{{id}}" data-type = "definitions"><i class="fa fa-flag-o" aria-hidden="true"></i></span>
+				{{/unless}}
 				
 				<span class = "link comment-on-post action-icon" data-id = "{{id}}" data-term = "{{definition.term}}" >
 					<i class="fa fa-chevron-circle-down" data-id = "{{id}}" data-term = "{{definition.term}}" aria-hidden="true"></i>

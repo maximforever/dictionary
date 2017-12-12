@@ -14,8 +14,9 @@ var triggerEvent = "click";
 
 function main(){
  
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        triggerEvent = "touchstart"
+    // if mobile browser, set on click event trigger to touchstart instead
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        triggerEvent = "touchstart";
     } 
 
     if($("#error").text().trim().length){
@@ -118,7 +119,6 @@ function main(){
 
     $("body").on(triggerEvent, ".report-post", function(){
         window.scrollTo(0, 0);
-        $(".add-confirmation").remove();
         displayReport(this.dataset.id, this.dataset.type);
     });
 
@@ -174,6 +174,42 @@ function main(){
         if(confirmation){
             deletePost(this.dataset.id, this.dataset.type);
         }
+    });
+
+    $("body").on(triggerEvent, ".edit-post", function(){
+        getExistingDefinition(this.dataset.id, function fetchPost(post){
+
+            console.log(post);
+            window.scrollTo(0, 0);
+            $("#new-definition").show();
+            var relatedTerms = "";
+
+            for(var i = 0; i < post.related.length; i++){
+                relatedTerms += post.related[i];
+
+                if(i != (post.related.length - 1)){
+                    relatedTerms += ", ";
+                }
+            }
+
+            // fill out new def box with existing post
+            $("#new-definition-textarea").val(post.body);
+            $("#definition-term-textarea").val(post.term);
+            $(".definition-category-selection").val(post.category);
+            $("#related-term-textarea").val(relatedTerms);
+            $("#add-definition")[0].dataset.id = post.id;
+
+            var charCount = $("#new-definition-textarea").val().length;
+
+            $("#new-definition-char-count").text(charCount);
+
+            if(charCount >= 500 || charCount < 30){
+                $("#new-definition-wrapper").addClass("over-char-limit");
+            } else {
+                $("#new-definition-wrapper").removeClass("over-char-limit");
+            }
+
+        });
     });
 
     $("body").on("mouseenter", ".term-link", function(){
@@ -323,7 +359,6 @@ function main(){
 	})
 
 	$("body").on(triggerEvent, "#add-definition", function(){
-
 	   addDefinition();
     });
 
@@ -346,7 +381,11 @@ function main(){
 
     $("body").on(triggerEvent, "#new-def-link", function(){
         window.scrollTo(0, 0);
+
+        // show new definition modal and empty text fields
         $("#new-definition").show();
+        $("#new-definition-textarea, #definition-term-textarea, #related-term-textarea, .definition-category-selection").val("");
+        $("#add-definition")[0].dataset.id = "0";
 
 
         if($("#category-title-label").length){
@@ -700,6 +739,7 @@ function addDefinition(){
 	var definitionBody = $("#new-definition-textarea").val();
 	var relatedTermsArray;
     var relatedTerms = [];
+    var definitionId = $("#add-definition")[0].dataset.id;
 
     if($("#related-term-textarea").val()){
         relatedTermsArray = $("#related-term-textarea").val().trim().split(",");
@@ -728,7 +768,8 @@ function addDefinition(){
             			term: definitionTerm.toLowerCase().trim(),
             			definition: definitionBody,
             			related: relatedTerms,
-                        category: definitionCategory
+                        category: definitionCategory,
+                        id: definitionId
             		}
 
                     if(validateInput(definitionBody)){
@@ -749,17 +790,24 @@ function addDefinition(){
                                     getDefinition(result.term, false);
                                     
                                     if(!result.termAdded){
-                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for <span class = 'bold'>" + result.term + "</span> has been submitted. It will be reviewed and and added to the website shortly! <br><br> Your new posts will be auto-approved after 5 successful submissions.</div>");
-                                        flash("message", "Your definition for '" + result.term + "' has been submitted for review and will be up shortly!");
-
+                                        if(parseInt(definitionId) == 0){
+                                            flash("message", "Your definition for '" + result.term + "' has been submitted for review");    
+                                        } else {
+                                            flash("message", "Your definition for '" + result.term + "' has been updated");
+                                        }
+                                        
                                     } else {
-                                        $("#definitions-section").append("<div class = 'definition add-confirmation'>Your definition for '<span class = 'bold'>" + result.term + "</span>' is live!</div>");
                                         flash("message", "Your definition for '" + result.term + "' is live!");
                                     }
                                     
                                     $("#new-definition-textarea").val("");
                                     $("#related-term-textarea").val("");            
                                     $("#new-definition").hide();
+                                    
+                                    if(window.location.pathname.indexOf("/profile") != -1 ){
+                                        location.reload();
+                                    }
+
                                 } else {
                                     $(".new-definition-error").text(result.error);
                                 }
@@ -1413,9 +1461,9 @@ function submitReport(){
                 $("input[name='report']").prop('checked', false);
                 $("#report").hide();
                 if(result.status == "success"){
-                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>Your report has been submitted. Thank you for helping make Hackterms better!</div>");
+                    flash("message", "Your report has been submitted");
                 } else {
-                    $("#definitions-section").prepend("<div class = 'definition add-confirmation'>" + result.error + "</div>");
+                    flash("error", result.error);
                 }
             }
         })
@@ -1462,8 +1510,26 @@ function deletePost(thisId, thisType){
             }
         }
     })
+}
 
+function getExistingDefinition(thisId, callback){
 
+    var postInfo = {
+        id: thisId
+    }
+
+    $.ajax({
+        type: "post",
+        url: "/get-existing-post",
+        data: postInfo,
+        success: function(result){
+            if(result.status == "success"){
+                callback(result.post)
+            } else {
+                flash("error", result.error);
+            }
+        }
+    })
 }
 
 

@@ -31,7 +31,7 @@ function update(db, col, item, query, callback){
     console.log("query is: ");
     console.log(query);
 
-    db.collection(col).update(item, query, function displayAfterUpdating(){
+    db.collection(col).update(item, query, {upsert: true},  function displayAfterUpdating(){
         console.log("Updated successfully! Fetching object: ");
         read(db, col, item, function showUpdated(updatedItem){           // do we need to find the item again?
             console.log("HERE IT IS:");
