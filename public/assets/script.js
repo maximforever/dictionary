@@ -179,7 +179,6 @@ function main(){
     $("body").on(triggerEvent, ".edit-post", function(){
         getExistingDefinition(this.dataset.id, function fetchPost(post){
 
-            console.log(post);
             window.scrollTo(0, 0);
             $("#new-definition").show();
             var relatedTerms = "";
