@@ -227,8 +227,7 @@ button:hover {
 
 /* DEFINITION */
 #definitions-section {
-  margin: 0 auto;
-  padding: 0 5vw; }
+  margin: 0 auto; }
 
 #definitions-section-title {
   margin-left: 20vw; }
@@ -1077,8 +1076,7 @@ button:hover {
     background: #F1A19B; }
   /* DEFINITION */
   #definitions-section {
-    margin: 0 auto;
-    padding: 0; }
+    margin: 0 auto; }
   #definitions-section p {
     margin-top: 5vh; }
   #definitions-section h3 {
