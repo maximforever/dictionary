@@ -1,7 +1,7 @@
 /* GLOBAL STYLING */
 body {
   margin: 0;
-  background: #f3eae0;
+  background: #f1f1f1;
   font-family: 'Muli', sans-serif;
   font-weight: 300;
   min-height: 100vh;
@@ -237,7 +237,7 @@ button:hover {
   min-width: 300px;
   background: #ffffff;
   border-radius: 3px;
-  border: 1px solid rgba(44, 54, 63, 0.3); }
+  border: 2px solid #2C363F; }
 
 .definition-accent {
   margin: 35px auto;
@@ -460,7 +460,7 @@ button:hover {
   vertical-align: top; }
 
 .main-row {
-  padding: 15px; }
+  padding: 10px 15px; }
 
 .definition-meta {
   font-size: 0.85em;
@@ -487,7 +487,7 @@ button:hover {
 
 .voting-column {
   display: inline-block;
-  width: calc(5%); }
+  width: 5%; }
 
 .voting-section {
   margin: 0;
@@ -1090,8 +1090,7 @@ button:hover {
     margin: 20px auto 0 auto;
     min-width: 100px;
     border-radius: 3px;
-    border: 1px solid rgba(190, 173, 127, 0.6);
-    border-top: 2px solid #114B5F; }
+    border: 2px solid #2C363F; }
   .definition-accent {
     min-width: 100px;
     margin: 20px 0px;
@@ -1168,6 +1167,8 @@ button:hover {
   .definition-column {
     line-height: 1.5;
     font-size: 0.9em; }
+  .definition-main-column {
+    width: 85%; }
   .definition-history {
     font-size: 0.9em; }
   .voting-column {
