@@ -94,8 +94,7 @@ button:hover {
   height: 47px;
   padding: 5px 10px 10px 10px;
   display: block;
-  border: 1px solid #c5c5c5;
-  box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.5);
+  border: 1px solid #000000;
   width: calc(100% - 22px);
   min-width: 300px;
   max-width: calc(1600px - 22px); }
@@ -227,8 +226,7 @@ button:hover {
 
 /* DEFINITION */
 #definitions-section {
-  margin: 0 auto;
-  padding: 0 5vw; }
+  margin: 0 auto; }
 
 #definitions-section-title {
   margin-left: 20vw; }
@@ -239,11 +237,7 @@ button:hover {
   min-width: 300px;
   background: #ffffff;
   border-radius: 3px;
-  border: 1px solid rgba(44, 54, 63, 0.3);
-  border-top: 4px solid #114B5F; }
-
-.definition-main-body {
-  padding: 15px 10px 20px 20px; }
+  border: 1px solid rgba(44, 54, 63, 0.3); }
 
 .definition-accent {
   margin: 35px auto;
@@ -325,7 +319,8 @@ button:hover {
   padding: 0px 8px 3px 8px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-radius: 5px;
-  display: inline-block; }
+  display: inline-block;
+  vertical-align: top; }
   .action-icon:hover {
     color: #ffffff;
     background: #E88D67; }
@@ -443,26 +438,34 @@ button:hover {
   float: right; }
 
 .definition-term {
-  color: #114B5F;
+  color: #58A4B0;
   font-family: "Zilla Slab", serif;
-  font-size: 1.5em;
+  font-size: 2.2em;
   font-weight: 400; }
 
 .definition-related-terms {
   margin-top: 15px; }
 
 .definition-column {
-  width: calc(95% - 10px);
   display: inline-block;
   vertical-align: top;
-  line-height: 1.4;
-  padding-right: 10px; }
+  line-height: 1.5;
+  font-family: 'Source Code Pro', monospace;
+  font-weight: 400;
+  font-size: 0.95em; }
+
+.definition-main-column {
+  display: inline-block;
+  width: 95%;
+  vertical-align: top; }
+
+.main-row {
+  padding: 15px; }
 
 .definition-meta {
   font-size: 0.85em;
   min-height: 2em;
-  padding: 5px 15px 5px 20px;
-  border-bottom: 1px solid rgba(44, 54, 63, 0.3); }
+  padding-bottom: 10px; }
 
 .comment-meta {
   font-size: 0.85em;
@@ -484,13 +487,11 @@ button:hover {
 
 .voting-column {
   display: inline-block;
-  width: calc(5% - 2px);
-  border-left: 2px solid #114B5F; }
+  width: calc(5%); }
 
 .voting-section {
   margin: 0;
-  text-align: center;
-  vertical-align: top; }
+  text-align: center; }
 
 .persistVote {
   color: #E88D67; }
@@ -1166,8 +1167,7 @@ button:hover {
     width: calc(100% - 14px); }
   .definition-column {
     line-height: 1.5;
-    font-size: 0.9em;
-    width: calc(90% - 10px); }
+    font-size: 0.9em; }
   .definition-history {
     font-size: 0.9em; }
   .voting-column {
