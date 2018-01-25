@@ -301,10 +301,7 @@ button:hover {
     background: $white;
     border-radius: 3px;
     border: 2px solid $gray;
-}
-
-.definition-main-body{
-    //padding: 15px 10px 10px 20px;
+    padding: 10px 15px;
 }
 
 .definition-accent {
@@ -566,6 +563,7 @@ button:hover {
 
 .definition-column {
     display: inline-block;
+    width: 98%;
     vertical-align: top;
     line-height: 1.5;
     font-family: 'Source Code Pro', monospace;
@@ -573,21 +571,11 @@ button:hover {
     font-size: 0.95em;
 }
 
-.definition-main-column{
-    display: inline-block;
-    width: 95%;
-    vertical-align: top;
-}
-
-.main-row {
-    padding: 10px 15px;
-}
 
 .definition-meta{
 	font-size: 0.85em;
     min-height: 2em;
     padding-bottom: 10px;
-    //padding: 10px 15px 5px 20px;
 }
 
 .comment-meta{
@@ -602,6 +590,7 @@ button:hover {
     vertical-align: middle;
     display: inline-block;
     width: 70%;
+    margin-top: -0.4em;
 }
 
 .definition-actions {
@@ -611,14 +600,12 @@ button:hover {
     width: 30%;
 }
 
-.voting-column {
-	display: inline-block;
-	width: 5%;
-}
-
-.voting-section{
-	margin: 0;
-	text-align: center;
+.voting-column{
+    width: 2%;
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+    margin-top: -0.7em;
 }
 
 .persistVote{
@@ -1396,6 +1383,7 @@ button:hover {
         min-width: 100px;
         border-radius: 3px;
         border: 2px solid $gray;
+        padding: 5px;
     }
 
     .definition-accent {
@@ -1429,8 +1417,8 @@ button:hover {
         border-left: 2px solid #114B5F;
     }
 
-    .definition-main-body{
-        padding: 15px 10px;
+    .definition-body{
+        padding: 2px 5px;
     }
 
     .definition-meta {
@@ -1444,11 +1432,11 @@ button:hover {
     }
 
     .definition-history{
-        width: 60%;
+        width: 58%;
     }
 
     .definition-actions {
-        width: 40%;
+        width: 42%;
     }
 
     .comment-body {
@@ -1535,10 +1523,7 @@ button:hover {
     .definition-column {
         line-height: 1.5;
         font-size: 0.9em;
-    }
-
-    .definition-main-column {
-        width: 85%;
+        width: 90%;
     }
 
 
@@ -1546,13 +1531,8 @@ button:hover {
         font-size: 0.9em;
     }
 
-    .voting-column {
-        display: inline-block;
-        float: none;
-        width: calc(10% - 2px);
-    }
 
-    .voting-section{
+    .voting-column{
         margin: 0;
         text-align: center;
         vertical-align: top;

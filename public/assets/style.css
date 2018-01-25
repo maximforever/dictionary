@@ -237,7 +237,8 @@ button:hover {
   min-width: 300px;
   background: #ffffff;
   border-radius: 3px;
-  border: 2px solid #2C363F; }
+  border: 2px solid #2C363F;
+  padding: 10px 15px; }
 
 .definition-accent {
   margin: 35px auto;
@@ -448,19 +449,12 @@ button:hover {
 
 .definition-column {
   display: inline-block;
+  width: 98%;
   vertical-align: top;
   line-height: 1.5;
   font-family: 'Source Code Pro', monospace;
   font-weight: 400;
   font-size: 0.95em; }
-
-.definition-main-column {
-  display: inline-block;
-  width: 95%;
-  vertical-align: top; }
-
-.main-row {
-  padding: 10px 15px; }
 
 .definition-meta {
   font-size: 0.85em;
@@ -477,7 +471,8 @@ button:hover {
   font-weight: 700;
   vertical-align: middle;
   display: inline-block;
-  width: 70%; }
+  width: 70%;
+  margin-top: -0.4em; }
 
 .definition-actions {
   text-align: right;
@@ -486,12 +481,11 @@ button:hover {
   width: 30%; }
 
 .voting-column {
-  display: inline-block;
-  width: 5%; }
-
-.voting-section {
+  width: 2%;
   margin: 0;
-  text-align: center; }
+  text-align: center;
+  display: inline-block;
+  margin-top: -0.7em; }
 
 .persistVote {
   color: #E88D67; }
@@ -1090,7 +1084,8 @@ button:hover {
     margin: 20px auto 0 auto;
     min-width: 100px;
     border-radius: 3px;
-    border: 2px solid #2C363F; }
+    border: 2px solid #2C363F;
+    padding: 5px; }
   .definition-accent {
     min-width: 100px;
     margin: 20px 0px;
@@ -1108,16 +1103,16 @@ button:hover {
   .add-one {
     padding: 10px;
     border-left: 2px solid #114B5F; }
-  .definition-main-body {
-    padding: 15px 10px; }
+  .definition-body {
+    padding: 2px 5px; }
   .definition-meta {
     padding: 5px 10px; }
   .comment-meta {
     padding: 2px 10px; }
   .definition-history {
-    width: 60%; }
+    width: 58%; }
   .definition-actions {
-    width: 40%; }
+    width: 42%; }
   .comment-body {
     margin-bottom: 10px; }
   .comment-main-body {
@@ -1166,16 +1161,11 @@ button:hover {
     width: calc(100% - 14px); }
   .definition-column {
     line-height: 1.5;
-    font-size: 0.9em; }
-  .definition-main-column {
-    width: 85%; }
+    font-size: 0.9em;
+    width: 90%; }
   .definition-history {
     font-size: 0.9em; }
   .voting-column {
-    display: inline-block;
-    float: none;
-    width: calc(10% - 2px); }
-  .voting-section {
     margin: 0;
     text-align: center;
     vertical-align: top;

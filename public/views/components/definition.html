@@ -28,7 +28,7 @@
 				</div>
 			</div>
 
-			<div class = "definition-main-body">
+			<div class = "definition-body">
 				<div class = "definition-column">
 					<div class = "definition-body">{{definition.body}}</div>
 
@@ -41,16 +41,17 @@
 					</div>
 
 					{{/if}}
+				</div><!-- 
+		     --><div class = "voting-column">	
+					<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "up" data-type = "definition" aria-hidden="true"></i><br>
+					<span class = "definition-score">{{score}}</span><br>
+					<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "down" data-type = "definition" aria-hidden="true"></i>
 				</div>
 			</div>
-		</div><!-- 
-	 --><div class = "voting-column">
-			<div class = "voting-section">	
-				<i class="fa fa-chevron-up voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "up" data-type = "definition" aria-hidden="true"></i><br>
-				<span class = "definition-score">{{score}}</span><br>
-				<i class="fa fa-chevron-down voting-button link" data-id = "{{id}}" data-term = "{{definition.term}}" data-vote = "down" data-type = "definition" aria-hidden="true"></i>
-			</div>
 		</div>
+
+
+
 	</div>
 
 </div>
