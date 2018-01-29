@@ -58,7 +58,7 @@ button {
 
 button:hover {
     background: $orange;
-    box-shadow: 0 1px 9px rgba(213, 121, 21, 0.76);
+    box-shadow: 0 1px 9px rgba(232, 140, 103, 0.75);
 }
 
 
@@ -71,6 +71,9 @@ button:hover {
 	margin: 0px auto;
 	min-width: 300px;
 	max-width: 1600px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* HEADER AND FOOTER */
@@ -89,7 +92,7 @@ button:hover {
 }
 
 #main-section {
-	min-height: 74vh;			/* not sure why not 85*/
+	flex: 1 0 auto;
 }
 
 #footer-section	 {
@@ -98,6 +101,9 @@ button:hover {
   text-align: center;
   min-height: calc(5vh - 20px);
   font-size: 0.8em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 
 }
 
@@ -305,6 +311,7 @@ button:hover {
 }
 
 .definition-main-body{
+    display: flex;
     padding: 15px 10px 20px 20px;
 }
 
@@ -602,7 +609,9 @@ button:hover {
 }
 
 .voting-column {
-	display: inline-block;
+	display: flex;
+    align-items: flex-start;
+    justify-content: center;
 	width: calc(5% - 2px);
     border-left: 2px solid $blue-dark;
 }
@@ -1085,25 +1094,25 @@ button:hover {
 
 .admin-decision {
 	border-radius: 5px;
-	border: 1px solid $gray;
 	padding: 0 5px;
 	width: 40px;
 	font-size: 1.1em;
 	background: #C9C9C9;
 	margin-left: 5px;
-	box-shadow: 0 0 10px rgba(10,10,10, 0.6);
 }
 
 .approve, .remove-report {
-	background: #0dc4f3;
+	background: #49b944;
 }
 
 .approve:hover, .remove-report:hover {
-	background: #1088A9;
+	background: #4da311;
+    box-shadow: 0 1px 9px rgba(49, 105, 11, 0.75);
 }
 
 .reject, .trash-post{
 	background: #ea5859;
+    box-shadow: 0 1px 9px rgba(149, 56, 58, 0.75);
 }
 
 .reject:hover, .trash-post:hover{
@@ -1209,7 +1218,7 @@ button:hover {
 /* FAQ */
 
 .faq-one-question{
-    margin-bottom: 15px;
+    padding-bottom: 15px;
     clear: both;
 }
 
@@ -1244,7 +1253,7 @@ button:hover {
 
 .page-title {
     text-align: center;
-    margin: 10px 0px;
+    padding: 10px 0px;
     font-size: 2.5em;
 }
 

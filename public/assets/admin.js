@@ -158,20 +158,21 @@ function displayUnresolvedReports(reports){
 				id: thisReport.post_id
 			}
 
+            console.log(thisReport);
+
     		var context = {
                 report: thisReport,
                 created: thisReport.created.substr(4, 20),
-
             };
             var compiled = myTemplate(context)
             $("#admin-posts-section").append(compiled);
-
-
 
         });
 
     }, 'html')
 }
+
+
 function getRoleEditor(){
 	$.ajax({
         type: "get",

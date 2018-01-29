@@ -38,7 +38,7 @@ button {
 
 button:hover {
   background: #E88D67;
-  box-shadow: 0 1px 9px rgba(213, 121, 21, 0.76); }
+  box-shadow: 0 1px 9px rgba(232, 140, 103, 0.75); }
 
 .bold {
   font-weight: 600; }
@@ -47,7 +47,10 @@ button:hover {
   width: 80vw;
   margin: 0px auto;
   min-width: 300px;
-  max-width: 1600px; }
+  max-width: 1600px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; }
 
 /* HEADER AND FOOTER */
 #header-section {
@@ -62,15 +65,17 @@ button:hover {
   margin-bottom: 20px; }
 
 #main-section {
-  min-height: 74vh;
-  /* not sure why not 85*/ }
+  flex: 1 0 auto; }
 
 #footer-section {
   color: rgba(44, 54, 63, 0.3);
   font-weight: 500;
   text-align: center;
   min-height: calc(5vh - 20px);
-  font-size: 0.8em; }
+  font-size: 0.8em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center; }
 
 #footer-section p {
   padding-top: 10px; }
@@ -242,6 +247,7 @@ button:hover {
   border-top: 4px solid #114B5F; }
 
 .definition-main-body {
+  display: flex;
   padding: 15px 10px 20px 20px; }
 
 .definition-accent {
@@ -482,7 +488,9 @@ button:hover {
   width: 30%; }
 
 .voting-column {
-  display: inline-block;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   width: calc(5% - 2px);
   border-left: 2px solid #114B5F; }
 
@@ -874,22 +882,22 @@ button:hover {
 
 .admin-decision {
   border-radius: 5px;
-  border: 1px solid #2C363F;
   padding: 0 5px;
   width: 40px;
   font-size: 1.1em;
   background: #C9C9C9;
-  margin-left: 5px;
-  box-shadow: 0 0 10px rgba(10, 10, 10, 0.6); }
+  margin-left: 5px; }
 
 .approve, .remove-report {
-  background: #0dc4f3; }
+  background: #49b944; }
 
 .approve:hover, .remove-report:hover {
-  background: #1088A9; }
+  background: #4da311;
+  box-shadow: 0 1px 9px rgba(49, 105, 11, 0.75); }
 
 .reject, .trash-post {
-  background: #ea5859; }
+  background: #ea5859;
+  box-shadow: 0 1px 9px rgba(149, 56, 58, 0.75); }
 
 .reject:hover, .trash-post:hover {
   background: #95383A; }
@@ -973,7 +981,7 @@ button:hover {
 
 /* FAQ */
 .faq-one-question {
-  margin-bottom: 15px;
+  padding-bottom: 15px;
   clear: both; }
 
 .faq-question {
@@ -1003,7 +1011,7 @@ button:hover {
 
 .page-title {
   text-align: center;
-  margin: 10px 0px;
+  padding: 10px 0px;
   font-size: 2.5em; }
 
 /* MOBILE STYLING */

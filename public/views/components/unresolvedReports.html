@@ -4,12 +4,18 @@
 
 		<div class = "definition-meta">
 			<span class = "definition-history">
-				<span class = "definition-term">{{report.term}}</span>
+				<span class = "definition-term">{{report.term}}</span> | 
+				<a href = "/profiles/{{report.author}}">@{{report.author}}</a>
 	 		</span>
 
 	 		<div class = "post-actions-column">
-				<button class = "admin-decision remove-report" data-vote = "rejected" data-id = "{{report.id}}" data-type = "report" data-author = "{{report.author}}"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-				<button class = "admin-decision trash-post" data-vote = "approved" data-id = "{{report.id}}" data-type = "report" data-author = "{{report.author}}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				<button class = "admin-decision remove-report" data-vote = "rejected" data-id = "{{report.id}}" data-type = "report" data-author = "{{report.author}}">
+					<i class="fa fa-share" title="Dismiss report" aria-hidden="true"></i>
+				</button>
+				
+				<button class = "admin-decision trash-post" data-vote = "approved" data-id = "{{report.id}}" data-type = "report" data-author = "{{report.author}}">
+					<i class="fa fa-trash-o" title="Remove post from site" aria-hidden="true"></i>
+				</button>
 			</div>
 		</div>
 
@@ -21,7 +27,7 @@
 			</div>
 			<br><br>
 			<div class = "definition-history">
-				<a href = "/profile/{{definition.author}}/definitions">@{{report.author}}</a> on {{created}}
+				Reported by: <a href = "/profile/{{definition.author}}/definitions">@{{report.author}}</a> on {{created}}
 			</div>
 		</div>
 	</div>
