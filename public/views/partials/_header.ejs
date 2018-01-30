@@ -34,7 +34,11 @@
 
 <div id = "header-section">
     <div class = "links">
-        <a id = "home-link" href = "/">Hackterms</a>
+        
+        <div cass = "logo-wrapper">
+            <a id = "home-link" href = "/">Hackterms</a>
+        </div>
+        
         <div class = "account">
             <% if (typeof(session.user) == "undefined" || session.user == null){ %>
                 <button class = "link bold" id = "signup">Sign Up</button>
@@ -56,8 +60,8 @@
                 <span class = "link" id = "logout">Log out</span>
             <% } %>
         </div>
-
     </div>
+    <div id = "logo-subheading">A community-sourced dictionary of coding terms</div>
 
     <div class = "pop-out" id = "new-definition">
         <div class = "header">

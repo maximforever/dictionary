@@ -58,12 +58,14 @@ button:hover {
   min-height: calc(5vh - 20px); }
 
 #home-link {
-  float: left;
   font-family: "Zilla Slab", serif;
   font-size: 2.5em;
   font-weight: 400;
   display: flex;
   align-self: center; }
+
+#logo-subheading {
+  color: gray; }
 
 #main-section {
   flex: 1 0 auto; }
@@ -263,7 +265,8 @@ button:hover {
   box-shadow: 0 0 10px rgba(10, 10, 10, 0.2); }
 
 .new-def-button {
-  width: 100%;
+  width: 45%;
+  max-width: 420px;
   font-size: 1.2em;
   margin: 30px auto 0 auto;
   padding: 12px 0px;
@@ -546,7 +549,6 @@ button:hover {
   display: none; }
 
 .links {
-  text-align: right;
   display: flex;
   justify-content: space-between; }
 
@@ -1029,6 +1031,8 @@ button:hover {
   #home-link {
     display: block;
     font-size: 2em; }
+  #logo-subheading {
+    display: none; }
   #main-section {
     padding: 0;
     /*min-height: 80vh;*/ }
@@ -1105,7 +1109,8 @@ button:hover {
     border-width: 2px;
     padding: 15px 10px; }
   .new-def-button {
-    margin-top: 20px; }
+    margin-top: 20px;
+    width: 100%; }
   /* COMMENTS */
   .comments-section {
     margin: 0 auto 35px auto;
@@ -1212,8 +1217,6 @@ button:hover {
     color: #1F3F6F;
     background: #A1D2FC;
     padding: 5px; }
-  .links {
-    text-align: right; }
   .links .link {
     margin: 3px 5px; }
   .account {
