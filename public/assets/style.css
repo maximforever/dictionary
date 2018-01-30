@@ -44,7 +44,7 @@ button:hover {
   font-weight: 600; }
 
 .container {
-  width: 80vw;
+  padding: 0 10vw;
   margin: 0px auto;
   min-width: 300px;
   max-width: 1600px;
@@ -54,7 +54,7 @@ button:hover {
 
 /* HEADER AND FOOTER */
 #header-section {
-  padding: 10px 0px;
+  padding: 0px 10vw 5px 10vw;
   min-height: calc(5vh - 20px); }
 
 #home-link {
@@ -62,7 +62,8 @@ button:hover {
   font-family: "Zilla Slab", serif;
   font-size: 2.5em;
   font-weight: 400;
-  margin-bottom: 20px; }
+  display: flex;
+  align-self: center; }
 
 #main-section {
   flex: 1 0 auto; }
@@ -88,7 +89,7 @@ button:hover {
 
 /* SEARCH BAR */
 #search-bar-div {
-  margin: 3vh 0 45px 0; }
+  padding: 3vh 0 45px 0; }
 
 #search-bar-label {
   font-weight: 300;
@@ -546,13 +547,15 @@ button:hover {
 
 .links {
   text-align: right;
-  min-height: 4em; }
+  display: flex;
+  justify-content: space-between; }
 
 .links .link {
   margin: 3px 5px; }
 
 .account {
-  display: inline; }
+  display: inline;
+  align-self: center; }
 
 #new-alert {
   color: #E88D67; }
@@ -1018,16 +1021,14 @@ button:hover {
 @media screen and (max-width: 980px) {
   /* GLOBAL STYLING */
   .container {
-    width: 90vw; }
+    padding: 0 5vw; }
   /* HEADER AND FOOTER */
   #header-section {
-    padding: 10px 0px;
+    padding: 10px 5vw;
     min-height: calc(5vh - 20px); }
   #home-link {
     display: block;
-    margin-bottom: 10px;
-    font-size: 2em;
-    margin-top: -2px; }
+    font-size: 2em; }
   #main-section {
     padding: 0;
     /*min-height: 80vh;*/ }
@@ -1039,7 +1040,7 @@ button:hover {
     color: gray; }
   /* SEARCH BAR */
   #search-bar-div {
-    margin: 20px 0 20px 0; }
+    padding: 20px 0 20px 0; }
   #search-bar-label {
     margin: 0 0 0.5vh 0;
     font-size: 0.9em; }
@@ -1212,8 +1213,7 @@ button:hover {
     background: #A1D2FC;
     padding: 5px; }
   .links {
-    text-align: right;
-    min-height: 2em; }
+    text-align: right; }
   .links .link {
     margin: 3px 5px; }
   .account {

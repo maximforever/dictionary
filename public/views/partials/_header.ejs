@@ -31,198 +31,202 @@
 
 
 </div>
-<div class = "container">
-    <div id = "header-section">
-        <div class = "links">
-            <a id = "home-link" href = "/">Hackterms</a>
-            <div class = "account">
-                <% if (typeof(session.user) == "undefined" || session.user == null){ %>
-                    <button class = "link bold" id = "signup">Sign Up</button>
-                    <span class = "link" id = "login">Log In</span>
-                <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
-                    <span class = "welcome">Hello, <a href = "/profile"><%= session.user.username %></a></span>
-                    
-                    <% if(session.user.newNotifications){ %>
-                        <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" id = "new-alert"></i></span>
-                    <% } else {%>
-                        <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" ></i></span>
-                    <% } %>
+<div id = "header-section">
+    <div class = "links">
+        <a id = "home-link" href = "/">Hackterms</a>
+        <div class = "account">
+            <% if (typeof(session.user) == "undefined" || session.user == null){ %>
+                <button class = "link bold" id = "signup">Sign Up</button>
+                <span class = "link" id = "login">Log In</span>
+            <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
-                    <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>
-                        <a href = "/admin"><i class="fa fa-id-card-o" aria-hidden="true" href = "/admin"></i></a>
-                    <% } %>
-
-                    <span class = "link" id = "logout">Log out</span>
+                <span class = "welcome">Hello, <a href = "/profile"><%= session.user.username %></a></span>
+                
+                <% if(session.user.newNotifications){ %>
+                    <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" id = "new-alert"></i></span>
+                <% } else {%>
+                    <span class = "notifications-button"><i class="fa fa-bell-o notification-bell" aria-hidden="true" ></i></span>
                 <% } %>
-            </div>
 
-        </div>
+                <% if(session.user.admin == "true" || session.user.admin == true || session.user.moderator == "true"|| session.user.moderator ==  true ){ %>
+                    <a href = "/admin"><i class="fa fa-id-card-o" aria-hidden="true" href = "/admin"></i></a>
+                <% } %>
 
-        <div class = "pop-out" id = "new-definition">
-            <div class = "header">
-                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-            </div>
-            <% if(session.user){ %>
-                <div id = "new-definition-modal">
-                    <h3>Add a definition</h3>
-                    <ul>
-                        <li>Avoid industry jargon</li>
-                        <li>Answer these questions:</li>
-                        <ol>
-                            <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
-                            <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>? What are some alternatives to <span class = "new-definition-term"></span>?</li>
-                        </ol>
-                    </ul>
-
-                    <p class = "textarea-label">Term</p>
-                    <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
-                    <div id = "term-suggestions-section"></div>
-
-                    <div class = "definition-category-section">
-                        <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
-                        <select class = "definition-category-selection" name = "category">
-                            <option disabled selected value></option>
-                            <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
-                            <option data-category = "tool" value="tool">Tool (ex: npm, grunt, Sublime Text)</option>
-                            <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
-                            <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
-                            <option data-category = "other" value="other">Other</option>
-                        </select>
-                    </div>
-
-
-                    <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
-                    <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
-                    <p class = "textarea-label">Related terms (comma separated, please)</p>
-                    <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
-                    <div id = "related-term-suggestions-section"></div>
-                    <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
-                    <div class = "new-definition-error"></div>
-                    <button id = "add-definition" data-id = "0">Add</button>
-                </div>
+                <span class = "link" id = "logout">Log out</span>
             <% } %>
         </div>
 
-        <div class = "pop-out" id = "report">
-            <div class = "header">
-                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-            </div>
-            <div class = "report-body">
-                <h3>Report a definition</h3>
-                <div id = "report-content"></div>
-                <p>This should be removed because:</p>
-
-                <input id = "report-offensive" type="radio" name = "report" class = "report-option" data-reason = "offensive">
-                <label for="report-offensive">it contains offensive or abusive content</label><br>
-                
-                <input id = "report-spam" type="radio" name = "report" class = "report-option" data-reason = "spam">
-                <label for="report-spam">it is spam or advertisement</label><br>
-                
-                <input id = "report-wrong" type="radio" name = "report" class = "report-option" data-reason = "wrong">
-                <label for="report-wrong">it is completely incorrect</label><br>
-                
-                <input id = "report-irrelevant" type="radio" name = "report" class = "report-option" data-reason = "irrelevant">
-                <label for="report-irrelevant">it is not related to programming</label><br>
-                
-                <input id = "report-other" type="radio" name = "report" class = "report-option" data-reason = "other">
-                <label for="report-other">other</label><br>
-                
-                <div class ="report-error"></div>
-                
-                <button id = "submit-report">Submit</button>
-
-            </div>
-        </div>
-
-        <div class = "pop-out" id = "notifications">
-            <div class = "notifications-body">
-                <div class = "notifications-header"><i class="fa fa-times link" aria-hidden="true" id = "close"></i></div>
-                <div class = "notification-panel notification-control scroll-up"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
-                
-                <div id = "notifications-section">
-                </div>
-                
-                <div class = "notification-panel notification-control scroll-down"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
-            </div>
-        </div>
-
-        <div class = "pop-out" id = "signup-modal">
-            <div class = "header">
-                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-            </div>
-            <div id = "signup-section">
-                
-                <div class = "account-title">
-                    <span class = "sign-up-link active-account-title"> Sign up</span> | <span class = "login-link"> Log in</span> 
-                </div>
-                
-                <div class = "report-error email-error"></div>
-                <input type = "email" id = "signup-email" placeholder = "email">
-                
-                <div class = "report-error username-error"></div>
-                <input type = "text" id = "signup-username" placeholder = "username">
-                
-                <div class = "report-error password-error"></div>
-                <input type = "password" id = "signup-password" placeholder = "password">
-
-                <button class = "account-submit-button" id = "signup-action">Sign up</button>
-            </div>
-        </div>
-
-        <div class = "pop-out" id = "login-modal">
-            <div class = "header">
-                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-            </div>
-            <div id = "login-section">
-                
-                <div class = "account-title">
-                    <span class = "sign-up-link"> Sign up</span> | <span class = "login-link active-account-title"> Log in</span> 
-                </div>
-
-                <div class = "report-error username-error"></div>
-                <input type = "text" id = "login-username" placeholder = "username">
-                
-                <div class = "report-error password-error"></div>
-                <input type = "password" id = "login-password" placeholder = "password">
-
-
-                <div class = "login-additional-options">
-                    <div class = "stay-signed-in">
-                        <input type = "checkbox" id = "hidden-remember-account-checkbox">
-                        <i class="fa fa-square-o" aria-hidden="true" id = "remember-account"></i>
-                        <span class = "toggle-label">Remember me</span>
-                    </div>
-                    <div class = "link" id = "password-reset-link">Forgot your password?</div>
-                </div>
-                
-
-                <button class = "account-submit-button" id = "login-action">Log In</button>
-                
-            </div>
-        </div>
-
-        <div class = "pop-out" id = "password-reset-modal">
-            <div class = "header">
-                <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
-            </div>
-            <div id = "password-reset-section">   
-                <div class = "account-title">
-                    <span class = "sign-up-link"><span class = "login-link active-account-title">Reset your password</span></span> 
-                </div>
-
-                <p>Enter the the email address that you used to register and we'll send you a link to reset your password!</p>
-                <p id = "reset-request-confirm">If we have your email on file, you will receive an instructions to reset your password shortly!</p>
-
-                <div class = "report-error email-error"></div>
-                <input type = "email" id = "password-reset-email" placeholder = "email">
-
-                <button class = "account-submit-button" id = "password-reset-action">Send Email</button>
-            </div>
-        </div>
-    
     </div>
 
+    <div class = "pop-out" id = "new-definition">
+        <div class = "header">
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+        </div>
+        <% if(session.user){ %>
+            <div id = "new-definition-modal">
+                <h3>Add a definition</h3>
+                <ul>
+                    <li>Avoid industry jargon</li>
+                    <li>Answer these questions:</li>
+                    <ol>
+                        <li>What does <span class = "new-definition-term"></span> do? When would you use it?</li>
+                        <li>What are the high level pros and cons of using <span class = "new-definition-term"></span>? What are some alternatives to <span class = "new-definition-term"></span>?</li>
+                    </ol>
+                </ul>
+
+                <p class = "textarea-label">Term</p>
+                <textarea id = "definition-term-textarea" maxlength="40" rows = "1" placeholder = "term"></textarea>
+                <div id = "term-suggestions-section"></div>
+
+                <div class = "definition-category-section">
+                    <span class = "textarea-label"><span class = "new-definition-term"></span> is a:</span><br>
+                    <select class = "definition-category-selection" name = "category">
+                        <option disabled selected value></option>
+                        <option data-category = "language" value="language">Language/Framework/Environment (ex: Perl, React.js)</option>
+                        <option data-category = "tool" value="tool">Tool (ex: npm, grunt, Sublime Text)</option>
+                        <option data-category = "concept" value="concept">Concept (ex: recursion, hash, MVC)</option>
+                        <option data-category = "process" value="process">Process (ex: linting, transpiling, pair programming)</option>
+                        <option data-category = "other" value="other">Other</option>
+                    </select>
+                </div>
+
+
+                <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+                <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
+                <p class = "textarea-label">Related terms (comma separated, please)</p>
+                <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
+                <div id = "related-term-suggestions-section"></div>
+                <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
+                <div class = "new-definition-error"></div>
+                <button id = "add-definition" data-id = "0">Add</button>
+            </div>
+        <% } %>
+    </div>
+
+    <div class = "pop-out" id = "report">
+        <div class = "header">
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+        </div>
+        <div class = "report-body">
+            <h3>Report a definition</h3>
+            <div id = "report-content"></div>
+            <p>This should be removed because:</p>
+
+            <input id = "report-offensive" type="radio" name = "report" class = "report-option" data-reason = "offensive">
+            <label for="report-offensive">it contains offensive or abusive content</label><br>
+            
+            <input id = "report-spam" type="radio" name = "report" class = "report-option" data-reason = "spam">
+            <label for="report-spam">it is spam or advertisement</label><br>
+            
+            <input id = "report-wrong" type="radio" name = "report" class = "report-option" data-reason = "wrong">
+            <label for="report-wrong">it is completely incorrect</label><br>
+            
+            <input id = "report-irrelevant" type="radio" name = "report" class = "report-option" data-reason = "irrelevant">
+            <label for="report-irrelevant">it is not related to programming</label><br>
+            
+            <input id = "report-other" type="radio" name = "report" class = "report-option" data-reason = "other">
+            <label for="report-other">other</label><br>
+            
+            <div class ="report-error"></div>
+            
+            <button id = "submit-report">Submit</button>
+
+        </div>
+    </div>
+
+    <div class = "pop-out" id = "notifications">
+        <div class = "notifications-body">
+            <div class = "notifications-header"><i class="fa fa-times link" aria-hidden="true" id = "close"></i></div>
+            <div class = "notification-panel notification-control scroll-up"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+            
+            <div id = "notifications-section">
+            </div>
+            
+            <div class = "notification-panel notification-control scroll-down"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+        </div>
+    </div>
+
+    <div class = "pop-out" id = "signup-modal">
+        <div class = "header">
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+        </div>
+        <div id = "signup-section">
+            
+            <div class = "account-title">
+                <span class = "sign-up-link active-account-title"> Sign up</span> | <span class = "login-link"> Log in</span> 
+            </div>
+            
+            <div class = "report-error email-error"></div>
+            <input type = "email" id = "signup-email" placeholder = "email">
+            
+            <div class = "report-error username-error"></div>
+            <input type = "text" id = "signup-username" placeholder = "username">
+            
+            <div class = "report-error password-error"></div>
+            <input type = "password" id = "signup-password" placeholder = "password">
+
+            <button class = "account-submit-button" id = "signup-action">Sign up</button>
+        </div>
+    </div>
+
+    <div class = "pop-out" id = "login-modal">
+        <div class = "header">
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+        </div>
+        <div id = "login-section">
+            
+            <div class = "account-title">
+                <span class = "sign-up-link"> Sign up</span> | <span class = "login-link active-account-title"> Log in</span> 
+            </div>
+
+            <div class = "report-error username-error"></div>
+            <input type = "text" id = "login-username" placeholder = "username">
+            
+            <div class = "report-error password-error"></div>
+            <input type = "password" id = "login-password" placeholder = "password">
+
+
+            <div class = "login-additional-options">
+                <div class = "stay-signed-in">
+                    <input type = "checkbox" id = "hidden-remember-account-checkbox">
+                    <i class="fa fa-square-o" aria-hidden="true" id = "remember-account"></i>
+                    <span class = "toggle-label">Remember me</span>
+                </div>
+                <div class = "link" id = "password-reset-link">Forgot your password?</div>
+            </div>
+            
+
+            <button class = "account-submit-button" id = "login-action">Log In</button>
+            
+        </div>
+    </div>
+
+    <div class = "pop-out" id = "password-reset-modal">
+        <div class = "header">
+            <i class="fa fa-times fa-2x link" aria-hidden="true" id = "close"></i>
+        </div>
+        <div id = "password-reset-section">   
+            <div class = "account-title">
+                <span class = "sign-up-link"><span class = "login-link active-account-title">Reset your password</span></span> 
+            </div>
+
+            <p>Enter the the email address that you used to register and we'll send you a link to reset your password!</p>
+            <p id = "reset-request-confirm">If we have your email on file, you will receive an instructions to reset your password shortly!</p>
+
+            <div class = "report-error email-error"></div>
+            <input type = "email" id = "password-reset-email" placeholder = "email">
+
+            <button class = "account-submit-button" id = "password-reset-action">Send Email</button>
+        </div>
+    </div>
+
+</div>
+
+
+<div class = "container">
+    
+<!--  the closing div tag is in the _footer.ejs file in this folder -->
     
 
 

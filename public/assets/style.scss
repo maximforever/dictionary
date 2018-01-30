@@ -67,7 +67,7 @@ button:hover {
 }
 
 .container {
-	width: 80vw;
+	padding: 0 10vw;
 	margin: 0px auto;
 	min-width: 300px;
 	max-width: 1600px;
@@ -79,7 +79,7 @@ button:hover {
 /* HEADER AND FOOTER */
 
 #header-section {
-	padding: 10px 0px;
+	padding: 0px 10vw 5px 10vw;
 	min-height: calc(5vh - 20px);
 }
 
@@ -88,7 +88,8 @@ button:hover {
     font-family: "Zilla Slab", serif;
     font-size: 2.5em;
     font-weight: 400;
-    margin-bottom: 20px;
+    display: flex;
+    align-self: center;
 }
 
 #main-section {
@@ -122,7 +123,7 @@ button:hover {
 /* SEARCH BAR */
 
 #search-bar-div {
-	margin: 3vh 0 45px 0;
+	padding: 3vh 0 45px 0;
 }
 
 #search-bar-label {
@@ -681,7 +682,8 @@ button:hover {
 
 .links {
 	text-align: right;
-    min-height: 4em;
+    display: flex;
+    justify-content: space-between;
 }
 
 .links .link {
@@ -690,6 +692,7 @@ button:hover {
 
 .account {
 	display: inline;
+    align-self: center;
 }
 
 #new-alert {
@@ -1266,21 +1269,19 @@ button:hover {
     /* GLOBAL STYLING */
 
     .container {
-        width: 90vw;
+        padding: 0 5vw;
     }
 
     /* HEADER AND FOOTER */
 
     #header-section {
-        padding: 10px 0px;
+        padding: 10px 5vw;
         min-height: calc(5vh - 20px);
     }
 
     #home-link {
         display: block;
-        margin-bottom: 10px;
         font-size: 2em;
-        margin-top: -2px;
     }
 
     #main-section {
@@ -1302,7 +1303,7 @@ button:hover {
     /* SEARCH BAR */
 
     #search-bar-div {
-        margin: 20px 0 20px 0;
+        padding: 20px 0 20px 0;
     }
 
     #search-bar-label {
@@ -1600,7 +1601,6 @@ button:hover {
 
     .links {
         text-align: right;
-        min-height: 2em;
     }
 
     .links .link {
