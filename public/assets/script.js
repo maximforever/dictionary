@@ -204,9 +204,9 @@ function main(){
             $("#new-definition-char-count").text(charCount);
 
             if(charCount >= 500 || charCount < 30){
-                $("#new-definition-wrapper").addClass("over-char-limit");
+                $("#new-definition-counter").addClass("over-char-limit");
             } else {
-                $("#new-definition-wrapper").removeClass("over-char-limit");
+                $("#new-definition-counter").removeClass("over-char-limit");
             }
 
         });
@@ -355,9 +355,9 @@ function main(){
 		var charCount = $("#new-definition-textarea").val().length;
         $("#new-definition-char-count").text(charCount);
         if(charCount >= 500 || charCount < 30){
-            $("#new-definition-wrapper").addClass("over-char-limit");
+            $("#new-definition-counter").addClass("over-char-limit");
         } else {
-            $("#new-definition-wrapper").removeClass("over-char-limit");
+            $("#new-definition-counter").removeClass("over-char-limit");
         }
 	})
 

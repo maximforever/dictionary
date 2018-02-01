@@ -97,11 +97,17 @@
 
 
                 <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+
                 <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
+                <div id = "new-definition-wrapper">
+                    <span id = "new-definition-counter" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
+                </div>
+
+
+
                 <p class = "textarea-label">Related terms (comma separated, please)</p>
                 <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
                 <div id = "related-term-suggestions-section"></div>
-                <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
                 <div class = "new-definition-error"></div>
                 <button id = "add-definition" data-id = "0">Add</button>
             </div>

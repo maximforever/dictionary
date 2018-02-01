@@ -1,8 +1,12 @@
 <div class = "links">
-    <a id = "home-link" href = "/">Hackterms</a>
+        
+    <div cass = "logo-wrapper">
+        <a id = "home-link" href = "/">Hackterms</a>
+    </div>
+    
     <div class = "account">
         <% if (typeof(session.user) == "undefined" || session.user == null){ %>
-            <span class = "link bold" id = "signup">Sign Up</span>
+            <button class = "link bold" id = "signup">Sign Up</button>
             <span class = "link" id = "login">Log In</span>
         <% } else if (typeof(session.user) != "undefined" && session.user != null){ %>
 
@@ -21,8 +25,8 @@
             <span class = "link" id = "logout">Log out</span>
         <% } %>
     </div>
-
 </div>
+<div id = "logo-subheading">A community-sourced dictionary of coding terms</div>
 
 <div class = "pop-out" id = "new-definition">
     <div class = "header">
@@ -58,13 +62,19 @@
 
 
             <p class = "textarea-label">What does <span class = "new-definition-term"></span> do? When would you use it?</p>
+
             <textarea id = "new-definition-textarea" maxlength="500" rows = "4" placeholder = "keep it simple, professor!"></textarea>
+            <div id = "new-definition-wrapper">
+                <span id = "new-definition-counter" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
+            </div>
+
+
+
             <p class = "textarea-label">Related terms (comma separated, please)</p>
             <textarea id = "related-term-textarea" maxlength="500" rows = "1" placeholder = "related terms"></textarea>
             <div id = "related-term-suggestions-section"></div>
-            <span id = "new-definition-wrapper" class = "over-char-limit"><span id = "new-definition-char-count">0</span>/500</span>
             <div class = "new-definition-error"></div>
-            <button id = "add-definition">Add</button>
+            <button id = "add-definition" data-id = "0">Add</button>
         </div>
     <% } %>
 </div>
@@ -154,6 +164,7 @@
 
         <div class = "login-additional-options">
             <div class = "stay-signed-in">
+                <input type = "checkbox" id = "hidden-remember-account-checkbox">
                 <i class="fa fa-square-o" aria-hidden="true" id = "remember-account"></i>
                 <span class = "toggle-label">Remember me</span>
             </div>

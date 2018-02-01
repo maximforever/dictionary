@@ -285,10 +285,8 @@ button:hover {
 	margin: 30px 0 0 0;
 }
 
-#new-definition-wrapper {
-	padding: 5px;
-	margin-top: 3px;
-	display: inline-block;
+#new-definition-wrapper{
+    text-align: right;
 }
 
 .over-char-limit {
@@ -1374,12 +1372,6 @@ button:hover {
 
     .login-please{
         margin: 30px 0 0 0;
-    }
-
-    #new-definition-wrapper {
-        padding: 5px;
-        margin-top: 3px;
-        display: inline-block;
     }
 
     .over-char-limit {
