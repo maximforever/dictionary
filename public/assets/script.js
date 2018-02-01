@@ -317,6 +317,9 @@ function main(){
         if($("#search-bar").val().length > 1){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
                 logSearch();
+                var thisSearch = $("#search-bar").val();
+                window.history.pushState("object or string", "Title", "/" + thisSearch);      // update url
+
                 search();
             }
 
@@ -531,6 +534,8 @@ function showLogin(){
 
 function showSignup(){
     window.scrollTo(0, 0);
+
+    $(".username-error").text("");
 
     $("#login-modal").hide();
     $("#signup-modal").show();
