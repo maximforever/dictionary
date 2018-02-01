@@ -12,11 +12,14 @@ $gray-transparent: rgba(44, 54, 63, 0.3);
 $orange: #E88D67;
 $red: #b50000;
 
+$font-normal: 'Muli', sans-serif;
+$font-tech: "Zilla Slab", serif; 
+
 
 body{
 	margin: 0;
 	background: $beige;
-	font-family: 'Muli', sans-serif;
+	font-family: $font-normal;
 	font-weight: 300;
     min-height: 100vh;
     color: $gray;
@@ -34,7 +37,7 @@ a:hover, .link:hover {
 }
 
 input {
-	font-family: "Zilla Slab", serif;
+	font-family: $font-tech;
 	font-weight: 400;
 	font-size: 1em;
 }
@@ -84,7 +87,7 @@ button:hover {
 }
 
 #home-link {
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-size: 2.5em;
     font-weight: 400;
     display: flex;
@@ -137,13 +140,13 @@ button:hover {
 #search-bar {
 	font-size: 2.5em;
     height: 47px;
-	padding: 5px 10px 10px 10px;
+	padding: 5px 10px 10px 20px;
 	display: block;
 	border: 1px solid #c5c5c5;
 	box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.50);
     width: calc(100% - 22px);
 	min-width: 300px;
-	max-width: calc(1600px - 22px);
+	max-width: calc(1600px - 32px);
 }
 
 #search-bar:hover {
@@ -188,12 +191,13 @@ button:hover {
     display: none; 
 }
 
+
 .related-term {
     padding: 0px 10px;
     border: 1px solid $gray-transparent;
     border-radius: 6px;
     color: $blue-light;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 400;
 }
 
@@ -211,15 +215,15 @@ button:hover {
 .term-link {
     text-decoration: none;
     display: block;
-    padding: 5px 10px;
+    padding: 5px 20px;
     background: $white;
     color: $blue-light;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 400;
 }
 
 .term-suggestion-link {
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 400;
     text-decoration: none;
     font-size: 0.7em;
@@ -306,7 +310,6 @@ button:hover {
 .definition {
 	margin: 35px auto 0 auto;  
     display: block;
-    // box-shadow: 0px 0px 5px rgba(131, 142, 66, 0.5);
     min-width: 300px;
     background: $white;
     border-radius: 3px;
@@ -316,11 +319,11 @@ button:hover {
 
 .definition-main-body{
     display: flex;
-    padding: 15px 10px 20px 20px;
+    padding: 15px 10px 15px 20px;
 }
 
 .definition-accent {
-	margin: 35px auto;
+	margin: 0 auto 35px auto;
 	padding: 15px 20px;
 	border: 1px solid $gray-transparent;
     border-left: 4px solid #114B5F;
@@ -441,7 +444,7 @@ button:hover {
 
 
 #category-summary {
-    padding: 15px 20px;
+    padding: 12px 20px 15px 20px;
     display: block;
     border: 1px solid $gray-transparent;
     border-left: 4px solid $blue-dark;
@@ -453,13 +456,13 @@ button:hover {
     h3 {
         color: $blue-dark;
         margin: 0 0 5px 0;
-        font-family: "Zilla Slab", serif;
+        font-family: $font-tech;
     }
 }
 
 .category-title {
     color: #5a6061;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-size: 1.4em;
     font-weight: 400;
 }
@@ -486,7 +489,7 @@ button:hover {
 	display: inline-block;
     font-weight: 400;
     margin-right: 10px;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-size: 1.1em;
 }
 
@@ -537,7 +540,7 @@ button:hover {
 
 .new-definition-term {
     font-size: 1.1em;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 500;
 }
 
@@ -567,13 +570,13 @@ button:hover {
 
 .definition-term {
 	color: $blue-dark;
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-size: 1.5em;
     font-weight: 400;
 }
 
 .definition-related-terms {
-    margin-top: 15px;
+    padding-top: 10px;
 }
 
 .definition-column {
@@ -582,6 +585,9 @@ button:hover {
     vertical-align: top;
     line-height: 1.4;
     padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .definition-meta{
@@ -892,7 +898,7 @@ button:hover {
 	padding: 5px;
 	border-radius: 5px;
 	border: 1px solid $gray;
-	font-family: "Zilla Slab", serif;
+	font-family: $font-tech;
     font-weight: 400;
 }
 
@@ -1036,7 +1042,7 @@ button:hover {
 }
 
 .submission-update {
-	font-family: "Zilla Slab", serif;
+	font-family: $font-tech;
 	font-weight: 400;
 	padding: 0px 5px;
     border-radius: 4px;
@@ -1177,7 +1183,7 @@ button:hover {
 }
 
 .metric {
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 400;
     font-size: 1.5em;
 }
@@ -1229,7 +1235,7 @@ button:hover {
 }
 
 .faq-question {
-    font-family: "Zilla Slab", serif;
+    font-family: $font-tech;
     font-weight: 400;
     font-size: 1.5em;
     margin-bottom: 10px;
@@ -1320,6 +1326,7 @@ button:hover {
 
     #search-bar {
         margin-left: 0;
+        padding-left: 10px;
         width: calc(90vw - 22px);
         padding: 3px 10px 8px 10px;
     }
@@ -1486,6 +1493,7 @@ button:hover {
     /* CATEGORY CHART*/
 
     #category-summary {
+        padding: 12px 10px 15px 10px;
         border-left: 2px solid $blue-dark;
         font-weight: 600;
         margin: 0;
@@ -1518,7 +1526,6 @@ button:hover {
 
     .related-term {
         display: inline-block;
-        margin: 2px;
     }
 
 
@@ -1539,13 +1546,15 @@ button:hover {
         width: calc(100% - 14px);
     }
 
+    .definition-related-terms {
+        padding-top: 5px;
+    }
 
     .definition-column {
         line-height: 1.5;
         font-size: 0.9em;
         width: calc(90% - 10px);
     }
-
 
     .definition-history{
         font-size: 0.9em;
@@ -1768,7 +1777,7 @@ button:hover {
     }
 
     .submission-update {
-        font-family: "Zilla Slab", serif;
+        font-family: $font-tech;
         font-weight: 400;
         padding: 0px 5px;
         border-radius: 4px;

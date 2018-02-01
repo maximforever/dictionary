@@ -2,7 +2,7 @@
 body {
   margin: 0;
   background: #f3eae0;
-  font-family: 'Muli', sans-serif;
+  font-family: "Muli", sans-serif;
   font-weight: 300;
   min-height: 100vh;
   color: #2C363F; }
@@ -100,13 +100,13 @@ button:hover {
 #search-bar {
   font-size: 2.5em;
   height: 47px;
-  padding: 5px 10px 10px 10px;
+  padding: 5px 10px 10px 20px;
   display: block;
   border: 1px solid #c5c5c5;
   box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.5);
   width: calc(100% - 22px);
   min-width: 300px;
-  max-width: calc(1600px - 22px); }
+  max-width: calc(1600px - 32px); }
 
 #search-bar:hover {
   box-shadow: 0px 0px 5px rgba(10, 10, 10, 0.1), 0px 0px 10px rgba(10, 10, 10, 0.1);
@@ -164,7 +164,7 @@ button:hover {
 .term-link {
   text-decoration: none;
   display: block;
-  padding: 5px 10px;
+  padding: 5px 20px;
   background: #ffffff;
   color: #58A4B0;
   font-family: "Zilla Slab", serif;
@@ -251,10 +251,10 @@ button:hover {
 
 .definition-main-body {
   display: flex;
-  padding: 15px 10px 20px 20px; }
+  padding: 15px 10px 15px 20px; }
 
 .definition-accent {
-  margin: 35px auto;
+  margin: 0 auto 35px auto;
   padding: 15px 20px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-left: 4px solid #114B5F;
@@ -352,7 +352,7 @@ button:hover {
 
 /* CATEGORY CHART*/
 #category-summary {
-  padding: 15px 20px;
+  padding: 12px 20px 15px 20px;
   display: block;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-left: 4px solid #114B5F;
@@ -458,14 +458,17 @@ button:hover {
   font-weight: 400; }
 
 .definition-related-terms {
-  margin-top: 15px; }
+  padding-top: 10px; }
 
 .definition-column {
   width: calc(95% - 10px);
   display: inline-block;
   vertical-align: top;
   line-height: 1.4;
-  padding-right: 10px; }
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
 
 .definition-meta {
   font-size: 0.85em;
@@ -1050,6 +1053,7 @@ button:hover {
     font-size: 0.9em; }
   #search-bar {
     margin-left: 0;
+    padding-left: 10px;
     width: calc(90vw - 22px);
     padding: 3px 10px 8px 10px; }
   #terms-section {
@@ -1144,6 +1148,7 @@ button:hover {
     text-align: right; }
   /* CATEGORY CHART*/
   #category-summary {
+    padding: 12px 10px 15px 10px;
     border-left: 2px solid #114B5F;
     font-weight: 600;
     margin: 0;
@@ -1163,8 +1168,7 @@ button:hover {
     border: 2px solid #2C363F;
     margin-bottom: 35px; }
   .related-term {
-    display: inline-block;
-    margin: 2px; }
+    display: inline-block; }
   .term .title {
     font-size: 1.5em;
     font-weight: bold; }
@@ -1176,6 +1180,8 @@ button:hover {
     font-size: 1em;
     line-height: 1.4;
     width: calc(100% - 14px); }
+  .definition-related-terms {
+    padding-top: 5px; }
   .definition-column {
     line-height: 1.5;
     font-size: 0.9em;
