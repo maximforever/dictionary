@@ -1870,6 +1870,9 @@ button:hover {
     .metric-table {
         display: inline-block;
         width: 32%;
+    }
+
+    .metric-section {
         font-size: 0.8em;
     }
 
@@ -1883,10 +1886,6 @@ button:hover {
     }
 
     .metric-date {
-        width: 40%;
-    }
-
-    .metric-definition {
         width: 40%;
     }
 

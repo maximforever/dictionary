@@ -1147,6 +1147,10 @@ function getMetrics(db, req, callback){
 		date: -1
 	}
 
+	var dateSort = {
+		created: 1
+	}
+
 	var approvedDefinitionQuery = {
 		removed: false,
 		rejected: false,
@@ -1164,7 +1168,7 @@ function getMetrics(db, req, callback){
 
 	database.read(db, "users", userQuery, function getUsers(userList){
 		database.read(db, "visits", visitsQuery, function getVisits(visitList){
-			database.read(db, "definitions", approvedDefinitionQuery, function getApprovedDefinitionCount(approvedDefs){
+			database.sortRead(db, "definitions", approvedDefinitionQuery, dateSort, function getApprovedDefinitionCount(approvedDefs){
 				database.read(db, "definitions", unapprovedDefinitionQuery, function getUnapprovedDefinitionCount(unapprovedDefs){
 					database.sortRead(db, "searches", searchQuery, searchSort, function getSearches(allSearches){
 						database.count(db, "terms", termCountQuery, function getTermCount(thisTermCount){

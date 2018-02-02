@@ -72,14 +72,15 @@ function count(db, col, obj, callback){
 }
 
 function sortRead(db, col, obj, sort, callback){                                
-    console.log("DB: reading");
+    console.log("DB: reading WITH SORT");
     db.collection(col).find(obj).sort(sort).toArray(function(err, result){
         if (err){
             console.log("MAYDAY! MAYDAY! Crashing.");
             console.log(err);
         }
-        console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query:");
+        console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query WITH SORT:");
         console.log(obj);
+        console.log(sort);
         callback(result);
     })
 }

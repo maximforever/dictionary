@@ -1374,7 +1374,8 @@ button:hover {
     padding: 10px; }
   .metric-table {
     display: inline-block;
-    width: 32%;
+    width: 32%; }
+  .metric-section {
     font-size: 0.8em; }
   .metric-username {
     width: 40%; }
@@ -1382,8 +1383,6 @@ button:hover {
     width: 43%;
     display: none; }
   .metric-date {
-    width: 40%; }
-  .metric-definition {
     width: 40%; }
   .metric-definition-author {
     float: right; }
