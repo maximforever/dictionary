@@ -147,6 +147,7 @@ MongoClient.connect(dbAddress, function(err, db){
                     userCount: response.userCount, 
                     visits: response.visits, 
                     users: response.users,
+                    searches: response.searches,
                     approvedDefinitions: response.approvedDefinitions,
                     unapprovedDefinitions: response.unapprovedDefinitions,
                     approvedDefinitionCount: response.approvedDefinitions.length,

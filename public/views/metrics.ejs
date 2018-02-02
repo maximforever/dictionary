@@ -63,6 +63,16 @@
 
     <br>
 
+    <div class = "metric">Searches:</div>
+
+    <% searches.forEach(function(search){ %>
+        <div class = "metric-definition bold"><a class = "bold" href ="<%= search %>"><%= search.term %></a></div>
+        <div class = "metric-definition-author"><%= search.date %></div>
+        <br>
+    <% }) %>
+
+    <br>
+
 </div>
 
 <% include partials/_footer.ejs %>

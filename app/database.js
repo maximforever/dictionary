@@ -1,3 +1,5 @@
+/* CRUD */
+
 function create(db, col, obj, callback){
     console.log("DB: creating");
     db.collection(col).save(obj, function(err, result){
@@ -54,6 +56,8 @@ function remove(db, col, query, callback){
 };
 
 
+/* non-CRUD function */
+
 function count(db, col, obj, callback){                                
     console.log("DB: counting");
     db.collection(col).count(function(err, count){
@@ -67,6 +71,18 @@ function count(db, col, obj, callback){
     })
 }
 
+function sortRead(db, col, obj, sort, callback){                                
+    console.log("DB: reading");
+    db.collection(col).find(obj).sort(sort).toArray(function(err, result){
+        if (err){
+            console.log("MAYDAY! MAYDAY! Crashing.");
+            console.log(err);
+        }
+        console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query:");
+        console.log(obj);
+        callback(result);
+    })
+}
 
 
 
@@ -79,3 +95,4 @@ module.exports.update = update;
 module.exports.remove = remove;
 
 module.exports.count = count;
+module.exports.sortRead = sortRead;
