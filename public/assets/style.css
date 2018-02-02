@@ -105,7 +105,7 @@ button:hover {
   border: 1px solid #c5c5c5;
   box-shadow: 0px 0px 5px rgba(203, 218, 210, 0.5);
   width: calc(100% - 32px);
-  min-width: 300px;
+  min-width: 200px;
   max-width: calc(1600px - 32px); }
 
 #search-bar:hover {
@@ -464,6 +464,7 @@ button:hover {
   vertical-align: top;
   line-height: 1.4;
   padding-right: 10px;
+  word-wrap: break-word;
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
@@ -1050,8 +1051,6 @@ button:hover {
     margin: 0 0 0.5vh 0;
     font-size: 0.9em; }
   #search-bar {
-    margin-left: 0;
-    padding-left: 10px;
     width: calc(90vw - 22px);
     padding: 3px 10px 8px 10px;
     font-size: 2em; }
