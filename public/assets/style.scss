@@ -1223,6 +1223,11 @@ button:hover {
     display: inline-block;
 }
 
+.metric-search-author{
+    width: 25%;
+    word-wrap: break-word;
+}
+
 
 
 
@@ -1886,6 +1891,10 @@ button:hover {
 
     .metric-definition-author{
         float: right;   
+    }
+
+    .metric-search-author{
+        width: 25%;
     }
 
     .page-title {

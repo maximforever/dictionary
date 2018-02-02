@@ -986,6 +986,10 @@ button:hover {
 .metric-definition-author {
   display: inline-block; }
 
+.metric-search-author {
+  width: 25%;
+  word-wrap: break-word; }
+
 /* FAQ */
 .faq-one-question {
   padding-bottom: 15px;
@@ -1382,6 +1386,8 @@ button:hover {
     width: 40%; }
   .metric-definition-author {
     float: right; }
+  .metric-search-author {
+    width: 25%; }
   .page-title {
     margin-bottom: 15px;
     font-size: 2em; } }
