@@ -1053,7 +1053,8 @@ button:hover {
     margin-left: 0;
     padding-left: 10px;
     width: calc(90vw - 22px);
-    padding: 3px 10px 8px 10px; }
+    padding: 3px 10px 8px 10px;
+    font-size: 2em; }
   #terms-section {
     margin: 0; }
   #term-suggestions-section {
