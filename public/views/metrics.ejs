@@ -67,6 +67,7 @@
 
     <% searches.forEach(function(search){ %>
         <div class = "metric-definition bold"><a class = "bold" href ="<%= search %>"><%= search.term %></a></div>
+        <div class = "metric-definition"><%= search.username %></div>
         <div class = "metric-definition-author"><%= search.date %></div>
         <br>
     <% }) %>
