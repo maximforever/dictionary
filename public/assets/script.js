@@ -577,6 +577,8 @@ function search(){
             	if(result.status == "success"){
             		$("#terms-section").empty();
 
+                    console.log(result);
+
             		if(result.count > 0){
 
                         if(result.count == 1){                          // if there's only one term, display the definition
@@ -587,7 +589,7 @@ function search(){
                                 displaySearchTerm(term);
                             });
                             $("#definitions-section").empty();
-                            displayAddDefinitionButton(false, result.isLoggedIn);
+                            displayAddDefinitionButton(false, result.loggedIn);
                         }
 
                         //$("#definitions-section").empty();
@@ -1292,7 +1294,6 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
     } else {
         var term = $("#search-bar").val();
         $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold'>" + term + "</span> yet. You should add one!");
-        
         displayAddDefinitionButton(forUser, isLoggedIn);
     }
 
