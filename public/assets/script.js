@@ -203,8 +203,10 @@ function main(){
 
             $("#new-definition-char-count").text(charCount);
 
-            if(charCount >= 500 || charCount < 30){
-                $("#new-definition-counter").addClass("over-char-limit");
+            if(charCount >= 700 || charCount < 30){
+                $("#new-definition-counter").removeClass("char-limit-warning").addClass("over-char-limit");
+            } else if(charCount >= 500) {
+                $("#new-definition-counter").removeClass("over-char-limit").addClass("char-limit-warning");
             } else {
                 $("#new-definition-counter").removeClass("over-char-limit");
             }
@@ -354,8 +356,12 @@ function main(){
 	$("body").on("keyup", "#new-definition-textarea", function(){
 		var charCount = $("#new-definition-textarea").val().length;
         $("#new-definition-char-count").text(charCount);
-        if(charCount >= 500 || charCount < 30){
-            $("#new-definition-counter").addClass("over-char-limit");
+        
+
+        if(charCount >= 700 || charCount < 30){
+            $("#new-definition-counter").removeClass("char-limit-warning").addClass("over-char-limit");
+        } else if(charCount >= 500) {
+            $("#new-definition-counter").removeClass("over-char-limit").addClass("char-limit-warning");
         } else {
             $("#new-definition-counter").removeClass("over-char-limit");
         }
@@ -762,7 +768,7 @@ function addDefinition(){
 
 
     if(definitionBody.trim()){
-        if(definitionBody.length <= 500){
+        if(definitionBody.length <= 750){
             if(definitionBody.length >= 30){
                 if($("select[name='category'").val() != null){
 
@@ -829,7 +835,7 @@ function addDefinition(){
                 $(".new-definition-error").text("Please use at least 30 characters");
             }
         } else {
-            $(".new-definition-error").text("Your definition needs to be under 500 characters.");
+            $(".new-definition-error").text("Your definition needs to be under 750 characters.");
         }
 	} else {
         $(".new-definition-error").text("Please enter a definition");
@@ -949,7 +955,7 @@ function login(){
                         for(var i = 0; i < $(".add-one").length - 1; i++){
                             var element = $(".add-one")[i];
                             var id = element.dataset.id;
-                            element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + id + " rows = '2' maxlength = '500' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
+                            element.innerHTML = "<div class = 'new-comment-error'></div><textarea class = 'new-comment-textarea' data-id = " + id + " rows = '2' maxlength = '750' placeholder = 'A penny for your thoughts?'></textarea><div class = 'button-wrapper'><button class = 'add-comment' data-id = " + id + " data-term = ''>Add</button></div>";
                         }
 
                         $(".login-link").attr("id", "new-def-link");

@@ -213,7 +213,7 @@ function logSearch(db, req, callback){
 
 function addDefinition(db, req, callback){
 	if(req.session.user){
-		if(req.body.definition && req.body.term && (req.body.definition.length <= 500) && (req.body.definition.length >= 30)){
+		if(req.body.definition && req.body.term && (req.body.definition.length <= 750) && (req.body.definition.length >= 30)){
 
 			var userSubmissionsQuery = {
 				author: req.session.user.username,
@@ -389,7 +389,7 @@ function addDefinition(db, req, callback){
 		} else {
 			callback({
 				status: "fail",
-				message: "A new post must have a term and a definition between 30 and 500 characters."
+				message: "A new post must have a term and a definition between 30 and 750 characters."
 			});
 		}
 	} else {

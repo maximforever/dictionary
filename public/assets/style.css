@@ -226,6 +226,11 @@ button:hover {
 #new-definition-wrapper {
   text-align: right; }
 
+.char-limit-warning {
+  font-weight: 600;
+  color: #926513;
+  background: #f3cc75; }
+
 .over-char-limit {
   font-weight: 600;
   color: #b50000;

@@ -289,10 +289,16 @@ button:hover {
     text-align: right;
 }
 
+.char-limit-warning {
+    font-weight: 600;
+    color: #926513;
+    background: #f3cc75;
+}
+
 .over-char-limit {
-	font-weight: 600;
-	color: #b50000;
-	background: #F1A19B;
+    font-weight: 600;
+    color: #b50000;
+    background: #F1A19B;
 }
 
 /* DEFINITION */
