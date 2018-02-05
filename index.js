@@ -519,15 +519,23 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     })
 
-    app.get("/role-editor", function(req, res){
+    app.get("/get-role-editor-modal", function(req, res){
         if(req.session.user && (req.session.user.admin == "true" || req.session.user.admin == true)){
             console.log("admin request approved");
-            res.render("modals/roleEditor");
+            res.render("modals/roleEditorModal");
         } else {
             res.send({
                 status: "fail",
                 error: "This page is not available"
             })
+        }
+    })
+
+    app.get("/get-add-definition-modal", function(req, res){
+        if(req.session.user){
+            res.render("modals/addDefinitionModal");
+        } else {
+            res.render("modals/signupAndLoginModal")
         }
     })
 

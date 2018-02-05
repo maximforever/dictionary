@@ -176,7 +176,7 @@ function displayUnresolvedReports(reports){
 function getRoleEditor(){
 	$.ajax({
         type: "get",
-        url: "/role-editor",
+        url: "/get-role-editor-modal",
         success: function(response){
         	if(response.status != "fail"){
 

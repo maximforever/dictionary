@@ -266,7 +266,7 @@ function main(){
 	    }
 
         if(e.which == 27){                                         // 27 = ESC
-            $(".pop-out").hide();
+            $("#signup-modal, #login-modal, #report").hide();
         }
 
         if(e.which == 38 || e.which == 40){                         // 38 = up arrow, 40 = down arrow
@@ -586,9 +586,12 @@ function search(){
                             result.body.forEach(function(term){
                                 displaySearchTerm(term);
                             });
+                            $("#definitions-section").empty();
+                            displayAddDefinitionButton(false, result.isLoggedIn);
                         }
 
-                        $("#definitions-section").empty();
+                        //$("#definitions-section").empty();
+                        
 
             		} else {
                         console.log("NO RESULTS");
@@ -1296,6 +1299,9 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 }
 
 function displayAddDefinitionButton(forUser, isLoggedIn){
+
+    console.log("displaying button to add definiton");
+
     if(!forUser){
         if(isLoggedIn){
             $("#definitions-section").append("<button class = 'new-def-button' id = 'new-def-link'>Add a Definition<span></div>");

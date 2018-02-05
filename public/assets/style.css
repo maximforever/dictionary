@@ -26,6 +26,7 @@ input:focus {
 
 button {
   border: none;
+  cursor: pointer;
   background: #58A4B0;
   color: white;
   font-family: 'Muli', sans-serif;
