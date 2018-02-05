@@ -48,6 +48,7 @@ function main(){
     }
 
     resetNavBar();
+    populateRandomSearchTerm();
 
     if($("#definitions-section").height() < 5 && $("#search-bar").length == 1){
         
@@ -520,6 +521,12 @@ function resetNavBar(){
         $("#home-link").css("float", "left")
     }
 
+}
+
+function populateRandomSearchTerm(){
+    var sampleSearches = ["javascript", "rails", "node.js", "session", "function", "mongodb", "sublime text", "mvc"];
+    var randomTermToSearch = "ex: " + sampleSearches[Math.floor(Math.random() * sampleSearches.length)];
+    $("#search-bar").attr("placeholder", randomTermToSearch);    
 }
 
 function showLogin(){
