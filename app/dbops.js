@@ -1042,7 +1042,6 @@ function logVisit(db, req, callback){
     	thisUsername = req.session.user.username
     }
 
-
     var newVisit = {
     	username: thisUsername,
     	date: fullDate,
@@ -1050,9 +1049,12 @@ function logVisit(db, req, callback){
     	page: req.url
     }
 
-    var ignoredUrls = ["/get-definitions", "/search", "/metrics", "/updated-user-data", "/log-search", "/login"]
+    var ignoredUrls = ["/get-definitions", "/search", "/metrics", "/updated-user-data", "/log-search", "/login", "/robots.txt", "/password-reset"]
+    var ignoredISP = ["Googlebot", "Amazon.com", "YANDEX LLC", "Yandex", "Rostelecom"];
 
-    if(ignoredUrls.indexOf(req.url) == -1 && thisUsername != "max"){
+
+
+    if(ignoredUrls.indexOf(req.url) == -1 && thisUsername != "max" && thisUsername != "andrew"){
 
     	console.log("userIP: " + userIP);
 
@@ -1063,12 +1065,24 @@ function logVisit(db, req, callback){
 			
 		    if (!error && response.statusCode === 200) {
 
-		    	newVisit.location = body;
+			    var location {
+			    	city: body.city,
+			    	country: body.country,
+			    	isp: body.isp,
+			    	regionName: body.regionName,
+			    	zip: body.zip
+			    }
 
-		        database.create(db, "visits", newVisit, function recordLogin(){
+			    newVisit.location = location;
+
+		    	if(ignoredISP.indexOf(newVisit.location.isp) == -1){
+
+			        database.create(db, "visits", newVisit, function recordLogin(){
+				    	callback();
+				    })
+			    } else {
 			    	callback();
-			    })
-
+			    }
 		    } else {
 		    	callback();
 		    }
