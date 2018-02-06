@@ -101,7 +101,7 @@ function convertToISO(db, col, callback){
         result.forEach(function(thing){
             var updatedDate = {
                 $set: {
-                    created: new Date(thing.date),
+                    created: new Date(thing.lastEdit),
                     lastEdit: new Date(thing.lastEdit)
                 }
             }
