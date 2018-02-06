@@ -1065,7 +1065,7 @@ function logVisit(db, req, callback){
 			
 		    if (!error && response.statusCode === 200) {
 
-			    var location {
+			    var location = {
 			    	city: body.city,
 			    	country: body.country,
 			    	isp: body.isp,
