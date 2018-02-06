@@ -626,9 +626,7 @@ button:hover {
 }
 
 .voting-column {
-	display: flex;
-    align-items: flex-start;
-    justify-content: center;
+	display: inline-block;
 	width: calc(5% - 2px);
     border-left: 2px solid $blue-dark;
 }
