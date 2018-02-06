@@ -249,8 +249,8 @@ function addDefinition(db, req, callback){
 						removed: false,
 						approved: false,
 						rejected: false,
-						lastEdit: Date(),
-						created: Date(),
+						lastEdit: new Date(),
+						created: new Date(),
 						body: req.body.definition,
 						category: req.body.category,
 						related: relatedTerms
@@ -260,7 +260,7 @@ function addDefinition(db, req, callback){
 						post: newDefinitionQuery.id,
 						author: newDefinitionQuery.author,
 						direction: "up",
-						date: Date(),
+						date: new Date(),
 						type: "definition"
 					}
 
@@ -274,7 +274,7 @@ function addDefinition(db, req, callback){
 						var newNotification = {
 							to: newDefinitionQuery.author,
 							from: "admin",
-							date: Date(),
+							date: new Date(),
 							body: "Your submission for '" + newDefinitionQuery.term + "' has been approved",
 							type: "definition",
 							term: newDefinitionQuery.term,
@@ -348,7 +348,7 @@ function addDefinition(db, req, callback){
 
 								var updatedDefinition = {
 									$set: {
-										lastEdit: Date(),
+										lastEdit: new Date(),
 										body: req.body.definition,
 										category: req.body.category,
 										related: relatedTerms
@@ -458,7 +458,7 @@ function addComment(db, req, callback){
 									removed: false,
 									approved: true,
 									rejected: false,
-									date: Date(),
+									date: new Date(),
 									body: req.body.commentBody
 								}
 
@@ -568,7 +568,7 @@ function vote(db, req, callback){
 		post: parseInt(req.body.id),
 		author: voter,
 		direction: req.body.direction,
-		date: Date(),
+		date: new Date(),
 		type: req.body.type
 	}
 
@@ -721,7 +721,7 @@ function adminVote(db, req, callback){
 		var newNotification = {
 			to: req.body.author,
 			from: "admin",
-			date: Date(),
+			date: new Date(),
 			body: "Your submission for '" + req.body.term + "' has been " + req.body.type,
 			type: "definition",
 			term: req.body.term,
@@ -784,7 +784,7 @@ function adminVote(db, req, callback){
 						var newNotification = {
 							to: updatedReport.author,
 							from: "admin",
-							date: Date(),
+							date: new Date(),
 							body: "Your comment has been removed",
 							type: thisType,
 							status: "removed"
@@ -866,7 +866,7 @@ function addReport(db, req, callback){
 
 						var thisReport = {
 							id: Date.now()*(Math.floor(Math.random()*100)),
-							created: Date(),
+							created: new Date(),
 							resolved: false,
 							decision: null,
 							reason: req.body.reason,
@@ -917,11 +917,11 @@ function signup(db, req, callback){
 						bcrypt.genSalt(10, function(err, salt) {
 						    bcrypt.hash(req.body.password, salt, function(err, hash) {
 						   		var newUser = {
-						   			createdOn: Date(),
+						   			createdOn: new Date(),
 						   			email: req.body.email.trim().toLowerCase(),
 						   			username: req.body.username.trim().toLowerCase(),
 						            password: hash,
-						            lastLoggedOn: Date(),
+						            lastLoggedOn: new Date(),
 						            suspended: false,
 						            admin: false,
 						            moderator: false,
@@ -988,7 +988,7 @@ function login(db, req, callback){
 
 							var loginDateUpdate = {
 								$set: {
-									lastLoggedOn: Date()
+									lastLoggedOn: new Date()
 								}
 							}
 
@@ -1162,7 +1162,7 @@ function getMetrics(db, req, callback){
 	}
 
 	var dateSort = {
-		created: 1
+		created: -1
 	}
 
 	var approvedDefinitionQuery = {
