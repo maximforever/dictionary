@@ -769,18 +769,6 @@ MongoClient.connect(dbAddress, function(err, db){
         }
     })
 
-    app.post("/convert-date", function(req, res){
-        if(req.session.user && req.session.user.username == "max"){
-
-            database.convertToISO(db, "definitions", req.body, function(){
-                res.send({status: "success"});
-            });
-
-
-        } else {
-            res.redirect("/");
-        }
-    });
 
     // putting this last to make sure we don't overwrite any other routes
 

@@ -305,7 +305,8 @@ function addDefinition(db, req, callback){
 
 					termQuery = { 
 						name: req.body.term,
-						link: termLink
+						link: termLink,
+						date: new Date()
 					}
 
 					database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
