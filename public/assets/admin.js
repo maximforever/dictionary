@@ -68,8 +68,26 @@ function main(){
     	updateUserRoles();
     });
 
-     $("body").on("touchstart click", "#user-role-manager", function(){
+    $("body").on("touchstart click", "#user-role-manager", function(){
     	getRoleEditor();
+    });
+
+
+
+    $("body").on("touchstart click", "#convert-date", function(){
+        console.log("this will convert the dates");
+
+
+
+        $.ajax({
+            type: "post",
+            url: "/convert-date",
+            success: function(result){
+                if(result.status == "success"){
+                    console.log("converted");
+                } 
+            }
+        })
     });
 
 

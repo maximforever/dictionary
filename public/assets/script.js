@@ -577,8 +577,6 @@ function search(){
             	if(result.status == "success"){
             		$("#terms-section").empty();
 
-                    console.log(result);
-
             		if(result.count > 0){
 
                         if(result.count == 1){                          // if there's only one term, display the definition
@@ -1300,8 +1298,6 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 }
 
 function displayAddDefinitionButton(forUser, isLoggedIn){
-
-    console.log("displaying button to add definiton");
 
     if(!forUser){
         if(isLoggedIn){

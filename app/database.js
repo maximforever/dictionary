@@ -88,6 +88,50 @@ function sortRead(db, col, obj, sort, callback){
 
 
 
+function convertToISO(db, col, callback){
+
+    db.collection(col).find({}).toArray(function(err, result){
+        if (err){
+            console.log("MAYDAY! MAYDAY! Crashing.");
+            console.log(err);
+        }
+        console.log("Got " + result.length + " records from '" + col);
+
+
+        result.forEach(function(thing){
+            var updatedDate = {
+                $set: {
+                    created: new Date(thing.date),
+                    lastEdit: new Date(thing.lastEdit)
+                }
+            }
+
+            console.log(updatedDate);
+            
+            db.collection(col).update({_id: thing._id}, updatedDate, {upsert: true},  function displayAfterUpdating(){
+                console.log("Updated successfully! Fetching object: ");
+                read(db, col, {_id: thing._id}, function showUpdated(updatedItem){           // do we need to find the item again?
+                    console.log("HERE IT IS:");
+                    console.log(updatedItem[0]);
+                });
+            });
+
+
+
+
+
+        })
+
+    })
+
+
+    callback();
+
+
+
+};
+
+
 
 
 module.exports.create = create;
@@ -97,3 +141,5 @@ module.exports.remove = remove;
 
 module.exports.count = count;
 module.exports.sortRead = sortRead;
+
+module.exports.convertToISO = convertToISO;
