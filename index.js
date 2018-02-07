@@ -205,6 +205,13 @@ MongoClient.connect(dbAddress, function(err, db){
         });
     });
 
+
+    app.get("/top-searches", function(req, res){
+        dbops.getTopSearches(db, req, function logSearch(topSearches){
+            res.send({ topSearches });
+        });
+    });
+
     app.post("/get-definitions", function(req, res){
 
         console.log("GET DEFINITIONS POST:");

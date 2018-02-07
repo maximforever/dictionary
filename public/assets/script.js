@@ -50,6 +50,12 @@ function main(){
     resetNavBar();
     populateRandomSearchTerm();
 
+    if($("#search-bar").length == 1 && $("#search-bar").val().length == 0){
+        getTopSearches();
+    } else {
+        $("#top-terms").hide();
+    }
+
     if($("#definitions-section").height() < 5 && $("#search-bar").length == 1){
         
         var term = $("#search-bar").val().trim();
@@ -315,7 +321,7 @@ function main(){
         }
     });
 
-    $("#search-bar").on("keyup", function(e){
+    $("body").on("keyup", "#search-bar", function(e){
         if($("#search-bar").val().length > 1){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
                 var thisSearch = $("#search-bar").val();
@@ -323,10 +329,16 @@ function main(){
 
                 search();
             }
-
-
         } else {
             $("#terms-section").empty();
+        }
+
+        if($("#search-bar").val().length > 0){
+            console.log("hiding");
+            $("#top-terms").hide();
+        } else {
+            getTopSearches();
+            $("#top-terms").show();
         }
 
         if(e.which == 8){                                         // 8 = backspace
@@ -501,7 +513,11 @@ function main(){
         $("#reset-request-confirm").hide();
         $("#password-reset-modal").show();
     });
+
 }
+
+
+
 
 
 
@@ -665,6 +681,30 @@ function pageSearch(){
     })
 
 }
+
+function getTopSearches(){
+
+    console.log("getting top searches");
+
+    $.ajax({
+        type: "get",
+        url: "/top-searches",
+        success: function(topTerms){
+
+            console.log(topTerms.topSearches);
+            $("#top-terms").empty().append("<span class = 'bold trending-label'>Trending:</span>");
+
+            for(var i = 0; i < topTerms.topSearches.length; i++){
+                var term = topTerms.topSearches[i];
+                
+                $("#top-terms").append(" <a class = 'top-searched-term' href = '/" + term.name +  "'> " + term.name +"</div>")
+            }
+        }
+    })
+
+}
+
+
 
 function logSearch(thisTerm, hasDefinitions){
 

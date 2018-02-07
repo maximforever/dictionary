@@ -146,17 +146,16 @@ button:hover {
   width: calc(100% - 42px);
   display: none; }
 
-.related-term {
+.related-term, .top-searched-term {
   padding: 0px 10px;
   border: 1px solid rgba(44, 54, 63, 0.3);
   border-radius: 6px;
   color: #58A4B0;
   font-family: "Zilla Slab", serif;
   font-weight: 400; }
-
-.related-term:hover {
-  color: white;
-  background: #E88D67; }
+  .related-term:hover, .top-searched-term:hover {
+    color: white;
+    background: #E88D67; }
 
 .term {
   border-bottom: 1px solid rgba(111, 111, 111, 0.5);
@@ -535,6 +534,22 @@ button:hover {
 
 .definition-category-section select {
   font-size: 1em; }
+
+/* TOP SEARCHES */
+#top-terms {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  flex-wrap: wrap;
+  padding: 12px 20px 15px 20px;
+  border: 1px solid rgba(44, 54, 63, 0.3);
+  border-left: 4px solid #114B5F; }
+
+.trending-label {
+  padding-right: 10px; }
+
+.top-searched-term {
+  margin: 5px 5px 5px 0; }
 
 /* HEADER */
 .alert {
@@ -1060,7 +1075,7 @@ button:hover {
     margin: 0 0 0.5vh 0;
     font-size: 0.9em; }
   #search-bar {
-    width: calc(90vw - 22px);
+    width: calc(100% - 22px);
     padding: 3px 10px 8px 10px;
     font-size: 2em; }
   #terms-section {
@@ -1213,6 +1228,9 @@ button:hover {
     font-size: 1em; }
   .definition-category-section select {
     font-size: 0.7em; }
+  /*  TOP SEARCHES */
+  .trending-label {
+    width: 100%; }
   /* HEADER */
   .alert {
     text-align: center; }

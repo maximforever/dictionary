@@ -208,23 +208,33 @@ function logSearch(db, req, callback){
 		var queryForTermCount = {				// check if this term exists
 			name: req.body.term
 		}
-		/* THIS IS NOT GOOD - should be counting, not reading */
-		database.read(db, "terms", queryForTermCount, function checkForTermCount(terms){
-			console.log("terms: " + terms.length);
-			if(terms.length > 0 ) { newSearchRecord.termExists = true }
 
-			database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
-				callback();
-			});
+		if(newSearchRecord.termExists){
+			
+			var termQuery = {
+				name: req.body.term
+			}
 
+			var termUpdate = { 
+				$inc: {
+					"searched": 1
+				} 
+			}
+
+			database.update(db, "terms", termQuery, termUpdate, function confirmUpdate(result){
+				console.log("Search recorded");
+			})
+		}
+
+
+
+		/* THIS IS NOT GOOD - should be counting, not reading. Weird error with counting here. */
+
+		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
+			callback();
 		});
 
-
-
-		
 	}
-
-
 }
 
 function addDefinition(db, req, callback){
@@ -1047,6 +1057,19 @@ function login(db, req, callback){
 	}
 }
 
+function getTopSearches(db, req, callback){
+
+	var orderQuery = { searched: -1 }
+
+	database.sortRead(db, "terms", {}, orderQuery, function getSearches(allSearches){
+		var topSearches = allSearches.splice(0, 10);
+
+		console.log(topSearches);
+		callback(topSearches);
+	})
+
+}
+
 
 function logVisit(db, req, callback){
 
@@ -1724,6 +1747,8 @@ module.exports.getAdminData = getAdminData;
 module.exports.getMetrics = getMetrics;
 module.exports.adminVote = adminVote;
 module.exports.addReport = addReport;
+
+module.exports.getTopSearches = getTopSearches;
 
 module.exports.getUserRoles = getUserRoles;
 module.exports.updateUserRoles = updateUserRoles;
