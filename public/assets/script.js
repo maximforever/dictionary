@@ -590,10 +590,6 @@ function search(){
                         //if after 2 seconds the search bar contents have not changed, log the search
                         setTimeout(function checkIfSearchBarValueChanged(){
                             var newText = $("#search-bar").val().trim().toLowerCase();
-
-                            console.log("currentText: " + currentText);
-                            console.log("newText: " + newText);
-
                             var done = (currentText == newText);            // if currentText == newText, we're done
 
                             var searchQuery = {
@@ -601,7 +597,7 @@ function search(){
                             }
 
                             if(done){
-                                console.log("recording search for " + searchQuery.term);
+                                currentText = "";
                                 logSearch(searchQuery.term, false)
                             }
 
