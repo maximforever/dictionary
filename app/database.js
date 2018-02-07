@@ -65,7 +65,7 @@ function count(db, col, obj, callback){
             console.log("MAYDAY! MAYDAY! Crashing.");
             console.log(err);
         }
-        console.log("FIND: pulled " + count + " records from '" + col + "' for the query:");
+        console.log("COUNT: counted " + count + " records from '" + col + "' for the query:");
         console.log(obj);
         callback(count);
     })
@@ -78,7 +78,7 @@ function sortRead(db, col, obj, sort, callback){
             console.log("MAYDAY! MAYDAY! Crashing.");
             console.log(err);
         }
-        console.log("FIND: pulled " + result.length + " records from '" + col + "' for the query WITH SORT:");
+        console.log("READ AND SORT: pulled " + result.length + " records from '" + col + "' for the query WITH SORT:");
         console.log(obj);
         console.log(sort);
         callback(result);

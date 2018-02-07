@@ -87,10 +87,9 @@ function main(){
 	$("body").on(triggerEvent, ".term-link", function(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
+        setTimeout(function(){ logSearch(term, true); }, 50);                    // wait for the search bar to populate
 		currentTerm = term;
-        logSearch();
         window.history.pushState("object or string", "Title", "/" + term);      // update url
-
 		getDefinition(term, false);
 	});
 
@@ -319,7 +318,6 @@ function main(){
     $("#search-bar").on("keyup", function(e){
         if($("#search-bar").val().length > 1){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
-                logSearch();
                 var thisSearch = $("#search-bar").val();
                 window.history.pushState("object or string", "Title", "/" + thisSearch);      // update url
 
@@ -564,6 +562,8 @@ function search(){
     if($("#search-bar").val() && location.pathname.indexOf("profile") == -1){
 
         var searchTerm = $("#search-bar").val().trim();
+        var currentText = null;
+
 
     	var searchQuery = {
     		term: searchTerm.toLowerCase()
@@ -574,30 +574,52 @@ function search(){
             data: searchQuery,
             url: "/search",
             success: function(result){
+
             	if(result.status == "success"){
             		$("#terms-section").empty();
 
-            		if(result.count > 0){
-
-                        if(result.count == 1){                          // if there's only one term, display the definition
-                            getDefinition(result.body[0].name, false);
-                            currentTerm = result.body[0].name;
-                        } else {
-                            result.body.forEach(function(term){
-                                displaySearchTerm(term);
-                            });
-                            $("#definitions-section").empty();
-                            displayAddDefinitionButton(false, result.loggedIn);
-                        }
-
-                        //$("#definitions-section").empty();
+                    if(result.count == 0){                                  // IF NO SUCH TERM EXISTS
                         
-
-            		} else {
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
                         displayDefinitionsOnPage([], result.loggedIn, false);
-                    }      		
+                        currentText = $("#search-bar").val().trim().toLowerCase();
+
+                        
+                        
+                        //if after 2 seconds the search bar contents have not changed, log the search
+                        setTimeout(function checkIfSearchBarValueChanged(){
+                            var newText = $("#search-bar").val().trim().toLowerCase();
+
+                            console.log("currentText: " + currentText);
+                            console.log("newText: " + newText);
+
+                            var done = (currentText == newText);            // if currentText == newText, we're done
+
+                            var searchQuery = {
+                                term: newText
+                            }
+
+                            if(done){
+                                console.log("recording search for " + searchQuery.term);
+                                logSearch(searchQuery.term, false)
+                            }
+
+                        }, 2000)
+
+                    } else if (result.count == 1){                      // if there's only one term, display the definition
+                        logSearch(result.body[0].name, true);                           
+                        getDefinition(result.body[0].name, false);
+                        currentTerm = result.body[0].name;
+                    } else if (result.count > 1){
+                        result.body.forEach(function(term){
+                            displaySearchTerm(term);
+                        });
+
+                        $("#definitions-section").empty();
+                        displayAddDefinitionButton(false, result.loggedIn);
+                    }
+                        		
             	} else {
             		console.log(result.error);
             	}
@@ -618,8 +640,6 @@ function pageSearch(){
         term: searchTerm,
         user: false
     }
-
-    logSearch();
 
     $.ajax({
         type: "post",
@@ -650,40 +670,25 @@ function pageSearch(){
 
 }
 
-function logSearch(){
+function logSearch(thisTerm, hasDefinitions){
 
-    if($("#search-bar").val()){
+    console.log("recording search for " + thisTerm);
 
-        var currentText = $("#search-bar").val().trim().toLowerCase();
+    if(thisTerm){
 
-        setTimeout(function checkIfAddedSearch(){
+        var searchQuery = {
+            term: thisTerm,
+            exists: hasDefinitions          // does this term have definitions?
+        }
 
-            var newText = $("#search-bar").val().trim().toLowerCase();
-            var done = (currentText == newText);
-
-            var searchQuery = {
-                term: newText
+        $.ajax({
+            type: "post",
+            data: searchQuery,
+            url: "/log-search",
+            success: function(result){
+                //console.log("logged " + newText);
             }
-
-            //if after 2 seconds the search bar contents have not changed, log the search
-
-            if(done){
-
-                console.log("recording search for " + searchQuery.term);
-
-                $.ajax({
-                    type: "post",
-                    data: searchQuery,
-                    url: "/log-search",
-                    success: function(result){
-                        //console.log("logged " + newText);
-                    }
-                });
-
-            }
-
-        }, 2000)
-
+        });
     } 
 }
 

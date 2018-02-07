@@ -199,13 +199,29 @@ function logSearch(db, req, callback){
 		term: req.body.term,
 		username: thisUsername,
 		ip: userIP,
-		date: new Date()
+		date: new Date(),
+		termExists: req.body.exists
 	}
 
-	if(thisUsername != "max"){
-		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
-			callback();
+	if(thisUsername != "max" && thisUsername != "andrew"){				
+
+		var queryForTermCount = {				// check if this term exists
+			name: req.body.term
+		}
+		/* THIS IS NOT GOOD - should be counting, not reading */
+		database.read(db, "terms", queryForTermCount, function checkForTermCount(terms){
+			console.log("terms: " + terms.length);
+			if(terms.length > 0 ) { newSearchRecord.termExists = true }
+
+			database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
+				callback();
+			});
+
 		});
+
+
+
+		
 	}
 
 
