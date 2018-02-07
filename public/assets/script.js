@@ -334,7 +334,6 @@ function main(){
         }
 
         if($("#search-bar").val().length > 0){
-            console.log("hiding");
             $("#top-terms").hide();
         } else {
             getTopSearches();
@@ -684,14 +683,11 @@ function pageSearch(){
 
 function getTopSearches(){
 
-    console.log("getting top searches");
-
     $.ajax({
         type: "get",
         url: "/top-searches",
         success: function(topTerms){
 
-            console.log(topTerms.topSearches);
             $("#top-terms").empty().append("<span class = 'bold trending-label'>Trending:</span>");
 
             for(var i = 0; i < topTerms.topSearches.length; i++){
