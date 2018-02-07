@@ -1231,6 +1231,8 @@ button:hover {
   /*  TOP SEARCHES */
   .trending-label {
     width: 100%; }
+  #top-terms {
+    justify-content: center; }
   /* HEADER */
   .alert {
     text-align: center; }

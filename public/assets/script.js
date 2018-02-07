@@ -53,7 +53,7 @@ function main(){
     if($("#search-bar").length == 1 && $("#search-bar").val().length == 0){
         getTopSearches();
     } else {
-        logSearch($("#search-bar").val());
+        logSearch($("#search-bar").val(), true);
         $("#top-terms").hide();
     }
 
