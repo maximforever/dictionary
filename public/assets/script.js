@@ -295,6 +295,8 @@ function main(){
                 termLinks.removeClass("term-link-selected");
                 termLinks.eq(activeTermIndex).addClass("term-link-selected");
 
+                $("#search-bar").val($(".term-link-selected")[0].innerHTML);
+
     
             } else {
                 console.log("No term links in sight");
