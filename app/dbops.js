@@ -329,17 +329,23 @@ function addDefinition(db, req, callback){
 
 					var termLink = cleanUrl(req.body.term);
 
-					termQuery = { 
+					var termSearchQuery = { 
+						name: req.body.term,
+					}
+
+
+					var newTermQuery = { 
 						name: req.body.term,
 						link: termLink,
+						searched: 0,
 						date: new Date()
 					}
 
-					database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
+					database.read(db, "terms", termSearchQuery, function checkForExistingTerm(existingTerms){
 
 						if(existingTerms.length == 0){
-							console.log("creating new definition for the term '" + termQuery.name + "'");
-							database.create(db, "terms", termQuery, function createdTerm(newTerm){
+							console.log("creating new definition for the term '" + newTermQuery.name + "'");
+							database.create(db, "terms", newTermQuery, function createdTerm(newTerm){
 								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 									console.log(newDefinition.ops[0]);
 									database.create(db, "votes", newVote, function createdVote(newVote){
@@ -352,10 +358,9 @@ function addDefinition(db, req, callback){
 								});
 							});
 						} else if (existingTerms.length == 1) {
-							console.log("Someone has already created the term '" + termQuery.name + "'");
+							console.log("Someone has already created the term '" + termSearchQuery.name + "'");
 
 							// we need to either create  a new id or update an existing one, depending on whethere there's an ID
-
 								
 							if(parseInt(req.body.id) == 0){
 								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
@@ -394,10 +399,10 @@ function addDefinition(db, req, callback){
 							}
 
 						} else {
-							console.log("Multiple definitions for one term");
+							console.log("Hmm, found multiple instances of the same term");
 							callback({
 								status: "fail",
-								message: "Multiple definitions for one term"
+								message: "Hmm, found multiple instances of the same term"
 							});
 						}
 					})
@@ -1397,11 +1402,37 @@ function deletePost(db, req, callback){
 	database.read(db, req.body.type, postQuery, function findPost(posts){
 		if (posts.length == 1){
 
-			if(posts[0].author == req.session.user.username){
+			var otherDefinitionsQuery = {			// are there other definitions for this term?
+				term: posts[0].term 				// if not, we need to delete the term
+			}
+
+			if(posts[0].author == req.session.user.username || req.session.admin || req.session.moderator){
 
 				database.remove(db, req.body.type, postQuery, function deletePost(post){
 					callback({status: "success", message: "Successfully removed post"})
 				})
+
+				// now, if it's the last definition for this term...
+
+				if(req.body.type == "definitions"){		// no need to do this for comments
+					database.read(db, "definitions", otherDefinitionsQuery, function checkForOtherDefinitions(definitionsForThisTerm){
+						if(definitionsForThisTerm.length == 1){
+							// if this is the last definition, we need to delete the term and flip search.exists to false"
+							var termQuery = {name: definitionsForThisTerm[0].term}
+							database.remove(db, "terms", termQuery, function removeTerm(term){
+
+								var searchUpdateQuery = {
+									$set: { termExists: false }
+								}
+
+								database.updateMany(db, "searches", otherDefinitionsQuery, searchUpdateQuery, function updateSearches(){
+									console.log("searches udpated");
+								})
+
+							})
+						}
+					});
+				}
 
 			} else {
 				callback({status: "fail", message: "You are not the author of this post"})
