@@ -1062,7 +1062,7 @@ function getTopSearches(db, req, callback){
 	var orderQuery = { searched: -1 }
 
 	database.sortRead(db, "terms", {}, orderQuery, function getSearches(allSearches){
-		var topSearches = allSearches.splice(0, 10);f
+		var topSearches = allSearches.splice(0, 10);
 
 		console.log(topSearches);
 		callback(topSearches);
