@@ -53,7 +53,7 @@ function main(){
     if($("#search-bar").length == 1 && $("#search-bar").val().length == 0){
         getTopSearches();
     } else {
-        logSearch($("#search-bar").val(), true);
+        logSearch($("#search-bar").val());
         $("#top-terms").hide();
     }
 
@@ -94,7 +94,7 @@ function main(){
 	$("body").on(triggerEvent, ".term-link", function(){
 		var term = this.getAttribute("id");
         $("#search-bar").val(term);
-        setTimeout(function(){ logSearch(term, true); }, 50);                    // wait for the search bar to populate
+        setTimeout(function(){ logSearch(term); }, 50);                    // wait for the search bar to populate
 		currentTerm = term;
         window.history.pushState("object or string", "Title", "/" + term);      // update url
 		getDefinition(term, false);
@@ -616,13 +616,13 @@ function search(){
 
                             if(done){
                                 currentText = "";
-                                logSearch(searchQuery.term, false)
+                                logSearch(searchQuery.term)
                             }
 
                         }, 2000)
 
                     } else if (result.count == 1){                      // if there's only one term, display the definition
-                        logSearch(result.body[0].name, true);                           
+                        logSearch(result.body[0].name);                           
                         getDefinition(result.body[0].name, false);
                         currentTerm = result.body[0].name;
                     } else if (result.count > 1){
@@ -705,14 +705,13 @@ function getTopSearches(){
 
 
 
-function logSearch(thisTerm, hasDefinitions){
+function logSearch(thisTerm){
 
     if($("#search-bar").length == 1){
         if(thisTerm){
             console.log("recording search for " + thisTerm);
             var searchQuery = {
-                term: thisTerm,
-                exists: hasDefinitions          // does this term have definitions?
+                term: thisTerm
             }
 
             $.ajax({

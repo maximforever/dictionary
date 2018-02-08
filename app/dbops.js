@@ -200,39 +200,40 @@ function logSearch(db, req, callback){
 		username: thisUsername,
 		ip: userIP,
 		date: new Date(),
-		termExists: req.body.exists
+		termExists: false
 	}
 
 	if(thisUsername != "max" && thisUsername != "andrew"){				
 
-		var queryForTermCount = {				// check if this term exists
-			name: req.body.term
-		}
+		var termQuery = { name: req.body.term } // check if this term exists
 
-		if(newSearchRecord.termExists){
-			
-			var termQuery = {
-				name: req.body.term
+		database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
+		
+			// 1. if term exists, update the searched count on it, set search to true
+			if(existingTerms.length == 1){
+
+				newSearchRecord.termExists = true;
+
+				var termUpdate = { 
+					$inc: {
+						"searched": 1
+					} 
+				}
+
+				database.update(db, "terms", termQuery, termUpdate, function confirmUpdate(result){
+					console.log("Search recorded");
+				})
 			}
 
-			var termUpdate = { 
-				$inc: {
-					"searched": 1
-				} 
-			}
-
-			database.update(db, "terms", termQuery, termUpdate, function confirmUpdate(result){
-				console.log("Search recorded");
-			})
-		}
+			/* THIS IS NOT GOOD - should be counting, not reading. Weird error with counting here. */
+			// 2. create search for this
+			database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
+				callback();
+			});
 
 
+		})
 
-		/* THIS IS NOT GOOD - should be counting, not reading. Weird error with counting here. */
-
-		database.create(db, "searches", newSearchRecord, function logSearch(loggedSearch){
-			callback();
-		});
 
 	} else {
 		callback();
@@ -1065,6 +1066,8 @@ function login(db, req, callback){
 }
 
 function getTopSearches(db, req, callback){
+
+	var searchQuery = { termExists: true }
 
 	var orderQuery = { searched: -1 }
 
