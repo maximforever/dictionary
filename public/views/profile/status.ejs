@@ -55,7 +55,7 @@
                         <span class = "definition-body"><%= definition.body %></span><br>   
                     </div><!-- 
                 --><% if (session.user && username == session.user.username || (session.user && session.user.moderator == "true") || (session.user && session.user.admin == "true")) { %><div class = "status-submission-date">
-                        <span class = "edit-history"><span class = "bold"><%= definition.created.substr(4, 11) %></span></span>
+                        <span class = "edit-history"><span class = "bold"><%= definition.created.toString().substr(4, 11) %></span></span>
                     </div><!-- 
                  --><div class = "status">
                         <span class = "submission-status post-<%= status %>"><%= status %></span>

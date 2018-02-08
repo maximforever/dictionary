@@ -443,7 +443,7 @@ MongoClient.connect(dbAddress, function(err, db){
         if(req.params.component == "comment.html"){
             res.send("components/comment.html")
         } else if(req.params.component == "comment.html"){
-
+                // ??
         }
     })
 
