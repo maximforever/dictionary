@@ -258,7 +258,7 @@ function addDefinition(db, req, callback){
 					if(req.body.related){
 						req.body.related.forEach(function(term){
 							if(term.trim().length && validateInput(term)){
-								relatedTerms.push(term)
+								relatedTerms.push(term.toLowerCase())
 							}
 						})
 					}

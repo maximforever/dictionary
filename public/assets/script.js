@@ -705,24 +705,24 @@ function getTopSearches(){
 
 function logSearch(thisTerm, hasDefinitions){
 
-    console.log("recording search for " + thisTerm);
-
-    if(thisTerm){
-
-        var searchQuery = {
-            term: thisTerm,
-            exists: hasDefinitions          // does this term have definitions?
-        }
-
-        $.ajax({
-            type: "post",
-            data: searchQuery,
-            url: "/log-search",
-            success: function(result){
-                //console.log("logged " + newText);
+    if($("#search-bar").length == 1){
+        if(thisTerm){
+            console.log("recording search for " + thisTerm);
+            var searchQuery = {
+                term: thisTerm,
+                exists: hasDefinitions          // does this term have definitions?
             }
-        });
-    } 
+
+            $.ajax({
+                type: "post",
+                data: searchQuery,
+                url: "/log-search",
+                success: function(result){
+                    //console.log("logged " + newText);
+                }
+            });
+        } 
+    }
 }
 
 
@@ -1160,6 +1160,7 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
     $("#definitions-section").empty();
 
+    console.log("displaying " + definitions.length + " defs");
     if(definitions.length > 0){
 
         definitions = sortPosts(definitions);
@@ -1328,9 +1329,14 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
             }, 'html');
         }, 'html');
     } else {
-        var term = $("#search-bar").val();
-        $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold'>" + term + "</span> yet. You should add one!");
-        displayAddDefinitionButton(forUser, isLoggedIn);
+        if(location.pathname.indexOf("/profile") == -1){
+            var term = $("#search-bar").val();
+            $("#definitions-section").append("<div class = 'definition-accent'>There are no definitions for <span class = 'bold'>" + term + "</span> yet. You should add one!</div>");
+            displayAddDefinitionButton(forUser, isLoggedIn);
+        } else {
+            $("#definitions-section").append("<div class = 'definition-accent'>This user hasn't added any definitions yet.</div>");
+            
+        }
     }
 
 }
@@ -1608,9 +1614,10 @@ function getCommentsForUser(query){
         success: function(result){
             if(result.status == "success"){
 
-                commentSection.empty();
-                displayCommentsOnPage(result.comments, commentSection); 
-
+                if(result.count > 0){
+                    commentSection.empty();
+                    displayCommentsOnPage(result.comments, commentSection); 
+                }
             } else {
                 console.log(result.error);
             }
