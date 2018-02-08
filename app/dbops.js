@@ -234,6 +234,8 @@ function logSearch(db, req, callback){
 			callback();
 		});
 
+	} else {
+		callback();
 	}
 }
 
