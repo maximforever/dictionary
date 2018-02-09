@@ -381,7 +381,6 @@ function main(){
 	})
 
 	$("body").on(triggerEvent, "#add-definition", function(){
-       flashClickMessage("clicked!");
        addDefinition();
     });
 
@@ -796,8 +795,6 @@ function getDefinition(query, forUser){
 
 function addDefinition(){
 
-    flashClickMessage("adding def");    
-
     var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
 	var relatedTermsArray;
@@ -842,15 +839,11 @@ function addDefinition(){
 
                     if(validateInput(definitionBody)){
 
-                        flashClickMessage("looks good!");
-
                         $.ajax({
                             type: "post",
                             data: definitionData,
                             url: "/new-definition",
                             success: function(result){
-
-                                flashClickMessage("AJAX success!");
 
                                 $("#terms-section").empty();
                                 $("#definitions-section").empty();
@@ -882,30 +875,24 @@ function addDefinition(){
 
                                 } else {
                                     $(".new-definition-error").text(result.error);
-                                    flashClickMessage(result.error);
                                 }
                             }
                         })
 
                     } else {
                         $(".new-definition-error").text("No profanity or links, please - use example.com for examples");
-                        flashClickMessage("profanity");
                     }            		
                 } else {
                     $(".new-definition-error").text("Please pick a category for this definition");
-                    flashClickMessage("no category");
                 }
             } else {
                 $(".new-definition-error").text("Please use at least 30 characters");
-                flashClickMessage("too short");
             }
         } else {
             $(".new-definition-error").text("Your definition needs to be under 750 characters.");
-            flashClickMessage("too long");
         }
 	} else {
         $(".new-definition-error").text("Please enter a definition");
-        flashClickMessage("empty");
     }
 }
 
@@ -1734,9 +1721,9 @@ function trimRelatedTerms(){
 
     function flashClickMessage(text){
         console.log("click!");
-        $("#add-click-message").text(text);
+        $("#add-click-message").css("display", "inline-block").text(text);
         setTimeout(function(){
-            $("#add-click-message").text("");
+            $("#add-click-message").css("display", "none").text("").hide();
         }, 500);
     };
 
