@@ -381,22 +381,9 @@ function main(){
 	})
 
 	$("body").on(triggerEvent, "#add-definition", function(){
-	   flashClickLight("#71e45c");
+       flashClickMessage("clicked!");
        addDefinition();
     });
-
-/* TEST CODE */
-    
-    function flashClickLight(color){
-        console.log("click!");
-        $("#add-click-light").css("background", color);
-        setTimeout(function(){
-            $("#add-click-light").css("background", "none");
-        }, 500);
-    };
-
-
-/* --------- */
 
     $("body").on(triggerEvent, ".add-comment", function(){
         addComment(this);
@@ -885,24 +872,30 @@ function addDefinition(){
 
                                 } else {
                                     $(".new-definition-error").text(result.error);
+                                    flashClickMessage(result.error);
                                 }
                             }
                         })
 
                     } else {
                         $(".new-definition-error").text("No profanity or links, please - use example.com for examples");
+                        flashClickMessage("profanity");
                     }            		
                 } else {
                     $(".new-definition-error").text("Please pick a category for this definition");
+                    flashClickMessage("no category");
                 }
             } else {
                 $(".new-definition-error").text("Please use at least 30 characters");
+                flashClickMessage("too short");
             }
         } else {
             $(".new-definition-error").text("Your definition needs to be under 750 characters.");
+            flashClickMessage("too long");
         }
 	} else {
         $(".new-definition-error").text("Please enter a definition");
+        flashClickMessage("empty");
     }
 }
 
@@ -1725,3 +1718,16 @@ function cleanUrl(text){
 function trimRelatedTerms(){
     // add function to trim related terms into an array
 }
+
+
+/* TEST CODE */
+
+    function flashClickMessage(text){
+        console.log("click!");
+        $("#add-click-message").text(text);
+        setTimeout(function(){
+            $("#add-click-message").text("");
+        }, 500);
+    };
+
+/* --------- */

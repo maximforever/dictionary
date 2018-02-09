@@ -1304,15 +1304,13 @@ button:hover {
 
 /*  TEST CSS - REMOVE IN PROD! */
 
-#add-click-light{
-    width: 10px;
-    height: 10px;
-    border-radius: 100%;
-    border: 1px solid #7d7d7d;
-    //background: #71e45c;
+#add-click-message{
+    border: 1px solid gray;
+    padding: 3px 5px;
+    font-size: 0.85em;
     display: inline-block;
     float: right;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 
