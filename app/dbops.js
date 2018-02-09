@@ -592,103 +592,115 @@ function vote(db, req, callback){
 		voter = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
 	}
 
+	var postName = parseInt(req.body.id);
 
-	var voteQuery = {
-		post: parseInt(req.body.id),
-		author: voter,
-		type: req.body.type
+	var postQuery = {
+		id: parseInt(req.body.id)
 	}
 
-	var newVote = {
-		post: parseInt(req.body.id),
-		author: voter,
-		direction: req.body.direction,
-		date: new Date(),
-		type: req.body.type
-	}
+	database.read(db, "definitions", postQuery, function fetchPost(post){
 
-	database.read(db, "votes", voteQuery, function checkForExistingVote(existingVotes){
-
-		console.log("Existing votes");
-
-		console.log(existingVotes);
-		console.log("=========");
-
-		if(existingVotes.length == 0){
-			console.log("no votes")
-			createNewVote(db, req, newVote, callback);
-		} else if (existingVotes.length == 1){
-
-			console.log("one vote");
-
-			if(req.body.type == "definition" || req.body.type == "comment"){
-				thisVoteCollection = req.body.type + "s";
-
-				if(existingVotes[0].direction != newVote.direction){
-
-					// if vote already recorded in a different direction, remove it and create a new one in the right direction (ex: remove upvote, create downvote)
-
-					database.remove(db, "votes", voteQuery, function removeVote(removedVote){
-
-						var voteChange;
-
-						if(newVote.direction == "up"){
-							voteChange = "downvotes";
-						} else {
-							voteChange = "upvotes"
-						}
-
-						var definitionQuery = {
-							id: voteQuery.post
-						}
-
-						var definitionUpdateQuery = {
-							$inc: {}
-						};
-
-						definitionUpdateQuery.$inc[voteChange] = -1;
-
-						database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-							createNewVote(db, req, newVote, callback);
-						})
-					})
-
-				} else {
-					// if vote already recorded in the same direction, remove it (if upvoting after already upvoting, remove upvote)
-					console.log("vote already recorded");
-					database.remove(db, "votes", voteQuery, function removeVote(removedVote){
-
-						var voteChange = newVote.direction + "votes";
-
-						var definitionQuery = {
-							id: voteQuery.post
-						}
-
-						var definitionUpdateQuery = {
-							$inc: {}
-						};
-
-						definitionUpdateQuery.$inc[voteChange] = -1;
-
-					
-						database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
-							newDefinition.changedVote = false;
-							console.log("newDefinition")
-							callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
-						})
-					})
-				}
-			} else {
-				console.log("ERROR! The type of vote is incorrect");
-				callback({status: "fail", message: "The type of vote is incorrect"});
-			}
-			
-			
-		} else {
-			callback({status: "fail", message: "Something went wrong"});
+		if(post.length == 1 && req.body.type == "definition"){
+			postName = post[0].term;
 		}
-	});
 
+		var voteQuery = {
+			post: parseInt(req.body.id),
+			author: voter,
+			type: req.body.type
+		}
+
+		var newVote = {
+			post: parseInt(req.body.id),
+			term: postName,
+			author: voter,
+			direction: req.body.direction,
+			date: new Date(),
+			type: req.body.type
+		}
+
+		database.read(db, "votes", voteQuery, function checkForExistingVote(existingVotes){
+
+			console.log("Existing votes");
+
+			console.log(existingVotes);
+			console.log("=========");
+
+			if(existingVotes.length == 0){
+				console.log("no votes")
+				createNewVote(db, req, newVote, callback);
+			} else if (existingVotes.length == 1){
+
+				console.log("one vote");
+
+				if(req.body.type == "definition" || req.body.type == "comment"){
+					thisVoteCollection = req.body.type + "s";
+
+					if(existingVotes[0].direction != newVote.direction){
+
+						// if vote already recorded in a different direction, remove it and create a new one in the right direction (ex: remove upvote, create downvote)
+
+						database.remove(db, "votes", voteQuery, function removeVote(removedVote){
+
+							var voteChange;
+
+							if(newVote.direction == "up"){
+								voteChange = "downvotes";
+							} else {
+								voteChange = "upvotes"
+							}
+
+							var definitionQuery = {
+								id: voteQuery.post
+							}
+
+							var definitionUpdateQuery = {
+								$inc: {}
+							};
+
+							definitionUpdateQuery.$inc[voteChange] = -1;
+
+							database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+								createNewVote(db, req, newVote, callback);
+							})
+						})
+
+					} else {
+						// if vote already recorded in the same direction, remove it (if upvoting after already upvoting, remove upvote)
+						console.log("vote already recorded");
+						database.remove(db, "votes", voteQuery, function removeVote(removedVote){
+
+							var voteChange = newVote.direction + "votes";
+
+							var definitionQuery = {
+								id: voteQuery.post
+							}
+
+							var definitionUpdateQuery = {
+								$inc: {}
+							};
+
+							definitionUpdateQuery.$inc[voteChange] = -1;
+
+						
+							database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
+								newDefinition.changedVote = false;
+								console.log("newDefinition")
+								callback({status: "success", message: "vote created", updatedDefinition: newDefinition});
+							})
+						})
+					}
+				} else {
+					console.log("ERROR! The type of vote is incorrect");
+					callback({status: "fail", message: "The type of vote is incorrect"});
+				}
+				
+				
+			} else {
+				callback({status: "fail", message: "Something went wrong"});
+			}
+		});
+	})
 
 }
 
