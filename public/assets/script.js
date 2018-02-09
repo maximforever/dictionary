@@ -850,10 +850,13 @@ function addDefinition(){
                             url: "/new-definition",
                             success: function(result){
 
+                                flashClickMessage("AJAX success!");
+
                                 $("#terms-section").empty();
                                 $("#definitions-section").empty();
                                 $("#related-term-suggestions-section").empty();
-                                $("select[name='category'").val(null)
+                                //$("select[name='category'").val(null)
+                                document.getElementById('definition-category-selection').selectedIndex = -1;  // same as "val(null)""
 
                                 if(result.status == "success"){
                                     
