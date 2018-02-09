@@ -878,9 +878,7 @@ function addDefinition(){
                                     $("#related-term-textarea").val("");            
                                     $("#new-definition").hide();
                                     
-                                    if(window.location.pathname.indexOf("/profile") != -1 ){
-                                        location.reload();
-                                    }
+                                    search();
 
                                 } else {
                                     $(".new-definition-error").text(result.error);
