@@ -796,6 +796,8 @@ function getDefinition(query, forUser){
 
 function addDefinition(){
 
+    flashClickMessage("adding def");    
+
     var definitionTerm = $("#definition-term-textarea").val();
 	var definitionBody = $("#new-definition-textarea").val();
 	var relatedTermsArray;
@@ -834,6 +836,8 @@ function addDefinition(){
             		}
 
                     if(validateInput(definitionBody)){
+
+                        flashClickMessage("looks good!");
 
                         $.ajax({
                             type: "post",
