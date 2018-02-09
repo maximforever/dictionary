@@ -381,9 +381,22 @@ function main(){
 	})
 
 	$("body").on(triggerEvent, "#add-definition", function(){
-	   addDefinition();
+	   flashClickLight("#71e45c");
+       addDefinition();
     });
 
+/* TEST CODE */
+    
+    function flashClickLight(color){
+        console.log("click!");
+        $("#add-click-light").css("background", color);
+        setTimeout(function(){
+            $("#add-click-light").css("background", "none");
+        }, 500);
+    };
+
+
+/* --------- */
 
     $("body").on(triggerEvent, ".add-comment", function(){
         addComment(this);
@@ -425,6 +438,7 @@ function main(){
     $("body").on(triggerEvent, "#close", function(){
         $(".pop-out").find("input").val("");
         $(".pop-out").find(".report-error").text("");
+        $(".new-definition-error").text("");
         $(".pop-out").hide();
     });
 
@@ -861,6 +875,7 @@ function addDefinition(){
                                     }
                                     
                                     $("#new-definition-textarea").val("");
+                                    $(".new-definition-error").text("");
                                     $("#related-term-textarea").val("");            
                                     $("#new-definition").hide();
                                     
