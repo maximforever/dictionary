@@ -1565,8 +1565,8 @@ function deletePost(thisId, thisType){
         data: deleteInfo,
         success: function(result){
             if(result.status == "success"){
-                $("#" + thisId).remove();
-                window.scrollTo(0, 0);
+                    $("#" + thisId).remove();
+                    window.scrollTo(0, 0);
                 flash("error", "Your post has been deleted");
             } else {
                 flash("error", result.error);
