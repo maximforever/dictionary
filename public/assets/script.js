@@ -202,7 +202,7 @@ function main(){
             $("#new-definition-textarea").val(post.body);
             $("#definition-term-textarea").val(post.term);
             $(".new-definition-term").text(post.term);
-            $(".definition-category-selection").val(post.category);
+            $("#definition-category-selection").val(post.category);
             $("#related-term-textarea").val(relatedTerms);
             $("#add-definition")[0].dataset.id = post.id;
 
@@ -406,7 +406,7 @@ function main(){
 
         // show new definition modal and empty text fields
         $("#new-definition").show();
-        $("#new-definition-textarea, #definition-term-textarea, #related-term-textarea, .definition-category-selection").val("");
+        $("#new-definition-textarea, #definition-term-textarea, #related-term-textarea, #definition-category-selection").val("");
         $("#add-definition")[0].dataset.id = "0";
 
 
@@ -819,13 +819,18 @@ function addDefinition(){
     }
 
 
+    var e = document.getElementById("definition-category-selection");
+    var optionValue = e.options[e.selectedIndex].value;
+    console.log(optionValue.length);
+
+
     if(definitionBody.trim()){
         if(definitionBody.length <= 750){
             if(definitionBody.length >= 30){
-                if($("select[name='category'").val() != null){
+                if(optionValue.length > 0){
 
                 	var related = trimRelatedTerms();
-                    var definitionCategory = $("select[name='category'").val();
+                    var definitionCategory = optionValue;
 
                 	var definitionData = {
             			term: definitionTerm.toLowerCase().trim(),
