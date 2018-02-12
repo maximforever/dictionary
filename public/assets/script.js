@@ -13,7 +13,12 @@ var triggerEvent = "click";
 
 
 function main(){
- 
+
+    var host = "www.hackterms.com";
+    if ((host == window.location.host) && (window.location.protocol != "https:")){
+        window.location.protocol = "https";
+    }
+
     // if mobile browser, set on click event trigger to touchstart instead
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         triggerEvent = "touchstart";
