@@ -206,11 +206,12 @@ MongoClient.connect(dbAddress, function(err, db){
     });
 
 
-    app.get("/top-searches", function(req, res){
-        dbops.getTopSearches(db, req, function logSearch(topSearches){
-            res.send({ topSearches });
+    app.get("/top-terms", function(req, res){
+        dbops.getTopTerms(db, req, function logSearch(topTerms){
+            res.send(topTerms);         // most requested and searched terms
         });
     });
+
 
     app.post("/get-definitions", function(req, res){
 

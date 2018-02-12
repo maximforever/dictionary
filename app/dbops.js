@@ -203,7 +203,7 @@ function logSearch(db, req, callback){
 		termExists: false
 	}
 
-	if(thisUsername != "max" && thisUsername != "andrew"){				
+	if(thisUsername != "max" && thisUsername != "andrew" && req.body.term.trim().length){		
 
 		var termQuery = { name: req.body.term } // check if this term exists
 
@@ -223,6 +223,12 @@ function logSearch(db, req, callback){
 				database.update(db, "terms", termQuery, termUpdate, function confirmUpdate(result){
 					console.log("Search recorded");
 				})
+			} else {
+				if(typeof(req.body.term) != "undefined" && req.body.term.length){
+					logRequestedSearch(db, req.body.term);
+				} else { 
+					console.log( "There is no term to search"); 
+				} 
 			}
 
 			/* THIS IS NOT GOOD - should be counting, not reading. Weird error with counting here. */
@@ -239,6 +245,81 @@ function logSearch(db, req, callback){
 		callback();
 	}
 }
+
+function logRequestedSearch(db, term){
+
+	var thisTerm = term;
+
+	/* 
+		1. check requested terms collection for this term - use regex to find if this is a subterm of another term
+		2. if there are, find the max length term
+		3. if it is, up the searches on that term by 1
+		4. if it's not, create a new requested term
+			--> we should *then* search for smaller terms that match this and delete them, right?
+		5. when a term is added, check if a requested term is a subterm of this, delete it
+	*/
+
+	var regexSearch = "\^" + term + "\.\*";
+
+	var requestSearchQuery = {
+		term: {
+			$regex: new RegExp(regexSearch)
+		}
+	}
+
+
+	database.read(db, "requests", requestSearchQuery, function getExistingRequests(requests){
+
+		console.log("Term is: " + thisTerm);
+
+		console.log("Found " + requests.length + " request matches for the term: " + thisTerm);
+
+		if(requests.length > 0){
+			// if a request exists, update it
+
+			// find the max length term
+
+			var maxLengthTerm = "";
+
+			for(var i = 0; i < requests.length; i++){
+				var currentTerm = requests[i].term;
+				console.log(i + " - term: " + currentTerm + "; current max length term: " + maxLengthTerm);
+				if(currentTerm.length > maxLengthTerm.length)	{	maxLengthTerm = currentTerm }
+
+				if(i == (requests.length-1)) { console.log("the loop is done"); }
+			}
+
+			console.log("The max length request is: " + maxLengthTerm);
+
+			var requestQuery = {
+				term: maxLengthTerm
+			}
+
+			var requestUpdate = { 
+				$inc: {
+					"searched": 1
+				} 
+			}
+
+			database.update(db, "requests", requestQuery, requestUpdate, function confirmUpdate(result){
+				console.log("Request recorded");
+			})
+		} else {
+			// if a request doesn't exist, create it
+
+			var newRequest = {
+				term: term,
+				searched: 1,
+				termExists: false
+			}
+
+			database.create(db, "requests", newRequest, function createRequest(request){
+				console.log("A new request has been created");
+			})
+		}
+	})
+}
+
 
 function addDefinition(db, req, callback){
 	if(req.session.user){
@@ -1077,19 +1158,41 @@ function login(db, req, callback){
 	}
 }
 
-function getTopSearches(db, req, callback){
+function getTopTerms(db, req, callback){
 
-	var searchQuery = { termExists: true }
-
+	var requestQuery = { termExists: false }
 	var orderQuery = { searched: -1 }
 
 	database.sortRead(db, "terms", {}, orderQuery, function getSearches(allSearches){
 		var topSearches = allSearches.splice(0, 10);
 
+		console.log("topSearches");
 		console.log(topSearches);
-		callback(topSearches);
-	})
 
+		database.sortRead(db, "requests", requestQuery, orderQuery, function getSearches(allRequests){
+			var topRequests = allRequests.splice(0, 10);
+
+			console.log("topRequests");
+			console.log(topRequests);
+
+
+			var response = {
+				topRequests: topRequests,
+				topSearches: topSearches
+			}
+
+			//console.log(response);
+			callback(response);
+		})
+	})
+}
+
+function getTopRequests(db, req, callback){
+
+	var requestQuery = { termExists: false }
+	var orderQuery = { searched: -1 }
+
+	
 }
 
 
@@ -1796,7 +1899,7 @@ module.exports.getMetrics = getMetrics;
 module.exports.adminVote = adminVote;
 module.exports.addReport = addReport;
 
-module.exports.getTopSearches = getTopSearches;
+module.exports.getTopTerms = getTopTerms;
 
 module.exports.getUserRoles = getUserRoles;
 module.exports.updateUserRoles = updateUserRoles;

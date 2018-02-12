@@ -8,8 +8,18 @@
         <input type = "text" maxlength = "40" id = "search-bar" value = "<%= searchTerm %>" placeholder = "ex: javascript" autofocus>
         <div id = "terms-section"></div>
 
-        <div id = "top-terms" class = "definition"> 
-        </div>  
+        <div class = "top-terms definition">
+            <div class = "top-term-headings">
+                <div class = "active-top-term-label" id = "trending-terms-label"> Trending</div>
+                <div id = "requested-terms-label"> Most requested</div> 
+            </div>
+            <div id = "top-searches"> 
+            </div>  
+            <div id = "top-requests"> 
+            </div>  
+        </div>
+
+        
     </div>
 
     <div id = "definitions-section"></div>

@@ -51,10 +51,10 @@ function main(){
     populateRandomSearchTerm();
 
     if($("#search-bar").length == 1 && $("#search-bar").val().length == 0){
-        getTopSearches();
+        getTopTerms();
     } else {
         logSearch($("#search-bar").val());
-        $("#top-terms").hide();
+        $(".top-terms").hide();
     }
 
     if($("#definitions-section").height() < 5 && $("#search-bar").length == 1){
@@ -337,10 +337,9 @@ function main(){
         }
 
         if($("#search-bar").val().length > 0){
-            $("#top-terms").hide();
+            $(".top-terms").hide();
         } else {
-            getTopSearches();
-            $("#top-terms").show();
+            $(".top-terms").show();
         }
 
         if(e.which == 8){                                         // 8 = backspace
@@ -516,6 +515,23 @@ function main(){
         $("#password-reset-modal").show();
     });
 
+
+    $("body").on(triggerEvent, "#trending-terms-label", function(){
+        if($(".active-top-term-label").text().indexOf("Trending") == -1){
+            $("#trending-terms-label").addClass("active-top-term-label");
+            $("#requested-terms-label").removeClass("active-top-term-label");
+            getTopTerms();
+        }
+    });
+
+    $("body").on(triggerEvent, "#requested-terms-label", function(){
+        if($(".active-top-term-label").text().indexOf("Most requested") == -1){
+            $("#requested-terms-label").addClass("active-top-term-label");
+            $("#trending-terms-label").removeClass("active-top-term-label");
+            getTopTerms();
+        }
+    });
+
 }
 
 
@@ -596,14 +612,12 @@ function search(){
             	if(result.status == "success"){
             		$("#terms-section").empty();
 
-                    if(result.count == 0){                                  // IF NO SUCH TERM EXISTS
+                    if(result.count == 0){                                  // IF THIS TERM DOESN'T EXIST
                         
                         console.log("NO RESULTS");
                         $("#definitions-section").empty();
                         displayDefinitionsOnPage([], result.loggedIn, false);
                         currentText = $("#search-bar").val().trim().toLowerCase();
-
-                        
                         
                         //if after 2 seconds the search bar contents have not changed, log the search
                         setTimeout(function checkIfSearchBarValueChanged(){
@@ -625,7 +639,7 @@ function search(){
                         logSearch(result.body[0].name);                           
                         getDefinition(result.body[0].name, false);
                         currentTerm = result.body[0].name;
-                    } else if (result.count > 1){
+                    } else if (result.count > 1){                       // if there's more than one term, display the terms
                         result.body.forEach(function(term){
                             displaySearchTerm(term);
                         });
@@ -684,25 +698,44 @@ function pageSearch(){
 
 }
 
-function getTopSearches(){
+function getTopTerms(){
 
     $.ajax({
         type: "get",
-        url: "/top-searches",
+        url: "/top-terms",
         success: function(topTerms){
 
-            $("#top-terms").empty().append("<span class = 'bold trending-label'>Trending:</span>");
+            console.log(topTerms);
+
+            $("#top-requests, #top-searches").empty();
 
             for(var i = 0; i < topTerms.topSearches.length; i++){
                 var term = topTerms.topSearches[i];
                 
-                $("#top-terms").append(" <a class = 'top-searched-term' href = '/" + term.name +  "'> " + term.name +"</div>")
+                $("#top-searches").append(" <a class = 'top-searched-term' href = '/" + term.name +  "'> " + term.name +"</div>")
             }
+
+            for(var i = 0; i < topTerms.topRequests.length; i++){
+                var request = topTerms.topRequests[i];
+                
+                $("#top-requests").append(" <a class = 'top-searched-term' href = '/" + request.term +  "'> " + request.term +"</div>")
+            }
+
+            $("#top-requests").hide();
+            $("#top-searches").show();
+
+            console.log($(".active-top-term-label").text());
+            console.log($(".active-top-term-label").text().indexOf("Most requested"));
+
+            if($(".active-top-term-label").text().indexOf("Most requested") != -1){
+                $("#top-searches").hide();
+                $("#top-requests").show();
+            }
+
         }
     })
 
 }
-
 
 
 function logSearch(thisTerm){
