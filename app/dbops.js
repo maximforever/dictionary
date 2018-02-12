@@ -1550,18 +1550,28 @@ function deletePost(db, req, callback){
 
 				if(req.body.type == "definitions"){		// no need to do this for comments
 					database.read(db, "definitions", otherDefinitionsQuery, function checkForOtherDefinitions(definitionsForThisTerm){
+
+						console.log("definitionsForThisTerm");
+						console.log(definitionsForThisTerm);
+
 						if(definitionsForThisTerm.length == 1){
-							// if this is the last definition, we need to delete the term and flip search.exists to false"
+							// if this is the last definition, we need to delete the term and flip search.exists to false
+							// we also need to flip requests back on
 							var termQuery = {name: definitionsForThisTerm[0].term}
 							database.remove(db, "terms", termQuery, function removeTerm(term){
 
-								var searchUpdateQuery = {
+								var requestUpdateQuery = { term: definitionsForThisTerm[0].term }
+
+								var requestUpdate = {
 									$set: { termExists: false }
 								}
 
-								database.updateMany(db, "searches", otherDefinitionsQuery, searchUpdateQuery, function updateSearches(){
-									console.log("searches udpated");
-								})
+								database.update(db, "requests", otherDefinitionsQuery, requestUpdate, function updateRequests(response){
+									database.updateMany(db, "searches", otherDefinitionsQuery, requestUpdate, function updateSearches(response){
+										console.log("searches udpated");
+									})
+
+								});
 
 							})
 						}
