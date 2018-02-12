@@ -339,6 +339,9 @@ function main(){
         if($("#search-bar").val().length > 0){
             $(".top-terms").hide();
         } else {
+            if($("#top-searches").text().trim().length == 0 || $("#top-requests").text().trim().length == 0){
+                getTopTerms();
+            }
             $(".top-terms").show();
         }
 
@@ -724,9 +727,6 @@ function getTopTerms(){
             $("#top-requests").hide();
             $("#top-searches").show();
 
-            console.log($(".active-top-term-label").text());
-            console.log($(".active-top-term-label").text().indexOf("Most requested"));
-
             if($(".active-top-term-label").text().indexOf("Most requested") != -1){
                 $("#top-searches").hide();
                 $("#top-requests").show();
@@ -851,8 +851,6 @@ function addDefinition(){
 
     var e = document.getElementById("definition-category-selection");
     var optionValue = e.options[e.selectedIndex].value;
-    console.log(optionValue.length);
-
 
     if(definitionBody.trim()){
         if(definitionBody.length <= 750){
@@ -1199,7 +1197,6 @@ function displayDefinitionsOnPage(definitions, isLoggedIn, forUser){
 
     $("#definitions-section").empty();
 
-    console.log("displaying " + definitions.length + " defs");
     if(definitions.length > 0){
 
         definitions = sortPosts(definitions);
@@ -1753,7 +1750,6 @@ function trimRelatedTerms(){
 /* TEST CODE */
 
     function flashClickMessage(text){
-        console.log("click!");
         $("#add-click-message").css("display", "inline-block").text(text);
         setTimeout(function(){
             $("#add-click-message").css("display", "none").text("").hide();

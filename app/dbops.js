@@ -433,11 +433,24 @@ function addDefinition(db, req, callback){
 								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 									console.log(newDefinition.ops[0]);
 									database.create(db, "votes", newVote, function createdVote(newVote){
-										callback({
-											status: "success",
-											termAdded: newDefinitionQuery.approved,
-											term: newDefinition.ops[0].term
-										});
+
+										/* remove requests for this term */
+
+										var requestUpdateQuery = { term: newDefinition.ops[0].term }
+
+										var requestUpdate = {
+											$set: {
+												termExists: true
+											}
+										}
+
+										database.update(db, "requests", requestUpdateQuery, requestUpdate, function updateRequests(response){
+											callback({
+												status: "success",
+												termAdded: newDefinitionQuery.approved,
+												term: newDefinition.ops[0].term
+											});
+										})
 									});
 								});
 							});
@@ -458,6 +471,7 @@ function addDefinition(db, req, callback){
 									});
 								});
 							} else {
+
 								var definitionUpdateQuery = {
 									id: parseInt(req.body.id)
 								}
