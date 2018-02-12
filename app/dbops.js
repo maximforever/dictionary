@@ -308,7 +308,7 @@ function logRequestedSearch(db, term){
 			// if a request doesn't exist, create it
 
 			var newRequest = {
-				term: term,
+				term: term.toLowerCase(),
 				searched: 1,
 				termExists: false
 			}

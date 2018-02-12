@@ -744,7 +744,7 @@ function logSearch(thisTerm){
         if(thisTerm){
             console.log("recording search for " + thisTerm);
             var searchQuery = {
-                term: thisTerm
+                term: thisTerm.toLowerCase()
             }
 
             $.ajax({
