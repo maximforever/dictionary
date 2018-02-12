@@ -559,6 +559,9 @@ button:hover {
     .top-term-headings div:hover:not(.active-top-term-label) {
       color: #E88D67; }
 
+#top-searches, #top-requests {
+  flex-wrap: wrap; }
+
 .top-searched-term {
   margin: 5px 5px 5px 0; }
 

@@ -703,6 +703,10 @@ button:hover {
     }
 }
 
+#top-searches, #top-requests {
+    flex-wrap: wrap;
+}
+
 .top-searched-term {
     margin: 5px 5px 5px 0;
 }

@@ -330,11 +330,12 @@ function main(){
     });
 
     $("body").on("keyup", "#search-bar", function(e){
+
+        var thisSearch = $("#search-bar").val();
+
         if($("#search-bar").val().length > 1){
             if((e.which >= 48 && e.which <= 90) || (e.which >= 106 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || e.which == 8 || e.which == 229){       // 48-90 are letters and numbers; 229 is registered on android
-                var thisSearch = $("#search-bar").val();
                 window.history.pushState("object or string", "Title", "/" + thisSearch);      // update url
-
                 search();
             }
         } else {
@@ -351,6 +352,7 @@ function main(){
         }
 
         if(e.which == 8){                                         // 8 = backspace
+            window.history.pushState("object or string", "Title", "/" + thisSearch);      // update url
             $("#new-definition").hide();
             $("#definitions-section").empty();
         }
@@ -730,11 +732,11 @@ function getTopTerms(){
             }
 
             $("#top-requests").hide();
-            $("#top-searches").show();
+            $("#top-searches").css("display", "flex");
 
             if($(".active-top-term-label").text().indexOf("Most requested") != -1){
                 $("#top-searches").hide();
-                $("#top-requests").show();
+                $("#top-requests").css("display", "flex");
             }
 
         }
