@@ -47,12 +47,6 @@ MongoClient.connect(dbAddress, function(err, db){
 
     var sessionSecret = process.env.SESSION_SECRET || "ejqjxvsh994hw8e7fl4gbnslvt3";
 
-
-    app.get('*', function(req, res) {  
-        res.redirect('https://' + req.headers.host + req.url);
-    });
-
-
     app.use(session({                                
             secret: sessionSecret,             
             saveUninitialized: false,
