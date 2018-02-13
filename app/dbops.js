@@ -9,7 +9,7 @@ var transporter = nodemailer.createTransport({
     secure: true,
     auth: {
         user: process.env.ZOHO_USERNAME,
-        pass: process.env.ZOHO_PASSWORD 
+        pass: process.env.ZOHO_PASSWORD
     }
 });
 
@@ -51,7 +51,7 @@ function search(db, req, callback){
 			count: searchResult.length,
 			body: searchResult
 		});
-		
+
 
 	});
 }
@@ -60,14 +60,14 @@ function getDefinitions(db, req, callback){
 
 	var searchQuery = {
 		term: req.body.term,
-		removed: false, 
+		removed: false,
 		approved: true
 	}
 
 	if(req.body.user && (req.body.user == true || req.body.user == "true")){
 		var searchQuery = {
 			author: req.body.author,
-			removed: false, 
+			removed: false,
 			approved: true
 		}
 	}
@@ -168,7 +168,7 @@ function getDefinitions(db, req, callback){
 
 							}
 						})
-						
+
 
 						definition.comments = associatedComments;
 						responsesToReturn.push(definition);
@@ -203,21 +203,21 @@ function logSearch(db, req, callback){
 		termExists: false
 	}
 
-	if(thisUsername != "max" && thisUsername != "andrew" && req.body.term.trim().length){		
+	if(thisUsername != "max" && thisUsername != "andrew" && req.body.term.trim().length){
 
 		var termQuery = { name: req.body.term } // check if this term exists
 
 		database.read(db, "terms", termQuery, function checkForExistingTerm(existingTerms){
-		
+
 			// 1. if term exists, update the searched count on it, set search to true
 			if(existingTerms.length == 1){
 
 				newSearchRecord.termExists = true;
 
-				var termUpdate = { 
+				var termUpdate = {
 					$inc: {
 						"searched": 1
-					} 
+					}
 				}
 
 				database.update(db, "terms", termQuery, termUpdate, function confirmUpdate(result){
@@ -226,9 +226,9 @@ function logSearch(db, req, callback){
 			} else {
 				if(typeof(req.body.term) != "undefined" && req.body.term.length){
 					logRequestedSearch(db, req.body.term);
-				} else { 
-					console.log( "There is no term to search"); 
-				} 
+				} else {
+					console.log( "There is no term to search");
+				}
 			}
 
 			/* THIS IS NOT GOOD - should be counting, not reading. Weird error with counting here. */
@@ -250,7 +250,7 @@ function logRequestedSearch(db, term){
 
 	var thisTerm = term;
 
-	/* 
+	/*
 		1. check requested terms collection for this term - use regex to find if this is a subterm of another term
 		2. if there are, find the max length term
 		3. if it is, up the searches on that term by 1
@@ -295,10 +295,10 @@ function logRequestedSearch(db, term){
 				term: maxLengthTerm
 			}
 
-			var requestUpdate = { 
+			var requestUpdate = {
 				$inc: {
 					"searched": 1
-				} 
+				}
 			}
 
 			database.update(db, "requests", requestQuery, requestUpdate, function confirmUpdate(result){
@@ -354,7 +354,7 @@ function addDefinition(db, req, callback){
 						term: req.body.term.trim().toLowerCase(),
 						author: req.session.user.username,
 						upvotes: 1,
-						downvotes: 0, 
+						downvotes: 0,
 						reportCount: 0,
 						removed: false,
 						approved: false,
@@ -376,7 +376,7 @@ function addDefinition(db, req, callback){
 
 					var moderator = (req.session.user.admin == "true" || req.session.user.moderator == "true" || req.session.user.admin == true || req.session.user.moderator == true);
 
-					// if((approvedDefinitions.length > 5 || moderator)){			
+					// if((approvedDefinitions.length > 5 || moderator)){
 					if(true){			// all definitions are auto-approved - change at launch!
 						console.log("Auto approve based on positive submission history");
 						newDefinitionQuery.approved = true;
@@ -413,12 +413,12 @@ function addDefinition(db, req, callback){
 
 					var termLink = cleanUrl(req.body.term);
 
-					var termSearchQuery = { 
+					var termSearchQuery = {
 						name: req.body.term,
 					}
 
 
-					var newTermQuery = { 
+					var newTermQuery = {
 						name: req.body.term,
 						link: termLink,
 						searched: 0,
@@ -458,7 +458,7 @@ function addDefinition(db, req, callback){
 							console.log("Someone has already created the term '" + termSearchQuery.name + "'");
 
 							// we need to either create  a new id or update an existing one, depending on whethere there's an ID
-								
+
 							if(parseInt(req.body.id) == 0){
 								database.create(db, "definitions", newDefinitionQuery, function createdDefinition(newDefinition){
 									console.log(newDefinition.ops[0]);
@@ -553,7 +553,7 @@ function addComment(db, req, callback){
 						var timeLimit = 1000 * 60 * 5;			// how often can users make comments? Let's say every 5 mins (consider making random for bots?)
 
 
-						console.log("Date calculation: "); 
+						console.log("Date calculation: ");
 						console.log(Date.now() - Date.parse(existingComment.date) - timeLimit);
 
 						if(Date.parse(existingComment.date) + timeLimit >= Date.now()){
@@ -583,7 +583,7 @@ function addComment(db, req, callback){
 									post_id: parseInt(req.body.post_id),
 									author: req.session.user.username,
 									upvotes: 0,
-									downvotes: 0, 
+									downvotes: 0,
 									reportCount: 0,
 									removed: false,
 									approved: true,
@@ -633,10 +633,10 @@ function getComments(db, req, callback){
 	if(req.body.user && (req.body.user == true || req.body.user == "true")){
 		var searchQuery = {
 			author: req.body.author,
-			removed: false, 
+			removed: false,
 			approved: true
 		}
-	}	
+	}
 
 	database.read(db, "comments", searchQuery, function(searchResult){
 
@@ -646,7 +646,7 @@ function getComments(db, req, callback){
 
 		searchResult.forEach(function(oneResult){
 			if((oneResult.upvotes - oneResult.downvotes) >= -5){
-				
+
 				// Let's mark definitions authored by the requesting user
 				oneResult.owner = false;
 
@@ -671,7 +671,7 @@ function getComments(db, req, callback){
 
 function vote(db, req, callback){
 
-	/* 
+	/*
 		1. check if there's already a vote for this user for this term
 		2. if there is, remove it, and create a new one (easier than changing direction)
 		3. if there isn't, create the vote
@@ -684,7 +684,8 @@ function vote(db, req, callback){
 	if(req.session.user){
 		voter = req.session.user.username
 	} else {
-		voter = req.headers["X-Forwarded-For"] || req.headers["x-forwarded-for"] || req.client.remoteAddress;
+		// dont let non-logged in users vote
+		callback({ status: "fail", message: "You must log in to add a vote" });
 	}
 
 	var postName = parseInt(req.body.id);
@@ -777,7 +778,7 @@ function vote(db, req, callback){
 
 							definitionUpdateQuery.$inc[voteChange] = -1;
 
-						
+
 							database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
 								newDefinition.changedVote = false;
 								console.log("newDefinition")
@@ -789,8 +790,8 @@ function vote(db, req, callback){
 					console.log("ERROR! The type of vote is incorrect");
 					callback({status: "fail", message: "The type of vote is incorrect"});
 				}
-				
-				
+
+
 			} else {
 				callback({status: "fail", message: "Something went wrong"});
 			}
@@ -825,7 +826,7 @@ function createNewVote(db, req, newVote, callback){
 		console.log(definitionUpdateQuery);
 
 		if(req.body.type == "definition" || req.body.type == "comment"){
-			
+
 			thisVoteCollection = req.body.type + "s";
 
 			database.update(db, thisVoteCollection, definitionQuery, definitionUpdateQuery, function updateDefinition(newDefinition){
@@ -837,7 +838,7 @@ function createNewVote(db, req, newVote, callback){
 		} else {
 			callback({status: "fail", message: "invalid type of vote"});
 		}
-			
+
 	})
 }
 
@@ -953,8 +954,8 @@ function adminVote(db, req, callback){
 						console.log("newNotification");
 						console.log(newNotification);
 
-						database.create(db, "notifications", newNotification, function createNotification(newNotification){		
-							database.update(db, "users", userQuery, newNotificationsUpdate, function notifyUser(updatedUser){		
+						database.create(db, "notifications", newNotification, function createNotification(newNotification){
+							database.update(db, "users", userQuery, newNotificationsUpdate, function notifyUser(updatedUser){
 								callback({status: "success", message: "Successfully removed " + thisType});
 							});
 						});
@@ -969,7 +970,7 @@ function adminVote(db, req, callback){
 	} else if(req.body.post == "comment"){
 
 				// add how things go here
-	
+
 	} else {
 		callback({status: "fail", message: "Something went wrong"});
 	}
@@ -1029,7 +1030,7 @@ function addReport(db, req, callback){
 
 							database.update(db, req.body.type, postQuery, postUpdateQuery, function updatePost(post){
 								callback({status: "success", message: "Report created"});
-							})	
+							})
 						})
 					} else {
 						callback({status: "fail", message: "Invalid post"});
@@ -1051,7 +1052,7 @@ function signup(db, req, callback){
 	console.log(req.body);
 
 	if(req.body.username.trim().length && req.body.password.trim().length){    	// let's make sure the username and password aren't empty
-		if(req.body.username.trim().length && req.body.password.trim().length > 5){    
+		if(req.body.username.trim().length && req.body.password.trim().length > 5){
 			if(req.body.username.replace(/\s/g, '').length == req.body.username.length){
 				if(req.body.email.trim().length && req.body.email.indexOf("@") != -1 && req.body.email.indexOf(".") != -1){
 
@@ -1086,14 +1087,14 @@ function signup(db, req, callback){
 								}
 
 								database.read(db, "users", userQuery, function(existingUsers){
-									if(existingUsers.length == 0){																		
+									if(existingUsers.length == 0){
 										database.create(db, "users", newUser, function(newlyCreatedUser){
 											callback({status: "success", message: "Account created. Go ahead and log in!", user: newlyCreatedUser[0]})
 										});
-									} else {	
+									} else {
 										callback({status: "fail", message: "That username is not available", errorType: "username"})
 									}
-								})     
+								})
 						    });
 						});
 					} else {
@@ -1114,16 +1115,16 @@ function signup(db, req, callback){
 }
 
 function login(db, req, callback){
-	if(req.body.username.trim().length && req.body.password.trim().length){    	// let's make sure the username and password aren't empty 
+	if(req.body.username.trim().length && req.body.password.trim().length){    	// let's make sure the username and password aren't empty
 
 		console.log(req.body);
 
 		var userQuery = {
             username: req.body.username.toLowerCase(),
-        }	
+        }
 
 		database.read(db, "users", userQuery, function checkIfUserExists(existingUsers){
-			if(existingUsers.length == 1){	
+			if(existingUsers.length == 1){
 				bcrypt.compare(req.body.password, existingUsers[0].password, function(err, res) {
 					if(res){													// if the two password hashes match...
 						if(existingUsers[0].suspended == "false" || existingUsers[0].suspended == false){
@@ -1160,7 +1161,7 @@ function login(db, req, callback){
 						req.session.user = null;
 						callback({status: "fail", message: "Login or password are incorrect", errorType: "username"})
 					}
-				});										
+				});
 			} else {
 				req.session.user = null;
 				callback({status: "fail", message: "Login or password are incorrect", errorType: "username"})
@@ -1206,7 +1207,7 @@ function getTopRequests(db, req, callback){
 	var requestQuery = { termExists: false }
 	var orderQuery = { searched: -1 }
 
-	
+
 }
 
 
@@ -1241,7 +1242,7 @@ function logVisit(db, req, callback){
 		    url: "http://ip-api.com/json/" + userIP,
 		    json: true
 		}, function (error, response, body) {
-			
+
 		    if (!error && response.statusCode === 200) {
 
 			    var location = {
@@ -1266,20 +1267,20 @@ function logVisit(db, req, callback){
 		    	callback();
 		    }
 		})
-    	
+
     } else {
     	console.log("no need to log that page");
     	callback();
     }
 
-    
+
 }
 
 function getUpdatedUser(db, req, callback){
 
 	var userQuery = {
         username: req.session.user.username.toLowerCase()
-    }	
+    }
 
 	database.read(db, "users", userQuery, function fetchUser(existingUser){
 		if(existingUser.length == 1){
@@ -1287,7 +1288,7 @@ function getUpdatedUser(db, req, callback){
 			req.session.user = existingUser[0].data;
             req.session.user.admin = existingUser[0].admin;
             req.session.user.moderator = existingUser[0].moderator;
-			
+
             if(existingUser[0].suspended == true || existingUser[0].suspended == "true"){
             	callback(true);
             } else {
@@ -1304,7 +1305,7 @@ function getUpdatedUser(db, req, callback){
 
 
 function getAdminData(db, req, callback){
-	if(req.session.user.admin || req.session.user.moderator){    	
+	if(req.session.user.admin || req.session.user.moderator){
 
 		var unapprovedDefinitionsQuery = {
 			approved: false,
@@ -1320,7 +1321,7 @@ function getAdminData(db, req, callback){
 				callback({definitions: unapprovedDefinitions, reports: unresolvedReports})
 			})
 		})
-		
+
 	} else {
 		callback({status: "fail", message: "Not an admin"})
 	}
@@ -1329,7 +1330,7 @@ function getAdminData(db, req, callback){
 
 
 
-function getMetrics(db, req, callback){	
+function getMetrics(db, req, callback){
 
 
 	var userQuery = {};
@@ -1351,7 +1352,7 @@ function getMetrics(db, req, callback){
 	}
 
 	var unapprovedDefinitionQuery = {
-		rejected: false, 
+		rejected: false,
 		approved: false
 	}
 
@@ -1393,7 +1394,7 @@ function getMetrics(db, req, callback){
 
 
 function getUserRoles(db, req, callback){
-	if(req.session.user.admin){    	
+	if(req.session.user.admin){
 
 		var userQuery = {
 			username: req.body.username
@@ -1415,14 +1416,14 @@ function getUserRoles(db, req, callback){
 				callback({status: "fail", message: "That's not a valid user"})
 			}
 		})
-		
+
 	} else {
 		callback({status: "fail", message: "Not an admin"})
 	}
 }
 
 function updateUserRoles(db, req, callback){
-	if(req.session.user.admin){    	
+	if(req.session.user.admin){
 
 		userQuery = {
 			username: req.body.username
@@ -1445,10 +1446,10 @@ function updateUserRoles(db, req, callback){
 			}
 
 
-			callback({status: "success", 
+			callback({status: "success",
 				message: "Updated the user role", roles: updatedUserRoles})
-		})  
-		
+		})
+
 	} else {
 		callback({status: "fail", message: "Not an admin"})
 	}
@@ -1461,7 +1462,7 @@ function getUserData(db, req, user, callback){
 		}
 
 		var commentQuery = {
-			author: user, 
+			author: user,
 			removed: false
 		}
 
@@ -1480,8 +1481,8 @@ function getUserData(db, req, user, callback){
 			definitionQuery = {
 				author: user
 			}
-		} else {		
-			console.log("User is not logged in - only fetching approved definitions");	
+		} else {
+			console.log("User is not logged in - only fetching approved definitions");
 		}
 
 		database.read(db, "users", userQuery, function checkIfUserExists(user){
@@ -1501,12 +1502,12 @@ function getUserData(db, req, user, callback){
 				callback({status: "fail", message: "That's not a real user"})
 			}
 		})
-		
+
 
 }
 
 function clearNotifications(db, req, callback){
-	if(req.session.user){    	
+	if(req.session.user){
 
 		var userQuery = {
 			username: req.session.user.username
@@ -1521,7 +1522,7 @@ function clearNotifications(db, req, callback){
 		database.update(db, "users", userQuery, newNotificationsUpdate, function updateNotification(updatedNotification){
 			callback({status: "success"})
 		})
-		
+
 	} else {
 		callback({status: "fail", message: "User is not logged in"})
 	}
@@ -1636,7 +1637,7 @@ function updateExistingDefinition(db, req, callback){
 
 
 function passwordResetRequest(db, req, callback){
-	
+
 	if(req.body.email.indexOf("@") != -1 && req.body.email.indexOf(".") != -1){
 		var userQuery = {
 			email: req.body.email
@@ -1664,14 +1665,14 @@ function passwordResetRequest(db, req, callback){
 
 				database.create(db, "passwordResets", passwordResetRequest, function confirmRequest(request){
 
- 
+
 					var emailBody = "<p>Hey " +  users[0].username + "!<br><br>Here is the password reset link you requested: <br><br>www.hackterms.com/password-reset/" + passwordResetRequest.id + "<br><br>If you did not request this password request, please ignore this email.<br><br>Thanks!<br>~your Hackterms friends";
 
 
 					var mailOptions = {
 					    from: 'Hackterms <hello@hackterms.com>',
-					    to:  users[0].email, 
-					    subject: 'Reset Your Password', 
+					    to:  users[0].email,
+					    subject: 'Reset Your Password',
 					    text: "Here is the password reset link you requested: www.hackterms.com/password-reset/" + passwordResetRequest.id,
 					    html: emailBody
 					};
@@ -1685,7 +1686,7 @@ function passwordResetRequest(db, req, callback){
 					    };
 					});
 
-					
+
 				});
 
 			} else {
@@ -1700,9 +1701,9 @@ function passwordResetRequest(db, req, callback){
 }
 
 function checkPasswordReset(db, req, callback){
-	
+
 	if(req.params.id.trim().length){
-		
+
 		var resetQuery = {
 			id: req.params.id.trim()
 		}
@@ -1716,7 +1717,7 @@ function checkPasswordReset(db, req, callback){
 				} else {
 					callback({status: "fail"})
 				}
-			
+
 			} else {
 				callback({status: "fail"})
 			}
@@ -1728,9 +1729,9 @@ function checkPasswordReset(db, req, callback){
 }
 
 function passwordResetAction(db, req, callback){
-	
+
 	if(req.body.password === req.body.passwordConfirmation){
-		
+
 		var resetQuery = {
 			id: req.body.token,
 			completed: false
@@ -1741,10 +1742,10 @@ function passwordResetAction(db, req, callback){
 			if(resets.length == 1){
 				if(Date.now() < resets[0].expires && !resets[0].completed){
 					if(commonPasswords.indexOf(req.body.password.trim()) == -1){
-						
+
 						bcrypt.genSalt(10, function(err, salt) {
 						    bcrypt.hash(req.body.password, salt, function(err, hash) {
-						   		
+
 						   		var userQuery = {
 						   			username: resets[0].username,
 						        }
@@ -1772,7 +1773,7 @@ function passwordResetAction(db, req, callback){
 						        	})
 						        })
 						    })
-						}) 
+						})
 
 					} else {
 						callback({status: "fail", message: "Do you want to get hacked? Because that's how you get hacked.", errorType: "password"});
@@ -1781,7 +1782,7 @@ function passwordResetAction(db, req, callback){
 				} else {
 					callback({status: "fail", message: "This password reset has expired. Please request a new password request."})
 				}
-			
+
 			} else {
 				callback({status: "fail"})
 			}
@@ -1792,13 +1793,13 @@ function passwordResetAction(db, req, callback){
 	}
 }
 
-function getFAQ(db, req, callback){	
+function getFAQ(db, req, callback){
 	database.read(db, "faq", {}, function getUpdatedFAQ(thisFAQ){
 		callback({faq: thisFAQ})
 	})
 }
 
-function getAllTerms(db, req, callback){	
+function getAllTerms(db, req, callback){
 
 	// not using database.js for this
 	db.collection("terms").find({}).sort({name: 1}).toArray(function getTerms(err, result) {
@@ -1864,7 +1865,7 @@ function validateInput(string){
             wordArray.splice(i, 1);
         }
     }
-    
+
 
     // 2. check every word against a list of offensive terms; see if it's a link other than example.com
 
@@ -1881,7 +1882,7 @@ function validateInput(string){
                 if(wordArray[j].indexOf(extraBadWords[h]) != -1){
                     isStringValid = false;
                     console.log(wordArray[j] + " is not allowed");
-                } 
+                }
             }
 
             for(var k = 0; k < linkWords.length; k++){
@@ -1889,9 +1890,9 @@ function validateInput(string){
                 if(string.indexOf(linkWords[k]) != -1 && string.indexOf("example.com") == -1){
                     isStringValid = false;
                     console.log(wordArray[j] + " looks like a link");
-                } 
+                }
             }
-        } 
+        }
     }
 
     return isStringValid;
